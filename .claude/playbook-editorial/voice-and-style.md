@@ -632,6 +632,27 @@ origin, not the relay.** A story reaching Playbook through an aggregator that
 credits the Financial Times is a Financial Times fact; the aggregator's name
 never enters the piece.
 
+**The specialized sports-business trade press (Sportico, Front Office Sports,
+Sports Business Journal) is where this rule bites hardest, not where it stops
+applying.** (Publisher, 2026-09-07, on the Goodell contract-extension run.)
+These outlets do carry genuine original analysis often enough that the
+exclusivity test regularly resolves "yes" — Sportico's own team-by-team revenue
+estimates, built from financial-distribution reports nobody else tracks the
+same way, are a real example, not a courtesy citation. The failure mode is
+different from the Sky Sports one above: not attributing a widely-known fact to
+whoever supplied the link, but **naming the same outlet two or three times
+across consecutive figures in one piece** because every number in a financial
+section happens to trace back to its research. The piece then reads as an
+annotated Sportico printout instead of a Playbook analysis built partly from
+Sportico's work. The fix is not to stop citing them — it is to attribute the
+**cluster once**, with enough of the method to earn the citation ("Sportico,
+que rastrea los reportes de distribución financiera que la liga envía a sus
+equipos, calcula que…"), and then let the rest of that cluster's figures stand
+on that one attribution instead of repeating the brand name as a tic. A fact
+from a second, unrelated source inside the same piece earns its own citation
+same as always; this is about one source's own figures, not about outlets in
+general.
+
 ---
 
 ## 9. The regional connection (México / LATAM)
