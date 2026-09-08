@@ -68,19 +68,6 @@ const PLAZAS: HubPlaza[] = [
   // original brief's list of intended markets.
 ];
 
-// The current franchise count is DERIVED from the plaza list above, never
-// typed twice. It was typed twice until 2026-08-25, and the two copies
-// disagreed: the plaza list had already been corrected to the brand kit's
-// seven 2026 franchises, while La Cadena still carried the brief's original
-// eight — so the page simultaneously listed seven teams and announced it
-// had eight. Counting the list makes that class of drift unrepresentable,
-// which matters because this number is expected to move again.
-//
-// `establecida` and `anunciada` are deliberately NOT summed: an announced
-// market is a market, not a franchise, and the whole point of La Cadena is
-// the distance between what exists and what has been promised.
-const FRANQUICIAS_ESTABLECIDAS = PLAZAS.filter((p) => p.status === 'establecida').length;
-
 // The league's fan-base study, supplied to Playbook by the LFA. A LICENSED
 // third-party dataset: Global Sponsorship Group owns it, and crediting them
 // is a condition of using the numbers. That is why the band renders its
@@ -129,8 +116,8 @@ export const LFA_HUB: Hub = {
   partnership: 'Medio oficial de negocios',
   // The mockup's dek, adopted verbatim 2026-08-24 (publisher's call). The
   // previous line led with the capital raise and the franchise expansion;
-  // both facts still carry, with sources, in La Cadena and El tablero
-  // below, so nothing was lost by making the masthead broader.
+  // both facts still carry, with sources, in El tablero below, so nothing
+  // was lost by making the masthead broader.
   thesis:
     'El negocio detrás de la Liga. Patrocinios, franquicias, audiencias, medios, talento y los proyectos que están moviendo al futbol americano profesional en México.',
   description:
@@ -199,36 +186,13 @@ export const LFA_HUB: Hub = {
   ],
 
   // ------------------------------------------------------------ La Cadena
-  // 7 → 12 franchises. The only fact on this page with both a current
-  // position and a stated line to gain, which is exactly the condition the
-  // device requires. If either side lost its source, the module would
-  // vanish rather than render half a measurement.
-  //
-  // The geometry is fully derived in HubChain from these two numbers: the
-  // marker sits at current/target, the tick count IS target, and each tick
-  // reads gained/open from its own index. Nothing here or in hub.css encodes
-  // a proportion, so correcting the count moves the marker, the dotted run
-  // and the axis together. Verified at 7/12 on 2026-08-25.
-  chain: {
-    title: 'Expansión de franquicias',
-    unit: ['franquicia', 'franquicias'],
-    current: {
-      // Derived, not typed — see FRANQUICIAS_ESTABLECIDAS above.
-      value: String(FRANQUICIAS_ESTABLECIDAS),
-      label: 'Franquicias hoy',
-      // The KIT, not the BRIEF: this number is now a count of the brand
-      // kit's own franchise list, so it inherits the brand kit's provenance.
-      // Sourcing it to the brief was the other half of the drift: the
-      // figure cited a document that had already been superseded.
-      source: { ...KIT },
-    },
-    target: {
-      value: '12',
-      label: 'Meta declarada',
-      source: { ...BRIEF },
-    },
-    horizon: '2027',
-  },
+  // Removed — publisher's call, 2026-09-08: the "Expansión de franquicias"
+  // (7 → 12) module comes off the hub. `chain` is optional on `Hub` exactly
+  // for this (types.ts: "Renders ONLY when there is a sourced target"), so
+  // omitting the field is the whole change — HubModules.tsx's `hub.chain &&`
+  // guards both the module and its la-meta in-page nav link, and no other
+  // code reads this hub's `chain`. Re-add with the same shape (current/
+  // target/horizon, both sourced) the day there's a reason to show it again.
 
   // --------------------------------------------- El estado comercial
   commercialState: [
@@ -294,7 +258,6 @@ export const LFA_HUB: Hub = {
   },
 
   // ----------------------------------------------------------- Plazas
-  // Lifted to module scope so La Cadena can count it — see PLAZAS above.
   plazas: PLAZAS,
 
   // --------------------------------------------------------- Temporada
