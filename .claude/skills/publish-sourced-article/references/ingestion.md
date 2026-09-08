@@ -164,6 +164,41 @@ If, after genuinely trying, no other outlet has covered the story (a truly
 exclusive or very fresh item), **say so explicitly** rather than inventing a
 second source, and draft from the primary article alone.
 
+### When every outlet is repeating the same frame, that frame is a lead, not a conclusion
+
+(2026-09-07, the Wimbledon/influencers run, on explicit publisher feedback that
+a prior run — Club León's sale — read as shallow analysis.) Every English-language
+outlet covering Wimbledon's decision not to accredit influencers ran the same
+headline shape: "Wimbledon shuns/bans/rejects influencers after US Open chaos."
+Cross-referencing three more outlets that all repeat the identical frame is not
+independence, it is the same finding four times. **The frame itself is the thing
+to test**, not just the facts inside it.
+
+Two moves found the real story here, and both are generalizable:
+
+1. **Look for a fact-check or explainer piece from a quality outlet, not just more
+   news reports of the same announcement.** ESPN had run its own dedicated piece
+   days earlier — "Separating fact from fiction: the US Open influencer
+   controversy" — establishing that the spectators in the viral disruptive videos
+   were never accredited by the USTA at all; they were ordinary ticket holders.
+   The entire premise the Wimbledon headlines assumed (accredited influencers
+   caused the chaos) was already false in the record, one search away.
+2. **Check what the subject of the story does on its own channels, not just what
+   it announced.** Wimbledon's own TikTok campaign (#JoinTheStory) and its
+   sponsors' paid influencer deals (Evian with Polly Sayer and Emma Raducanu)
+   were both active and easy to find, and they directly contradict "Wimbledon
+   shuns influencers." Wimbledon is not rejecting influencer marketing, it is
+   refusing a press-style accreditation category it can't script or edit. That
+   reframing, not the announcement itself, was the actual palanca.
+
+**Both searches take minutes and neither is optional cross-referencing** in the
+sense §2 already requires — they are a specific, repeatable check to run
+whenever the incoming coverage has converged on one clean narrative: search for
+"[topic] fact check" / "separating fact from fiction" style pieces, and search
+for what the story's own subject does elsewhere that the headline doesn't
+mention. A consensus narrative repeated by five outlets is not five
+confirmations; it is one narrative that has not yet been tested.
+
 ### Read each primary co-issuer's own posting — BEFORE drafting, not at field-filling time
 
 **This is a verification step that happens to also produce the `Fuentes:` line,
