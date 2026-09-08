@@ -97,25 +97,20 @@ const GLOBAL_INTELLIGENCE = {
 export const LFA_HUB: Hub = {
   slug: 'lfa',
   name: 'LFA',
-  // Unlisted, and as of 2026-08-25 this is the SETTLED state rather than a
-  // hold. Publisher, asked directly during the pre-handover QA: the hub "is
-  // not accessible via the home page, but if you know the address you can
-  // access it." That is exactly what this flag buys — it drops the hub from
-  // the nav and the sitemap (see Hub.listed) and, via this hub's own
-  // generateMetadata, sets robots noindex, while the URL itself keeps
-  // serving 200. Undiscoverable, not unreachable (see commit a61b4f3).
+  // LIVE as of 2026-09-08. Publisher's direct instruction, superseding the
+  // 2026-08-25 "undiscoverable, not unreachable" preference recorded below
+  // (kept for history, not as standing guidance): flip the hub into the nav,
+  // the sitemap and search, and drop the generateMetadata robots noindex.
+  // This is a deliberate go-live, not a QA-checklist workaround — the
+  // distinction the old comment was protecting against.
   //
-  // Originally set false on 2026-08-19 because the page had been briefly
-  // listed and Google had already indexed it; noindex is what gets it
-  // dropped on the next crawl. That reason has now been superseded by a
-  // preference, which is a stronger reason.
-  //
-  // DO NOT flip this to `true` to satisfy a QA checklist item that says the
-  // hub should be reachable from the three-zone header. That item was
-  // written before the ruling and is the thing that is wrong; it has been
-  // struck in docs/TODO.md. The announcement gating below is a SEPARATE
-  // question and still stands on its own.
-  listed: false,
+  // Previously unlisted, 2026-08-19–2026-09-08. The hub "is not accessible
+  // via the home page, but if you know the address you can access it" was
+  // the publisher's own framing at the time; noindex was what dropped an
+  // already-indexed hub URL from Google's crawl after a brief accidental
+  // listing. See commit a61b4f3 ("unlisted means undiscoverable, not
+  // unreachable") for the mechanism this flag drives.
+  listed: true,
   // The graphic supplied with the Black Clover press kit reads "LFA
   // FINSUS" throughout — the league wears its title sponsor in its own
   // commercial name. That is itself a Playbook-relevant fact (naming
