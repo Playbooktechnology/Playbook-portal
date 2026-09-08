@@ -8,7 +8,7 @@ import { SearchBox } from './SearchBox';
 import { NavMenu } from './NavMenu';
 import type { NavLink } from '@/lib/data/site-content';
 import { PRODUCT_HUBS } from '@/lib/product-hubs';
-import { HUBS, UPCOMING_HUBS } from '@/lib/hubs';
+import { HUBS } from '@/lib/hubs';
 import { NOSOTROS_LINKS } from '@/lib/data/leadership';
 import { gsap } from '@/lib/gsap';
 
@@ -18,10 +18,24 @@ import { gsap } from '@/lib/gsap';
 //
 //   Publicaciones  a mega-menu of things Playbook AUTHORS. Two columns,
 //                  each product with its identity chip and a descriptor.
-//   Alianzas       a narrower menu of DESTINATIONS about properties we do
-//                  not own. Separated from Publicaciones by a standing rule.
-//                  Reader-facing label only: the route namespace stays
-//                  /coberturas/<slug> (see lib/hubs/types.ts).
+//   (hub tabs)     one plain top-level link per LISTED hub (properties we
+//                  do not own), separated from Publicaciones by a standing
+//                  rule. CHANGED 2026-09-08: this used to be a single
+//                  "Alianzas" dropdown wrapping every listed hub (and, in an
+//                  even earlier pass, "Exclusivas" — publisher's call,
+//                  2026-08-18). Publisher's call again, same day: no
+//                  wrapping label at all, just the hub's own name as a
+//                  direct tab (today, one tab, "LFA" -> /coberturas/lfa).
+//                  Traded away by dropping the wrapper: the "En
+//                  preparación" (UPCOMING_HUBS) affordance the dropdown
+//                  used to render had a natural home there and no longer
+//                  does — UPCOMING_HUBS is empty today so nothing visible
+//                  was lost, but if it gains entries again this zone needs
+//                  a rethink (a bare tab can't show an unlinked "coming
+//                  soon" item the way a menu panel could). Reader-facing
+//                  labels only either way: the route namespace stays
+//                  /coberturas/<slug> (see lib/hubs/types.ts and
+//                  docs/TODO.md item 0 on that mismatch).
 //   Newsletter     not a menu at all — a filled button in the actions
 //                  cluster. An ACTION, and one of only two places on the
 //                  site newsletter signup is allowed to live (the other is
@@ -32,12 +46,6 @@ import { gsap } from '@/lib/gsap';
 //     "productos" is our internal framing, not theirs. (Flagged: the
 //     homepage section still reads "Productos editoriales" — worth
 //     aligning, but renaming reader-facing copy is the publisher's call.)
-//   "Alianzas"      — publisher's call, 2026-09-08, replacing "Exclusivas"
-//     (itself the publisher's call on 2026-08-18). Frames these as
-//     partnered coverage destinations rather than a filing category. Note
-//     this decouples the label from the /coberturas route namespace (see
-//     docs/TODO.md item 0 — that open question now applies to this name
-//     too, not just the previous one).
 //   "Newsletter"    — kept as the accessible group name because the visible
 //     control is the CTA's own words ("Suscríbete gratis"), already the
 //     site's established conversion copy.
@@ -147,15 +155,6 @@ export function HeaderNav({
   // nav must not link to it — see Hub.listed.
   const listedHubs = HUBS.filter(h => h.listed);
 
-  const hubItems = listedHubs.map(hub => (
-    <Link className="navmenu-item" href={`/coberturas/${hub.slug}`} key={hub.slug}>
-      <span className="navmenu-item-body">
-        <span className="navmenu-item-name">{hub.name}</span>
-        <span className="navmenu-item-desc">{hub.fullName}</span>
-      </span>
-    </Link>
-  ));
-
   return (
     <>
       {/* ------------------------------------------------ Desktop zones */}
@@ -183,29 +182,19 @@ export function HeaderNav({
 
         {/* The standing rule is the structural signal that what follows is
             a different KIND of destination, not another peer link. */}
-        <span className="nav-zone-rule" aria-hidden="true" />
+        {listedHubs.length > 0 && <span className="nav-zone-rule" aria-hidden="true" />}
 
-        <NavMenu label="Alianzas">
-          {/* Hidden entirely when nothing is live — an "activas" heading over
-              an empty list reads as broken, not as forthcoming. */}
-          {listedHubs.length > 0 && (
-            <div className="navmenu-group">
-              <p className="navmenu-group-head">Alianzas</p>
-              {hubItems}
-            </div>
-          )}
-          {UPCOMING_HUBS.length > 0 && (
-            <div className={`navmenu-group${listedHubs.length ? ' navmenu-group-secondary' : ''}`}>
-              <p className="navmenu-group-head">En preparación</p>
-              {UPCOMING_HUBS.map(upcoming => (
-                <span className="navmenu-item navmenu-item-muted" key={upcoming.name}>
-                  <span className="navmenu-item-name">{upcoming.name}</span>
-                  <span className="navmenu-item-desc">{upcoming.note}</span>
-                </span>
-              ))}
-            </div>
-          )}
-        </NavMenu>
+        {/* One plain tab per listed hub — see the "(hub tabs)" note in the
+            Zones comment above for why this replaced the "Alianzas"
+            dropdown. Styled with the same `navmenu-trigger` class the
+            dropdown triggers use (padding, hover, focus ring) so it reads
+            as a peer tab rather than a demoted plain link, just without a
+            chevron or panel since there's nothing to disclose. */}
+        {listedHubs.map(hub => (
+          <Link className="navmenu-trigger" href={`/coberturas/${hub.slug}`} key={hub.slug}>
+            {hub.name}
+          </Link>
+        ))}
       </nav>
 
       {/* -------------------------------------------------- Mobile drawer */}
@@ -231,19 +220,20 @@ export function HeaderNav({
             ))}
           </section>
 
-          <section className="nav-drawer-zone">
-            <h2 className="nav-drawer-head">Alianzas</h2>
-            {listedHubs.map(hub => (
-              <Link className="nav-drawer-link" href={`/coberturas/${hub.slug}`} key={hub.slug} onClick={close}>
-                {hub.name}
-              </Link>
-            ))}
-            {UPCOMING_HUBS.map(upcoming => (
-              <span className="nav-drawer-link nav-drawer-muted" key={upcoming.name}>
-                {upcoming.name} <em>{upcoming.note}</em>
-              </span>
-            ))}
-          </section>
+          {/* No zone heading here on purpose — see the "(hub tabs)" note in
+              the Zones comment above. Desktop shows the same hub names as
+              bare tabs with no wrapping label, so the drawer doesn't invent
+              one either. UPCOMING_HUBS has no render path here any more for
+              the same reason it lost its desktop one. */}
+          {listedHubs.length > 0 && (
+            <section className="nav-drawer-zone">
+              {listedHubs.map(hub => (
+                <Link className="nav-drawer-link" href={`/coberturas/${hub.slug}`} key={hub.slug} onClick={close}>
+                  {hub.name}
+                </Link>
+              ))}
+            </section>
+          )}
 
           {/* Below 1180px the drawer already exists with labelled zones, so
               Nosotros joins it as a FOURTH zone with an accordion rather
