@@ -116,8 +116,8 @@ export const LFA_HUB: Hub = {
   partnership: 'Medio oficial de negocios',
   // The mockup's dek, adopted verbatim 2026-08-24 (publisher's call). The
   // previous line led with the capital raise and the franchise expansion;
-  // both facts still carry, with sources, in La Cadena and El tablero
-  // below, so nothing was lost by making the masthead broader.
+  // both facts still carry, with sources, in El tablero below, so nothing
+  // was lost by making the masthead broader.
   thesis:
     'El negocio detrás de la Liga. Patrocinios, franquicias, audiencias, medios, talento y los proyectos que están moviendo al futbol americano profesional en México.',
   description:
@@ -256,7 +256,6 @@ export const LFA_HUB: Hub = {
   },
 
   // ----------------------------------------------------------- Plazas
-  // Lifted to module scope so La Cadena can count it — see PLAZAS above.
   plazas: PLAZAS,
 
   // --------------------------------------------------------- Temporada

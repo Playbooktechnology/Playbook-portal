@@ -56,6 +56,9 @@ type Entry = {
   readingTime?: number;
   imageUrl?: string;
   imageCredit?: string;
+  // Self-expiring homepage-hero override (lib/rank.ts's selectHero). ISO
+  // timestamp string, or null to clear an existing pin early.
+  heroPinnedUntil?: string | null;
 };
 
 // `date` is deliberately absent: the archive's chronology is a record, not a
@@ -71,6 +74,7 @@ const COLUMNS = {
   readingTime: articles.readingTime,
   imageUrl: articles.imageUrl,
   imageCredit: articles.imageCredit,
+  heroPinnedUntil: articles.heroPinnedUntil,
 } as const;
 
 async function resolveId(entry: Entry): Promise<string | null> {
@@ -104,7 +108,12 @@ async function main() {
     for (const field of Object.keys(COLUMNS) as (keyof typeof COLUMNS)[]) {
       const value = entry[field];
       if (value === undefined) continue;
-      patch[field] = value;
+      // heroPinnedUntil is the one timestamp column this generic loop
+      // writes; drizzle's default timestamp mode calls .toISOString() on
+      // the driver value, so a plain ISO string (this script's own input
+      // shape) has to become a real Date first. null passes through
+      // unchanged -- that's how a pin gets cleared early.
+      patch[field] = field === 'heroPinnedUntil' && typeof value === 'string' ? new Date(value) : value;
       touched.push(field);
     }
 
