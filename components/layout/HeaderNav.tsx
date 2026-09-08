@@ -18,10 +18,12 @@ import { gsap } from '@/lib/gsap';
 //
 //   Publicaciones  a mega-menu of things Playbook AUTHORS. Two columns,
 //                  each product with its identity chip and a descriptor.
-//   Exclusivas     a narrower menu of DESTINATIONS about properties we do
-//                  not own. Separated from Publicaciones by a standing rule.
-//                  Reader-facing label only: the route namespace stays
-//                  /coberturas/<slug> (see lib/hubs/types.ts).
+//   Alianzas       a narrower menu of DESTINATIONS about properties we do
+//                  not own, built together with a partner (LFA FINSUS is
+//                  the first). Separated from Publicaciones by a standing
+//                  rule. Reader-facing label only: the route namespace
+//                  stays /coberturas/<slug> (see lib/hubs/types.ts and the
+//                  open route-vs-label question in docs/TODO.md §0).
 //   Newsletter     not a menu at all — a filled button in the actions
 //                  cluster. An ACTION, and one of only two places on the
 //                  site newsletter signup is allowed to live (the other is
@@ -32,9 +34,10 @@ import { gsap } from '@/lib/gsap';
 //     "productos" is our internal framing, not theirs. (Flagged: the
 //     homepage section still reads "Productos editoriales" — worth
 //     aligning, but renaming reader-facing copy is the publisher's call.)
-//   "Exclusivas"    — publisher's call, 2026-08-18. Frames these as what
-//     Playbook has that nobody else does, rather than as a filing category.
-//     Note this decouples the label from the /coberturas route namespace.
+//   "Alianzas"      — publisher's call, 2026-09-08 (supersedes "Exclusivas",
+//     2026-08-18). Frames these as partnerships Playbook has built rather
+//     than as a filing category. Note this decouples the label from the
+//     /coberturas route namespace.
 //   "Newsletter"    — kept as the accessible group name because the visible
 //     control is the CTA's own words ("Suscríbete gratis"), already the
 //     site's established conversion copy.
@@ -182,12 +185,12 @@ export function HeaderNav({
             a different KIND of destination, not another peer link. */}
         <span className="nav-zone-rule" aria-hidden="true" />
 
-        <NavMenu label="Exclusivas">
+        <NavMenu label="Alianzas">
           {/* Hidden entirely when nothing is live — an "activas" heading over
               an empty list reads as broken, not as forthcoming. */}
           {listedHubs.length > 0 && (
             <div className="navmenu-group">
-              <p className="navmenu-group-head">Exclusivas</p>
+              <p className="navmenu-group-head">Alianzas</p>
               {hubItems}
             </div>
           )}
@@ -229,7 +232,7 @@ export function HeaderNav({
           </section>
 
           <section className="nav-drawer-zone">
-            <h2 className="nav-drawer-head">Exclusivas</h2>
+            <h2 className="nav-drawer-head">Alianzas</h2>
             {listedHubs.map(hub => (
               <Link className="nav-drawer-link" href={`/coberturas/${hub.slug}`} key={hub.slug} onClick={close}>
                 {hub.name}

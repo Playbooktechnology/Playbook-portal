@@ -97,25 +97,15 @@ const GLOBAL_INTELLIGENCE = {
 export const LFA_HUB: Hub = {
   slug: 'lfa',
   name: 'LFA',
-  // Unlisted, and as of 2026-08-25 this is the SETTLED state rather than a
-  // hold. Publisher, asked directly during the pre-handover QA: the hub "is
-  // not accessible via the home page, but if you know the address you can
-  // access it." That is exactly what this flag buys — it drops the hub from
-  // the nav and the sitemap (see Hub.listed) and, via this hub's own
-  // generateMetadata, sets robots noindex, while the URL itself keeps
-  // serving 200. Undiscoverable, not unreachable (see commit a61b4f3).
-  //
-  // Originally set false on 2026-08-19 because the page had been briefly
-  // listed and Google had already indexed it; noindex is what gets it
-  // dropped on the next crawl. That reason has now been superseded by a
-  // preference, which is a stronger reason.
-  //
-  // DO NOT flip this to `true` to satisfy a QA checklist item that says the
-  // hub should be reachable from the three-zone header. That item was
-  // written before the ruling and is the thing that is wrong; it has been
-  // struck in docs/TODO.md. The announcement gating below is a SEPARATE
-  // question and still stands on its own.
-  listed: false,
+  // Listed as of 2026-09-08 — publisher's call, direct instruction,
+  // superseding the 2026-08-25 "leave it exactly as it is" ruling recorded
+  // in docs/TODO.md. The hub now shows in the "Alianzas" nav zone and the
+  // sitemap, and its own generateMetadata lets robots index/follow it (see
+  // the `robots: { index: hub.listed, follow: hub.listed }` line in
+  // app/(public)/coberturas/[slug]/page.tsx). The "no outbound link to the
+  // league" ruling from the same 2026-08-25 QA pass is a SEPARATE question
+  // and still stands untouched.
+  listed: true,
   // The graphic supplied with the Black Clover press kit reads "LFA
   // FINSUS" throughout — the league wears its title sponsor in its own
   // commercial name. That is itself a Playbook-relevant fact (naming
