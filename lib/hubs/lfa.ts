@@ -97,19 +97,14 @@ const GLOBAL_INTELLIGENCE = {
 export const LFA_HUB: Hub = {
   slug: 'lfa',
   name: 'LFA',
-  // LIVE as of 2026-09-08. Publisher's direct instruction, superseding the
-  // 2026-08-25 "undiscoverable, not unreachable" preference recorded below
-  // (kept for history, not as standing guidance): flip the hub into the nav,
-  // the sitemap and search, and drop the generateMetadata robots noindex.
-  // This is a deliberate go-live, not a QA-checklist workaround — the
-  // distinction the old comment was protecting against.
-  //
-  // Previously unlisted, 2026-08-19–2026-09-08. The hub "is not accessible
-  // via the home page, but if you know the address you can access it" was
-  // the publisher's own framing at the time; noindex was what dropped an
-  // already-indexed hub URL from Google's crawl after a brief accidental
-  // listing. See commit a61b4f3 ("unlisted means undiscoverable, not
-  // unreachable") for the mechanism this flag drives.
+  // Listed as of 2026-09-08 — publisher's call, direct instruction,
+  // superseding the 2026-08-25 "leave it exactly as it is" ruling recorded
+  // in docs/TODO.md. The hub now shows in the "Alianzas" nav zone and the
+  // sitemap, and its own generateMetadata lets robots index/follow it (see
+  // the `robots: { index: hub.listed, follow: hub.listed }` line in
+  // app/(public)/coberturas/[slug]/page.tsx). The "no outbound link to the
+  // league" ruling from the same 2026-08-25 QA pass is a SEPARATE question
+  // and still stands untouched.
   listed: true,
   // The graphic supplied with the Black Clover press kit reads "LFA
   // FINSUS" throughout — the league wears its title sponsor in its own
