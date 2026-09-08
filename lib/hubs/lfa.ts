@@ -62,11 +62,10 @@ const PLAZAS: HubPlaza[] = [
     team: 'Mexicas de la Ciudad de México', status: 'establecida', source: { ...KIT } },
   { city: 'Valle de México', region: 'Estado de México', state: 'México',
     team: 'Raptors del Valle de México', status: 'establecida', source: { ...KIT } },
-  // Announced expansion markets. No team names yet — none have been
-  // named, and inventing one would be inventing a franchise.
-  { city: 'Mérida', region: 'Yucatán', state: 'Yucatán', status: 'anunciada', source: { ...BRIEF } },
-  { city: 'Cancún', region: 'Quintana Roo', state: 'Quintana Roo', status: 'anunciada', source: { ...BRIEF } },
-  { city: 'Tijuana', region: 'Baja California', state: 'Baja California', status: 'anunciada', source: { ...BRIEF } },
+  // The three announced expansion markets (Mérida, Cancún, Tijuana) were
+  // pulled from the list — publisher's call, 2026-09-08. Re-add them, still
+  // sourced to BRIEF, the day there's something firmer to report than the
+  // original brief's list of intended markets.
 ];
 
 // The current franchise count is DERIVED from the plaza list above, never
