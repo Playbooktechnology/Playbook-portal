@@ -56,6 +56,9 @@ type Entry = {
   readingTime?: number;
   imageUrl?: string;
   imageCredit?: string;
+  // Self-expiring homepage-hero override (lib/rank.ts's selectHero). ISO
+  // timestamp string, or null to clear an existing pin early.
+  heroPinnedUntil?: string | null;
 };
 
 // `date` is deliberately absent: the archive's chronology is a record, not a
@@ -71,6 +74,7 @@ const COLUMNS = {
   readingTime: articles.readingTime,
   imageUrl: articles.imageUrl,
   imageCredit: articles.imageCredit,
+  heroPinnedUntil: articles.heroPinnedUntil,
 } as const;
 
 async function resolveId(entry: Entry): Promise<string | null> {

@@ -49,6 +49,7 @@ const LIST_COLUMNS = {
   imageCredit: articles.imageCredit,
   status: articles.status,
   listed: articles.listed,
+  heroPinnedUntil: articles.heroPinnedUntil,
   createdAt: articles.createdAt,
   updatedAt: articles.updatedAt,
   updatedBy: articles.updatedBy,

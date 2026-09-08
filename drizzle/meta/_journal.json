@@ -78,6 +78,13 @@
       "when": 1788388157493,
       "tag": "0010_add_article_listed_flag",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1788900113950,
+      "tag": "0011_loose_leader",
+      "breakpoints": true
     }
   ]
 }
