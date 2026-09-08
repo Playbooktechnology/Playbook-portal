@@ -75,7 +75,7 @@ export async function generateMetadata({
   const hub = hubBySlug(slug);
   if (!hub) return {};
   return {
-    title: `${hub.name} — Exclusiva Playbook`,
+    title: `${hub.name} — Alianza Playbook`,
     description: hub.description,
     alternates: { canonical: `${SITE_URL}/coberturas/${hub.slug}` },
     // The actual anti-discovery mechanism: an unlisted hub is real,

@@ -97,25 +97,30 @@ const GLOBAL_INTELLIGENCE = {
 export const LFA_HUB: Hub = {
   slug: 'lfa',
   name: 'LFA',
-  // Unlisted, and as of 2026-08-25 this is the SETTLED state rather than a
-  // hold. Publisher, asked directly during the pre-handover QA: the hub "is
-  // not accessible via the home page, but if you know the address you can
-  // access it." That is exactly what this flag buys — it drops the hub from
-  // the nav and the sitemap (see Hub.listed) and, via this hub's own
-  // generateMetadata, sets robots noindex, while the URL itself keeps
-  // serving 200. Undiscoverable, not unreachable (see commit a61b4f3).
+  // Listed as of 2026-09-08: publisher's call, reversing the 2026-08-25
+  // ruling recorded below (kept for history rather than deleted, since it
+  // explains why this sat at `false` for two weeks). LFA now shows in the
+  // header's Alianzas zone (HeaderNav.tsx) and, via this hub's own
+  // generateMetadata, is indexable again.
   //
-  // Originally set false on 2026-08-19 because the page had been briefly
-  // listed and Google had already indexed it; noindex is what gets it
-  // dropped on the next crawl. That reason has now been superseded by a
-  // preference, which is a stronger reason.
+  // Note this flips only the HUB page itself. The two launch articles
+  // reserved for this moment (scripts/publish-lfa-launch.ts,
+  // "quien-es-el-fan-de-la-lfa" and "lfa-finsus-y-playbook-se-alian")
+  // deliberately stay at their own row-level `listed: false` for now — a
+  // separate decision, 2026-09-08 — so the hub is reachable and in the
+  // sitemap, but its "Lo último" still shows the `emptyState` copy below
+  // until those rows are flipped too.
   //
-  // DO NOT flip this to `true` to satisfy a QA checklist item that says the
-  // hub should be reachable from the three-zone header. That item was
-  // written before the ruling and is the thing that is wrong; it has been
-  // struck in docs/TODO.md. The announcement gating below is a SEPARATE
-  // question and still stands on its own.
-  listed: false,
+  // ---- Superseded 2026-08-25 ruling (kept for history) ----
+  // Was `false`. Publisher, asked directly during the pre-handover QA: the
+  // hub "is not accessible via the home page, but if you know the address
+  // you can access it." That is exactly what the flag bought — dropped the
+  // hub from the nav and the sitemap and set robots noindex via
+  // generateMetadata, while the URL itself kept serving 200. Undiscoverable,
+  // not unreachable (see commit a61b4f3). The announcement gating
+  // (`partnership` below) was a separate question and still stands on its
+  // own; it does not automatically release just because `listed` did.
+  listed: true,
   // The graphic supplied with the Black Clover press kit reads "LFA
   // FINSUS" throughout — the league wears its title sponsor in its own
   // commercial name. That is itself a Playbook-relevant fact (naming
