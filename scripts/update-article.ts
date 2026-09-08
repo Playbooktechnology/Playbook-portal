@@ -108,7 +108,12 @@ async function main() {
     for (const field of Object.keys(COLUMNS) as (keyof typeof COLUMNS)[]) {
       const value = entry[field];
       if (value === undefined) continue;
-      patch[field] = value;
+      // heroPinnedUntil is the one timestamp column this generic loop
+      // writes; drizzle's default timestamp mode calls .toISOString() on
+      // the driver value, so a plain ISO string (this script's own input
+      // shape) has to become a real Date first. null passes through
+      // unchanged -- that's how a pin gets cleared early.
+      patch[field] = field === 'heroPinnedUntil' && typeof value === 'string' ? new Date(value) : value;
       touched.push(field);
     }
 
