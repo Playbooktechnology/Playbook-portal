@@ -1,11 +1,13 @@
 import { cache } from 'react';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
 import { db } from '../db/client';
 import { articles } from '../db/schema';
 import { rankArticles, selectHero } from '../rank';
 import { LEAD_COUNT, LIST_COUNT, normalizeSource } from '../constants';
 import type { TaxonomyTier } from '../taxonomy';
+import { authorDisplayName } from '@/lib/author-name';
+import { HUBS } from '../hubs';
 
 export type Article = typeof articles.$inferSelect;
 
@@ -46,6 +48,8 @@ const LIST_COLUMNS = {
   imageUrl: articles.imageUrl,
   imageCredit: articles.imageCredit,
   status: articles.status,
+  listed: articles.listed,
+  heroPinnedUntil: articles.heroPinnedUntil,
   createdAt: articles.createdAt,
   updatedAt: articles.updatedAt,
   updatedBy: articles.updatedBy,
@@ -58,7 +62,17 @@ const LIST_COLUMNS = {
 // fetch re-ran this query from scratch, with nothing shared between them.
 const queryPublishedArticles = unstable_cache(
   async () => {
-    const rows = await db.select(LIST_COLUMNS).from(articles).where(eq(articles.status, 'published'));
+    // listed=false (Article's counterpart to Hub.listed, schema.ts) is the
+    // same "undiscoverable, not unreachable" flag: this is the ONE function
+    // every listing, hub pool, the archive, search and the sitemap read
+    // (see getAllArticles below), so filtering it out here is what makes an
+    // unlisted article vanish from all of them at once. getArticleById and
+    // getArticleMetaById deliberately carry no such filter — the article
+    // must still resolve at its own URL.
+    const rows = await db
+      .select(LIST_COLUMNS)
+      .from(articles)
+      .where(and(eq(articles.status, 'published'), eq(articles.listed, true)));
     // normalizeSource here — the single data boundary every public reader
     // goes through — so rows still carrying the legacy 'industry-shots'
     // key (until scripts/migrate-source-noticias.ts runs) file under
@@ -88,6 +102,26 @@ export const getAllArticles = cache(async (): Promise<Article[]> => {
   return rows.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 });
 
+// An unlisted hub (Hub.listed — lib/hubs/types.ts, e.g. LFA_HUB) is
+// "undiscoverable, not unreachable": the hub page itself keeps serving at
+// its own URL, but nothing else on the site should surface the articles
+// GATHERED into it (they're filed under a regular product's `source`, so
+// they'd otherwise ride along in every general listing right next to it).
+// `getAllArticles` stays the raw published+listed(article) pool that
+// lib/hubs/pool.ts and getArticlesBySource/getArticlesByProperty read from
+// — that's what keeps the hub page itself populated. Every OTHER public
+// surface (homepage, archive, ticker, most-read, search, sitemap, feed,
+// related articles, team page) should read this instead.
+function isInUnlistedHub(article: Pick<Article, 'tagsProperty'>): boolean {
+  const tags = article.tagsProperty || [];
+  return HUBS.some(hub => !hub.listed && tags.includes(hub.tag));
+}
+
+export const getPublicArticles = cache(async (): Promise<Article[]> => {
+  const all = await getAllArticles();
+  return all.filter(a => !isInUnlistedHub(a));
+});
+
 // cache()-wrapped so a request that reads the full article (body included)
 // after already resolving it another way within the same render doesn't
 // issue the same by-id lookup twice.
@@ -105,6 +139,8 @@ export type ArticleMeta = {
   wallTeaser: string | null;
   imageUrl: string;
   imageCredit: string | null;
+  /** See schema.ts articles.listed — gates the article page's robots meta. */
+  listed: boolean;
   dateFormatted: string;
   date: string;
   readingTime: number;
@@ -139,6 +175,7 @@ export const getArticleMetaById = cache(async (id: string): Promise<ArticleMeta 
       wallTeaser: articles.wallTeaser,
       imageUrl: articles.imageUrl,
       imageCredit: articles.imageCredit,
+      listed: articles.listed,
       dateFormatted: articles.dateFormatted,
       date: articles.date,
       readingTime: articles.readingTime,
@@ -158,10 +195,16 @@ export const getArticleMetaById = cache(async (id: string): Promise<ArticleMeta 
   return row ? { ...row, source: normalizeSource(row.source) } : null;
 });
 
+// Matched on the DISPLAY name, not the raw column, so an author whose byline
+// carries markdown links resolves the same whether the incoming `name` is the
+// clean form (what the site links to and the sitemap publishes now) or the raw
+// stored string (what old URLs and any existing backlinks still carry).
+// See lib/author-name.ts for why the column is not a clean name.
 export async function getArticlesByAuthor(name: string): Promise<Article[]> {
-  const all = await getAllArticles();
+  const all = await getPublicArticles();
+  const target = authorDisplayName(name);
   return all
-    .filter(a => a.author === name)
+    .filter(a => authorDisplayName(a.author) === target)
     .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 }
 
@@ -173,7 +216,7 @@ const TAG_COLUMN: Record<TaxonomyTier, keyof Article> = {
 };
 
 export async function getArticlesByTag(tier: TaxonomyTier, value: string): Promise<Article[]> {
-  const all = await getAllArticles();
+  const all = await getPublicArticles();
   const column = TAG_COLUMN[tier];
   const ranked = rankArticles(all.filter(a => (a[column] as string[]).includes(value)));
   return ranked;
@@ -192,7 +235,7 @@ export type ArchiveFilters = {
 // archive" matches reality regardless of which filters are active — then
 // filters are applied on top of that overflow set.
 export async function getArchiveArticles(filters: ArchiveFilters): Promise<Article[]> {
-  const all = await getAllArticles();
+  const all = await getPublicArticles();
   // Mirrors NewsGrid's own pool exactly: the homepage news band excludes
   // source='opinion' (those have their own live section further down the
   // page), so the "what is already on the homepage" subtraction has to

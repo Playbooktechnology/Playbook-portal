@@ -6,6 +6,7 @@ import { SCOPE_OPTIONS, SPORT_OPTIONS, VERTICAL_OPTIONS, PROPERTY_OPTIONS } from
 import { slugify } from '@/lib/slugify';
 import { type ArticleEntry, newArticleEntry } from '../article-entry';
 import { TextField, NumberField } from '../fields/TextField';
+import { ImageUrlField } from '../fields/ImageUrlField';
 import { SelectField } from '../fields/SelectField';
 import { CheckboxGroupField } from '../fields/CheckboxGroupField';
 import { StarPickerField } from '../fields/StarPickerField';
@@ -133,7 +134,7 @@ export function ArticlesTab({ entries, onChange, onRemove }: Props) {
               />
               <TextField
                 label="ID (para el enlace del artículo)"
-                help="Se genera solo a partir del título si lo dejas vacío. Debe ser único — se usa en la URL del artículo (/articulo?id=...)."
+                help="Se genera solo a partir del título si lo dejas vacío. Debe ser único — se usa en la URL del artículo (/articulo/...)."
                 value={a.id}
                 onChange={v => updateEntry(entry.clientKey, { id: v })}
               />
@@ -210,6 +211,24 @@ export function ArticlesTab({ entries, onChange, onRemove }: Props) {
                   la regla de frontera vive en
                   .claude/playbook-editorial/fields-and-taxonomy.md. */}
               <CheckboxGroupField label="Cobertura" help="Solo si la pieza ES cobertura de esa propiedad, no si la menciona." options={PROPERTY_OPTIONS} value={a.tagsProperty} onChange={v => updateEntry(entry.clientKey, { tagsProperty: v })} />
+              <div className="field">
+                <span className="field-label">Visibilidad</span>
+                <span className="field-help">
+                  Desmarcado, el artículo sigue publicado y resuelve en su URL real
+                  (/articulo/…) para verlo y revisarlo, pero desaparece de Noticias, del
+                  archivo, del buscador, de cualquier cobertura que lo reúna por etiqueta,
+                  del sitemap.xml y lleva noindex. Vuelve a marcarlo cuando quieras hacerlo
+                  público — es el mismo mecanismo que usan las coberturas no listadas.
+                </span>
+                <label className="checkbox-option">
+                  <input
+                    type="checkbox"
+                    checked={a.listed === true}
+                    onChange={e => updateEntry(entry.clientKey, { listed: e.target.checked })}
+                  />
+                  <span>Listado (visible y descubrible en el sitio)</span>
+                </label>
+              </div>
               <TextField label="Fecha (AAAA-MM-DD)" help="Se usa para ordenar los artículos por fecha — lo más reciente siempre pesa." value={a.date} onChange={v => updateEntry(entry.clientKey, { date: v })} />
               <TextField label="Fecha en texto" help="Cómo se muestra la fecha en el sitio (ej. 9 jul 2026)." value={a.dateFormatted} onChange={v => updateEntry(entry.clientKey, { dateFormatted: v })} />
               <NumberField label="Tiempo de lectura (minutos)" help="Minutos de lectura, se escribe a mano — ya no se calcula solo." min={1} step={1} value={a.readingTime} onChange={v => updateEntry(entry.clientKey, { readingTime: v })} />
@@ -258,11 +277,10 @@ export function ArticlesTab({ entries, onChange, onRemove }: Props) {
                 value={a.substackUrl}
                 onChange={v => updateEntry(entry.clientKey, { substackUrl: v })}
               />
-              <TextField
+              <ImageUrlField
                 label="Imagen"
-                type="url"
                 required
-                help="El link a una imagen para el artículo, relacionada directamente con el tema. Obligatoria para todo artículo, sin importar la prioridad."
+                help='El link a una imagen para el artículo, relacionada directamente con el tema. Obligatoria para todo artículo, sin importar la prioridad. "Subir imagen" la sube directo (sin pasar por GitHub ni esperar un despliegue) y llena este campo solo.'
                 value={a.imageUrl}
                 onChange={v => updateEntry(entry.clientKey, { imageUrl: v })}
               />

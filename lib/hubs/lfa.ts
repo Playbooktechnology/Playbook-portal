@@ -62,25 +62,11 @@ const PLAZAS: HubPlaza[] = [
     team: 'Mexicas de la Ciudad de México', status: 'establecida', source: { ...KIT } },
   { city: 'Valle de México', region: 'Estado de México', state: 'México',
     team: 'Raptors del Valle de México', status: 'establecida', source: { ...KIT } },
-  // Announced expansion markets. No team names yet — none have been
-  // named, and inventing one would be inventing a franchise.
-  { city: 'Mérida', region: 'Yucatán', state: 'Yucatán', status: 'anunciada', source: { ...BRIEF } },
-  { city: 'Cancún', region: 'Quintana Roo', state: 'Quintana Roo', status: 'anunciada', source: { ...BRIEF } },
-  { city: 'Tijuana', region: 'Baja California', state: 'Baja California', status: 'anunciada', source: { ...BRIEF } },
+  // The three announced expansion markets (Mérida, Cancún, Tijuana) were
+  // pulled from the list — publisher's call, 2026-09-08. Re-add them, still
+  // sourced to BRIEF, the day there's something firmer to report than the
+  // original brief's list of intended markets.
 ];
-
-// The current franchise count is DERIVED from the plaza list above, never
-// typed twice. It was typed twice until 2026-08-25, and the two copies
-// disagreed: the plaza list had already been corrected to the brand kit's
-// seven 2026 franchises, while La Cadena still carried the brief's original
-// eight — so the page simultaneously listed seven teams and announced it
-// had eight. Counting the list makes that class of drift unrepresentable,
-// which matters because this number is expected to move again.
-//
-// `establecida` and `anunciada` are deliberately NOT summed: an announced
-// market is a market, not a franchise, and the whole point of La Cadena is
-// the distance between what exists and what has been promised.
-const FRANQUICIAS_ESTABLECIDAS = PLAZAS.filter((p) => p.status === 'establecida').length;
 
 // The league's fan-base study, supplied to Playbook by the LFA. A LICENSED
 // third-party dataset: Global Sponsorship Group owns it, and crediting them
@@ -97,25 +83,15 @@ const GLOBAL_INTELLIGENCE = {
 export const LFA_HUB: Hub = {
   slug: 'lfa',
   name: 'LFA',
-  // Unlisted, and as of 2026-08-25 this is the SETTLED state rather than a
-  // hold. Publisher, asked directly during the pre-handover QA: the hub "is
-  // not accessible via the home page, but if you know the address you can
-  // access it." That is exactly what this flag buys — it drops the hub from
-  // the nav and the sitemap (see Hub.listed) and, via this hub's own
-  // generateMetadata, sets robots noindex, while the URL itself keeps
-  // serving 200. Undiscoverable, not unreachable (see commit a61b4f3).
-  //
-  // Originally set false on 2026-08-19 because the page had been briefly
-  // listed and Google had already indexed it; noindex is what gets it
-  // dropped on the next crawl. That reason has now been superseded by a
-  // preference, which is a stronger reason.
-  //
-  // DO NOT flip this to `true` to satisfy a QA checklist item that says the
-  // hub should be reachable from the three-zone header. That item was
-  // written before the ruling and is the thing that is wrong; it has been
-  // struck in docs/TODO.md. The announcement gating below is a SEPARATE
-  // question and still stands on its own.
-  listed: false,
+  // Listed as of 2026-09-08 — publisher's call, direct instruction,
+  // superseding the 2026-08-25 "leave it exactly as it is" ruling recorded
+  // in docs/TODO.md. The hub now shows in the "Alianzas" nav zone and the
+  // sitemap, and its own generateMetadata lets robots index/follow it (see
+  // the `robots: { index: hub.listed, follow: hub.listed }` line in
+  // app/(public)/coberturas/[slug]/page.tsx). The "no outbound link to the
+  // league" ruling from the same 2026-08-25 QA pass is a SEPARATE question
+  // and still stands untouched.
+  listed: true,
   // The graphic supplied with the Black Clover press kit reads "LFA
   // FINSUS" throughout — the league wears its title sponsor in its own
   // commercial name. That is itself a Playbook-relevant fact (naming
@@ -140,8 +116,8 @@ export const LFA_HUB: Hub = {
   partnership: 'Medio oficial de negocios',
   // The mockup's dek, adopted verbatim 2026-08-24 (publisher's call). The
   // previous line led with the capital raise and the franchise expansion;
-  // both facts still carry, with sources, in La Cadena and El tablero
-  // below, so nothing was lost by making the masthead broader.
+  // both facts still carry, with sources, in El tablero below, so nothing
+  // was lost by making the masthead broader.
   thesis:
     'El negocio detrás de la Liga. Patrocinios, franquicias, audiencias, medios, talento y los proyectos que están moviendo al futbol americano profesional en México.',
   description:
@@ -209,37 +185,12 @@ export const LFA_HUB: Hub = {
     'emparrillado', 'Global Sports Capital', 'ONEFA', 'flag football',
   ],
 
-  // ------------------------------------------------------------ La Cadena
-  // 7 → 12 franchises. The only fact on this page with both a current
-  // position and a stated line to gain, which is exactly the condition the
-  // device requires. If either side lost its source, the module would
-  // vanish rather than render half a measurement.
-  //
-  // The geometry is fully derived in HubChain from these two numbers: the
-  // marker sits at current/target, the tick count IS target, and each tick
-  // reads gained/open from its own index. Nothing here or in hub.css encodes
-  // a proportion, so correcting the count moves the marker, the dotted run
-  // and the axis together. Verified at 7/12 on 2026-08-25.
-  chain: {
-    title: 'Expansión de franquicias',
-    unit: ['franquicia', 'franquicias'],
-    current: {
-      // Derived, not typed — see FRANQUICIAS_ESTABLECIDAS above.
-      value: String(FRANQUICIAS_ESTABLECIDAS),
-      label: 'Franquicias hoy',
-      // The KIT, not the BRIEF: this number is now a count of the brand
-      // kit's own franchise list, so it inherits the brand kit's provenance.
-      // Sourcing it to the brief was the other half of the drift: the
-      // figure cited a document that had already been superseded.
-      source: { ...KIT },
-    },
-    target: {
-      value: '12',
-      label: 'Meta declarada',
-      source: { ...BRIEF },
-    },
-    horizon: '2027',
-  },
+  // "La Cadena" (the "Expansión de franquicias" / 7→12 module) was removed
+  // from the hub — publisher's call, 2026-09-08. `chain` is optional on
+  // `Hub` (lib/hubs/types.ts) and the page only renders the "La meta"
+  // section `{hub.chain && (...)}` (app/(public)/coberturas/[slug]/
+  // page.tsx), so leaving this unset is the whole change — no component
+  // edit needed. Re-add it, sourced the same way, if the module comes back.
 
   // --------------------------------------------- El estado comercial
   commercialState: [
@@ -305,7 +256,6 @@ export const LFA_HUB: Hub = {
   },
 
   // ----------------------------------------------------------- Plazas
-  // Lifted to module scope so La Cadena can count it — see PLAZAS above.
   plazas: PLAZAS,
 
   // --------------------------------------------------------- Temporada
@@ -366,13 +316,16 @@ export const LFA_HUB: Hub = {
     { title: 'Contexto', description: 'No republicar comunicados: explicar qué significa cada movimiento.' },
   ],
 
-  // The poster beside "Desde adentro". Playbook already holds this frame —
-  // it is the cover of the Black Clover piece — so it is a real photograph
-  // of the property, credited, not stock. No play button and no "ver el
-  // video": there is no video. See Hub.accessPhoto.
-  accessPhoto: {
-    src: '/assets/img/lfa-reyes-accion-mayo-2026.jpg',
-    alt: 'Corredor de los Reyes de Jalisco avanza con el balón en un partido de la LFA',
-    credit: 'Foto: LFA',
-  },
+  // NO accessPhoto (2026-09-02, resolves the bug docs/TODO.md flagged as
+  // "still open" on 2026-08-25). `/assets/img/lfa-reyes-accion-mayo-2026.jpg`
+  // was set here AND is a published article's own cover — the same
+  // photograph rendered twice on one page, which reads as a bug, not a
+  // motif. `public/hubs/lfa/` holds no second real photograph: `board.jpg`
+  // is a texture, not a photo, and stock is forbidden here (module-inventory.md)
+  // — so duplicating the lead was the only option left in the repo, and the
+  // TODO's own resolution was to drop the field rather than keep
+  // duplicating it. HubAccess degrades to type-only without it — see its
+  // `data-art={Boolean(photo)}` branch in HubModules.tsx — so "Desde
+  // adentro" still renders, just without the poster. Set accessPhoto again
+  // the day a real, credited, distinct LFA photograph exists for this slot.
 };

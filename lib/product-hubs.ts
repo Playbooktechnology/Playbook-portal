@@ -459,3 +459,28 @@ export function markOpinionCallout(html: string): string {
       `<aside class="shot-opinion"><span class="shot-opinion-kicker">Opinión de Playbook</span><p${attrs}>${rest}</p></aside>`,
   );
 }
+
+// The partnership-disclosure paragraph gets the SAME visual treatment as
+// the opinion callout (fenced, per-product tinted) so it reads as its own
+// object rather than a fourth reporting paragraph — the exact complaint a
+// publisher raised about the LFA alliance pieces (2026-09-09): a bold
+// "Sobre esta colaboración:" lead-in alone still numbered like every other
+// paragraph and looked like it belonged to the reporting, not a disclosure
+// fenced off from it. Deliberately its OWN function rather than folding
+// into markOpinionCallout: the two paragraphs mean different things (one is
+// Playbook's take, the other is "here is our commercial relationship to the
+// subject of this article") and a body can carry both, in which case each
+// needs its own fence, not one box swallowing two unrelated paragraphs.
+// Reuses .shot-opinion's CSS wholesale (border, tint, per-product mark) —
+// a second stylesheet block for an identical box would be the exact kind
+// of forked copy _GOVERNANCE.md's incident exists to prevent.
+const COLLAB_HTML_RE = /<p([^>]*)>(\s*(?:<strong>)?\s*Sobre esta colaboraci[oó]n:?\s*(?:<\/strong>)?:?\s*)([\s\S]*?)<\/p>/;
+export const COLLAB_TEXT_PREFIX = /^\s*(?:\*\*)?\s*Sobre esta colaboraci[oó]n:?\s*(?:\*\*)?:?\s*/;
+
+export function markCollabNote(html: string): string {
+  return html.replace(
+    COLLAB_HTML_RE,
+    (_m, attrs: string, _label: string, rest: string) =>
+      `<aside class="shot-opinion"><span class="shot-opinion-kicker">Sobre esta colaboración</span><p${attrs}>${rest}</p></aside>`,
+  );
+}

@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 import { rankArticles, selectHero } from '@/lib/rank';
 import { LEAD_COUNT, LIST_COUNT, KNOWN_SOURCES, SOURCE_LABELS } from '@/lib/constants';
+import { hubForSource } from '@/lib/product-hubs';
 import type { Article } from '@/lib/data/articles';
 import { LeadStory } from '../article/LeadStory';
 import { NewsRow } from '../article/NewsRow';
@@ -22,6 +23,44 @@ const FILTERS: { source: string; label: string }[] = [
   { source: 'all', label: 'Todo' },
   ...NEWS_SOURCES.map(source => ({ source, label: SOURCE_LABELS[source] })),
 ];
+
+// --------------------------------------------------- La banda de salida
+// Consolidación de La Lana, lectura 3b (ronda 2, elegida por el
+// publisher): los cuatro chips se quedan como están — el re-filtro del
+// 1+5 es instantáneo porque los 30 artículos ya están en la página, y esa
+// función no se paga. Lo que se agrega es una salida al hub que sólo
+// existe MIENTRAS hay una fuente activa.
+//
+// Por qué una banda y no un "ver más" al lado de las pestañas: un enlace
+// pegado al control se lee como parte del control y se ignora. La banda
+// aparece DENTRO del estado filtrado, dice en palabras qué está pasando
+// ("estás viendo solo…") y recién entonces ofrece la puerta — así el chip
+// hace las dos cosas sin que ninguna se disfrace de la otra.
+//
+// Dicho de frente: esto NO resuelve la duplicación (siguen existiendo dos
+// caminos al producto, el filtro y el hub); la hace explícita. La lectura
+// que la cierra — las pestañas convertidas en navegación — está diseñada
+// en "La Lana Consolidacion.dc.html" §3a por si algún día se elige.
+//
+// `short` es el nombre corto para el CTA: "Ir al hub de La Lana del
+// Deporte" es un renglón entero. `note` es la línea de apoyo — dice qué
+// gana el lector cruzando, no qué es el producto (para eso está
+// `descriptor` en lib/product-hubs.ts). Vive acá y no en el config del
+// producto porque es copy de ESTA banda, su único consumidor.
+const SOURCE_EXIT: Record<string, { short: string; note: string }> = {
+  noticias: {
+    short: 'Noticias',
+    note: 'Todos los shots, con su tablero de salidas y su cadencia, viven en el hub.',
+  },
+  'la-lana': {
+    short: 'La Lana',
+    note: 'El expediente completo, con su archivero y sus cifras, vive en el hub.',
+  },
+  infinitas: {
+    short: 'Infinitas',
+    note: 'La cobertura completa, con su marcador y sus perfiles, vive en el hub.',
+  },
+};
 
 // Ported from legacy/js/articles.js's render()/applyFilterChange(). All 30
 // articles are already on the page (server-rendered, no fetch delay), so
@@ -127,10 +166,32 @@ export function NewsGrid({ articles, sidebar }: { articles: Article[]; sidebar?:
   // opinion piece INTO the pool at all (a non-featured one still never
   // competes, never mind wins). No new field, no second override
   // mechanism: reuses exactly the escape hatch that already exists.
+  // Sólo mientras hay una fuente activa, y sólo si esa fuente tiene hub
+  // propio. TFBR no aparece en la tira porque no tiene `source` todavía
+  // (lib/product-hubs.ts lo deja apuntando a Substack a propósito), así
+  // que este lookup nunca lo alcanza; el guard es por si mañana lo hace.
+  const exitHub = activeSource === 'all' ? null : hubForSource(activeSource);
+  const exitCopy = SOURCE_EXIT[activeSource];
+
   const news = articles.filter(a => a.source !== 'opinion' || a.featured);
   const pool = activeSource === 'all' ? news : news.filter(a => a.source === activeSource);
   const filtered = rankArticles(pool);
-  const hero = selectHero(filtered);
+  // selectHero EXCLUDES editorial products outright — "el hero es un slot de
+  // noticias, y La Lana nunca pelea un lugar contra una nota de última hora".
+  // That rule is right for the mixed pool, and wrong the moment the reader
+  // filters down to La Lana: there is no nota de última hora left to lose to,
+  // so the rule's premise is gone and selectHero returns null. The package
+  // then rendered 0+5 instead of 1+5 — the lead story simply vanished, and
+  // only for that one chip (Noticias and Infinitas run on the news track).
+  //
+  // The fallback is the top of `filtered`, which rankArticles has ALREADY
+  // ordered by the editorial clock (20 pts/day, not 50), so "the highest
+  // ranked expediente leads" needs no second ranking pass. For 'all' and for
+  // any news-track filter selectHero still wins, so nothing about the default
+  // homepage changes. Fixed at the caller and not in selectHero on purpose:
+  // the other four call sites all hand it a mixed pool, where the exclusion is
+  // exactly what they want.
+  const hero = selectHero(filtered) ?? filtered[0] ?? null;
   const list = filtered.filter(a => a !== hero).slice(0, LIST_COUNT);
   const overflow = Math.max(0, filtered.length - LEAD_COUNT - LIST_COUNT);
 
@@ -155,6 +216,26 @@ export function NewsGrid({ articles, sidebar }: { articles: Article[]; sidebar?:
           </button>
         ))}
       </div>
+
+      {exitHub && exitCopy && (
+        <div
+          className="source-exit"
+          /* El filo lleva el color del producto activo. Es el mismo
+             recurso que .product ya usa en sections.css, y una superficie
+             temática, así que el token SÍ cambia con el tema. */
+          style={{ '--source-exit-accent': `var(${exitHub.token})` } as CSSProperties}
+        >
+          <p className="source-exit-copy">
+            <span className="source-exit-title">
+              Estás viendo solo {SOURCE_LABELS[activeSource as keyof typeof SOURCE_LABELS]}
+            </span>
+            <span className="source-exit-note">{exitCopy.note}</span>
+          </p>
+          <Link className="source-exit-cta" href={exitHub.path}>
+            Ir al hub de {exitCopy.short} <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+      )}
 
       <div aria-live="polite">
         <div className="news-grid" ref={gridRef}>

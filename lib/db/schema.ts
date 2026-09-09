@@ -48,7 +48,9 @@ export const editorInvitations = pgTable('editor_invitations', {
 
 // ---------------------------------------------------------------- Articles
 // id is the legacy slug (articles.json's `id` field) — preserved verbatim
-// so /articulo?id=... URLs never change across the migration.
+// so article URLs never change across the migration. (The URL *shape*
+// moved to /articulo/<id> on 2026-09-02 — see lib/article-url.ts — but the
+// slug itself is still this column, verbatim.)
 
 export const articles = pgTable(
   'articles',
@@ -131,6 +133,27 @@ export const articles = pgTable(
     // "Foto: Jane Doe / Unsplash"). Null/empty means no credit to show.
     imageCredit: text('image_credit'),
     status: text('status', { enum: ['published', 'draft'] }).notNull().default('published'),
+    // Article-level counterpart to Hub.listed (lib/hubs/types.ts): `false`
+    // means UNDISCOVERABLE, not unreachable. The article still resolves at
+    // its real /articulo/<id> URL (getArticleById/getArticleMetaById carry
+    // no filter on this column, by design), but drops out of getAllArticles
+    // — and therefore every listing, hub pool, the archive, search and the
+    // sitemap, all of which read that one function — and the article page
+    // sets `robots: noindex, nofollow`. Same two-part mechanism as the hub's
+    // own flag, one level down: a hub can be unlisted while carrying listed
+    // articles, and a listed hub can carry an unlisted article held back for
+    // its own reason (an embargo, a pre-announcement preview link). Defaults
+    // to true so every existing and ordinarily-created row stays exactly as
+    // visible as before this column existed.
+    listed: boolean('listed').notNull().default(true),
+    // A genuine, self-expiring editorial override for the homepage hero slot
+    // (lib/rank.ts's selectHero) -- see that file's Rankable.heroPinnedUntil
+    // comment for the 2026-09-08 incident this exists to fix: `featured`
+    // alone cannot override a real boleta score gap, and the fix is a plain
+    // "win until this timestamp", not a thumb on the score. Null (the
+    // default) means no pin, which is every row's steady state; nothing
+    // reads this column unless it is set.
+    heroPinnedUntil: timestamp('hero_pinned_until', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
     updatedBy: uuid('updated_by').references(() => editors.id, { onDelete: 'set null' }),

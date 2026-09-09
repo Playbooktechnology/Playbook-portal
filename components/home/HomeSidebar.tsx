@@ -2,9 +2,10 @@ import { NewsletterForm } from '@/components/shared/NewsletterForm';
 import { DailyFigure } from './DailyFigure';
 import { ElectionBoard } from './ElectionBoard';
 import { AdSlot } from '@/components/ads/AdSlot';
-import { getAllArticles, getArticleById } from '@/lib/data/articles';
+import { getPublicArticles, getArticleById } from '@/lib/data/articles';
 import { rankArticles, selectHero } from '@/lib/rank';
 import { extractPullFigure, extractCifraFromBody } from '@/lib/product-hubs';
+import { articlePath } from '@/lib/article-url';
 
 // Right rail of the homepage news package (Fase 7 UX). Server component:
 // MostReadSection needs GA4 data access. Rendered by
@@ -37,7 +38,7 @@ import { extractPullFigure, extractCifraFromBody } from '@/lib/product-hubs';
 //   and left a page-tall hole) — it's now the full-width band under the
 //   news package (see app/(public)/page.tsx), and the ad closes the rail.
 export async function HomeSidebar() {
-  const articles = await getAllArticles();
+  const articles = await getPublicArticles();
   const ranked = rankArticles(articles.filter(a => a.source !== 'opinion' || a.featured));
   const hero = selectHero(ranked);
   let cifra: { figure: string; caption?: string; id: string; title: string } | null = null;
@@ -93,7 +94,7 @@ export async function HomeSidebar() {
       {cifra && (
         <section className="side-module side-cifra" aria-labelledby="side-cifra-title">
           <h2 className="side-title" id="side-cifra-title">La cifra del día</h2>
-          <a className="side-cifra-card" href={`/articulo?id=${encodeURIComponent(cifra.id)}`}>
+          <a className="side-cifra-card" href={articlePath(cifra.id)}>
             <DailyFigure figure={cifra.figure} />
             {cifra.caption && <span className="side-cifra-caption">{cifra.caption}</span>}
             <span className="side-cifra-story">{cifra.title}</span>
