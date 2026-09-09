@@ -1630,28 +1630,15 @@ mark.lect-fig{
 }
 .lect-shot-measure::before{content:"";width:8px;height:8px;background:var(--green);flex-shrink:0;}
 
-/* The reporting beats, numbered like pours — 01, 02, 03 — so the scan
-   rhythm the hub promises carries into the read. The counter lives on
-   .article-body and only counts TOP-LEVEL paragraphs (direct, or direct
-   inside the ad-split <div> halves): the opinion callout (<aside><p>),
-   blockquote paragraphs and figure captions never take a number.
-   #3f7d0a is the site's existing darker legible-green (see
-   .share-btn.is-copied) with the same dark-theme counterpart cascade. */
-.article-product-noticias{--lect-beat:#3f7d0a;}
-[data-theme="dark"] .article-product-noticias{--lect-beat:var(--green);}
-@media(prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .article-product-noticias{--lect-beat:var(--green);}
-}
-.article-product-noticias .article-body{counter-reset:lect-beat;}
-.article-product-noticias .article-body > p::before,
-.article-product-noticias .article-body > div > p::before{
-  counter-increment:lect-beat;
-  content:counter(lect-beat,decimal-leading-zero);
-  display:inline-block;margin-right:10px;
-  font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
-  font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--lect-beat);
-  transform:translateY(-1px);
-}
+/* REMOVED 2026-09-09 (publisher, after a side-by-side preview of a pending
+   LFA/Noticias draft): the reporting beats numbered every top-level
+   paragraph — 01, 02, 03 — like pours, so the scan rhythm the hub promises
+   would carry into the read. Publisher's call after seeing both versions on
+   real content: unnumbered reads cleaner. Noticias only — La Lana's own
+   numbered beats (below) are a separate, narrower convention (only
+   paragraphs with a bold lead-in) and this ruling did not touch them.
+   `--lect-beat` and its dark-theme cascade are gone with it; nothing else
+   in this file reads that custom property. */
 
 /* La Lana gets the same numbered beats (2026-08-07, publisher: the two
    products were reading as two different publications side by side). The
