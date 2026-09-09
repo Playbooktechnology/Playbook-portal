@@ -29,12 +29,14 @@ import {
   extractMoneyTrailFromHtml,
   extractMoneyTrailFromParagraphs,
   markOpinionCallout,
+  markCollabNote,
   markLeadIns,
   caseNumber,
   caseStatus,
   shotLabel,
   weekdayFor,
   OPINION_TEXT_PREFIX,
+  COLLAB_TEXT_PREFIX,
 } from '@/lib/product-hubs';
 import { applyBodyDevices, deviceFromParagraph, createDeviceLedger } from '@/lib/article-devices';
 import { extractSourcesFromHtml, extractSourcesFromParagraphs } from '@/lib/article-sources';
@@ -233,6 +235,7 @@ type PlainBlock =
   | { kind: 'text'; text: string }
   | { kind: 'leadin'; label: string; text: string }
   | { kind: 'opinion'; text: string }
+  | { kind: 'collab'; text: string }
   | { kind: 'device'; html: string }
   | { kind: 'trail'; stops: string[] };
 
@@ -267,6 +270,9 @@ function plainBlocksFor(
     if (isProduct && OPINION_TEXT_PREFIX.test(p)) {
       return { kind: 'opinion', text: p.replace(OPINION_TEXT_PREFIX, '') };
     }
+    if (isProduct && COLLAB_TEXT_PREFIX.test(p)) {
+      return { kind: 'collab', text: p.replace(COLLAB_TEXT_PREFIX, '') };
+    }
     if (isProduct) {
       const device = deviceFromParagraph(p, { articleDate });
       if (device && ledger.take(device.name)) {
@@ -295,6 +301,14 @@ function PlainBlockView({ block }: { block: PlainBlock }) {
     return (
       <aside className="shot-opinion">
         <span className="shot-opinion-kicker">Opinión de Playbook</span>
+        <p>{block.text}</p>
+      </aside>
+    );
+  }
+  if (block.kind === 'collab') {
+    return (
+      <aside className="shot-opinion">
+        <span className="shot-opinion-kicker">Sobre esta colaboración</span>
         <p>{block.text}</p>
       </aside>
     );
@@ -680,7 +694,7 @@ export default async function ArticuloPage({ params }: Props) {
   // label can never double as a scan mark.
   const htmlBody =
     rawHtmlBody && hub
-      ? markLeadIns(markOpinionCallout(applyBodyDevices(rawHtmlBody, meta.readingTime, article.priority, { articleDate: meta.date })))
+      ? markLeadIns(markCollabNote(markOpinionCallout(applyBodyDevices(rawHtmlBody, meta.readingTime, article.priority, { articleDate: meta.date }))))
       : rawHtmlBody;
   const splitHtml = htmlBody ? splitAfterParagraph(htmlBody, 3) : null;
   const blocks = plainBlocksFor(bodyParagraphs, article.source, meta.readingTime, article.priority, meta.date);
