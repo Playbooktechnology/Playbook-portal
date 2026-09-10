@@ -490,6 +490,27 @@ the rule bans. When one is used, use it consistently through the piece rather
 than alternating with a translation — a headline that says `billionaire` and a
 body that says `milmillonario` reads as indecision.
 
+### Español de México, no de otro país
+
+Playbook publica para México. Un regionalismo de otro país hispanohablante,
+por más natural que suene al redactar o por más que sea el término que usa la
+industria en ese país, lee como una voz ajena a la del lector.
+
+**(Publisher, 2026-09-10, sobre un post que usó "hincha" en vez de "fan" o
+"aficionado".)** "Hincha" es el término del Río de la Plata (Argentina,
+Uruguay); en México ese lector dice "aficionado" o, cada vez más, "fan". El
+mismo problema aparece con cualquier otro argentinismo, chilenismo o
+españolismo que se cuele por reflejo: "pibe", "boludo", "laburo", "che",
+"guita", "quilombo", "tío" (como muletilla española), y así.
+
+**La excepción es cuando la noticia misma lo amerita.** Una cita textual de
+una fuente argentina, o una nota centrada en el fútbol argentino/uruguayo
+donde "hincha" es la palabra que usan los propios protagonistas, se queda
+como está — ahí el regionalismo es parte de la voz de la fuente, no un
+reflejo del redactor. La prueba es la misma que en la regla del Spanglish
+arriba: ¿esto es la voz de alguien citado en la nota, o es el redactor
+escribiendo por costumbre?
+
 ### Fórmulas bajo vigilancia
 
 Not banned. But every time one appears, ask: **can I say this more specifically
