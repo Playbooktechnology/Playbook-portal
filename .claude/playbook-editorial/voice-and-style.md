@@ -267,6 +267,36 @@ and `infantino-desafia-a-montagliani-…-se-resquebraja` are both live rows whos
 id no longer matches their title, because the id is minted at insert and never
 migrates.
 
+### A procedural step is not a verdict — the title must not read like one
+
+(Playbook team, 2026-09-10, on a Liga MX amparo draft.) A federal court
+**admitting** a lawsuit for review is not the same event as the lawsuit
+**winning**, but a title built on a verb like "logra" or "gana" collapses that
+distance for the reader before the body gets a chance to explain it. The draft
+in question was titled *"Un despacho de Zacatecas logra lo que los aficionados
+no pudieron"* — accurate about the contrast (one filing was admitted, three
+were thrown out) and wrong about the stakes, because "logra" reads as an
+accomplishment when the actual news is that a case cleared a procedural gate
+three others didn't. It published instead as *"Un juzgado admite revisar la
+eliminación del ascenso y descenso"* — the court, not the claimant, is the
+subject, and "admite revisar" names exactly the procedural step that happened
+and nothing more.
+
+**The tell:** if the verb in the title would also describe the final ruling
+(gana, vence, tumba, logra, se impone), it is claiming a result the story does
+not yet have. A story about an admission, a filing, an appeal, or a first
+hearing needs a title built on the procedural verb (admite, presenta,
+apela, desecha) with the institution or the document as the subject, not the
+party hoping to benefit from it. This is the same discipline §8's evidence
+levels ask for — don't blend "this happened" with "this was decided" — applied
+to the one line most readers see and nothing past.
+
+**It is not just the title.** The same run's second paragraph originally
+buried the "this is not a ruling" caveat inside the closing Opinión, after four
+sections that read as build-up to a win. Moved to the second paragraph, right
+after the lede, it changes what the reader carries into the rest of the piece
+instead of correcting it on the way out.
+
 ---
 
 ## 4. Openings
