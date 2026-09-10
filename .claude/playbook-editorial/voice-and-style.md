@@ -520,6 +520,27 @@ the rule bans. When one is used, use it consistently through the piece rather
 than alternating with a translation — a headline that says `billionaire` and a
 body that says `milmillonario` reads as indecision.
 
+### Español de México, no de otro país
+
+(Playbook team, 2026-09-10, on a published LFA piece: *"¿por qué pones hincha?
+quiero que lo cambies por fan o aficionado... de ahora en adelante quites
+todos los argentinismos"*.) Playbook writes for a Mexican audience, and a word
+that is completely standard Spanish somewhere else can still read as foreign
+here. **`hincha`** is the worked example: normal in Argentina, Chile, Uruguay
+and most of South America, but a Mexican reader hears it as imported, not as
+their own word for it. The piece already used `fan` and `afición` naturally
+everywhere else in the body; `hincha` was the one word that broke that
+register.
+
+The same test applies beyond that one word: before a sports or general-Spanish
+term goes into a draft, ask whether Playbook's own Mexican audience says it, or
+whether it is the word a Río de la Plata or Spain broadcast would use for the
+same thing. `arquero` (River Plate Spanish) versus `portero` (Mexican Spanish)
+for the same position is the same distinction. This is not the Spanglish rule
+above, which is about English loanwords; this is about **which Spanish**, and
+the fix is always the plain Mexican word already sitting in the rest of the
+piece, not a translation exercise.
+
 ### Fórmulas bajo vigilancia
 
 Not banned. But every time one appears, ask: **can I say this more specifically
