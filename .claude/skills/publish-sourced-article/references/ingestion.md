@@ -90,6 +90,21 @@ the facts:
    count) before trusting it — this costs one command and catches exactly the
    kind of error a reader would catch first.
 
+0d. **A 404 on the exact URL handed over is not proof the story is wrong or the
+   link is dead — check for a typo in the outlet's own slug before concluding
+   either.** (2026-09-10, a Palco23 update on the FIFA women's-calendar
+   complaint.) A pasted Palco23 URL 404'd on both WebFetch and `curl` with a
+   browser UA. The first instinct — guess which word was misspelled and "fix"
+   it — landed on the wrong word (correcting "comisioon" to "comisión" when
+   the actual typo was in Palco23's own slug, which spells "europea" as
+   "euroopea") and still 404'd. **The outlet's own on-site search resolves it
+   in one request, correctly, without guessing:**
+   `curl -A '<UA>' "https://<outlet>/?s=<keywords>"`, then grep the results
+   for the headline and its `href`. Guessing at spelling variants is
+   unbounded — there is no way to know which word carries the typo without
+   checking each one — so reach for the outlet's search before a second or
+   third spelling guess, not after.
+
 1. **A syndicated copy of the same wire on a reachable host.** A Reuters story
    runs verbatim on dozens of local radio and regional news sites; those serve
    automated fetches normally. This is the closest thing to the primary and
