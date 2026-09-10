@@ -273,11 +273,11 @@ export const LFA_HUB: Hub = {
   audience: {
     kicker: 'La afición',
     heading: 'El tamaño de la afición',
-    sub: 'Qué compra un patrocinador cuando compra a la LFA.',
+    sub: 'Qué compra un patrocinador cuando compra a la LFA Finsus.',
     figures: [
       {
         value: '3.8 millones',
-        label: 'Afición potencial a la LFA (cifra estimada)',
+        label: 'Afición potencial a la LFA Finsus (cifra estimada)',
         source: { ...GLOBAL_INTELLIGENCE },
       },
       {
