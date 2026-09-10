@@ -260,11 +260,6 @@ export function HubStream({ hub, articles }: { hub: Hub; articles: Article[] }) 
       <h2 className="hubx-head" id="hubx-stream">Lo último</h2>
       {lead ? (
         <>
-          <p className="hubx-sub">
-            {articles.length === 1
-              ? `1 pieza etiquetada como cobertura de ${hub.name}.`
-              : `${articles.length} piezas etiquetadas como cobertura de ${hub.name}.`}
-          </p>
           <div className="hubx-latest" data-rail={rail.length > 0}>
             <Link className="hubx-lead" href={articlePath(lead.id)}>
               {lead.imageUrl && (
