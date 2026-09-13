@@ -148,12 +148,24 @@ inside a movement.
 (2026-08-13, superseding the fixed four-movement rule that used to live here.
 The information is the same; the count stopped being fixed.)
 
-**A · Noticia breve:** headline (protagonista + movimiento + cifra/socio/
+**A · Noticia breve:** HECHO → CONTEXTO ÚTIL → CONSECUENCIA/ANTECEDENTE/DATO
+QUE DIMENSIONA — headline (protagonista + movimiento + cifra/socio/
 consecuencia), one paragraph of what happened plus the key figure, one of
-minimal context for scale, a third only if it adds an indispensable fact. No
-subheads, no Opinión, no moraleja, no forced regional line. The reader should
-be able to answer fast: qué pasó, quién, cuánto/por cuánto tiempo/qué derechos,
-por qué vale la pena saberlo.
+minimal context for scale, a third only if it adds an indispensable fact. Not
+every A needs all three as separate paragraphs. No subheads, no Opinión, no
+moraleja, no forced regional line. The reader should be able to answer fast:
+qué pasó, quién, cuánto/por cuánto tiempo/qué derechos, por qué vale la pena
+saberlo — y, cuando exista, cuál es el detalle que hace que la versión de
+Playbook valga más que el comunicado.
+
+**"Sin Opinión" no significa "sin delta Playbook."** Ejemplos de delta válido
+en A: el acuerdo reemplaza a un socio anterior; es el tercer activo adquirido
+en el mismo mercado; la cifra está por encima o por debajo de un precedente
+inmediato; cambia una distribución; modifica quién tiene un derecho concreto;
+introduce una consecuencia inmediata. No inventar una tesis para cumplir esto
+— si de verdad no hay ningún valor adicional y solo se puede reescribir el
+comunicado, esa es exactamente la pregunta que responde el gate
+(`editorial-gate.md`), no una que se resuelve alargando el filing.
 
 **B · Noticia Playbook — 3 to 5 movements, then the Opinión:**
 
@@ -230,6 +242,23 @@ demands; `readingTime: 3` or `4`.
   paragraph, not a separate beat after it — a consequence, an open tension, a
   pending decision, a number to watch, or a concrete question the market
   hasn't answered.
+
+**Never use conceptual analysis to hide an evidence gap.** If a conclusion
+depends on a figure, contract, ownership structure, causality or valuation
+that can't be verified: look for more evidence, chase the reporting, reframe
+the question, say plainly what isn't known yet, or don't publish it yet — in
+that order. Analytical language dressing up a gap in the reporting is a
+worse failure than an admitted gap, because it reads as confidence the piece
+doesn't have.
+
+**Calibrate certainty with plain words, not just the evidence-level labels**
+(`voice-and-style.md` §8): **sabemos** (hecho confirmado — nivel 01) /
+**parece** (reporte de terceros o señal, no confirmado — nivel 02) /
+**podría** (interpretación o hipótesis — niveles 03-04) / **no sabemos
+todavía** (evidence gap, dicho explícitamente). Same four levels as §8, in the
+words a reader actually parses mid-sentence rather than a taxonomy label. Never
+fill a "no sabemos todavía" with confident prose because the narrative reads
+better that way.
 
 **The exit test:** the reader can explain what happened, how it works, where
 the money is, what incentives exist, who controls what, and what may change

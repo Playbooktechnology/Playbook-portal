@@ -348,6 +348,16 @@ only the names? If yes, it is still too generic. Rewrite it until it can't.
 A weak read does more damage than a short piece with no opinion at all. The
 Opinión explains the mecanismo; it does not deliver a moraleja.
 
+**The Opinión has to earn its space** (moat playbook guide, 2026-09-13). It
+does that through one of: cálculo, benchmark, mecanismo, antecedente,
+contradicción, incentivo, cambio de control, cambio de poder de negociación,
+riesgo, consecuencia, una pregunta concreta, o información importante que
+falta. It does **not** earn its space by: repeating the noticia; saying
+something is "importante" without saying why; turning the story into "good
+idea or bad idea"; or handing the industry a generic recommendation. Any of
+those four is the tell that the piece skipped straight to Opinión without
+finding the palanca first.
+
 ### How each format uses it
 
 | Format | Opinión |
