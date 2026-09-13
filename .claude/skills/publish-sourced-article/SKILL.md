@@ -46,7 +46,7 @@ insert script. Four differences, all of them here:
 | **4** | **Apply the voice.** Movimiento + mecanismo + incentivo + consecuencia; find the palanca; one thing per paragraph; one clause in the headline. | `references/voice-and-style.md` |
 | **5** | **Apply the element library.** Walk every device, respect the budget, check each declaration rendered. | `references/dynamic-element-library.md` |
 | **6** | **Fill the fields and source the image.** Set the **0–99 `boleta`** on every article — omitting it silently ranks the piece on the retired star scale. `tagsProperty` decides whether the piece lands on a hub; read its boundary rule before setting it. | `references/fields-and-taxonomy.md` → "Ranking", `references/images.md` |
-| **7** | **Self-check** against the twelve-point publication checklist and run `check-voice.mjs`. | `references/voice-and-style.md` §12 |
+| **7** | **Self-check** against the twelve-point publication checklist, the Moat Check (gates 4/5/6 — a failed gate caps the rating at REQUIERE REEDICIÓN), and run `check-voice.mjs`. | `references/voice-and-style.md` §12 |
 | **8** | **Human review — the gate.** Present the complete draft, ask, revise, repeat. | `references/publishing-mechanics.md` |
 | **9** | **Publish only what was approved. Report, capture feedback.** | `references/publishing-mechanics.md` |
 

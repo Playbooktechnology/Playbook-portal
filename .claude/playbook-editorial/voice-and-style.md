@@ -811,6 +811,47 @@ the last gate in both skills' decision flow.
 > lenguaje del comunicado, pone las cifras que importan y explica quién gana
 > control, dinero, margen, audiencia o poder.
 
+### Moat Check — the control this checklist runs alongside
+
+(Moat Playbook, 2026-09-13.) The twelve points above audit VOZ, RITMO, FOCO,
+DATOS, ANÁLISIS, OPINIÓN, FÓRMULAS, REGIÓN, CIERRE — whether the piece is
+*well made*. This section audits something else: whether the piece was
+**worth making**. Run both on every article before step 8's self-check
+completes (`SKILL.md` step 7 in both funnels).
+
+1. ¿Por qué esta historia merece espacio en Playbook?
+2. ¿Quién es el reader persona primario? (§13, below)
+3. ¿Qué necesidad concreta resolvemos?
+4. ¿Cuál es el delta Playbook?
+5. ¿La pieza va al menos un nivel después del headline?
+6. ¿Ese nivel adicional está respaldado por evidencia?
+7. ¿Elegimos correctamente A/B/C? (`format-tiers.md` §1)
+8. ¿La longitud corresponde al valor disponible?
+9. ¿Existe algo que el lector pueda recordar, utilizar, compartir o llevar a
+   una conversación?
+10. ¿La pieza seguiría teniendo prácticamente el mismo valor si quitamos el
+    nombre Playbook y la generara cualquier medio a partir del comunicado?
+
+**Questions 4, 5 and 6 are gates.** If there is no delta, the piece never
+goes past the headline, or the added layer has no evidence behind it, the
+piece **cannot** be rated APROBADO.
+
+**Severity rule.** If any of the three gates fails, the rating cannot be
+better than REQUIERE REEDICIÓN — never AJUSTES MENORES, even when everything
+else about the draft is clean. A gate failure is not a minor-adjustments
+situation by definition; it means the piece hasn't earned its place yet,
+which no amount of polish fixes.
+
+**Ratings:** APROBADO / AJUSTES MENORES / REQUIERE REEDICIÓN / NO PUBLICAR
+TODAVÍA (the last one folds back to `editorial-gate.md`'s own verdict — a
+piece that reaches this point and still can't clear the gate should not have
+been drafted, and the fix is upstream, not a rewrite here).
+
+**After the diagnosis: at most five concrete changes.** List them, then —
+only then — the corrected version. Never rewrite automatically before the
+diagnosis is on the table; the diagnosis is what makes the next draft
+different instead of just reworded.
+
 ---
 
 ## 13. Reader persona
