@@ -38,6 +38,41 @@ someone who knows the industry finds it worth knowing. The news says what
 happened; Playbook decides whether the story ends there or something more
 needs explaining.
 
+**The principle that sits above all four** (Moat Playbook, 2026-09-13):
+Playbook has to go at least one level past the headline, but that one level
+can be a single excellent sentence. It is not a quota of paragraphs — an A
+that adds one sharp fact of scale has cleared this bar; a C that opens seven
+sections without ever saying something the press release didn't already
+imply has not, regardless of length. Length is not what this principle
+measures.
+
+### Lentes adicionales, cuando aplican
+
+The four movements above are the spine. The ten palancas below are the
+menu of *what the story turns on*. A third, narrower set of questions is
+useful for naming *which mechanism to reach for* when a story doesn't map
+cleanly onto one palanca — **select only the ones that explain this
+particular story, never all of them as a checklist**:
+
+- **Economía** — ¿de dónde entra el dinero? ¿Qué cuesta? ¿Dónde está el
+  margen? ¿Cómo cambia el cash flow?
+- **Valor** — ¿qué activo se crea? ¿Quién conserva el upside? ¿Hay pricing
+  power? ¿Qué destruye valor?
+- **Riesgo** — ¿quién absorbe el riesgo? ¿Qué supuestos deben cumplirse?
+- **Control** — ¿quién conserva derechos, datos, distribución, gobernanza y
+  capacidad de decidir?
+- **Incentivos** — ¿qué quiere maximizar o proteger cada actor?
+- **Mercado** — ¿cuál es el comparable? ¿Es excepción, precedente o señal?
+- **Fan** — ¿qué cambia para la audiencia?
+- **Siguiente movimiento** — si esta lógica funciona, ¿qué decisión sería
+  racional después?
+
+These are the same instinct as the ten palancas below, asked at a more
+mechanical altitude — Control/Valor/Riesgo overlap directly with palancas 1,
+2 and 6, and that overlap is intentional, not a second system to reconcile
+against the first. Use whichever framing gets you to the actual mechanism
+faster for a given story; never answer both lists for the same piece.
+
 ### Las diez palancas
 
 Before drafting, name which of these the story actually turns on. If you can't
@@ -499,11 +534,44 @@ and less interchangeably?**
 - "el mensaje es claro"
 - "no es un detalle menor"
 - "marca la ruta"
-- "el verdadero examen"
+- "el verdadero examen" / "el verdadero reto no es…"
 - "más allá de la anécdota"
-- "la pregunta ya no es…"
-- "no solo X, sino Y"
-- "para México/LATAM…"
+- "la pregunta ya no es…" / "la pregunta, entonces…"
+- "no solo X, sino Y" / "no es X, es Y" — governed in full by "Negative
+  parallelism" above; this entry is the cross-reference, not a second rule
+- "para México/LATAM…" / "para México y Latinoamérica esto representa…"
+
+**List expanded (Moat Playbook, 2026-09-13)**, consolidating watch-list
+phrases that were already standing directives elsewhere into this one place:
+
+- "lo interesante no es…"
+- "no tanto por…"
+- "más que…" / "más que X, estamos ante Y"
+- "este caso demuestra que…" / "esto demuestra que…"
+- "la clave será…"
+- "parece interesante"
+- "nos metimos a…"
+- "en un mundo donde…"
+- "en el dinámico panorama…"
+- "esto marca un antes y un después"
+- "solo el tiempo dirá"
+- "queda por ver"
+- "la industria observa con atención"
+- "el futuro está por escribirse"
+- "lo relevante aquí"
+- "la lectura aquí es bastante clara"
+
+**"Mirar/miramos/miro" as a stand-in for analysis.** When the sense is
+analizar datos, dar seguimiento a una métrica or evaluar una decisión, reach
+for revisar, analizar, seguir, evaluar, medir, comparar, entender or tener en
+cuenta instead. "Miramos los números" describes looking at a screen, not
+doing the analysis the sentence actually means.
+
+Also avoid, same standard as the rest of this section: moralejas, lenguaje
+corporativo, metáforas artificiales, párrafos demasiado simétricos,
+conclusiones redondas por obligación, and frases creadas para sonar
+profundas en lugar de decir algo específico. Certeza donde solo existe
+hipótesis is not a phrasing problem — it's an evidence-level problem, see §8.
 
 ### La aritmética
 
@@ -586,6 +654,15 @@ A rumored figure is level 2 or 4 and must be attributed **in the caption or the
 prose**, never smuggled into a device value or a headline as level 1. Every
 number that feeds a device needs the same sourcing bar as any other fact —
 never a rounder guess because it's going into a chart instead of a sentence.
+
+**In prose, especially in a Deep Dive, these can be named directly** (Moat
+Playbook, 2026-09-13): **sabemos** for 01, **parece** for 02/03, **podría**
+for 04, and **no sabemos todavía** for the gap itself when the evidence
+simply isn't there yet — see `format-tiers.md` §3b for the rule that this
+vocabulary exists to enforce (never write past an evidence gap using
+confident conceptual language). This is the same four-level ladder above,
+said the way a reader parses it mid-sentence rather than the way a table
+states it.
 
 **When sources disagree**, the more specific, better-attributed figure wins: a
 company filing over a wire summary, a wire over a newsletter brief.
@@ -766,3 +843,78 @@ the last gate in both skills' decision flow.
 > y quiere entender mejor su negocio. Abre con el movimiento, elimina el
 > lenguaje del comunicado, pone las cifras que importan y explica quién gana
 > control, dinero, margen, audiencia o poder.
+
+### Moat Check — the control this checklist runs alongside
+
+(Moat Playbook, 2026-09-13.) The twelve points above audit VOZ, RITMO, FOCO,
+DATOS, ANÁLISIS, OPINIÓN, FÓRMULAS, REGIÓN, CIERRE — whether the piece is
+*well made*. This section audits something else: whether the piece was
+**worth making**. Run both on every article before step 8's self-check
+completes (`SKILL.md` step 7 in both funnels).
+
+1. ¿Por qué esta historia merece espacio en Playbook?
+2. ¿Quién es el reader persona primario? (§13, below)
+3. ¿Qué necesidad concreta resolvemos?
+4. ¿Cuál es el delta Playbook?
+5. ¿La pieza va al menos un nivel después del headline?
+6. ¿Ese nivel adicional está respaldado por evidencia?
+7. ¿Elegimos correctamente A/B/C? (`format-tiers.md` §1)
+8. ¿La longitud corresponde al valor disponible?
+9. ¿Existe algo que el lector pueda recordar, utilizar, compartir o llevar a
+   una conversación?
+10. ¿La pieza seguiría teniendo prácticamente el mismo valor si quitamos el
+    nombre Playbook y la generara cualquier medio a partir del comunicado?
+
+**Questions 4, 5 and 6 are gates.** If there is no delta, the piece never
+goes past the headline, or the added layer has no evidence behind it, the
+piece **cannot** be rated APROBADO.
+
+**Severity rule.** If any of the three gates fails, the rating cannot be
+better than REQUIERE REEDICIÓN — never AJUSTES MENORES, even when everything
+else about the draft is clean. A gate failure is not a minor-adjustments
+situation by definition; it means the piece hasn't earned its place yet,
+which no amount of polish fixes.
+
+**Ratings:** APROBADO / AJUSTES MENORES / REQUIERE REEDICIÓN / NO PUBLICAR
+TODAVÍA (the last one folds back to `editorial-gate.md`'s own verdict — a
+piece that reaches this point and still can't clear the gate should not have
+been drafted, and the fix is upstream, not a rewrite here).
+
+**After the diagnosis: at most five concrete changes.** List them, then —
+only then — the corrected version. Never rewrite automatically before the
+diagnosis is on the table; the diagnosis is what makes the next draft
+different instead of just reworded.
+
+---
+
+## 13. Reader persona
+
+(Moat Playbook, 2026-09-13.) Every article carries an internal primary
+reader persona, named in `editorial-gate.md`'s output and carried into the
+router (`format-tiers.md` §1). **It does not appear on the site.** It exists
+to make three decisions concrete instead of generic: what question to
+answer, what can be assumed as known, what to leave out.
+
+- Decision Maker
+- Operator / Builder
+- Commercial Leader
+- Investor / Advisor
+- Emerging Leader
+- Student / Future Industry Professional
+- Sports Lover / Backstage Curious
+- Opportunity Seeker / Entrepreneur
+- Amplifier / Interpreter
+
+**Don't optimize one piece for all nine.** Pick the one the story actually
+serves best and write toward it — the same discipline §1 asks when it says
+pick one palanca instead of gesturing at five, applied to audience instead
+of argument.
+
+**Rigor does not change by persona. Depth and framing do.** A Deep Dive for
+an Investor / Advisor and one for a Sports Lover / Backstage Curious can
+both run 900 words and cite the same figures; what changes is which
+mechanism gets explained from scratch and which one is assumed, and which
+consequence the Opinión leads with. This is not a new format axis alongside
+A/B/C/D — the tier still decides length and structure
+(`format-tiers.md` §1) — it decides what the tier is *for*, on this story,
+for this reader.

@@ -694,14 +694,23 @@ error message — it's not a crash, just non-functional).
 
 ## 13. Claude Code Skills (`.claude/skills/`)
 
+**The editorial system these two skills run is fully specified in
+[`docs/EDITORIAL_SYSTEM.md`](EDITORIAL_SYSTEM.md)** (the Moat Playbook,
+2026-09-13): the pre-router publish/no-publish gate, the A/B/C/D router, the
+shared voice rules, the Moat Check on the final self-check, reader personas,
+and where every rule lives inside `.claude/playbook-editorial/`. Read that
+document before touching anything related to article generation, routing or
+publication — the paragraph below is a stale, pre-Moat-Playbook description
+of the pipeline's mechanics (the write path, the DB, the approval gate) and
+should not be read as the current editorial spec.
+
 - **`publish-newsletter`** — a fully automated, zero-human-review editorial
   pipeline: given one or more Playbook Substack URLs (Noticias, La
   Lana del Deporte, Infinitas), fetches each edition, treats each story as
-  a separate article, drafts it in Playbook's editorial voice (Industry
-  Shots/Infinitas: fixed four-paragraph shape, fact + mandatory
-  independent-research paragraph + detail + "Opinión de Playbook"; La Lana:
-  source content left unchanged, at most an added second Opinión
-  paragraph), and inserts it directly into production Postgres as
+  a separate article, drafts it in Playbook's editorial voice (superseded
+  description of a since-replaced fixed four-paragraph shape — the current
+  A/B/C/D router and its rules are `docs/EDITORIAL_SYSTEM.md` §§1-7), and
+  inserts it directly into production Postgres as
   `status: 'published'` via `scripts/publish-newsletter.ts`. Uses the Neon
   HTTP driver rather than the app's normal TCP `pg` Pool, because it's
   designed to run from sandboxes with HTTPS-only egress.

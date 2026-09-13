@@ -29,11 +29,12 @@ nobody copy-pastes anything.
 | **0** | **Overlap check — before drafting a word.** Every item, not every edition, and **across products, not just within one**: two editions can carry the same story. Four outcomes; three of them mean no second article. | `references/overlap-check.md` |
 | **1** | **Ingest.** Fetch each edition, split it into items, pull the date, the item order and every embedded image URL. | `references/ingestion.md` |
 | **2** | **Research.** Mandatory outside fact per Noticias/Infinitas item, plus the regional angle. Not for La Lana. | `references/ingestion.md` |
+| **2c** | **Editorial gate — does this item earn space in Playbook at all?** PUBLICAR / NO PUBLICAR TODAVÍA / RADAR. Not the sensitivity check — a prior, separate question. Anything other than PUBLICAR skips the item here, same as an overlap-check outcome A: no draft, reported in the run report. | `references/editorial-gate.md` |
 | **3** | **Route the format — A / B / C / D — before drafting a word**, then apply the product's architecture. Depth decides the format; graphics are a consequence. | `references/format-tiers.md` §1 |
 | **4** | **Apply the voice.** Movimiento + mecanismo + incentivo + consecuencia; find the palanca; one thing per paragraph; one clause in the headline. | `references/voice-and-style.md` |
 | **5** | **Apply the element library.** Walk every device, respect the budget, check each declaration rendered. | `references/dynamic-element-library.md` |
 | **6** | **Fill the fields and source the images.** Set the **0–99 `boleta`** on every article — omitting it silently ranks the piece on the retired star scale. `tagsProperty` decides whether the piece lands on a hub; read its boundary rule before setting it. | `references/fields-and-taxonomy.md` → "Ranking", `references/images.md` |
-| **7** | **Self-check** against the twelve-point publication checklist and run `check-voice.mjs`. | `references/voice-and-style.md` §12 |
+| **7** | **Self-check** against the twelve-point publication checklist, the Moat Check (gates 4/5/6 — a failed gate caps the rating at REQUIERE REEDICIÓN), and run `check-voice.mjs`. | `references/voice-and-style.md` §12 |
 | **8** | **Publish, report, capture feedback.** | `references/publishing-mechanics.md` |
 
 Steps 3–5 are one pass, not three: the tier decides the length, the voice
@@ -48,8 +49,8 @@ couldn't be confirmed, no findable cover photo) rather than guessing silently.
 
 `references/voice-and-style.md`, `format-tiers.md`,
 `dynamic-element-library.md`, `overlap-check.md`, `fields-and-taxonomy.md`,
-`images.md` and `postura-editorial.md` are **symlinks into
-`.claude/playbook-editorial/`, shared with `publish-sourced-article` and
+`images.md`, `postura-editorial.md` and `editorial-gate.md` are **symlinks
+into `.claude/playbook-editorial/`, shared with `publish-sourced-article` and
 `publish-partner-announcement`**. One copy, every funnel — output from the
 skills should be indistinguishable once published. Edit them there and every
 skill changes; never fork a copy into this folder.

@@ -74,6 +74,20 @@ dinero`, and the `Fuentes:` line.
   from, the verified reporting.** Never invent data to fill a device. A figure
   going into a chart needs the same sourcing bar as one going into a sentence.
 
+### What a device has to do
+
+(Moat Playbook, 2026-09-13, stating explicitly what the rest of this section
+already enforces case by case.) Never reach for a device because the format
+allows one. A device earns its place by doing exactly one of: comparar,
+dimensionar, ordenar, explicar, conectar, mostrar evolución, or revelar una
+relación. If a device declaration does none of those for its paragraph, it's
+decoration, not a device — pull it and let the number sit in prose instead.
+This is the same instinct as `format-tiers.md` §1's "graphics are a
+consequence of depth, never the category," one level more concrete: A
+normally carries none, B carries them optional and light, C expects two to
+four, because that's where a story has usually earned enough of these seven
+functions to need one.
+
 ### "No device fits" is the exception, not the default
 
 (2026-08-06, publisher directive.) Earlier wording — "only when the story
