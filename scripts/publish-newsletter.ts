@@ -5,12 +5,19 @@
 // publish-sourced-article (.claude/skills/publish-sourced-article,
 // third-party links with human review). Never run by hand.
 //
-// Usage: tsx scripts/publish-newsletter.ts <path-to-json-file>
+// Usage: tsx scripts/publish-newsletter.ts <path-to-json-file> [--dry-run] [--allow-overlap]
 // Input: a JSON array of ArticleInput (see type below). bodyMarkdown supports
 // blank-line-separated paragraphs, "## " headings, "**bold**" spans,
 // "[text](url)" links, and "- " bullet-list blocks (every non-empty line in
 // the block starting with "- "), exactly what the editorial voice in each
 // skill produces.
+//
+// --dry-run (moat playbook guide, 2026-09-13, tests/moat-playbook/): runs
+// every real step -- tag validation, the boleta score, markdown->TipTap->HTML,
+// slug minting, and both overlap-check passes against the real archive --
+// but skips the db.insert and prints the row that would have been written
+// instead. Nothing reaches Postgres and no deploy is triggered. Same flag
+// name and behavior as scripts/update-article.ts's --dry-run.
 
 import { readFile } from 'node:fs/promises';
 import { neon } from '@neondatabase/serverless';
@@ -141,7 +148,7 @@ export function markdownToTipTap(markdown: string): Record<string, unknown> {
   return { type: 'doc', content: content.length ? content : [{ type: 'paragraph' }] };
 }
 
-async function insertOne(input: ArticleInput) {
+async function insertOne(input: ArticleInput, dryRun = false) {
   // Controlled-vocabulary gate (TODO #1, 2026-08-14): tags must come out of
   // lib/taxonomy.ts. Case/accent/whitespace variants are canonicalized;
   // anything else hard-fails the publish so a typo can't mint an
@@ -214,55 +221,66 @@ async function insertOne(input: ArticleInput) {
   const bodyHtml = generateHTML(bodyJson as JSONContent, TIPTAP_EXTENSIONS);
   const baseId = slugify(input.title) || `articulo-${Date.now().toString(36)}`;
 
+  const row = {
+    id: baseId,
+    title: input.title,
+    excerpt: input.excerpt,
+    teaser: input.teaser,
+    bodyJson,
+    bodyHtml,
+    author: input.author || '',
+    date: input.date,
+    dateFormatted: input.dateFormatted,
+    publication: input.publication,
+    source: input.source,
+    tagsScope: input.tagsScope,
+    tagsSport: input.tagsSport,
+    tagsVertical: input.tagsVertical,
+    tagsProperty: input.tagsProperty ?? [],
+    priority: input.priority,
+    score: breakdown.score,
+    // Editorial boletas have no `confirmed` question -- an investigation
+    // is not "unconfirmed", the concept does not apply. Null, not true:
+    // the column must not claim an answer nobody was asked. Same rule
+    // as scripts/reclassify-rank.ts, so backfilled and publish-time rows
+    // are indistinguishable.
+    confirmed: input.boleta.kind === 'news' ? input.boleta.confirmed : null,
+    scoreBoleta: {
+      version: 1,
+      scoredAt: input.date,
+      kind: input.boleta.kind,
+      answers: input.boleta,
+      decena: breakdown.decena,
+      unit: breakdown.unit,
+      score: breakdown.score,
+      trace: breakdown.trace,
+      legacyPriority: input.priority,
+    },
+    featured: input.featured,
+    mostrarAutor: input.mostrarAutor === true,
+    readingTime: input.readingTime,
+    substackUrl: input.substackUrl,
+    sourceUrl: input.sourceUrl,
+    imageUrl: input.imageUrl,
+    imageCredit: input.imageCredit || null,
+    status: 'published' as const,
+  };
+
+  if (dryRun) {
+    // Never touches Postgres. Prints the row exactly as it would have been
+    // written -- tags canonicalized, boleta scored, slug minted, markdown
+    // already rendered to bodyHtml -- so a reviewer can read the would-be
+    // insert without a deploy or a real write.
+    console.log(`[publish] DRY RUN would insert: ${JSON.stringify(row, null, 2)}`);
+    return { status: 'dry-run' as const, id: row.id, title: row.title };
+  }
+
   let id = baseId;
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const [inserted] = await db
         .insert(articles)
-        .values({
-          id,
-          title: input.title,
-          excerpt: input.excerpt,
-          teaser: input.teaser,
-          bodyJson,
-          bodyHtml,
-          author: input.author || '',
-          date: input.date,
-          dateFormatted: input.dateFormatted,
-          publication: input.publication,
-          source: input.source,
-          tagsScope: input.tagsScope,
-          tagsSport: input.tagsSport,
-          tagsVertical: input.tagsVertical,
-          tagsProperty: input.tagsProperty ?? [],
-          priority: input.priority,
-          score: breakdown.score,
-          // Editorial boletas have no `confirmed` question -- an investigation
-          // is not "unconfirmed", the concept does not apply. Null, not true:
-          // the column must not claim an answer nobody was asked. Same rule
-          // as scripts/reclassify-rank.ts, so backfilled and publish-time rows
-          // are indistinguishable.
-          confirmed: input.boleta.kind === 'news' ? input.boleta.confirmed : null,
-          scoreBoleta: {
-            version: 1,
-            scoredAt: input.date,
-            kind: input.boleta.kind,
-            answers: input.boleta,
-            decena: breakdown.decena,
-            unit: breakdown.unit,
-            score: breakdown.score,
-            trace: breakdown.trace,
-            legacyPriority: input.priority,
-          },
-          featured: input.featured,
-          mostrarAutor: input.mostrarAutor === true,
-          readingTime: input.readingTime,
-          substackUrl: input.substackUrl,
-          sourceUrl: input.sourceUrl,
-          imageUrl: input.imageUrl,
-          imageCredit: input.imageCredit || null,
-          status: 'published',
-        })
+        .values({ ...row, id })
         .onConflictDoNothing({ target: articles.sourceUrl })
         .returning();
 
@@ -357,6 +375,7 @@ export async function findOverlaps(
 
 async function main() {
   const allowOverlap = process.argv.includes('--allow-overlap');
+  const dryRun = process.argv.includes('--dry-run');
   const filePath = process.argv[2];
   if (!filePath) {
     console.error('Usage: tsx scripts/publish-newsletter.ts <path-to-json-file>');
@@ -385,17 +404,22 @@ async function main() {
     return;
   }
 
+  if (dryRun) console.log('[publish] --dry-run: no row will be written to Postgres, no deploy will fire.');
+
   const results = [];
   for (const [i, item] of items.entries()) {
     if (blocked.has(i)) console.warn(`[publish] overlap overridden by --allow-overlap: ${item.title}`);
-    const result = await insertOne(item);
+    const result = await insertOne(item, dryRun);
     results.push(result);
     console.log(`[publish] ${result.status}: ${result.title}${result.status === 'ok' ? ` (id=${result.id})` : ''}`);
   }
 
   const okCount = results.filter(r => r.status === 'ok').length;
   const dupCount = results.filter(r => r.status === 'duplicate').length;
-  console.log(`[publish] done: ${okCount} published, ${dupCount} duplicate/skipped, ${results.length} total`);
+  const dryCount = results.filter(r => r.status === 'dry-run').length;
+  console.log(
+    `[publish] done: ${okCount} published, ${dupCount} duplicate/skipped, ${dryCount} dry-run, ${results.length} total`,
+  );
 }
 
 // Guarded so other scripts (e.g. scripts/backfill-article-standards.ts) can
