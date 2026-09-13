@@ -160,6 +160,21 @@ subheads, no Opinión, no moraleja, no forced regional line. The reader should
 be able to answer fast: qué pasó, quién, cuánto/por cuánto tiempo/qué derechos,
 por qué vale la pena saberlo.
 
+**No Opinión does not mean no delta** (Moat Playbook, 2026-09-13). An A that
+only rewrites the source is a wire copy with a Playbook byline, and
+`editorial-gate.md` should have caught that before drafting started — but the
+tell can still surface mid-draft, and when it does, that is the moment to
+reconsider whether the item clears the gate, not to bolt on a thesis A was
+never meant to carry. The shape is HECHO → CONTEXTO ÚTIL → CONSECUENCIA /
+ANTECEDENTE / DATO QUE DIMENSIONA — not three mandatory paragraphs, the two or
+three sentences above already are that shape. Real examples of what counts as
+delta at this depth: the deal replaces a prior partner; it's the third asset
+acquired in the same market this year; the figure sits above or below the
+last comparable precedent; it shifts who holds a specific right; it has an
+immediate, statable consequence. None of that requires inventing a thesis —
+it requires knowing the story's own recent history, which is exactly what the
+research step (`ingestion.md`) is for.
+
 **B · Noticia Playbook — 3 to 5 movements, then the Opinión:**
 
 1. **Opening movement** — what just happened, the key numbers, straight in
@@ -181,6 +196,19 @@ Every movement opens with its own **specific** bold lead-in
 (`voice-and-style.md` §5 — never the generic `El movimiento` / `La mecánica` /
 `El contexto` set), and a continuation paragraph inside a movement runs
 unheaded.
+
+**The lead-in pattern is not a mandatory template on every movement** (Moat
+Playbook, 2026-09-13). §5's rule is real — when a lead-in appears it must be
+specific, never generic — but a B does not have to wear a bold lead-in on
+every single movement to count as correctly built. A short block in plain
+prose, two movements folded into one paragraph because the story only
+supports that much, or a piece that opens two of its four movements with a
+lead-in and lets the other two run as connected prose are all legitimate
+shapes when the story's own weight calls for them. **The editorial logic
+stays consistent — one clear reading, movements that each add something —
+the prose does not have to look machine-stamped from the same mold.** What
+never varies: pick one palanca (below) and don't gesture at five, and the
+Opinión still closes it out.
 
 A human reviewer can still explicitly ask for more (2026-08-07: *"split into
 two paragraphs on the opinion… it doesn't matter if it is too long"*), and that
@@ -240,6 +268,21 @@ demands; `readingTime: 3` or `4`.
 the money is, what incentives exist, who controls what, and what may change
 next. A graphic doesn't make an article deep; a deep article usually reveals
 something worth seeing.
+
+**Never use conceptual analysis to paper over an evidence gap** (Moat
+Playbook, 2026-09-13). A Deep Dive's extra length is for opening the
+business, not for writing around a number, contract, ownership stake or
+causal claim that couldn't be verified. When a conclusion depends on
+something unconfirmed: look for more evidence, chase actual reporting on it,
+reframe the central question around what *can* be answered, say plainly what
+isn't known yet, or don't publish this one yet — in that order, never skip
+straight to writing confidently past the hole. `voice-and-style.md` §8's four
+evidence levels are the mechanism; in a Deep Dive's prose, name the level in
+plain words at the point it matters — **sabemos** (01, hecho confirmado),
+**parece** (02/03, reportado o interpretado, no confirmado), **podría** (04,
+escenario), **no sabemos todavía** (the gap itself, stated rather than
+smoothed over). That vocabulary is how a reader tells a Deep Dive's confident
+sentence from its hedged one without needing to parse the four-level table.
 
 ---
 

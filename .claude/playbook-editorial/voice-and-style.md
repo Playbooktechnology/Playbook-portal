@@ -622,6 +622,15 @@ prose**, never smuggled into a device value or a headline as level 1. Every
 number that feeds a device needs the same sourcing bar as any other fact —
 never a rounder guess because it's going into a chart instead of a sentence.
 
+**In prose, especially in a Deep Dive, these can be named directly** (Moat
+Playbook, 2026-09-13): **sabemos** for 01, **parece** for 02/03, **podría**
+for 04, and **no sabemos todavía** for the gap itself when the evidence
+simply isn't there yet — see `format-tiers.md` §3b for the rule that this
+vocabulary exists to enforce (never write past an evidence gap using
+confident conceptual language). This is the same four-level ladder above,
+said the way a reader parses it mid-sentence rather than the way a table
+states it.
+
 **When sources disagree**, the more specific, better-attributed figure wins: a
 company filing over a wire summary, a wire over a newsletter brief.
 
