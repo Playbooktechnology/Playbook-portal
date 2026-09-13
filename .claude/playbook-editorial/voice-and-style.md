@@ -38,6 +38,41 @@ someone who knows the industry finds it worth knowing. The news says what
 happened; Playbook decides whether the story ends there or something more
 needs explaining.
 
+**The principle that sits above all four** (Moat Playbook, 2026-09-13):
+Playbook has to go at least one level past the headline, but that one level
+can be a single excellent sentence. It is not a quota of paragraphs — an A
+that adds one sharp fact of scale has cleared this bar; a C that opens seven
+sections without ever saying something the press release didn't already
+imply has not, regardless of length. Length is not what this principle
+measures.
+
+### Lentes adicionales, cuando aplican
+
+The four movements above are the spine. The ten palancas below are the
+menu of *what the story turns on*. A third, narrower set of questions is
+useful for naming *which mechanism to reach for* when a story doesn't map
+cleanly onto one palanca — **select only the ones that explain this
+particular story, never all of them as a checklist**:
+
+- **Economía** — ¿de dónde entra el dinero? ¿Qué cuesta? ¿Dónde está el
+  margen? ¿Cómo cambia el cash flow?
+- **Valor** — ¿qué activo se crea? ¿Quién conserva el upside? ¿Hay pricing
+  power? ¿Qué destruye valor?
+- **Riesgo** — ¿quién absorbe el riesgo? ¿Qué supuestos deben cumplirse?
+- **Control** — ¿quién conserva derechos, datos, distribución, gobernanza y
+  capacidad de decidir?
+- **Incentivos** — ¿qué quiere maximizar o proteger cada actor?
+- **Mercado** — ¿cuál es el comparable? ¿Es excepción, precedente o señal?
+- **Fan** — ¿qué cambia para la audiencia?
+- **Siguiente movimiento** — si esta lógica funciona, ¿qué decisión sería
+  racional después?
+
+These are the same instinct as the ten palancas below, asked at a more
+mechanical altitude — Control/Valor/Riesgo overlap directly with palancas 1,
+2 and 6, and that overlap is intentional, not a second system to reconcile
+against the first. Use whichever framing gets you to the actual mechanism
+faster for a given story; never answer both lists for the same piece.
+
 ### Las diez palancas
 
 Before drafting, name which of these the story actually turns on. If you can't
@@ -766,3 +801,37 @@ the last gate in both skills' decision flow.
 > y quiere entender mejor su negocio. Abre con el movimiento, elimina el
 > lenguaje del comunicado, pone las cifras que importan y explica quién gana
 > control, dinero, margen, audiencia o poder.
+
+---
+
+## 13. Reader persona
+
+(Moat Playbook, 2026-09-13.) Every article carries an internal primary
+reader persona, named in `editorial-gate.md`'s output and carried into the
+router (`format-tiers.md` §1). **It does not appear on the site.** It exists
+to make three decisions concrete instead of generic: what question to
+answer, what can be assumed as known, what to leave out.
+
+- Decision Maker
+- Operator / Builder
+- Commercial Leader
+- Investor / Advisor
+- Emerging Leader
+- Student / Future Industry Professional
+- Sports Lover / Backstage Curious
+- Opportunity Seeker / Entrepreneur
+- Amplifier / Interpreter
+
+**Don't optimize one piece for all nine.** Pick the one the story actually
+serves best and write toward it — the same discipline §1 asks when it says
+pick one palanca instead of gesturing at five, applied to audience instead
+of argument.
+
+**Rigor does not change by persona. Depth and framing do.** A Deep Dive for
+an Investor / Advisor and one for a Sports Lover / Backstage Curious can
+both run 900 words and cite the same figures; what changes is which
+mechanism gets explained from scratch and which one is assumed, and which
+consequence the Opinión leads with. This is not a new format axis alongside
+A/B/C/D — the tier still decides length and structure
+(`format-tiers.md` §1) — it decides what the tier is *for*, on this story,
+for this reader.
