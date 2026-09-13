@@ -20,6 +20,34 @@ consequence of that depth, never the category.** Classify before drafting a
 word — the router question is *which story is in front of us*, not *how much
 research do we have*.
 
+**This assumes the item already cleared `editorial-gate.md`.** That gate asks
+whether the story earns space in Playbook at all; this section asks how much
+space once the answer is yes. Running this section on an item that hasn't
+cleared the gate is answering the wrong question first.
+
+**Router output** (Moat Playbook, 2026-09-13), produced for every item that
+reaches this step:
+
+```
+FORMATO: A / B / C / D
+RAZÓN:
+READER PERSONA PRIMARIO:
+JOB-TO-BE-DONE: ¿Qué está contratando el reader a Playbook para resolver con esta pieza?
+PREGUNTA CENTRAL:
+DELTA PLAYBOOK ESPERADO:
+PALANCA DE NEGOCIO PRINCIPAL:
+EVIDENCIA DISPONIBLE:
+DATOS QUE FALTAN:
+```
+
+`READER PERSONA PRIMARIO` is inherited from `editorial-gate.md`'s output
+(`voice-and-style.md` §13), not re-decided here — re-guessing it at this
+step is how a piece ends up written for two different readers in two
+different sections. `PALANCA DE NEGOCIO PRINCIPAL` is one of the ten below
+(or, when it names the mechanism more directly, one of `voice-and-style.md`
+§1's eight lentes) — pick one and hold it through drafting; a piece written
+toward a different palanca than the one named here has drifted.
+
 | | Format | Editorial question | Length | Opinión | Devices |
 |---|---|---|---|---|---|
 | **A** | **Noticia breve** | ¿Qué pasó? | 100–180 words | **No** | None, save an exceptional simple callout |
