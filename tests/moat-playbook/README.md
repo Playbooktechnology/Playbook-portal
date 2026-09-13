@@ -60,6 +60,43 @@ B) con un conteo real (107) más bajo que la estimación inicial del
 prompt (~120-160), lo cual es la dirección correcta del error, no la
 opuesta.
 
+## 3 ejemplos reales, antes/después (entregable #7)
+
+No hubo acceso a `POSTGRES_URL`/`.env.local` en este sandbox, así que no se
+pudieron extraer artículos reales recientes directamente de la tabla
+`articles` (ver la limitación arriba). En su lugar, estos son tres
+incidentes **reales y ya documentados con fecha** dentro del propio árbol
+editorial (`.claude/playbook-editorial/`) — no artículos sintéticos —
+mostrando qué habría cambiado con lo construido en este PR.
+
+1. **FMF Nuevo Modelo Deportivo (2026-08-20)** — documentado en
+   `format-tiers.md` §1: una historia con mecanismo + dinero + precedente
+   se publicó como B de 420 palabras y el humano la devolvió pidiendo
+   profundidad C. **Antes:** el router no tenía un output estructurado que
+   obligara a nombrar `PALANCA DE NEGOCIO PRINCIPAL` / `PREGUNTA CENTRAL`
+   antes de rutear. **Después:** el bloque de salida del router (Fase 1,
+   `format-tiers.md` §1) obliga a nombrarlos antes de elegir formato — el
+   mismo chequeo que el propio archivo dice que habría evitado el caso.
+2. **CBF/Copa do Brasil, Opinión en dos párrafos (2026-09-13)** —
+   documentado en `format-tiers.md` §3b: un Deep Dive publicó la Opinión en
+   dos párrafos y el segundo quedó como texto plano después del callout
+   verde, detectado en vivo por un revisor. **Antes:** ningún chequeo
+   automático lo atrapaba. **Después:** `scripts/check-format-tier.ts`
+   (nuevo, Fase 5) detecta mecánicamente un párrafo de prosa justo después
+   de la Opinión en un tier C y lo marca — ver el caso 3 de este directorio
+   para la misma detección corriendo en vivo contra un borrador real.
+3. **Pieza de ingresos publicitarios de la NBA (2026-08-20)** —
+   documentado en `voice-and-style.md` §9: cerró con "esto es exactamente
+   la pregunta que hoy se hacen las ligas y las televisoras en México y
+   América Latina" sin que la historia tuviera un solo hecho, actor o
+   cifra mexicana o latinoamericana. **Antes:** la regla existía en prosa
+   pero nada obligaba a declarar los cuatro checks de investigación antes
+   de cerrar. **Después:** el Moat Check pregunta 4 (delta) y el propio
+   gate (`editorial-gate.md`) exigen declarar `DATOS DISPONIBLES` /
+   `DATOS QUE FALTAN` desde antes de redactar — ver el caso 5 de este
+   directorio, que corre exactamente esos cuatro checks explícitamente
+   antes de cerrar sin ángulo regional.
+
 ## Separación determinístico vs. editorial (pedida en "Cómo ejecutar este encargo")
 
 **Lógica determinística, con test automatizado real:**
