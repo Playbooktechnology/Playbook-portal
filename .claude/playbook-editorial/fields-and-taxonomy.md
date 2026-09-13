@@ -23,6 +23,14 @@ imageUrl, imageCredit`.
   click. Carries the defining figure when `title` doesn't.
 - **`teaser`** — 1–3 plain sentences, no formatting. RSS description and
   pre-editor fallback. **NOT the body.**
+- **Never use `title`, `excerpt` or `teaser` to introduce a reading the body
+  doesn't support** (moat playbook guide, 2026-09-13). There is no separate
+  SEO-title field — `title` does that job too, per §3's "SEO lives in
+  metadata only" — so a headline or hook reaching for a stronger claim than
+  the article backs is the one place an unsupported interpretation could
+  sneak past the Moat Check (`moat-check.md`) unnoticed. Informativo,
+  natural, específico; sin clickbait; sin exagerar el estatus real de la
+  noticia.
 - **`bodyMarkdown`** — see `format-tiers.md`. `**bold**` / `##` formatted prose
   plus any `![alt](url)` images. Never raw HTML.
 - **`author`** — leave `""` unless a byline is genuinely known. **Never prepend
