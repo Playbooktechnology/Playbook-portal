@@ -534,11 +534,44 @@ and less interchangeably?**
 - "el mensaje es claro"
 - "no es un detalle menor"
 - "marca la ruta"
-- "el verdadero examen"
+- "el verdadero examen" / "el verdadero reto no es…"
 - "más allá de la anécdota"
-- "la pregunta ya no es…"
-- "no solo X, sino Y"
-- "para México/LATAM…"
+- "la pregunta ya no es…" / "la pregunta, entonces…"
+- "no solo X, sino Y" / "no es X, es Y" — governed in full by "Negative
+  parallelism" above; this entry is the cross-reference, not a second rule
+- "para México/LATAM…" / "para México y Latinoamérica esto representa…"
+
+**List expanded (Moat Playbook, 2026-09-13)**, consolidating watch-list
+phrases that were already standing directives elsewhere into this one place:
+
+- "lo interesante no es…"
+- "no tanto por…"
+- "más que…" / "más que X, estamos ante Y"
+- "este caso demuestra que…" / "esto demuestra que…"
+- "la clave será…"
+- "parece interesante"
+- "nos metimos a…"
+- "en un mundo donde…"
+- "en el dinámico panorama…"
+- "esto marca un antes y un después"
+- "solo el tiempo dirá"
+- "queda por ver"
+- "la industria observa con atención"
+- "el futuro está por escribirse"
+- "lo relevante aquí"
+- "la lectura aquí es bastante clara"
+
+**"Mirar/miramos/miro" as a stand-in for analysis.** When the sense is
+analizar datos, dar seguimiento a una métrica or evaluar una decisión, reach
+for revisar, analizar, seguir, evaluar, medir, comparar, entender or tener en
+cuenta instead. "Miramos los números" describes looking at a screen, not
+doing the analysis the sentence actually means.
+
+Also avoid, same standard as the rest of this section: moralejas, lenguaje
+corporativo, metáforas artificiales, párrafos demasiado simétricos,
+conclusiones redondas por obligación, and frases creadas para sonar
+profundas en lugar de decir algo específico. Certeza donde solo existe
+hipótesis is not a phrasing problem — it's an evidence-level problem, see §8.
 
 ### La aritmética
 

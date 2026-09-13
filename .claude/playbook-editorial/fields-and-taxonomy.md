@@ -10,6 +10,14 @@ dateFormatted, publication, source, tagsScope, tagsSport, tagsVertical,
 priority, featured, mostrarAutor, readingTime, substackUrl, sourceUrl,
 imageUrl, imageCredit`.
 
+**These fields get filled before the self-check (step 6, ahead of step 7 in
+both `SKILL.md`s), but the database write (step 8/9) only happens after the
+self-check — the twelve-point checklist and the Moat Check
+(`voice-and-style.md` §12) — passes.** Drafting the fields early is fine;
+publishing on an unreviewed draft isn't. That ordering is Moat Playbook's
+Cambio 13 requirement (2026-09-13), already the shape of the pipeline; this
+note makes it explicit rather than only implicit in the step numbering.
+
 ---
 
 ## Editorial fields
@@ -25,6 +33,12 @@ imageUrl, imageCredit`.
   pre-editor fallback. **NOT the body.**
 - **`bodyMarkdown`** — see `format-tiers.md`. `**bold**` / `##` formatted prose
   plus any `![alt](url)` images. Never raw HTML.
+- **No field here carries an interpretation the body doesn't sustain** (Moat
+  Playbook, 2026-09-13). `title`, `excerpt` and `teaser` compress the piece;
+  they don't get to claim more than the reporting supports because they're
+  short and nobody fact-checks a chip. `voice-and-style.md` §3 already bans
+  teasing headlines and exaggerated status for the same reason — this is that
+  rule extended explicitly to every metadata field, not a new one.
 - **`author`** — leave `""` unless a byline is genuinely known. **Never prepend
   "Por "** yourself: the byline template already renders "Por " ahead of this
   field, and a stored "Por Jane Doe" renders as the double "Por Por Jane Doe"
