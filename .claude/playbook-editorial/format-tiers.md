@@ -57,6 +57,29 @@ these skills' prompts (see §4's website-transfer rule).
 Choosing a format is choosing what stays out: a short note doesn't need all
 the research, and a Deep Dive must not disguise itself as a two-minute read.
 
+**The router's output (moat playbook guide, 2026-09-13).** State this block
+before drafting — it is what makes the routing call auditable, not a form to
+fill mechanically:
+
+```
+FORMATO: A / B / C / D
+RAZÓN:
+READER PERSONA PRIMARIO:
+JOB-TO-BE-DONE: ¿Qué está contratando el reader a Playbook para resolver con esta pieza?
+PREGUNTA CENTRAL:
+DELTA PLAYBOOK ESPERADO:
+PALANCA DE NEGOCIO PRINCIPAL:
+EVIDENCIA DISPONIBLE:
+DATOS QUE FALTAN:
+```
+
+`READER PERSONA PRIMARIO` carries over from the gate
+(`editorial-gate.md`) rather than being re-picked here — one decision,
+referenced, not re-derived. `PALANCA DE NEGOCIO PRINCIPAL` is `voice-and-style.md`
+§1's ten palancas; naming it here, before drafting, is the same discipline
+that section already asks for at drafting time — this just moves it a step
+earlier.
+
 **The tell that B is the wrong call: having to leave sourced, relevant numbers
 out to hit the word count.** (2026-08-20, the FMF Nuevo Modelo Deportivo run,
 where a story that plainly wanted C shipped as a 420-word brief and the human
