@@ -6,17 +6,35 @@
 // format choice was editorially right, only whether the draft matches the
 // tier the router says it is. See .claude/playbook-editorial/moat-check.md.
 //
-// Usage: npx tsx scripts/check-format-tier.ts <draft.json> [--strict]
-// Input: a JSON array where each item carries `bodyMarkdown` (or
-// `tier`/`format` set explicitly) and a declared tier field — this script
-// looks for `tier` or `format`, either one, case-insensitively, one of
-// A/B/C/D. An item with no declared tier is skipped and reported as such,
-// never guessed.
+// Usage: npx tsx scripts/check-format-tier.ts <draft.json>
+// Input: a JSON array where each item carries `bodyMarkdown` and a declared
+// `tier` (or `format`) field, case-insensitively, one of A/B/C/D. An item
+// with no declared tier is skipped and reported as such, never guessed.
 //
-// This is a mirror, not a gate: it exits 0 by default so a deliberate,
-// human-confirmed exception ("2026-08-07: split the Opinión into two
-// paragraphs regardless of length") never gets blocked mechanically. Pass
-// --strict to exit 1 on any flag.
+// SEVERITY (2026-09-13, added after a real gap was caught: this file existed
+// but nothing ever called it -- a draft could carry any of these mismatches
+// and publish untouched). Two levels, not one flat mirror:
+//
+// - STRUCTURAL findings are always `severe`: an A carrying an Opinión, a B/C
+//   missing one, or a Deep Dive's Opinión with a trailing paragraph after it
+//   (the exact 2026-09-13 CBF/Copa do Brasil regression). These are binary
+//   -- either the shape is right or it isn't -- so there is no "marginal"
+//   version of getting them wrong.
+// - WORD COUNT findings are `severe` only past a 30% buffer outside the
+//   tier's range (i.e. below 0.7x the floor, or above 1.3x the ceiling);
+//   inside that buffer they are `marginal`. A B at 240 words against a
+//   250-word floor is marginal -- close enough that "never take away
+//   length, only add" (voice-and-style.md §2) plausibly explains it. A B at
+//   156 words is severe -- that is not a rounding gap, it is a tier with no
+//   real content behind it.
+//
+// `severe` findings BLOCK the publish in scripts/publish-newsletter.ts
+// (see checkFormatTiers there), the same way an overlap block does --
+// override with --allow-tier-mismatch only after a human has looked.
+// `marginal` findings print as warnings and never block, same as
+// check-voice.mjs's default mode. An item with no declared `tier` is not
+// checked (skipped, not scored) -- this field is new and optional, so an
+// older draft that never sets it publishes exactly as before, unblocked.
 
 import { readFileSync } from 'node:fs';
 
@@ -30,6 +48,11 @@ const RANGES: Record<string, [number, number] | null> = {
   C: [700, 1200],
   D: null,
 };
+
+// How far outside [min, max] is still "close enough to be a rounding gap,
+// not a substance problem". 0.3 means severe kicks in below 70% of the
+// floor or above 130% of the ceiling.
+const SEVERE_BUFFER = 0.3;
 
 // Same lead-in the render pipeline itself matches on (format-tiers.md §6,
 // "The Opinión callout is a UI contract") plus La Lana's heading shape,
@@ -71,66 +94,107 @@ function wordCount(md: string): number {
   return prose.split(/\s+/).filter(Boolean).length;
 }
 
-type Draft = {
+export type Draft = {
   title?: string;
   bodyMarkdown?: string;
   tier?: string;
   format?: string;
 };
 
-function analyse(d: Draft) {
+export type Severity = 'severe' | 'marginal';
+export type Finding = { severity: Severity; message: string };
+
+export type TierReport = {
+  tier: string; // '' if undeclared/unrecognized
+  words: number;
+  opinionPresent: boolean;
+  opinionHasTrailing: boolean;
+  findings: Finding[];
+};
+
+/** Pure, DB-free analysis -- reused by the CLI below and by
+ * scripts/publish-newsletter.ts's real blocking gate. */
+export function analyseTier(d: Draft): TierReport {
   const tier = (d.tier || d.format || '').trim().toUpperCase();
   const md = d.bodyMarkdown || '';
   const words = wordCount(md);
   const opinionPresent = hasOpinion(md);
   const opinionHasTrailing = hasTrailingParagraphAfterOpinion(md);
-  return { tier, words, opinionPresent, opinionHasTrailing };
+  const findings: Finding[] = [];
+
+  if (!tier || !(tier in RANGES)) {
+    // Not an error -- the field is new and optional. Nothing to check.
+    return { tier, words, opinionPresent, opinionHasTrailing, findings };
+  }
+
+  const range = RANGES[tier];
+  if (range) {
+    const [min, max] = range;
+    const severeMin = min * (1 - SEVERE_BUFFER);
+    const severeMax = max * (1 + SEVERE_BUFFER);
+    if (words < min) {
+      findings.push({
+        severity: words < severeMin ? 'severe' : 'marginal',
+        message: `${words} palabras, bajo el piso de ${tier} (${min}-${max})`,
+      });
+    }
+    if (words > max) {
+      findings.push({
+        severity: words > severeMax ? 'severe' : 'marginal',
+        message: `${words} palabras, sobre el techo de ${tier} (${min}-${max}) -- ¿de verdad es un ${tier}, o el router se quedó corto?`,
+      });
+    }
+  }
+
+  const shouldHaveOpinion = tier === 'B' || tier === 'C';
+  if (tier === 'A' && opinionPresent) {
+    findings.push({ severity: 'severe', message: 'tier A no lleva Opinión de Playbook y esta pieza sí tiene una' });
+  }
+  if (shouldHaveOpinion && !opinionPresent) {
+    findings.push({ severity: 'severe', message: `tier ${tier} debe llevar Opinión de Playbook y no se encontró` });
+  }
+  if (tier === 'C' && opinionHasTrailing) {
+    findings.push({
+      severity: 'severe',
+      message:
+        'hay un párrafo de prosa justo después de la Opinión de Playbook -- el Deep Dive la lleva en exactamente un párrafo (format-tiers.md §3b, 2026-09-13)',
+    });
+  }
+
+  return { tier, words, opinionPresent, opinionHasTrailing, findings };
 }
 
 function main() {
   const path = process.argv[2];
   if (!path) {
-    console.error('usage: npx tsx scripts/check-format-tier.ts <draft.json> [--strict]');
+    console.error('usage: npx tsx scripts/check-format-tier.ts <draft.json>');
     process.exitCode = 2;
     return;
   }
-  const strict = process.argv.includes('--strict');
   const drafts = JSON.parse(readFileSync(path, 'utf8')) as Draft[];
-  let flagged = 0;
+  let severeCount = 0;
+  let marginalCount = 0;
 
   for (const d of drafts) {
-    const { tier, words, opinionPresent, opinionHasTrailing } = analyse(d);
-    const flags: string[] = [];
+    const { tier, words, opinionPresent, opinionHasTrailing, findings } = analyseTier(d);
+    const severe = findings.filter(f => f.severity === 'severe');
+    const marginal = findings.filter(f => f.severity === 'marginal');
+    const mark = severe.length ? '✗' : marginal.length ? '⚑' : '✓';
 
-    if (!tier || !(tier in RANGES)) {
-      flags.push(`sin tier declarado (o tier "${tier}" no es A/B/C/D) -- no se puede verificar`);
-    } else {
-      const range = RANGES[tier];
-      if (range) {
-        const [min, max] = range;
-        if (words < min) flags.push(`${words} palabras, bajo el piso de ${tier} (${min}-${max})`);
-        if (words > max)
-          flags.push(
-            `${words} palabras, sobre el techo de ${tier} (${min}-${max}) -- ¿de verdad es un ${tier}, o el router se quedó corto?`,
-          );
-      }
-      const shouldHaveOpinion = tier === 'B' || tier === 'C';
-      if (tier === 'A' && opinionPresent) flags.push(`tier A no lleva Opinión de Playbook y esta pieza sí tiene una`);
-      if (shouldHaveOpinion && !opinionPresent) flags.push(`tier ${tier} debe llevar Opinión de Playbook y no se encontró`);
-      if (tier === 'C' && opinionHasTrailing)
-        flags.push(
-          `hay un párrafo de prosa justo después de la Opinión de Playbook -- el Deep Dive la lleva en exactamente un párrafo (format-tiers.md §3b, 2026-09-13)`,
-        );
-    }
-
-    console.log(`\n${flags.length ? '⚑' : '✓'} ${(d.title || '(sin título)').slice(0, 70)} [${tier || '?'}]`);
+    console.log(`\n${mark} ${(d.title || '(sin título)').slice(0, 70)} [${tier || '?'}]`);
     console.log(`   ${words} palabras · Opinión ${opinionPresent ? 'sí' : 'no'}${opinionHasTrailing ? ' (+ párrafo trailing)' : ''}`);
-    for (const f of flags) console.log(`   ⚑ ${f}`);
-    if (flags.length) flagged++;
+    for (const f of severe) console.log(`   ✗ SEVERO (bloquearía el publish): ${f.message}`);
+    for (const f of marginal) console.log(`   ⚑ marginal (solo aviso): ${f.message}`);
+    if (severe.length) severeCount++;
+    else if (marginal.length) marginalCount++;
   }
 
-  console.log(`\n${drafts.length - flagged}/${drafts.length} borradores calzan con su tier declarado.`);
-  if (flagged && strict) process.exitCode = 1;
+  const clean = drafts.length - severeCount - marginalCount;
+  console.log(
+    `\n${clean}/${drafts.length} borradores calzan sin observaciones, ${marginalCount} con avisos marginales, ` +
+      `${severeCount} con hallazgos severos (bloquearían el publish real).`,
+  );
+  if (severeCount) process.exitCode = 1;
 }
 
 if (require.main === module) main();

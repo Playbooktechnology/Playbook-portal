@@ -28,6 +28,72 @@ palabras).
 - `npx tsc --noEmit` sobre todo el repo tras los cambios de Fase 5a: **0
   errores**.
 
+## Gap real encontrado y corregido: `check-format-tier.ts` no estaba conectado a nada
+
+Al presentar este suite se preguntó directamente: *"¿esto corre antes de
+publicar de verdad, o solo lo corrieron ustedes aparte?"* La respuesta,
+verificada con grep, era la segunda: `check-format-tier.ts` existía como
+script suelto -- 0 menciones en cualquier `SKILL.md`, 0 llamadas desde
+`scripts/publish-newsletter.ts`, 0 en CI. Un artículo real con el mismo
+defecto que el caso 9 (156 palabras en un tier B) se habría publicado tal
+cual, sin nada que lo detuviera; "el chequeo lo atrapó" solo era cierto
+porque se corrió a mano hoy.
+
+**Corregido en el mismo PR:**
+
+1. `scripts/check-format-tier.ts` ahora exporta `analyseTier()`, y clasifica
+   cada hallazgo en dos severidades en vez de un flag plano: **severo**
+   (una estructura binaria mal -- Opinión ausente/de más, o un párrafo de
+   prosa después de la Opinión en un Deep Dive -- o un conteo de palabras a
+   más del 30% fuera del rango del tier) vs. **marginal** (un desfase chico,
+   ej. 240 palabras contra un piso de 250).
+2. `scripts/publish-newsletter.ts` lo llama de verdad, justo después del
+   overlap gate: un hallazgo **severo** bloquea el publish (mismo patrón
+   que `findOverlaps` -- exit code 1, nada se inserta, hace falta
+   `--allow-tier-mismatch` explícito). Un hallazgo **marginal** solo
+   imprime un aviso, igual que `check-voice.mjs` por defecto.
+3. Se agregó el campo opcional `tier` al `ArticleInput` (sin tocar el
+   esquema de Postgres -- es solo el contrato JSON transitorio del script)
+   y se instruyó explícitamente en el Step 7 de ambos `SKILL.md`
+   (`publish-newsletter`, `publish-sourced-article`) fijarlo en cada
+   artículo, porque sin él el gate no tiene nada que verificar.
+4. Verificado con `analyseTier()` corrido de forma aislada (sin DB): el
+   caso 9 real (156p, sin Opinión repetitiva) sale `severe`; un caso
+   sintético de 240p contra el mismo piso sale `marginal` -- la
+   distinción funciona como se pidió.
+
+**También se corrigió la atribución de causa raíz del caso 9**: no es
+evidencia de un bug en el router ni en el prompt de B -- el caso fijaba
+`tier: B` a mano, sin correr el gate ni el router sobre el input. Detalle
+completo en `case-09-bien-escrito-pero-sustituible.md`.
+
+## Auditoría: ¿hay otras herramientas con el mismo patrón (construidas, nunca conectadas)?
+
+Grep sobre todo `scripts/check-*` y `scripts/test-*` contra `.claude/`,
+`scripts/publish-newsletter.ts` y `.github/workflows/ci.yml`. Dos
+categorías distintas:
+
+- **Suites de regresión sobre código** (`test-device-archive-safety.ts`,
+  `test-device-guards.ts`, `test-duplicate-detection.mjs`,
+  `test-email-wall.mjs`, `test-overlap-gate.ts`, `test-voice-antithesis.mjs`)
+  -- 0 referencias en `.claude/`, pero **correctamente**: están pensadas
+  para correr cuando alguien toca el código subyacente (`lib/article-devices.ts`,
+  `find-duplicates.mjs`, etc.), no para auditar un draft antes de publicar.
+  No es el mismo problema.
+- **Chequeos de pre-publicación** -- las únicas tres pensadas para correr
+  contra un draft antes de que se publique: `check-voice.mjs`,
+  `check-format-tier.ts`, `check-draft-devices.ts`. De las tres, **una
+  segunda queda huérfana y sin corregir en este PR**:
+  `scripts/check-draft-devices.ts`. Su propio comentario de cabecera dice
+  literalmente *"this is the check that belongs before publishing, not
+  after"* (un device mal formado se publica como texto plano visible, sin
+  aviso) -- pero 0 menciones en cualquier `SKILL.md`, 0 wireo en
+  `scripts/publish-newsletter.ts`, 0 en CI. Es preexistente (no se
+  construyó en este PR) y queda **fuera de alcance de esta corrida** --
+  señalado aquí para que no aparezca como sorpresa después, y candidato
+  directo para el mismo tratamiento que `check-format-tier.ts` acaba de
+  recibir.
+
 ## Qué NO se pudo correr en este sandbox (limitación de entorno, no del código)
 
 - `scripts/publish-newsletter.ts --dry-run` de verdad, y
@@ -51,7 +117,7 @@ palabras).
 | 6 | Evidence gap | detecta gap, no fabrica certeza | RADAR en el gate | contraste: forzarlo cae en REQUIERE REEDICIÓN |
 | 7 | A con delta, sin Opinión | A con delta | A, 121p, sin Opinión | aprobado |
 | 8 | B con Opinión que repite | reedición | REQUIERE REEDICIÓN | gates 4/5 fallan, 5 cambios concretos dados |
-| 9 | Bien escrito pero sustituible | falla Moat Check | NO PUBLICAR TODAVÍA | además, 156p bajo el piso de B (hallazgo extra) |
+| 9 | Bien escrito pero sustituible | falla Moat Check | NO PUBLICAR TODAVÍA | 156p también sale SEVERO en check-format-tier.ts (ahora bloqueante de verdad); caso re-etiquetado: no prueba un bug de router, ver el archivo |
 | 10 | 120 palabras bastan | A, no inflar | A, 107p, aprobado | no se forzó a 300-500 |
 
 9 de 10 casos coinciden exactamente con el resultado esperado por el

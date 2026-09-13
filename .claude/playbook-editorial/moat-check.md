@@ -53,3 +53,28 @@ place it touches a deterministic check is `scripts/check-format-tier.ts`
 (word count and Opinión presence/absence against the declared tier), which
 confirms the mechanical half of questions 7 and 8 — it cannot judge 1-6,
 9 or 10.
+
+**That deterministic check is a real, blocking gate, not a mirror** (fixed
+2026-09-13, after the tool existed for a run and nothing ever called it — a
+draft could contradict its own tier and publish untouched). It runs for
+real inside `scripts/publish-newsletter.ts`, right after the overlap gate,
+using the `tier` field set on the article. Two severities, not one flat
+pass/fail:
+
+- **Severe** findings block the publish outright: a tier missing its
+  required Opinión de Playbook (or an A carrying one it shouldn't), a Deep
+  Dive's Opinión with a trailing paragraph after it, or a word count more
+  than 30% outside the tier's range. Override only with
+  `--allow-tier-mismatch`, and only after a human has looked and confirmed
+  it's a deliberate, documented exception.
+- **Marginal** findings (a word count just outside the range — e.g. 240
+  words against a 250-word floor) print as a warning and never block, the
+  same non-blocking default `check-voice.mjs` uses for its own flags.
+
+The distinction matters because the two failure modes are not the same
+kind of problem: a small gap against a range is plausibly the "never take
+away length, only add" rule (`voice-and-style.md` §2) at work; a severe gap
+(156 words against a 250-word floor, say) means the tier the router chose
+never had real substance behind it in the first place — which is a router
+or gate problem (`editorial-gate.md`, `format-tiers.md` §1), not a prose
+polish problem, and prose polish can't fix it.

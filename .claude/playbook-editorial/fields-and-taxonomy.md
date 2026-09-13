@@ -8,7 +8,14 @@ fields marked **differs by funnel** below are set differently, and each skill's
 Field shape: `title, excerpt, teaser, bodyMarkdown, author, date,
 dateFormatted, publication, source, tagsScope, tagsSport, tagsVertical,
 priority, featured, mostrarAutor, readingTime, substackUrl, sourceUrl,
-imageUrl, imageCredit`.
+imageUrl, imageCredit, tier`.
+
+- **`tier`** — the router's A/B/C/D call (`format-tiers.md` §1). Optional in
+  the type (an older draft that never sets it still publishes), but it is
+  the only thing that lets `scripts/check-format-tier.ts`'s real, blocking
+  gate inside `scripts/publish-newsletter.ts` do its job (`moat-check.md`).
+  Omitting it doesn't skip a check that would otherwise run — it skips the
+  check entirely. Set it on every article.
 
 ---
 

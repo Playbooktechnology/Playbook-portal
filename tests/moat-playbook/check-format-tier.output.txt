@@ -8,11 +8,11 @@
 ✓ La Copa Centroamericana cambia de sede por tercera vez en cuatro edici [A]
    121 palabras · Opinión no
 
-⚑ Bebidas Cumbre extiende tres años más su patrocinio con el Maratón de  [B]
+✗ Bebidas Cumbre extiende tres años más su patrocinio con el Maratón de  [B]
    156 palabras · Opinión sí
-   ⚑ 156 palabras, bajo el piso de B (250-500)
+   ✗ SEVERO (bloquearía el publish): 156 palabras, bajo el piso de B (250-500)
 
 ✓ Ricardo Solano se retira tras 22 años como árbitro en la LCF [A]
    107 palabras · Opinión no
 
-4/5 borradores calzan con su tier declarado.
+4/5 borradores calzan sin observaciones, 0 con avisos marginales, 1 con hallazgos severos (bloquearían el publish real).

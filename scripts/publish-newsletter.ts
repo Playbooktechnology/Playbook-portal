@@ -5,7 +5,7 @@
 // publish-sourced-article (.claude/skills/publish-sourced-article,
 // third-party links with human review). Never run by hand.
 //
-// Usage: tsx scripts/publish-newsletter.ts <path-to-json-file> [--dry-run] [--allow-overlap]
+// Usage: tsx scripts/publish-newsletter.ts <path-to-json-file> [--dry-run] [--allow-overlap] [--allow-tier-mismatch]
 // Input: a JSON array of ArticleInput (see type below). bodyMarkdown supports
 // blank-line-separated paragraphs, "## " headings, "**bold**" spans,
 // "[text](url)" links, and "- " bullet-list blocks (every non-empty line in
@@ -30,6 +30,7 @@ import { TIPTAP_EXTENSIONS } from '../lib/tiptap-extensions';
 import { slugify } from '../lib/slugify';
 import { validateTags, formatTagIssues, REQUIRED_PROPERTY_BY_SOURCE } from '../lib/taxonomy';
 import { buildIndex, rank } from './find-duplicates.mjs';
+import { analyseTier } from './check-format-tier';
 
 // Uses Neon's HTTP driver (plain HTTPS, one query per request) instead of
 // lib/db/client.ts's node-postgres Pool: this script runs from environments
@@ -81,6 +82,14 @@ type ArticleInput = {
   sourceUrl: string; // unique per-item dedupe key (see schema.ts articles.sourceUrl)
   imageUrl: string;
   imageCredit?: string;
+  /**
+   * The router's format call (A/B/C/D, format-tiers.md §1). Optional so an
+   * older draft that never sets it publishes exactly as before, unblocked --
+   * but without it, scripts/check-format-tier.ts's gate below has nothing to
+   * check, which means it is the ONLY thing standing between a router
+   * mismatch and a live row. Set it.
+   */
+  tier?: string;
 };
 
 function parseInlineMarks(text: string): JSONContent[] {
@@ -375,6 +384,7 @@ export async function findOverlaps(
 
 async function main() {
   const allowOverlap = process.argv.includes('--allow-overlap');
+  const allowTierMismatch = process.argv.includes('--allow-tier-mismatch');
   const dryRun = process.argv.includes('--dry-run');
   const filePath = process.argv[2];
   if (!filePath) {
@@ -404,11 +414,48 @@ async function main() {
     return;
   }
 
+  // ————————————————————— Format-tier gate (moat playbook guide, 2026-09-13)
+  //
+  // scripts/check-format-tier.ts existed and was never called from anywhere
+  // in the real publish path -- a draft could carry a word count or an
+  // Opinión presence that contradicted its own declared tier and nothing
+  // stopped it. This closes that gap the same way the overlap gate above
+  // does: severe findings block, per item, before insertOne ever runs.
+  // Marginal findings (a small gap against the range, e.g. 240 words vs. a
+  // 250-word floor) print as warnings and never block -- see
+  // scripts/check-format-tier.ts's SEVERE_BUFFER comment for where the line
+  // sits and why. An item with no `tier` set is not checked at all.
+  const tierBlocked = new Map<number, string[]>();
+  for (const [i, item] of items.entries()) {
+    if (blocked.has(i)) continue; // already refused above; don't double-report
+    const { findings } = analyseTier({ title: item.title, bodyMarkdown: item.bodyMarkdown, tier: item.tier });
+    const severe = findings.filter(f => f.severity === 'severe').map(f => f.message);
+    const marginal = findings.filter(f => f.severity === 'marginal').map(f => f.message);
+    if (severe.length) tierBlocked.set(i, severe);
+    for (const m of marginal) console.warn(`[publish] TIER (marginal, no bloquea): ${item.title}\n           ${m}`);
+  }
+  if (tierBlocked.size && !allowTierMismatch) {
+    for (const [i, whys] of tierBlocked) {
+      console.error(`[publish] TIER MISMATCH  ${items[i].title} [${items[i].tier || '?'}]`);
+      for (const why of whys) console.error(`           ${why}`);
+    }
+    console.error(
+      `[publish] refusing to publish ${tierBlocked.size} of ${items.length} article(s): the draft's word count or ` +
+        'Opinión de Playbook contradicts its own declared tier badly enough that this is not a rounding gap. ' +
+        'Re-route it (format-tiers.md §1) or fix the draft to match the tier it claims. ' +
+        'Pass --allow-tier-mismatch only when a human has looked and confirmed the mismatch is a deliberate, ' +
+        'documented exception (voice-and-style.md §2\'s "never take away length, only add" cases, for example).',
+    );
+    process.exitCode = 1;
+    return;
+  }
+
   if (dryRun) console.log('[publish] --dry-run: no row will be written to Postgres, no deploy will fire.');
 
   const results = [];
   for (const [i, item] of items.entries()) {
     if (blocked.has(i)) console.warn(`[publish] overlap overridden by --allow-overlap: ${item.title}`);
+    if (tierBlocked.has(i)) console.warn(`[publish] tier mismatch overridden by --allow-tier-mismatch: ${item.title}`);
     const result = await insertOne(item, dryRun);
     results.push(result);
     console.log(`[publish] ${result.status}: ${result.title}${result.status === 'ok' ? ` (id=${result.id})` : ''}`);
