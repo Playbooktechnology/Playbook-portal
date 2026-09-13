@@ -188,10 +188,25 @@ demands; `readingTime: 3` or `4`.
 - **Devices**: two to four, each answering a question — ecuación, reparto,
   serie, duelo, mapa or cronología (`dynamic-element-library.md`; the budget
   and the exclusive pairs apply as everywhere).
-- **Opinión de Playbook**: one or two paragraphs that synthesize the reading
-  obtained **after** the analysis. Never a recap of the article.
-- **Close**: no moraleja. A consequence, an open tension, a pending decision,
-  a number to watch, or a concrete question the market hasn't answered.
+- **Opinión de Playbook**: exactly one paragraph, same default as every other
+  format (`voice-and-style.md` §2), that synthesizes the reading obtained
+  **after** the analysis. Never a recap of the article. **This is always the
+  article's last body content** — nothing follows it except the `Fuentes:`
+  footer, which the render pipeline lifts out of the body regardless (§6).
+  Changed 2026-09-13 (publisher) from "one or two paragraphs": the render
+  only fences the single `<p>` carrying the literal
+  `**Opinión de Playbook:**` lead-in, so a second paragraph — written as this
+  tier's default, not as a deliberate ask — renders as plain text trailing
+  the green callout. That reads on the page as though something follows the
+  Opinión, which is exactly what a Deep Dive on the CBF/Copa do Brasil
+  rights sale did before a human reviewer caught it live. §3's 2026-08-07
+  precedent (a human reviewer can explicitly ask for a two-paragraph split)
+  still stands on any tier; what changed is that a Deep Dive no longer
+  defaults to it.
+- **Close**: no moraleja. Land it as the last sentence of that one Opinión
+  paragraph, not a separate beat after it — a consequence, an open tension, a
+  pending decision, a number to watch, or a concrete question the market
+  hasn't answered.
 
 **The exit test:** the reader can explain what happened, how it works, where
 the money is, what incentives exist, who controls what, and what may change
