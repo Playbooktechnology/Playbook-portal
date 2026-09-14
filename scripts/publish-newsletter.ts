@@ -5,7 +5,7 @@
 // publish-sourced-article (.claude/skills/publish-sourced-article,
 // third-party links with human review). Never run by hand.
 //
-// Usage: tsx scripts/publish-newsletter.ts <path-to-json-file>
+// Usage: tsx scripts/publish-newsletter.ts <path-to-json-file> [--allow-overlap] [--allow-device-mismatch]
 // Input: a JSON array of ArticleInput (see type below). bodyMarkdown supports
 // blank-line-separated paragraphs, "## " headings, "**bold**" spans,
 // "[text](url)" links, and "- " bullet-list blocks (every non-empty line in
@@ -23,6 +23,7 @@ import { TIPTAP_EXTENSIONS } from '../lib/tiptap-extensions';
 import { slugify } from '../lib/slugify';
 import { validateTags, formatTagIssues, REQUIRED_PROPERTY_BY_SOURCE } from '../lib/taxonomy';
 import { buildIndex, rank } from './find-duplicates.mjs';
+import { analyseDraftDevices } from './check-draft-devices';
 
 // Uses Neon's HTTP driver (plain HTTPS, one query per request) instead of
 // lib/db/client.ts's node-postgres Pool: this script runs from environments
@@ -357,6 +358,7 @@ export async function findOverlaps(
 
 async function main() {
   const allowOverlap = process.argv.includes('--allow-overlap');
+  const allowDeviceMismatch = process.argv.includes('--allow-device-mismatch');
   const filePath = process.argv[2];
   if (!filePath) {
     console.error('Usage: tsx scripts/publish-newsletter.ts <path-to-json-file>');
@@ -385,9 +387,54 @@ async function main() {
     return;
   }
 
+  // ————————————————————— Device gate (moat playbook follow-up, 2026-09-14)
+  //
+  // scripts/check-draft-devices.ts existed and was never called from
+  // anywhere in the real publish path -- a malformed or over-budget device
+  // declaration would ship as visible broken plain text with nothing to
+  // stop it. This closes that gap the same way the overlap gate above does:
+  // every finding here is binary (a declaration parses and renders, or it
+  // doesn't) and every finding blocks, unlike check-format-tier.ts's
+  // marginal/severe split for word counts, which has no equivalent here.
+  const deviceBlocked = new Map<number, string[]>();
+  for (const [i, item] of items.entries()) {
+    if (blocked.has(i)) continue; // already refused above; don't double-report
+    const { declared } = analyseDraftDevices({ title: item.title, bodyMarkdown: item.bodyMarkdown, readingTime: item.readingTime, priority: item.priority });
+    const bad = declared.filter(d => d.bad);
+    if (bad.length) {
+      deviceBlocked.set(
+        i,
+        bad.map(d => {
+          const reason =
+            d.reason === 'no-parsea'
+              ? 'no parsea, saldría como texto plano'
+              : d.reason === 'fuera-de-presupuesto'
+                ? 'fuera de presupuesto, saldría como texto plano'
+                : 'tipo repetido, saldría como texto plano';
+          return `${reason}: ${d.text.slice(0, 108)}`;
+        }),
+      );
+    }
+  }
+  if (deviceBlocked.size && !allowDeviceMismatch) {
+    for (const [i, whys] of deviceBlocked) {
+      console.error(`[publish] DEVICE MISMATCH  ${items[i].title}`);
+      for (const why of whys) console.error(`           ${why}`);
+    }
+    console.error(
+      `[publish] refusing to publish ${deviceBlocked.size} of ${items.length} article(s): at least one device ` +
+        'declaration would render as visible broken plain text instead of the intended device. Fix the syntax ' +
+        '(`dynamic-element-library.md`) or drop the declaration under budget. Pass --allow-device-mismatch only ' +
+        'when a human has confirmed the flagged line is deliberately not meant to be a device.',
+    );
+    process.exitCode = 1;
+    return;
+  }
+
   const results = [];
   for (const [i, item] of items.entries()) {
     if (blocked.has(i)) console.warn(`[publish] overlap overridden by --allow-overlap: ${item.title}`);
+    if (deviceBlocked.has(i)) console.warn(`[publish] device mismatch overridden by --allow-device-mismatch: ${item.title}`);
     const result = await insertOne(item);
     results.push(result);
     console.log(`[publish] ${result.status}: ${result.title}${result.status === 'ok' ? ` (id=${result.id})` : ''}`);

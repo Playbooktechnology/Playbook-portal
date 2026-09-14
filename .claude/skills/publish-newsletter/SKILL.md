@@ -34,6 +34,7 @@ nobody copy-pastes anything.
 | **5** | **Apply the element library.** Walk every device, respect the budget, check each declaration rendered. | `references/dynamic-element-library.md` |
 | **6** | **Fill the fields and source the images.** Set the **0–99 `boleta`** on every article — omitting it silently ranks the piece on the retired star scale. `tagsProperty` decides whether the piece lands on a hub; read its boundary rule before setting it. | `references/fields-and-taxonomy.md` → "Ranking", `references/images.md` |
 | **7** | **Self-check** against the twelve-point publication checklist and run `check-voice.mjs`. | `references/voice-and-style.md` §12 |
+| **7b** | **Device check.** `check-draft-devices.ts` runs for real inside `scripts/publish-newsletter.ts` at Step 8 and refuses to publish any declaration that would render as visible broken plain text (malformed, over budget, or a repeated type). Fix flagged declarations before publishing rather than relying on the override. | `references/dynamic-element-library.md` |
 | **8** | **Publish, report, capture feedback.** | `references/publishing-mechanics.md` |
 
 Steps 3–5 are one pass, not three: the tier decides the length, the voice
