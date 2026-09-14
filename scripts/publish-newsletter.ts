@@ -5,7 +5,7 @@
 // publish-sourced-article (.claude/skills/publish-sourced-article,
 // third-party links with human review). Never run by hand.
 //
-// Usage: tsx scripts/publish-newsletter.ts <path-to-json-file> [--dry-run] [--allow-overlap] [--allow-tier-mismatch]
+// Usage: tsx scripts/publish-newsletter.ts <path-to-json-file> [--dry-run] [--allow-overlap] [--allow-tier-mismatch] [--allow-device-mismatch]
 // Input: a JSON array of ArticleInput (see type below). bodyMarkdown supports
 // blank-line-separated paragraphs, "## " headings, "**bold**" spans,
 // "[text](url)" links, and "- " bullet-list blocks (every non-empty line in
@@ -30,6 +30,7 @@ import { TIPTAP_EXTENSIONS } from '../lib/tiptap-extensions';
 import { slugify } from '../lib/slugify';
 import { validateTags, formatTagIssues, REQUIRED_PROPERTY_BY_SOURCE } from '../lib/taxonomy';
 import { buildIndex, rank } from './find-duplicates.mjs';
+import { analyseDraftDevices } from './check-draft-devices';
 import { analyseTier } from './check-format-tier';
 
 // Uses Neon's HTTP driver (plain HTTPS, one query per request) instead of
@@ -385,6 +386,7 @@ export async function findOverlaps(
 async function main() {
   const allowOverlap = process.argv.includes('--allow-overlap');
   const allowTierMismatch = process.argv.includes('--allow-tier-mismatch');
+  const allowDeviceMismatch = process.argv.includes('--allow-device-mismatch');
   const dryRun = process.argv.includes('--dry-run');
   const filePath = process.argv[2];
   if (!filePath) {
@@ -425,9 +427,16 @@ async function main() {
   // 250-word floor) print as warnings and never block -- see
   // scripts/check-format-tier.ts's SEVERE_BUFFER comment for where the line
   // sits and why. An item with no `tier` set is not checked at all.
+  // Every item is checked here regardless of `blocked` -- an overlap block
+  // without --allow-overlap already returned above, so we'd never reach
+  // this loop; WITH --allow-overlap the item proceeds to insertOne, so it
+  // still needs its own tier check. Skipping it here (an earlier version of
+  // this gate did, "already refused above") silently let an overlap-
+  // overridden item skip tier checking too -- same class of bug the device
+  // gate below had until this same fix, caught by testing both gates
+  // together with --allow-tier-mismatch.
   const tierBlocked = new Map<number, string[]>();
   for (const [i, item] of items.entries()) {
-    if (blocked.has(i)) continue; // already refused above; don't double-report
     const { findings } = analyseTier({ title: item.title, bodyMarkdown: item.bodyMarkdown, tier: item.tier });
     const severe = findings.filter(f => f.severity === 'severe').map(f => f.message);
     const marginal = findings.filter(f => f.severity === 'marginal').map(f => f.message);
@@ -450,12 +459,61 @@ async function main() {
     return;
   }
 
+  // ————————————————————— Device gate (moat playbook follow-up, 2026-09-14)
+  //
+  // scripts/check-draft-devices.ts existed and was never called from
+  // anywhere in the real publish path -- a malformed or over-budget device
+  // declaration would ship as visible broken plain text with nothing to
+  // stop it. This closes that gap the same way the two gates above do:
+  // every finding here is binary (a declaration parses and renders, or it
+  // doesn't) and every finding blocks, unlike the tier gate's
+  // marginal/severe split for word counts, which has no equivalent here.
+  // Same reasoning as the tier gate above: every item is checked
+  // unconditionally. An item only ever skips this gate by having already
+  // caused a `return` (overlap or tier block, neither overridden) -- if
+  // execution reaches here at all, every remaining item is either clean or
+  // proceeding under an override, and either way needs its own device check.
+  const deviceBlocked = new Map<number, string[]>();
+  for (const [i, item] of items.entries()) {
+    const { declared } = analyseDraftDevices({ title: item.title, bodyMarkdown: item.bodyMarkdown, readingTime: item.readingTime, priority: item.priority });
+    const bad = declared.filter(d => d.bad);
+    if (bad.length) {
+      deviceBlocked.set(
+        i,
+        bad.map(d => {
+          const reason =
+            d.reason === 'no-parsea'
+              ? 'no parsea, saldría como texto plano'
+              : d.reason === 'fuera-de-presupuesto'
+                ? 'fuera de presupuesto, saldría como texto plano'
+                : 'tipo repetido, saldría como texto plano';
+          return `${reason}: ${d.text.slice(0, 108)}`;
+        }),
+      );
+    }
+  }
+  if (deviceBlocked.size && !allowDeviceMismatch) {
+    for (const [i, whys] of deviceBlocked) {
+      console.error(`[publish] DEVICE MISMATCH  ${items[i].title}`);
+      for (const why of whys) console.error(`           ${why}`);
+    }
+    console.error(
+      `[publish] refusing to publish ${deviceBlocked.size} of ${items.length} article(s): at least one device ` +
+        'declaration would render as visible broken plain text instead of the intended device. Fix the syntax ' +
+        '(`dynamic-element-library.md`) or drop the declaration under budget. Pass --allow-device-mismatch only ' +
+        'when a human has confirmed the flagged line is deliberately not meant to be a device.',
+    );
+    process.exitCode = 1;
+    return;
+  }
+
   if (dryRun) console.log('[publish] --dry-run: no row will be written to Postgres, no deploy will fire.');
 
   const results = [];
   for (const [i, item] of items.entries()) {
     if (blocked.has(i)) console.warn(`[publish] overlap overridden by --allow-overlap: ${item.title}`);
     if (tierBlocked.has(i)) console.warn(`[publish] tier mismatch overridden by --allow-tier-mismatch: ${item.title}`);
+    if (deviceBlocked.has(i)) console.warn(`[publish] device mismatch overridden by --allow-device-mismatch: ${item.title}`);
     const result = await insertOne(item, dryRun);
     results.push(result);
     console.log(`[publish] ${result.status}: ${result.title}${result.status === 'ok' ? ` (id=${result.id})` : ''}`);
