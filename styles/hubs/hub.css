@@ -829,15 +829,19 @@
 @media (prefers-reduced-motion: reduce) { .hubx-pillar { transition: none; } }
 
 /* Pushed away from the title rather than sitting on it: the numeral is a
-   register mark for the card, not a heading. */
+   register mark for the card, not a heading. Colored 2026-09-14 (publisher:
+   against --hub-edge the numeral barely read against the card background) —
+   --hub-accent-ink over the harsher --hub-accent, since this is still large
+   set type on Cinder, the exact case that token exists for. */
 .hubx-pillar-no {
   display: block;
   font-family: var(--serif-display); font-weight: 400;
-  font-size: 2.1rem; line-height: 1; color: var(--hub-edge);
+  font-size: 2.1rem; line-height: 1; color: var(--hub-accent-ink);
   margin-bottom: 2.1rem;
 }
-/* min-height of two lines: "Capital + ownership" wraps and "Expansión"
-   does not, and without a floor the five bodies started at three different
+/* min-height of two lines: "Capital + ownership" wraps and the shortest
+   titles ("Expansión" among them, before it was cut 2026-09-14) do not,
+   and without a floor the bodies started at different
    heights across the row. */
 .hubx-pillar h3 {
   font-size: 0.98rem; line-height: 1.25; min-height: 2.5em;
