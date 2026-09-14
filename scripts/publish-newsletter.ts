@@ -5,12 +5,19 @@
 // publish-sourced-article (.claude/skills/publish-sourced-article,
 // third-party links with human review). Never run by hand.
 //
-// Usage: tsx scripts/publish-newsletter.ts <path-to-json-file>
+// Usage: tsx scripts/publish-newsletter.ts <path-to-json-file> [--dry-run] [--allow-overlap] [--allow-tier-mismatch]
 // Input: a JSON array of ArticleInput (see type below). bodyMarkdown supports
 // blank-line-separated paragraphs, "## " headings, "**bold**" spans,
 // "[text](url)" links, and "- " bullet-list blocks (every non-empty line in
 // the block starting with "- "), exactly what the editorial voice in each
 // skill produces.
+//
+// --dry-run (moat playbook guide, 2026-09-13, tests/moat-playbook/): runs
+// every real step -- tag validation, the boleta score, markdown->TipTap->HTML,
+// slug minting, and both overlap-check passes against the real archive --
+// but skips the db.insert and prints the row that would have been written
+// instead. Nothing reaches Postgres and no deploy is triggered. Same flag
+// name and behavior as scripts/update-article.ts's --dry-run.
 
 import { readFile } from 'node:fs/promises';
 import { neon } from '@neondatabase/serverless';
@@ -23,6 +30,7 @@ import { TIPTAP_EXTENSIONS } from '../lib/tiptap-extensions';
 import { slugify } from '../lib/slugify';
 import { validateTags, formatTagIssues, REQUIRED_PROPERTY_BY_SOURCE } from '../lib/taxonomy';
 import { buildIndex, rank } from './find-duplicates.mjs';
+import { analyseTier } from './check-format-tier';
 
 // Uses Neon's HTTP driver (plain HTTPS, one query per request) instead of
 // lib/db/client.ts's node-postgres Pool: this script runs from environments
@@ -74,6 +82,14 @@ type ArticleInput = {
   sourceUrl: string; // unique per-item dedupe key (see schema.ts articles.sourceUrl)
   imageUrl: string;
   imageCredit?: string;
+  /**
+   * The router's format call (A/B/C/D, format-tiers.md §1). Optional so an
+   * older draft that never sets it publishes exactly as before, unblocked --
+   * but without it, scripts/check-format-tier.ts's gate below has nothing to
+   * check, which means it is the ONLY thing standing between a router
+   * mismatch and a live row. Set it.
+   */
+  tier?: string;
 };
 
 function parseInlineMarks(text: string): JSONContent[] {
@@ -141,7 +157,7 @@ export function markdownToTipTap(markdown: string): Record<string, unknown> {
   return { type: 'doc', content: content.length ? content : [{ type: 'paragraph' }] };
 }
 
-async function insertOne(input: ArticleInput) {
+async function insertOne(input: ArticleInput, dryRun = false) {
   // Controlled-vocabulary gate (TODO #1, 2026-08-14): tags must come out of
   // lib/taxonomy.ts. Case/accent/whitespace variants are canonicalized;
   // anything else hard-fails the publish so a typo can't mint an
@@ -214,55 +230,66 @@ async function insertOne(input: ArticleInput) {
   const bodyHtml = generateHTML(bodyJson as JSONContent, TIPTAP_EXTENSIONS);
   const baseId = slugify(input.title) || `articulo-${Date.now().toString(36)}`;
 
+  const row = {
+    id: baseId,
+    title: input.title,
+    excerpt: input.excerpt,
+    teaser: input.teaser,
+    bodyJson,
+    bodyHtml,
+    author: input.author || '',
+    date: input.date,
+    dateFormatted: input.dateFormatted,
+    publication: input.publication,
+    source: input.source,
+    tagsScope: input.tagsScope,
+    tagsSport: input.tagsSport,
+    tagsVertical: input.tagsVertical,
+    tagsProperty: input.tagsProperty ?? [],
+    priority: input.priority,
+    score: breakdown.score,
+    // Editorial boletas have no `confirmed` question -- an investigation
+    // is not "unconfirmed", the concept does not apply. Null, not true:
+    // the column must not claim an answer nobody was asked. Same rule
+    // as scripts/reclassify-rank.ts, so backfilled and publish-time rows
+    // are indistinguishable.
+    confirmed: input.boleta.kind === 'news' ? input.boleta.confirmed : null,
+    scoreBoleta: {
+      version: 1,
+      scoredAt: input.date,
+      kind: input.boleta.kind,
+      answers: input.boleta,
+      decena: breakdown.decena,
+      unit: breakdown.unit,
+      score: breakdown.score,
+      trace: breakdown.trace,
+      legacyPriority: input.priority,
+    },
+    featured: input.featured,
+    mostrarAutor: input.mostrarAutor === true,
+    readingTime: input.readingTime,
+    substackUrl: input.substackUrl,
+    sourceUrl: input.sourceUrl,
+    imageUrl: input.imageUrl,
+    imageCredit: input.imageCredit || null,
+    status: 'published' as const,
+  };
+
+  if (dryRun) {
+    // Never touches Postgres. Prints the row exactly as it would have been
+    // written -- tags canonicalized, boleta scored, slug minted, markdown
+    // already rendered to bodyHtml -- so a reviewer can read the would-be
+    // insert without a deploy or a real write.
+    console.log(`[publish] DRY RUN would insert: ${JSON.stringify(row, null, 2)}`);
+    return { status: 'dry-run' as const, id: row.id, title: row.title };
+  }
+
   let id = baseId;
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const [inserted] = await db
         .insert(articles)
-        .values({
-          id,
-          title: input.title,
-          excerpt: input.excerpt,
-          teaser: input.teaser,
-          bodyJson,
-          bodyHtml,
-          author: input.author || '',
-          date: input.date,
-          dateFormatted: input.dateFormatted,
-          publication: input.publication,
-          source: input.source,
-          tagsScope: input.tagsScope,
-          tagsSport: input.tagsSport,
-          tagsVertical: input.tagsVertical,
-          tagsProperty: input.tagsProperty ?? [],
-          priority: input.priority,
-          score: breakdown.score,
-          // Editorial boletas have no `confirmed` question -- an investigation
-          // is not "unconfirmed", the concept does not apply. Null, not true:
-          // the column must not claim an answer nobody was asked. Same rule
-          // as scripts/reclassify-rank.ts, so backfilled and publish-time rows
-          // are indistinguishable.
-          confirmed: input.boleta.kind === 'news' ? input.boleta.confirmed : null,
-          scoreBoleta: {
-            version: 1,
-            scoredAt: input.date,
-            kind: input.boleta.kind,
-            answers: input.boleta,
-            decena: breakdown.decena,
-            unit: breakdown.unit,
-            score: breakdown.score,
-            trace: breakdown.trace,
-            legacyPriority: input.priority,
-          },
-          featured: input.featured,
-          mostrarAutor: input.mostrarAutor === true,
-          readingTime: input.readingTime,
-          substackUrl: input.substackUrl,
-          sourceUrl: input.sourceUrl,
-          imageUrl: input.imageUrl,
-          imageCredit: input.imageCredit || null,
-          status: 'published',
-        })
+        .values({ ...row, id })
         .onConflictDoNothing({ target: articles.sourceUrl })
         .returning();
 
@@ -357,6 +384,8 @@ export async function findOverlaps(
 
 async function main() {
   const allowOverlap = process.argv.includes('--allow-overlap');
+  const allowTierMismatch = process.argv.includes('--allow-tier-mismatch');
+  const dryRun = process.argv.includes('--dry-run');
   const filePath = process.argv[2];
   if (!filePath) {
     console.error('Usage: tsx scripts/publish-newsletter.ts <path-to-json-file>');
@@ -385,17 +414,59 @@ async function main() {
     return;
   }
 
+  // ————————————————————— Format-tier gate (moat playbook guide, 2026-09-13)
+  //
+  // scripts/check-format-tier.ts existed and was never called from anywhere
+  // in the real publish path -- a draft could carry a word count or an
+  // Opinión presence that contradicted its own declared tier and nothing
+  // stopped it. This closes that gap the same way the overlap gate above
+  // does: severe findings block, per item, before insertOne ever runs.
+  // Marginal findings (a small gap against the range, e.g. 240 words vs. a
+  // 250-word floor) print as warnings and never block -- see
+  // scripts/check-format-tier.ts's SEVERE_BUFFER comment for where the line
+  // sits and why. An item with no `tier` set is not checked at all.
+  const tierBlocked = new Map<number, string[]>();
+  for (const [i, item] of items.entries()) {
+    if (blocked.has(i)) continue; // already refused above; don't double-report
+    const { findings } = analyseTier({ title: item.title, bodyMarkdown: item.bodyMarkdown, tier: item.tier });
+    const severe = findings.filter(f => f.severity === 'severe').map(f => f.message);
+    const marginal = findings.filter(f => f.severity === 'marginal').map(f => f.message);
+    if (severe.length) tierBlocked.set(i, severe);
+    for (const m of marginal) console.warn(`[publish] TIER (marginal, no bloquea): ${item.title}\n           ${m}`);
+  }
+  if (tierBlocked.size && !allowTierMismatch) {
+    for (const [i, whys] of tierBlocked) {
+      console.error(`[publish] TIER MISMATCH  ${items[i].title} [${items[i].tier || '?'}]`);
+      for (const why of whys) console.error(`           ${why}`);
+    }
+    console.error(
+      `[publish] refusing to publish ${tierBlocked.size} of ${items.length} article(s): the draft's word count or ` +
+        'Opinión de Playbook contradicts its own declared tier badly enough that this is not a rounding gap. ' +
+        'Re-route it (format-tiers.md §1) or fix the draft to match the tier it claims. ' +
+        'Pass --allow-tier-mismatch only when a human has looked and confirmed the mismatch is a deliberate, ' +
+        'documented exception (voice-and-style.md §2\'s "never take away length, only add" cases, for example).',
+    );
+    process.exitCode = 1;
+    return;
+  }
+
+  if (dryRun) console.log('[publish] --dry-run: no row will be written to Postgres, no deploy will fire.');
+
   const results = [];
   for (const [i, item] of items.entries()) {
     if (blocked.has(i)) console.warn(`[publish] overlap overridden by --allow-overlap: ${item.title}`);
-    const result = await insertOne(item);
+    if (tierBlocked.has(i)) console.warn(`[publish] tier mismatch overridden by --allow-tier-mismatch: ${item.title}`);
+    const result = await insertOne(item, dryRun);
     results.push(result);
     console.log(`[publish] ${result.status}: ${result.title}${result.status === 'ok' ? ` (id=${result.id})` : ''}`);
   }
 
   const okCount = results.filter(r => r.status === 'ok').length;
   const dupCount = results.filter(r => r.status === 'duplicate').length;
-  console.log(`[publish] done: ${okCount} published, ${dupCount} duplicate/skipped, ${results.length} total`);
+  const dryCount = results.filter(r => r.status === 'dry-run').length;
+  console.log(
+    `[publish] done: ${okCount} published, ${dupCount} duplicate/skipped, ${dryCount} dry-run, ${results.length} total`,
+  );
 }
 
 // Guarded so other scripts (e.g. scripts/backfill-article-standards.ts) can
