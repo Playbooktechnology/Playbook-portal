@@ -60,6 +60,23 @@ rests on, and a copy under `public/assets/img/` cannot break when they move a
 path. Self-hosted covers only resolve once the asset is on `main`, so push it
 before the article references it.
 
+**Check you actually have a path to `main` before choosing self-hosting**
+(2026-09-15, publish-sourced-article, the DAZN leadership-reshuffle piece). A
+session working on a designated feature/session branch (the normal git setup
+for these skills) commits and pushes there by default, and that branch is not
+`main` — a self-hosted asset added there sits unreferenced until a PR merges
+it, which is not a step either skill's publish flow performs. That run
+committed the asset, pushed it to the session branch, only noticed at the
+review-presentation step that the live site would 404 on it, and had to add a
+second commit reverting the file. The one script this tree has pre-authorized
+to reach `main` directly (`scripts/sync-skill-feedback.sh`) is scoped to
+`.claude/skills` and `.claude/playbook-editorial` only and cannot carry an
+image. Unless the session confirms it is actually working on `main` (or has
+some other real, already-established path to it), self-hosting is not
+available this run: hotlink the source outlet's URL directly instead and
+credit it as usual (`"Foto: [Outlet]"`) — the fallback the broad-search
+section already uses for a non-self-hosted find.
+
 ### A Wikimedia candidate is verifiable even when the file won't download
 
 (2026-08-18, on the Buss trust fight.) `upload.wikimedia.org` rate-limits shared
