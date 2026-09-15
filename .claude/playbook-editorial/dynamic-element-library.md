@@ -1192,6 +1192,22 @@ by construction, and the `Aprobada`/`No alcanzada` chip is computed, never
 authored. **Mutually exclusive with `Reparto`**, which has no notion of a
 passing threshold.
 
+**The `Umbral` parenthetical note is capped at 24 characters, same limit as
+`Venta`'s `Anterior` note** (2026-09-11, a publish-sourced-article run on a
+Premier League Squad Cost Ratio vote). `parseVote` in `lib/article-devices.ts`
+shares `NOTE_TAIL_RE` with every other device that takes a parenthetical, whose
+capture group is `[^)]{1,24}` — but this section's own worked example
+(`Umbral — 138 (dos tercios)`, an 11-character note) never exercised the limit,
+so nothing here said it existed. A longer note doesn't just get truncated: the
+regex fails to match at all, so the whole `threshold` value is left as the raw
+unparsed string (`"14 (lo que necesita cualquier cambio de reglas)"`),
+`Number()` on that string is `NaN`, and `parseVote` returns `null` for the
+ENTIRE declaration — not just the note, the whole `Votación` ships as inert
+plain text. Caught only by re-fetching the live page after publish and finding
+the raw `<p>Votación: …</p>` string, per `publishing-mechanics.md`'s
+verification step. Keep the note to a two-or-three-word gloss (`mínimo
+necesario`, `dos tercios`, `mayoría simple`) rather than a clause.
+
 ### `Ranking:` — the league table
 
 ```
@@ -1445,14 +1461,3 @@ Walk this for every article before publishing:
    `Cadena`/`Cronología`) — the second one ships as visible plain text.
 10. `Venta`/`Cadena` multiples are left to the device, not restated in prose,
     and both figures in a multiple carry the same currency.
-
-**This checklist is also a real, blocking gate** (fixed 2026-09-14, after
-`check-draft-devices.ts` existed for a run and nothing ever called it — a
-malformed or over-budget declaration would have published as visible
-broken plain text with nothing to stop it). `scripts/publish-newsletter.ts`
-calls it for real, right after the overlap gate: any parse failure, budget
-overrun or repeated device type refuses the publish outright — exit code
-1, nothing written. Every finding here is binary (a declaration renders or
-it doesn't) — there is no "marginal" device failure worth letting through.
-Override only with `--allow-device-mismatch`, and only after a human has
-confirmed the flagged line was never meant to be a device.

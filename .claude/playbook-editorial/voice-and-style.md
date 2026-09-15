@@ -267,6 +267,36 @@ and `infantino-desafia-a-montagliani-…-se-resquebraja` are both live rows whos
 id no longer matches their title, because the id is minted at insert and never
 migrates.
 
+### A procedural step is not a verdict — the title must not read like one
+
+(Playbook team, 2026-09-10, on a Liga MX amparo draft.) A federal court
+**admitting** a lawsuit for review is not the same event as the lawsuit
+**winning**, but a title built on a verb like "logra" or "gana" collapses that
+distance for the reader before the body gets a chance to explain it. The draft
+in question was titled *"Un despacho de Zacatecas logra lo que los aficionados
+no pudieron"* — accurate about the contrast (one filing was admitted, three
+were thrown out) and wrong about the stakes, because "logra" reads as an
+accomplishment when the actual news is that a case cleared a procedural gate
+three others didn't. It published instead as *"Un juzgado admite revisar la
+eliminación del ascenso y descenso"* — the court, not the claimant, is the
+subject, and "admite revisar" names exactly the procedural step that happened
+and nothing more.
+
+**The tell:** if the verb in the title would also describe the final ruling
+(gana, vence, tumba, logra, se impone), it is claiming a result the story does
+not yet have. A story about an admission, a filing, an appeal, or a first
+hearing needs a title built on the procedural verb (admite, presenta,
+apela, desecha) with the institution or the document as the subject, not the
+party hoping to benefit from it. This is the same discipline §8's evidence
+levels ask for — don't blend "this happened" with "this was decided" — applied
+to the one line most readers see and nothing past.
+
+**It is not just the title.** The same run's second paragraph originally
+buried the "this is not a ruling" caveat inside the closing Opinión, after four
+sections that read as build-up to a win. Moved to the second paragraph, right
+after the lede, it changes what the reader carries into the rest of the piece
+instead of correcting it on the way out.
+
 ---
 
 ## 4. Openings
@@ -347,16 +377,6 @@ only the names? If yes, it is still too generic. Rewrite it until it can't.
 
 A weak read does more damage than a short piece with no opinion at all. The
 Opinión explains the mecanismo; it does not deliver a moraleja.
-
-**The Opinión has to earn its space** (moat playbook guide, 2026-09-13). It
-does that through one of: cálculo, benchmark, mecanismo, antecedente,
-contradicción, incentivo, cambio de control, cambio de poder de negociación,
-riesgo, consecuencia, una pregunta concreta, o información importante que
-falta. It does **not** earn its space by: repeating the noticia; saying
-something is "importante" without saying why; turning the story into "good
-idea or bad idea"; or handing the industry a generic recommendation. Any of
-those four is the tell that the piece skipped straight to Opinión without
-finding the palanca first.
 
 ### How each format uses it
 
@@ -467,10 +487,6 @@ alerta de última hora** — calm and analytical even when the underlying story 
 dramatic. The reader should finish feeling they got something a press summary
 wouldn't give them.
 
-**Español de México, tuteo.** When a piece addresses the reader directly (rare
-outside a device caption or a direct question), use "tú", never "usted" — the
-same register as every worked example in this guide.
-
 This is easiest to get wrong in the fact movement, where translating a source too
 literally carries its urgency across with its facts. A Reuters paragraph is
 built to be lifted whole; rebuild the paragraph in Playbook's register instead of
@@ -504,59 +520,41 @@ the rule bans. When one is used, use it consistently through the piece rather
 than alternating with a translation — a headline that says `billionaire` and a
 body that says `milmillonario` reads as indecision.
 
+### Español de México, no de otro país
+
+(Playbook team, 2026-09-10, on a published LFA piece: *"¿por qué pones hincha?
+quiero que lo cambies por fan o aficionado... de ahora en adelante quites
+todos los argentinismos"*.) Playbook writes for a Mexican audience, and a word
+that is completely standard Spanish somewhere else can still read as foreign
+here. **`hincha`** is the worked example: normal in Argentina, Chile, Uruguay
+and most of South America, but a Mexican reader hears it as imported, not as
+their own word for it. The piece already used `fan` and `afición` naturally
+everywhere else in the body; `hincha` was the one word that broke that
+register.
+
+The same test applies beyond that one word: before a sports or general-Spanish
+term goes into a draft, ask whether Playbook's own Mexican audience says it, or
+whether it is the word a Río de la Plata or Spain broadcast would use for the
+same thing. `arquero` (River Plate Spanish) versus `portero` (Mexican Spanish)
+for the same position is the same distinction. This is not the Spanglish rule
+above, which is about English loanwords; this is about **which Spanish**, and
+the fix is always the plain Mexican word already sitting in the rest of the
+piece, not a translation exercise.
+
 ### Fórmulas bajo vigilancia
 
 Not banned. But every time one appears, ask: **can I say this more specifically
-and less interchangeably?** (List merged and expanded 2026-09-13, moat playbook
-guide, to fold in a parallel list that had been circulating separately —
-this is the one home for it now.)
+and less interchangeably?**
 
 - "confirma una tendencia"
 - "el mensaje es claro"
 - "no es un detalle menor"
 - "marca la ruta"
-- "el verdadero examen" / "el verdadero reto no es…"
+- "el verdadero examen"
 - "más allá de la anécdota"
-- "este caso demuestra que…" / "esto demuestra que…"
-- "la pregunta ya no es…" / "la pregunta no es X, sino Y" / "la pregunta,
-  entonces…" as an opening
-- "no solo X, sino Y" (the whole negative-parallelism family above shares its
-  one-per-piece cap; this entry is the reminder it's watched, not a second
-  rule)
-- "no es X, es Y" (salvo el uso excepcional, ya cubierto arriba: uno por
-  pieza, en el thesis beat)
-- "no se trata de X, sino de Y"
-- "no tanto por…"
-- "más que…" / "más que X, estamos ante Y"
-- "para México/LATAM…" / "para México y Latinoamérica esto representa…"
-- "la clave será…"
-- "parece interesante"
-- "nos metimos a…"
-- "en un mundo donde…"
-- "en el dinámico panorama…"
-- "esto marca un antes y un después"
-- "solo el tiempo dirá"
-- "queda por ver"
-- "la industria observa con atención"
-- "el futuro está por escribirse"
-- "lo relevante aquí"
-- "la lectura aquí es bastante clara"
-
-Watched but not on the interchangeable-phrase list, for the same reason —
-each is a shortcut around doing the work the voice actually asks for:
-moralejas (§6 already bans them outright), lenguaje corporativo (see "No —
-escribir para parecer sofisticado" above), metáforas artificiales, párrafos
-demasiado simétricos, conclusiones redondas por obligación (the hammer line
-above is earned, never a quota), frases construidas para sonar profundas, and
-certeza donde solo existe hipótesis (§8's evidence levels exist precisely so
-this doesn't happen — a nivel 03/04 claim written like nivel 01 is the
-mistake, not a style choice).
-
-**Vocabulario: evita "mirar/miramos/miro" cuando el sentido es analizar datos
-o dar seguimiento a una métrica.** Usa revisar, analizar, seguir, evaluar,
-medir, comparar, entender, tener en cuenta. "Miramos los números" es un calco
-de "we look at the numbers" que no dice qué se hizo con ellos; "analizamos los
-números" o "revisamos los números" sí.
+- "la pregunta ya no es…"
+- "no solo X, sino Y"
+- "para México/LATAM…"
 
 ### La aritmética
 

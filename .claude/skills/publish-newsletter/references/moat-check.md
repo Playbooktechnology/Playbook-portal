@@ -1,1 +1,0 @@
-../../../playbook-editorial/moat-check.md
