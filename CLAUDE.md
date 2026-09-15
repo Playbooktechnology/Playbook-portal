@@ -149,3 +149,103 @@ fires at all* is worth stopping to fix. Two checks, both cheap:
   and the observation log should exist at the workspace path above. If the
   log is missing, run the skill's Session Start Protocol to create it
   rather than skipping observation for the session.
+
+## Playbook.la — qué es este repo
+
+Website de Playbook.la — plataforma de inteligencia y contenido estratégico
+de sports business para México y Latinoamérica. El pipeline de este repo
+genera y publica artículos; el deploy a producción es automático vía
+GitHub → Vercel.
+
+## Regla no negociable: Moat Playbook
+
+Playbook no añade profundidad por obligación, añade valor. Toda publicación
+necesita un delta Playbook reconocible frente a la fuente original
+(información propia, dato, contexto, antecedente, consecuencia, mecanismo,
+economics, incentivos, riesgo, control, benchmark, comparable,
+contradicción, pregunta nueva, o identificar qué falta) — pero no toda
+publicación necesita la misma profundidad.
+
+"Toda pieza necesita delta Playbook. No toda pieza necesita profundidad
+Playbook."
+
+Niveles (profundidad, no calidad):
+
+- **A · Noticia Breve** — 100–180 palabras, sin Opinión separada, normalmente
+  sin gráficos.
+- **B · Noticia Playbook** — 250–500 palabras, con una segunda capa de
+  negocio y Opinión de Playbook.
+- **C · Deep Dive** — 700–1,200 palabras, news-driven, reconstruye
+  mecanismos/números/actores.
+- **D · La Lana del Deporte** — sistema propio, no se genera con este
+  pipeline; solo se traslada al sitio conservando tesis, estructura, voz,
+  postales, tres preguntas y Opinión.
+
+La especificación completa (gate de publicación, router, núcleo común,
+Moat Check, reglas de voz, México/LATAM, gráficos, CMS) vive en
+[`docs/EDITORIAL_SYSTEM.md`](./docs/EDITORIAL_SYSTEM.md). **Antes de tocar
+cualquier archivo relacionado con generación, ruteo o publicación de
+artículos, lee ese archivo completo.**
+
+## Dónde vive esto
+
+Stack: Next.js (App Router), Postgres, Auth.js, TipTap, Vercel Blob. Deploy
+vía `vercel-build` en `package.json` (corre `scripts/predeploy-migrate.ts`
+antes de `next build`; solo aplica migraciones cuando `VERCEL_ENV ===
+'production'`, incluidos los preview deploys de PR).
+
+El flujo de generación/publicación de artículos pasa por las skills del
+propio repo: `publish-newsletter`, `publish-sourced-article`,
+`publish-partner-announcement`, `hub-builder` (más
+`scripts/publish-newsletter.ts`, el write-side compartido por las dos
+primeras). El gate, el router, el núcleo común, el Moat Check y los
+prompts A/B/C/D viven en el árbol compartido `.claude/playbook-editorial/`
+(symlinkeado, nunca forkeado, en las cuatro skills — ver
+`_GOVERNANCE.md` ahí mismo):
+
+- Gate editorial (publicar/no publicar/radar, reader persona):
+  `.claude/playbook-editorial/editorial-gate.md`
+- Router A/B/C/D: `.claude/playbook-editorial/format-tiers.md` §1
+- Núcleo común (movimiento/mecanismo/incentivo/consecuencia):
+  `.claude/playbook-editorial/voice-and-style.md` §1
+- Moat Check (control final, 10 preguntas, 3 gates):
+  `.claude/playbook-editorial/moat-check.md`
+- Voz, fórmulas prohibidas, evidencia, región México/LATAM:
+  `.claude/playbook-editorial/voice-and-style.md`
+- Campos CMS y taxonomía: `.claude/playbook-editorial/fields-and-taxonomy.md`
+- Esquema Postgres de artículos: `lib/db/schema.ts` (tabla `articles`)
+- Escritura a producción: `scripts/publish-newsletter.ts` (`insertOne`,
+  `findOverlaps`, con `--dry-run` disponible), `lib/actions/admin.ts` (CMS
+  admin), `app/api/update-articles/route.ts` (webhook Make.com)
+- Chequeo determinístico de tier (palabras/Opinión vs. formato declarado):
+  `scripts/check-format-tier.ts`
+- Chequeo de ritmo/voz (no bloqueante): `scripts/check-voice.mjs`
+- Pruebas de aceptación del sistema editorial: `tests/moat-playbook/`
+
+Arquitectura de referencia del repo: `docs/ENCYCLOPEDIA.md` (citado desde
+el README). `docs/EDITORIAL_SYSTEM.md` está enlazado desde ahí (§13 y §18),
+no aislado.
+
+## Salvaguardas
+
+- Cambios al pipeline editorial van en rama + PR, nunca directo a `main` —
+  Vercel genera preview deploys, úsalos para revisar antes de mergear.
+- No renombres ni elimines campos del CMS de los que dependan artículos ya
+  publicados.
+- `vercel-build` corre `scripts/predeploy-migrate.ts` automáticamente en
+  cada deploy (incluidos los preview de PR). Cualquier cambio de esquema en
+  Postgres necesita revisión aparte, no solo pasar como parte del diff.
+- Si vas a tocar este pipeline por cualquier motivo (bug, feature nueva,
+  refactor) y no es el objetivo del encargo, no relajes estas reglas sin
+  confirmarlo explícitamente antes.
+- Si la filosofía editorial cambia, actualiza `docs/EDITORIAL_SYSTEM.md` en
+  el mismo cambio — no dejes que el código y el doc se desalineen.
+
+## Voz (resumen — lista completa de fórmulas a evitar en
+`.claude/playbook-editorial/voice-and-style.md` §7)
+
+Español de México, tuteo, sin raya larga, sin conexión forzada con LATAM.
+Natural, directa, segura, específica; financieramente inteligente sin
+sonar a consultoría. Evita fórmulas tipo "no es X, es Y", "en un mundo
+donde...", "queda por ver", moralejas y conclusiones redondas por
+obligación.

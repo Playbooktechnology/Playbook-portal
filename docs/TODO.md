@@ -57,20 +57,21 @@ the reasoning; `scripts/scaffold-hub.ts` is the standing test (proved by
 scaffolding and removing an `nfl-mexico` hub the same day).
 
 **QA pass before sharing with the LFA (2026-08-25). Publisher ruled on the
-two open questions the same day; both are now settled, not pending:**
+two open questions the same day; both were settled — one has since been
+superseded:**
 
-- **Discoverability: leave it exactly as it is.** `listed: false` is the
-  desired state, not a temporary hold. The hub is reachable by URL (verified
-  200) and absent from the nav, the sitemap and the index (`robots: noindex,
-  nofollow` — all three verified). Publisher, 2026-08-25: *"it is not
-  accessible via the home page, but if you know the address you can access
-  it."* That is precisely what this flag does — see the a61b4f3 commit title,
-  "unlisted means undiscoverable, not unreachable". **Do not flip this to
-  `true` to "fix" the header-reachability QA item; the QA item is what is
-  wrong, and it has been struck.**
+- **Discoverability: SUPERSEDED 2026-09-08.** The 2026-08-25 ruling
+  (`listed: false`, "not accessible via the home page, but if you know the
+  address you can access it") stood for two weeks. Publisher, 2026-09-08,
+  direct instruction: rename the "Exclusivas" nav zone to **"Alianzas"** and
+  list LFA FINSUS in it. `lib/hubs/lfa.ts` now sets `listed: true` — the hub
+  is in the nav, the sitemap, and indexable (robots index/follow). The
+  history above (the a61b4f3 "unlisted means undiscoverable, not
+  unreachable" reasoning) stays as a record of the prior decision, not as a
+  live constraint.
 - **Linking out to the LFA: dropped for now.** Publisher, 2026-08-25. The hub
   deliberately carries no outbound link to any league property. Revisit only
-  if the league asks.
+  if the league asks. Unaffected by the discoverability change above.
 
 **RESOLVED 2026-09-02 — the same photograph no longer renders twice.**
 `/assets/img/lfa-reyes-accion-mayo-2026.jpg` was both the lead story's own
@@ -88,14 +89,15 @@ credited LFA photograph**, distinct from the lead, for this slot — set
 **Open, in priority order:**
 
 0. **Route namespace vs. nav label.** The reader-facing zone is now
-   **"Exclusivas"** (publisher, 2026-08-18) but the route is still
-   `/coberturas/<slug>`. The original justification for that namespace was
-   that the nav label and address bar would agree; they no longer do.
-   Renaming was free while the hub was unlisted (nothing linked to it, it was
-   out of the sitemap) — **it is no longer free**: as of the same day the hub
-   is linked from the nav and present in the sitemap, so a rename now needs a
-   301 from `/coberturas/*`. Decide deliberately; either answer is defensible,
-   but the cost only goes up.
+   **"Alianzas"** (publisher, 2026-09-08; was "Exclusivas", 2026-08-18) but
+   the route is still `/coberturas/<slug>`. The original justification for
+   that namespace was that the nav label and address bar would agree; they
+   no longer do. Renaming was free while the hub was unlisted (nothing
+   linked to it, it was out of the sitemap) — **it is no longer free**: as
+   of 2026-09-08 the hub is listed (`lib/hubs/lfa.ts`, `listed: true`),
+   linked from the nav and present in the sitemap, so a route rename now
+   needs a 301 from `/coberturas/*` (e.g. to `/alianzas/*`). Decide
+   deliberately; either answer is defensible, but the cost only goes up.
 
 1. **The LFA hub's numbers need public citations — and the page no longer
    says so.** Every figure still traces to a source by construction
