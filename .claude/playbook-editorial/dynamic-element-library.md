@@ -291,6 +291,20 @@ For cost breakdowns and who-paid-what. The Total counts up.
   rejects the whole device to plain text. A receipt that doesn't add up is the
   one thing a receipt must never be — recheck the figures, don't fudge a line
   to force the render.
+- **Every item must be `etiqueta — valor`; `Recibo` has no framing item**
+  (2026-09-15, publish-sourced-article, the Telefónica/DAZN piece). Unlike
+  `Duelo`, `Resultados`, `Cascada`, `Venta`, `Perfil` and several others, where
+  `items[0]` is deliberately exempt from the ` — ` check and carries the
+  subject or period instead, `parseReceipt` runs the same `label — value`
+  match over **every** item with no exemption. A declaration that opens with a
+  descriptive lead-in line ("Recibo: Lo que paga X por Y (2027-2032) ·
+  Paquete… — €2,635.85M · …") fails to parse on that first item and silently
+  degrades to a plain paragraph — caught only because Step 9's post-publish
+  check greps for the real `lect-receipt` class instead of trusting that the
+  text rendered at all. The fix that run was to drop the lead-in and start
+  directly at the first `etiqueta — valor` row: the surrounding prose
+  paragraph already carries the framing context, so the device doesn't need
+  to repeat it.
 
 ---
 
