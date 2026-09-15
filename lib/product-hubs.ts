@@ -453,9 +453,46 @@ export function markOpinionCallout(html: string): string {
     );
   }
 
-  return html.replace(
-    OPINION_HTML_RE,
-    (_m, attrs: string, _label: string, rest: string) =>
-      `<aside class="shot-opinion"><span class="shot-opinion-kicker">Opinión de Playbook</span><p${attrs}>${rest}</p></aside>`,
+  const m = html.match(OPINION_HTML_RE);
+  if (!m || m.index === undefined) return html;
+
+  const attrs = m[1];
+  const rest = capitalizeFirstLetter(m[3]);
+  const start = m.index;
+  let tailStart = start + m[0].length;
+
+  // The editorial voice regularly writes the Opinión as two short paragraphs
+  // (reencuadre, then palanca/consecuencia) rather than the single paragraph
+  // this device was first built around (see voice-and-style.md §5's "always
+  // exactly one paragraph" rule -- a rule the drafts kept breaking in
+  // practice). A second, undeclared paragraph used to fall OUTSIDE the
+  // <aside>, printing as a stray line right after the callout box. Fixed by
+  // folding in every immediately-following <p> up to (not including) the
+  // Fuentes line or the next block element, instead of stopping at the
+  // first </p>.
+  const FOLLOWING_P_RE = /^\s*<p([^>]*)>([\s\S]*?)<\/p>/;
+  let extra = '';
+  for (;;) {
+    const rem = html.slice(tailStart);
+    const fm = rem.match(FOLLOWING_P_RE);
+    if (!fm) break;
+    const plainText = fm[2].replace(/<[^>]+>/g, '');
+    if (/^\s*Fuentes:/i.test(plainText)) break;
+    extra += `<p${fm[1]}>${fm[2]}</p>`;
+    tailStart += fm[0].length;
+  }
+
+  return (
+    `${html.slice(0, start)}<aside class="shot-opinion">` +
+    `<span class="shot-opinion-kicker">Opinión de Playbook</span><p${attrs}>${rest}</p>${extra}</aside>` +
+    html.slice(tailStart)
   );
+}
+
+// A stray lowercase first letter shows up on some Opinión paragraphs (the
+// drafting habit of continuing straight off the "Opinión de Playbook:" colon
+// as if it were mid-sentence). The callout always opens a new sentence, so
+// force it.
+function capitalizeFirstLetter(text: string): string {
+  return text.replace(/^(\s*)([a-záéíóúñ])/, (_m, ws: string, c: string) => ws + c.toUpperCase());
 }
