@@ -154,16 +154,22 @@ Every movement opens with its own **specific** bold lead-in
 `El contexto` set), and a continuation paragraph inside a movement runs
 unheaded.
 
-A human reviewer can still explicitly ask for more (2026-08-07: *"split into
-two paragraphs on the opinion… it doesn't matter if it is too long"*), and that
-overrides this default like any other revision request. Know the technical
-shape when it happens: `**Opinión de Playbook:**` is matched against exactly
-one `<p>`, so only the paragraph opening with that literal lead-in gets the fenced
-callout. A second paragraph split off after it (e.g. a closing `**La apuesta:**`
-beat) renders as ordinary body text immediately below the callout. That is the
-expected outcome of a deliberate split, not a bug to route around by cramming
-everything back into one paragraph. It is also why the Opinión movement is the
-one that never runs two paragraphs (`voice-and-style.md` §2).
+**No exceptions to this, from any reviewer, for any reason (retired
+2026-09-16).** A 2026-08-07 note used to read this as overridable on explicit
+request ("split into two paragraphs on the opinion… it doesn't matter if it
+is too long"). That carve-out is exactly what produced a recurring, visible
+site bug: a scan of published articles on 2026-09-16 found 16 live pieces,
+dating back to 2026-06-16, where the Opinión's second paragraph (or a closing
+beat like `**La apuesta:**` or `**El desgaste:**` split off after it) rendered
+as plain, unstyled body text sitting below the green callout — because
+`**Opinión de Playbook:**` is matched against exactly one `<p>`, and only the
+paragraph opening with that literal lead-in gets the fenced box. A second
+paragraph split off after it is not a deliberate, accepted design; it is this
+bug, every time. If the closing take does not fit in one paragraph, cut it
+down or move the extra material into the body as its own movement — never
+split the Opinión itself. `scripts/check-voice.mjs` hard-fails (exit 1, no
+`--strict` needed) the moment it detects this shape; do not publish past that
+failure by editing around the checker.
 
 ---
 
@@ -188,8 +194,10 @@ demands; `readingTime: 3` or `4`.
 - **Devices**: two to four, each answering a question — ecuación, reparto,
   serie, duelo, mapa or cronología (`dynamic-element-library.md`; the budget
   and the exclusive pairs apply as everywhere).
-- **Opinión de Playbook**: one or two paragraphs that synthesize the reading
-  obtained **after** the analysis. Never a recap of the article.
+- **Opinión de Playbook**: exactly one paragraph (same rule as format B, §3
+  above) that synthesizes the reading obtained **after** the analysis. Never
+  a recap of the article. A longer close needs an explicit human ask, same
+  override and same technical shape as §3.
 - **Close**: no moraleja. A consequence, an open tension, a pending decision,
   a number to watch, or a concrete question the market hasn't answered.
 

@@ -353,8 +353,8 @@ Opinión explains the mecanismo; it does not deliver a moraleja.
 | Format | Opinión |
 |---|---|
 | A · Noticia breve / Industry Shots Tier 2 | **None** (guide, 2026-08-13 — it stopped being "not obligatory" and became not carried) |
-| B · Noticia Playbook (Noticias) | One or two short paragraphs, a concrete second layer |
-| C · Deep Dive | One or two paragraphs synthesizing the read obtained **after** the analysis — never a recap |
+| B · Noticia Playbook (Noticias) | Exactly one paragraph, a concrete second layer (§6 above) |
+| C · Deep Dive | Exactly one paragraph synthesizing the read obtained **after** the analysis — never a recap (§6 above) |
 | D · La Lana del Deporte | Three bullets of roughly equal weight |
 | Infinitas | As the format it adopts (A/B/C), with the women's-sport read |
 | TFBR | **None** — the partner's `## La visión de Interticket` closes it |
