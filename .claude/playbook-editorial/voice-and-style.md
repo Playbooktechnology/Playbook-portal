@@ -267,7 +267,25 @@ and `infantino-desafia-a-montagliani-…-se-resquebraja` are both live rows whos
 id no longer matches their title, because the id is minted at insert and never
 migrates.
 
-### A procedural step is not a verdict — the title must not read like one
+### The title states the fact; the body delivers the read
+
+(Playbook team, 2026-09-17, on the FIBA attendance and Senate college-sports
+drafts.) A title that already resolves the analytical payoff — "no es solo por
+más partidos", "que su propia autora admite que no basta" — spends the piece's
+one reveal before the reader opens it, and reads as longer and more effortful
+than a title has any business being. Two first drafts did this in the same
+run: *"El Mundial de Basquetbol Femenil bate récord de asistencia, y no es
+solo por más partidos"* and *"El Senado avanza la ley de deportes
+universitarios que su propia autora admite que no basta"*. Both are accurate.
+Both were rejected. They published as *"El Mundial de Basquetbol Femenil bate
+récord de asistencia"* and *"El Senado aprueba en lo general la nueva ley
+federal para el deporte universitario"* — the plain fact, nothing resolved.
+
+**The title names what happened; the palanca (§1) stays inside the body.**
+This is stricter than "one clause" above: a title can be one clause and still
+fail this if that clause is the analysis rather than the event. Test it by
+reading the title alone — if it already tells the reader what to conclude, cut
+the concluding half and let the first movement of the body carry it instead.
 
 (Playbook team, 2026-09-10, on a Liga MX amparo draft.) A federal court
 **admitting** a lawsuit for review is not the same event as the lawsuit
