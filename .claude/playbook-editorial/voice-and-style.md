@@ -561,6 +561,24 @@ juego significan 624 minutos nuevos de inventario potencial."*
   Money and percentages in plain prose get an automatic marker highlight
   (capped at 6 per article); the single most important figure goes **bold**,
   which makes it count up.
+- **A non-USD figure carries its USD equivalent in parentheses.** (Publisher
+  directive, 2026-09-17, on the Chelsea/Clearlake piece, citing the FT's own
+  convention: *"Walter and Boehly will receive £950 million ($1.3 billion) for
+  their combined stake in a deal that values the club at £5 billion ($6.7
+  billion) including debt."*) A piece almost never stays in one currency: this
+  one moved from £950M/£5,000M to the Lakers sale in US$ and the Liverpool
+  comparison in US$, and without a conversion the £ figures go untethered the
+  moment the piece crosses into dollars — the reader can no longer place £950M
+  against US$12,500M without doing the math themselves. Convert on the figure's
+  **first appearance in each field** (body, excerpt, Cifra clave caption) and
+  give it immediately after, in the FT's own shape: "£950 millones (US$1,300
+  millones)". Don't repeat the parenthetical on every later restatement of the
+  same number in the same field. A device's own **value** slot keeps the
+  original currency only (`Cifra clave`'s 24-character cap has no room for a
+  conversion); put the USD figure in the device's caption instead, in prose,
+  not in the caption's reserved attribution parenthetical
+  (`dynamic-element-library.md`'s "Cifra clave" section) — that slot credits a
+  source, not a currency.
 - **Explain the financial mechanism in the reader's words, not the filing's.**
   (Publisher, 2026-08-15, on a deep dive about a federal probe into an owner's
   insurance companies: *"entidades afiliadas, por algo más simple"* and *"que
