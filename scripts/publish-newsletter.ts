@@ -78,9 +78,20 @@ type ArticleInput = {
 
 function parseInlineMarks(text: string): JSONContent[] {
   const nodes: JSONContent[] = [];
-  // **bold** or [link text](url), whichever comes first; no nesting between
-  // the two (not needed by any editorial voice that produces this markdown).
-  const pattern = /\*\*(.+?)\*\*|\[(.+?)\]\((\S+?)\)/g;
+  // **bold**, [link text](url), or *italic*, whichever comes first; no
+  // nesting between them (not needed by any editorial voice that produces
+  // this markdown). Bold is listed before italic so `**x**` never partially
+  // matches as `*` + italic — JS regex alternation tries earlier branches
+  // first at each position, and `\*\*` only succeeds where two literal
+  // asterisks are actually present.
+  //
+  // Single-asterisk italic added 2026-09-19: a verbatim La Lana ingest
+  // (INDYCAR/Pato O'Ward) carried *word* emphasis from the source Substack
+  // post, and this parser silently passed the literal asterisks through as
+  // plain text — StarterKit's schema has always supported an `italic` mark
+  // (it ships bundled, same as `bold`), the gap was only ever in this
+  // regex. Confirmed live on the republished article before trusting this.
+  const pattern = /\*\*(.+?)\*\*|\[(.+?)\]\((\S+?)\)|\*(.+?)\*/g;
   let lastIndex = 0;
   let match: RegExpExecArray | null;
   while ((match = pattern.exec(text))) {
@@ -89,6 +100,8 @@ function parseInlineMarks(text: string): JSONContent[] {
     }
     if (match[1] !== undefined) {
       nodes.push({ type: 'text', text: match[1], marks: [{ type: 'bold' }] });
+    } else if (match[4] !== undefined) {
+      nodes.push({ type: 'text', text: match[4], marks: [{ type: 'italic' }] });
     } else {
       nodes.push({
         type: 'text',
