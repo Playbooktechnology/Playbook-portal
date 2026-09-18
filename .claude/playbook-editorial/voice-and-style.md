@@ -549,6 +549,18 @@ juego significan 624 minutos nuevos de inventario potencial."*
   periods, parentheses, or "y"/"pero". (The device syntaxes in
   `dynamic-element-library.md` are the sole exception: their ` — ` separator is
   parser syntax, not prose.)
+- **`*single asterisks*` render as italics; write them with confidence.**
+  (2026-09-19, after a verbatim La Lana ingest — INDYCAR/Pato O'Ward — shipped
+  `*connector*` and a dozen other spans as literal asterisks on the live page.
+  The gap was in `parseInlineMarks` in `scripts/publish-newsletter.ts`, which
+  only recognized `**bold**` and `[link](url)`; it's fixed now and every
+  publish path shares that one function, so this applies to all three skills.)
+  Use italics the way house style already implies elsewhere: a foreign word or
+  borrowed term (*engagement*, *merchandise*), a publication or show name, or
+  — on a verbatim La Lana ingest — whatever emphasis the source author's own
+  markdown carried. Don't reach for `**bold**` as a substitute when the source
+  or the sentence calls for italics; the two marks read differently and now
+  both work.
 - **Metric units always.** Convert feet, miles, yards, pounds, acres into
   meters/kilometers/kilos before they reach any field. "7,300 pies de altura"
   is a unit the reader has to translate mid-sentence; "más de 2,200 metros" is
