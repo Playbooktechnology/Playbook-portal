@@ -54,6 +54,8 @@ type Entry = {
   priority?: number;
   featured?: boolean;
   readingTime?: number;
+  source?: string;
+  publication?: string;
   imageUrl?: string;
   imageCredit?: string;
 };
@@ -71,6 +73,8 @@ const COLUMNS = {
   readingTime: articles.readingTime,
   imageUrl: articles.imageUrl,
   imageCredit: articles.imageCredit,
+  source: articles.source,
+  publication: articles.publication,
 } as const;
 
 async function resolveId(entry: Entry): Promise<string | null> {
