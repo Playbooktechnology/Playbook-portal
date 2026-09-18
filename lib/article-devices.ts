@@ -303,8 +303,12 @@ function parseDelta(raw: string): Delta | null {
   const from = match[1].trim();
   const to = match[2].trim();
   if (!from || from.length > 26 || !to || to.length > 26 || !/\d/.test(from) || !/\d/.test(to)) return null;
-  const a = splitFigure(from) && parseNumeric(splitFigure(from)!.num);
-  const b = splitFigure(to) && parseNumeric(splitFigure(to)!.num);
+  // absoluteDenominatedOf, not raw parseNumeric or the relative-to-millions
+  // denominatedOf: see that function's own comment for why a mixed-scale
+  // Salto ("3,000 atletas" bare vs "1.4M atletas" scaled) needs the absolute
+  // comparison to get its direction right (2026-09-18).
+  const a = absoluteDenominatedOf(from);
+  const b = absoluteDenominatedOf(to);
   const dir = a && b && a.value !== b.value ? (b.value > a.value ? 'up' : 'down') : null;
   return { from, to, caption: (match[3] || '').trim(), dir };
 }
@@ -317,8 +321,8 @@ function buildDelta(delta: Delta): string {
   // derived number can't contradict the prose. Units disagreeing (a
   // currency change, not growth) or a zero base silently omit it.
   let moveChip = '';
-  const from = denominatedOf(delta.from);
-  const to = denominatedOf(delta.to);
+  const from = absoluteDenominatedOf(delta.from);
+  const to = absoluteDenominatedOf(delta.to);
   if (from && to && from.unit === to.unit && from.value > 0) {
     const pct = ((to.value - from.value) / from.value) * 100;
     const text = `${pct >= 0 ? '+' : '−'}${formatNumeric(Math.abs(pct), Math.abs(pct) >= 10 ? 0 : 1)}%`;
@@ -1159,11 +1163,20 @@ const VS_RE = /^([\s\S]+?)\s+(?:vs\.?|versus)\s+([\s\S]+)$/i;
 // So there are two accessors and they are not interchangeable:
 //   magnitudeOf()          relative, in millions — for comparing figures
 //   absoluteMagnitudeOf()  base units            — for evaluating arithmetic
+//
+// M and K anchor at the START of the remainder, not the end (2026-09-18,
+// the Hyrox "Salto" bug): "millones"/"mdd"/"mdp"/"billones" match via `\b`
+// regardless of what follows, but M/K used to require `$` — end of string.
+// "1.4M atletas" has "atletas" after the M, so the old pattern silently
+// failed to scale it, magnitudeOf returned 1.4 instead of 1,400,000, and a
+// 3,000 → 1.4M growth rendered as a −100% drop with a down arrow. Anchoring
+// at the start instead (M/K immediately after the digits) makes the single-
+// letter abbreviations behave the same as the word-form ones.
 const SCALES: [RegExp, number][] = [
   [/\bbillones\b/i, 1_000_000],
   [/\b(?:mil\s+millones|bn)\b/i, 1_000],
-  [/\b(?:millones|mdd|mdp)\b|M\s*$/i, 1],
-  [/K\s*$/i, 0.001],
+  [/\b(?:millones|mdd|mdp)\b|^\s*M\b/i, 1],
+  [/^\s*K\b/i, 0.001],
 ];
 
 /** What one unit of the SCALES table is worth in base units. */
@@ -1556,6 +1569,24 @@ function denominatedOf(figure: string): Denominated | null {
   const parts = splitFigure(figure);
   if (!parts) return null;
   const value = magnitudeOf(figure);
+  if (value === null || value <= 0) return null;
+  return { value, unit: parts.pre.replace(/\s+/g, '').toUpperCase() };
+}
+
+// Same shape as denominatedOf, but in absolute base units (absoluteMagnitudeOf)
+// rather than relative-to-millions (magnitudeOf). Salto's own before/after
+// jump needs this one: a bar-comparison device like Duelo can assume both
+// sides already share the "everything is millones" convention, but a Salto
+// legitimately crosses that boundary ("3,000 atletas → 1.4M atletas") where
+// one side is a bare count and the other carries a scale word. Feeding that
+// pair through magnitudeOf reads the bare 3,000 as "3,000 millones" and
+// collapses "1.4M" to the literal 1.4, so a 467x increase rendered as a
+// −100% drop with a down arrow (2026-09-18, the Hyrox piece). Comparing
+// absolute values fixes the direction and the percent both.
+function absoluteDenominatedOf(figure: string): Denominated | null {
+  const parts = splitFigure(figure);
+  if (!parts) return null;
+  const value = absoluteMagnitudeOf(figure);
   if (value === null || value <= 0) return null;
   return { value, unit: parts.pre.replace(/\s+/g, '').toUpperCase() };
 }
