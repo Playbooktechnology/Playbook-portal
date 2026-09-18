@@ -434,17 +434,29 @@ function isConfirmed(article: Rankable): boolean {
  *   featured a same-day editorial override, worth one day, applied last and
  *            only among candidates that already survived both rules above.
  *
- * Editorial products are excluded outright rather than losing on points: the
- * hero slot is a news slot, and "La Lana nunca pelea un lugar contra una nota
- * de última hora" is the whole reason the tracks are separate.
+ * UPDATED 2026-09-19 (publisher directive): editorial products (La Lana,
+ * FBR) now compete for the slot alongside news, on the same decayedScore +
+ * featuredBoost comparison below. Until this date they were excluded
+ * outright rather than losing on points -- "La Lana nunca pelea un lugar
+ * contra una nota de última hora" was the whole reason the tracks were kept
+ * separate here, and that reasoning still holds for the OTHER thing tracks
+ * exist for: `decayPerDayFor` still gives editorial a slower 20/day burn
+ * against news's 50/day (`splitTracks`, `effectiveAgeDays`), so a stale
+ * editorial piece will still eventually outscore an equally-stale news piece
+ * on raw decayedScore if both survive past TOP_SLOT_MAX_DAYS -- an edge case
+ * that does not bite the day-of-publish comparison this change was made for,
+ * but is worth knowing if the hero ever looks wrong on a quiet, low-news day.
  */
 export function selectHero<T extends Rankable>(articles: T[], now: Date = new Date()): T | null {
-  const news = rankArticles((articles || []).filter(a => trackFor(a.source) === 'news'), now);
+  const news = rankArticles(articles || [], now);
   if (!news.length) return null;
 
   // Rule 03: prefer confirmed. Unconfirmed stories are eligible only if the
   // day has nothing confirmed at all -- they stay visible, per the spec, they
-  // just cannot lead over something that actually happened.
+  // just cannot lead over something that actually happened. Editorial pieces
+  // store `confirmed: null` (the question doesn't apply to them), and
+  // isConfirmed() treats anything other than an explicit `false` as passing,
+  // so they're never wrongly excluded here.
   const confirmed = news.filter(isConfirmed);
   let pool = confirmed.length ? confirmed : news;
 
