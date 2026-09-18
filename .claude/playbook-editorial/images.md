@@ -196,6 +196,21 @@ treat **AP Images / AP Photo** the same way. If a search turns up exactly the
 right photo but it's hosted on one of these, keep searching for another source
 or angle rather than using it.
 
+**This exclusion is narrow — it names two agencies, not a general posture of
+caution.** (Team directive, 2026-09-18.) A team/league/company's own official
+photo — from their press room, their own website, their own social media, a
+photo they themselves distributed to press — is exactly the opposite risk
+profile from Getty/AP: an organization almost always **wants** press coverage
+using its own official imagery, credited back to it, because that's free
+distribution for whatever it just announced. Treat that as the default
+assumption, not something to second-guess article by article. If it isn't
+enthusiastic about the coverage, it is very unlikely to be bothered by a
+correctly-credited photo it published itself. Don't apply Getty/AP-level
+caution — extra verification passes, hesitation, treating a find as "risky"
+— to a club crest, a company logo, a press-room headshot, or a team's own
+match photography. Verify the photo is genuinely on-topic and correctly
+credited (per "Verify and credit" above), and use it.
+
 ### When a photo carries no credit at all
 
 (2026-08-07.) Distinct from being excluded and from being missing: a source
