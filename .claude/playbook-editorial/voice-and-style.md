@@ -545,6 +545,23 @@ juego significan 624 minutos nuevos de inventario potencial."*
 
 ### Hard mechanical rules
 
+- **Never use an AI-cliché reframe construction**, above all *"la pregunta
+  real no es X, sino Y"* and its family: *"no se trata de X, sino de Y"*,
+  *"esto no es solo X, es Y"*, *"lo que parece X es en realidad Y"*, *"en el
+  fondo, esto es sobre X"*. (Publisher, 2026-09-19, on the MLS/Altius8
+  Opinión: *"la pregunta real no es cuánto vale este sponsorship, sino qué le
+  compra a MLS centralizar inventario"*, flagged as reading like AI output on
+  sight.) The tell isn't the idea, it's the announcing. These templates spend
+  a whole sentence staging a reframe before delivering it, which is exactly
+  the LLM tic of narrating its own reasoning move instead of just making it.
+  **State the read directly instead:** "Lo que MLS realmente compra al
+  centralizar este inventario es poder de negociación" says the same thing in
+  half the words with no staging clause. This is a stricter, separate rule
+  from §2's negative parallelism ("no es X, es Y"), which stays allowed once
+  per piece at the thesis — the difference is a plain reframe vs. one that
+  announces itself as a reframe first. When in doubt: if the sentence could
+  open with "la verdadera pregunta/razón/historia" and still make sense with
+  the subject swapped out, it's the template, not the analysis, and it goes.
 - **Never use an em dash (`—`) in drafted text**, in any field. Use commas,
   periods, parentheses, or "y"/"pero". (The device syntaxes in
   `dynamic-element-library.md` are the sole exception: their ` — ` separator is
