@@ -425,6 +425,12 @@ The one exception is an **exclusive**: when a fact exists only because a
 particular newsroom broke it, that newsroom is a primary source for that fact.
 A story everyone covered off the same press release has no exclusive in it.
 
+**2Playbook never goes on this line, exclusive or not** (publisher directive,
+2026-09-21 — see `images.md`'s matching competitor exclusion for the cover
+photo). They're a direct competitor on the same beat; crediting them reads as
+promoting their coverage from inside a Playbook article, which the ordinary
+exclusive exception isn't worth making an exception to.
+
 First entry is the ORIGIN and gets the mark. Two to four entries. Institution
 NAME alone, never a headline. Never an internal Playbook link (a backlink to
 prior coverage belongs inline in the prose — the renderer drops internal hrefs

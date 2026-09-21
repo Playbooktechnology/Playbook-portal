@@ -171,6 +171,22 @@ treat **AP Images / AP Photo** the same way. If a search turns up exactly the
 right photo but it's hosted on one of these, keep searching for another source
 or angle rather than using it.
 
+### The competitor exclusion — never 2Playbook
+
+**Never credit 2Playbook as an image source, and never put it on the
+`Fuentes:` line either** (publisher directive, 2026-09-21, on the JD
+Sports/Grupo Axo run — a first published draft had used a 2Playbook photo as
+the cover). 2Playbook covers the same sports-business beat Playbook does;
+crediting a direct competitor, in a photo caption or in the credit line, reads
+as promoting their coverage from inside a Playbook article. This applies even
+when 2Playbook's own image is genuinely the best-looking candidate found —
+keep searching (the official source's own press/media page is usually there
+if you look past the obvious wire copy, as it was on this run: JD Sports'
+own `jd-brand-first` strategy page at jdplc.com had real store photography
+hosted on JD's own domain) rather than defaulting to it. If no alternative
+exists after a genuine broad search, say so in the run report instead of
+using the 2Playbook image.
+
 ### When a photo carries no credit at all
 
 (2026-08-07.) Distinct from being excluded and from being missing: a source
