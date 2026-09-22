@@ -60,6 +60,23 @@ rests on, and a copy under `public/assets/img/` cannot break when they move a
 path. Self-hosted covers only resolve once the asset is on `main`, so push it
 before the article references it.
 
+**Check you actually have a path to `main` before choosing self-hosting**
+(2026-09-15, publish-sourced-article, the DAZN leadership-reshuffle piece). A
+session working on a designated feature/session branch (the normal git setup
+for these skills) commits and pushes there by default, and that branch is not
+`main` — a self-hosted asset added there sits unreferenced until a PR merges
+it, which is not a step either skill's publish flow performs. That run
+committed the asset, pushed it to the session branch, only noticed at the
+review-presentation step that the live site would 404 on it, and had to add a
+second commit reverting the file. The one script this tree has pre-authorized
+to reach `main` directly (`scripts/sync-skill-feedback.sh`) is scoped to
+`.claude/skills` and `.claude/playbook-editorial` only and cannot carry an
+image. Unless the session confirms it is actually working on `main` (or has
+some other real, already-established path to it), self-hosting is not
+available this run: hotlink the source outlet's URL directly instead and
+credit it as usual (`"Foto: [Outlet]"`) — the fallback the broad-search
+section already uses for a non-self-hosted find.
+
 ### A Wikimedia candidate is verifiable even when the file won't download
 
 (2026-08-18, on the Buss trust fight.) `upload.wikimedia.org` rate-limits shared
@@ -98,6 +115,35 @@ of **only the finalist** with `curl --retry 3 --retry-delay 20
 limit is short-lived and one patient retry usually clears it. If it does not,
 the API record is enough to publish on, and the run report says the photo was
 verified from its file record rather than on screen.
+
+### Wikimedia is one option, not the default
+
+(Team directive, 2026-09-17, on `/articulo/la-saudi-pro-league-deja-que-los-creators-vendan-sus-partidos`
+— cover pulled straight from the Saudi Pro League's own media library,
+credited `"Foto: Saudi Pro League"`.) A run that reaches for Wikimedia
+Commons first because it's fast and reliably licensed will keep finding
+*a* photo of the sport, not *the* photo of this story — a generic match
+shot instead of the actual people, teams or organizations the article is
+about. That is a worse cover than a properly sourced and credited photo
+from anywhere else, even when the Wikimedia one clears every ratio and
+license check.
+
+**Default to photos of the actual subjects involved** — the specific
+players, executives, teams, venues or organizations the story names — and
+only fall back to Wikimedia (or a generic library shot) when no on-topic
+photo of the real subject turns up anywhere else. In practice this means
+checking, before Wikimedia: the official team/league/company's own press
+room or media gallery (exactly where the Saudi Pro League photo came
+from), the outlets already cross-referenced for the story (their own
+photography of the deal's principals is often better than anything a
+generic search turns up), and editorial agencies per the broad search
+below.
+
+**Credit the sports organization or company itself when that's genuinely
+the source** — `"Foto: [Liga/Club/Organización]"` — the same as any other
+source per "Verify and credit" above. This isn't a special case, it's the
+existing rule applied with the org's own gallery as a first-class source
+rather than an afterthought.
 
 ### The broad search
 
@@ -170,6 +216,21 @@ aggressively.** Getty Images foremost, including **iStock** (Getty-owned), and
 treat **AP Images / AP Photo** the same way. If a search turns up exactly the
 right photo but it's hosted on one of these, keep searching for another source
 or angle rather than using it.
+
+**This exclusion is narrow — it names two agencies, not a general posture of
+caution.** (Team directive, 2026-09-18.) A team/league/company's own official
+photo — from their press room, their own website, their own social media, a
+photo they themselves distributed to press — is exactly the opposite risk
+profile from Getty/AP: an organization almost always **wants** press coverage
+using its own official imagery, credited back to it, because that's free
+distribution for whatever it just announced. Treat that as the default
+assumption, not something to second-guess article by article. If it isn't
+enthusiastic about the coverage, it is very unlikely to be bothered by a
+correctly-credited photo it published itself. Don't apply Getty/AP-level
+caution — extra verification passes, hesitation, treating a find as "risky"
+— to a club crest, a company logo, a press-room headshot, or a team's own
+match photography. Verify the photo is genuinely on-topic and correctly
+credited (per "Verify and credit" above), and use it.
 
 ### The competitor exclusion — never 2Playbook
 

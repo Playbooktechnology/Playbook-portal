@@ -131,5 +131,9 @@ export function toPreviewArticle(data: ArticleEntry['data']): Article {
     createdAt: new Date(0),
     updatedAt: new Date(0),
     updatedBy: null,
+    // Same "DB-only, never rendered by the preview" reasoning as the fields
+    // above -- no CMS control for the hero pin yet (set via
+    // scripts/update-article.ts), so the preview never has a real value.
+    heroPinnedUntil: null,
   };
 }

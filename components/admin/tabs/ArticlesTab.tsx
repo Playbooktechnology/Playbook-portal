@@ -6,6 +6,7 @@ import { SCOPE_OPTIONS, SPORT_OPTIONS, VERTICAL_OPTIONS, PROPERTY_OPTIONS } from
 import { slugify } from '@/lib/slugify';
 import { type ArticleEntry, newArticleEntry } from '../article-entry';
 import { TextField, NumberField } from '../fields/TextField';
+import { ImageUrlField } from '../fields/ImageUrlField';
 import { SelectField } from '../fields/SelectField';
 import { CheckboxGroupField } from '../fields/CheckboxGroupField';
 import { StarPickerField } from '../fields/StarPickerField';
@@ -276,11 +277,10 @@ export function ArticlesTab({ entries, onChange, onRemove }: Props) {
                 value={a.substackUrl}
                 onChange={v => updateEntry(entry.clientKey, { substackUrl: v })}
               />
-              <TextField
+              <ImageUrlField
                 label="Imagen"
-                type="url"
                 required
-                help="El link a una imagen para el artículo, relacionada directamente con el tema. Obligatoria para todo artículo, sin importar la prioridad."
+                help='El link a una imagen para el artículo, relacionada directamente con el tema. Obligatoria para todo artículo, sin importar la prioridad. "Subir imagen" la sube directo (sin pasar por GitHub ni esperar un despliegue) y llena este campo solo.'
                 value={a.imageUrl}
                 onChange={v => updateEntry(entry.clientKey, { imageUrl: v })}
               />

@@ -1,0 +1,18 @@
+
+✓ Estadio+ renueva la LAR sin competencia y no baja el precio [A]
+   127 palabras · Opinión no
+
+✓ Cono Capital toma el control de los derechos de la LVP [B]
+   288 palabras · Opinión sí
+
+✓ La Copa Centroamericana cambia de sede por tercera vez en cuatro edici [A]
+   121 palabras · Opinión no
+
+✗ Bebidas Cumbre extiende tres años más su patrocinio con el Maratón de  [B]
+   156 palabras · Opinión sí
+   ✗ SEVERO (bloquearía el publish): 156 palabras, bajo el piso de B (250-500)
+
+✓ Ricardo Solano se retira tras 22 años como árbitro en la LCF [A]
+   107 palabras · Opinión no
+
+4/5 borradores calzan sin observaciones, 0 con avisos marginales, 1 con hallazgos severos (bloquearían el publish real).

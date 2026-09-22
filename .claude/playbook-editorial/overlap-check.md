@@ -142,6 +142,24 @@ specific, better-attributed figure wins** (a company filing over a wire
 summary, a wire over a newsletter brief). If the published article has the
 weaker one, that is outcome B and the correction is part of the upgrade.
 
+**A territorial rights claim only conflicts with a new one when the
+territories overlap — check the territory before calling it a contradiction.**
+(2026-09-14, publish-sourced-article, the FOX/Concacaf Central America
+broadcast deal.) A prior Playbook piece described Netflix's Concacaf Nations
+League/Gold Cup rights as "exclusivos" without stating the territory in its
+own excerpt; a new deal handing FOX the same two competitions for seven
+Central American countries read, on a fast pass, like a direct contradiction
+of that "exclusivo." Going back to the original announcement's own language
+(not just the excerpt of Playbook's own prior piece) showed Netflix's
+exclusivity applies to Mexico only — a standard territorial carve-out, not a
+conflict, and the same fragmentation Concacaf also used to sell the Mexican
+men's team's own home games to Amazon separately. Sports-media rights are
+granted per-market close to as a rule, so before treating two claims about the
+same competition as contradictory, find the specific territory each one
+covers. A summary or excerpt that says "exclusive" with no territory named is
+not proof the claim is global — it is usually just where the compression
+happened.
+
 ## If it was already published twice
 
 Found after the fact, the fix depends on how long the duplicate has been live.

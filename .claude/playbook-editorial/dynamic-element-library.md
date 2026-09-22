@@ -291,6 +291,20 @@ For cost breakdowns and who-paid-what. The Total counts up.
   rejects the whole device to plain text. A receipt that doesn't add up is the
   one thing a receipt must never be — recheck the figures, don't fudge a line
   to force the render.
+- **Every item must be `etiqueta — valor`; `Recibo` has no framing item**
+  (2026-09-15, publish-sourced-article, the Telefónica/DAZN piece). Unlike
+  `Duelo`, `Resultados`, `Cascada`, `Venta`, `Perfil` and several others, where
+  `items[0]` is deliberately exempt from the ` — ` check and carries the
+  subject or period instead, `parseReceipt` runs the same `label — value`
+  match over **every** item with no exemption. A declaration that opens with a
+  descriptive lead-in line ("Recibo: Lo que paga X por Y (2027-2032) ·
+  Paquete… — €2,635.85M · …") fails to parse on that first item and silently
+  degrades to a plain paragraph — caught only because Step 9's post-publish
+  check greps for the real `lect-receipt` class instead of trusting that the
+  text rendered at all. The fix that run was to drop the lead-in and start
+  directly at the first `etiqueta — valor` row: the surrounding prose
+  paragraph already carries the framing context, so the device doesn't need
+  to repeat it.
 
 ---
 
@@ -1191,6 +1205,22 @@ and the threshold drawn as a line ON the bar — passed or failed is visible
 by construction, and the `Aprobada`/`No alcanzada` chip is computed, never
 authored. **Mutually exclusive with `Reparto`**, which has no notion of a
 passing threshold.
+
+**The `Umbral` parenthetical note is capped at 24 characters, same limit as
+`Venta`'s `Anterior` note** (2026-09-11, a publish-sourced-article run on a
+Premier League Squad Cost Ratio vote). `parseVote` in `lib/article-devices.ts`
+shares `NOTE_TAIL_RE` with every other device that takes a parenthetical, whose
+capture group is `[^)]{1,24}` — but this section's own worked example
+(`Umbral — 138 (dos tercios)`, an 11-character note) never exercised the limit,
+so nothing here said it existed. A longer note doesn't just get truncated: the
+regex fails to match at all, so the whole `threshold` value is left as the raw
+unparsed string (`"14 (lo que necesita cualquier cambio de reglas)"`),
+`Number()` on that string is `NaN`, and `parseVote` returns `null` for the
+ENTIRE declaration — not just the note, the whole `Votación` ships as inert
+plain text. Caught only by re-fetching the live page after publish and finding
+the raw `<p>Votación: …</p>` string, per `publishing-mechanics.md`'s
+verification step. Keep the note to a two-or-three-word gloss (`mínimo
+necesario`, `dos tercios`, `mayoría simple`) rather than a clause.
 
 ### `Ranking:` — the league table
 
