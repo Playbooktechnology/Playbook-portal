@@ -337,6 +337,18 @@ is the one case a run sets it on its own.
 - **`dateFormatted`** — e.g. `"21 jul 2026"` (day, 3-letter lowercase month,
   year).
 
+**Never default to today's system date.** (Team correction, 2026-09-22, on
+the New Balance/Decathlon lawsuit piece: the article ran with the session's
+current date instead of the source's actual publish date, three days off.)
+"Today" is the date the run happens, not the date the story happened — those
+are different facts, and the field asks for the second one. Before setting
+`date`, read the publish date/timestamp off the primary source itself, and if
+the story was cross-referenced across several outlets published on different
+days (common when reconstructing a paywalled or blocked primary source via
+search), use the earliest confirmed publish date among them, not the day the
+draft was written. This applies to every new article, in every funnel,
+without exception — it is not a one-off fix for that piece.
+
 For a fast-developing story where the exact time matters (a vote, an
 announcement tied to a specific wire timestamp), it's fine to fold a time onto
 the end: `"30 jul 2026, 10:01 hrs"`, converted to Mexico City local time
