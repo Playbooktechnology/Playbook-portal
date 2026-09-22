@@ -57,6 +57,29 @@ these skills' prompts (see §4's website-transfer rule).
 Choosing a format is choosing what stays out: a short note doesn't need all
 the research, and a Deep Dive must not disguise itself as a two-minute read.
 
+**The router's output (moat playbook guide, 2026-09-13).** State this block
+before drafting — it is what makes the routing call auditable, not a form to
+fill mechanically:
+
+```
+FORMATO: A / B / C / D
+RAZÓN:
+READER PERSONA PRIMARIO:
+JOB-TO-BE-DONE: ¿Qué está contratando el reader a Playbook para resolver con esta pieza?
+PREGUNTA CENTRAL:
+DELTA PLAYBOOK ESPERADO:
+PALANCA DE NEGOCIO PRINCIPAL:
+EVIDENCIA DISPONIBLE:
+DATOS QUE FALTAN:
+```
+
+`READER PERSONA PRIMARIO` carries over from the gate
+(`editorial-gate.md`) rather than being re-picked here — one decision,
+referenced, not re-derived. `PALANCA DE NEGOCIO PRINCIPAL` is `voice-and-style.md`
+§1's ten palancas; naming it here, before drafting, is the same discipline
+that section already asks for at drafting time — this just moves it a step
+earlier.
+
 **The tell that B is the wrong call: having to leave sourced, relevant numbers
 out to hit the word count.** (2026-08-20, the FMF Nuevo Modelo Deportivo run,
 where a story that plainly wanted C shipped as a 420-word brief and the human
@@ -125,12 +148,24 @@ inside a movement.
 (2026-08-13, superseding the fixed four-movement rule that used to live here.
 The information is the same; the count stopped being fixed.)
 
-**A · Noticia breve:** headline (protagonista + movimiento + cifra/socio/
+**A · Noticia breve:** HECHO → CONTEXTO ÚTIL → CONSECUENCIA/ANTECEDENTE/DATO
+QUE DIMENSIONA — headline (protagonista + movimiento + cifra/socio/
 consecuencia), one paragraph of what happened plus the key figure, one of
-minimal context for scale, a third only if it adds an indispensable fact. No
-subheads, no Opinión, no moraleja, no forced regional line. The reader should
-be able to answer fast: qué pasó, quién, cuánto/por cuánto tiempo/qué derechos,
-por qué vale la pena saberlo.
+minimal context for scale, a third only if it adds an indispensable fact. Not
+every A needs all three as separate paragraphs. No subheads, no Opinión, no
+moraleja, no forced regional line. The reader should be able to answer fast:
+qué pasó, quién, cuánto/por cuánto tiempo/qué derechos, por qué vale la pena
+saberlo — y, cuando exista, cuál es el detalle que hace que la versión de
+Playbook valga más que el comunicado.
+
+**"Sin Opinión" no significa "sin delta Playbook."** Ejemplos de delta válido
+en A: el acuerdo reemplaza a un socio anterior; es el tercer activo adquirido
+en el mismo mercado; la cifra está por encima o por debajo de un precedente
+inmediato; cambia una distribución; modifica quién tiene un derecho concreto;
+introduce una consecuencia inmediata. No inventar una tesis para cumplir esto
+— si de verdad no hay ningún valor adicional y solo se puede reescribir el
+comunicado, esa es exactamente la pregunta que responde el gate
+(`editorial-gate.md`), no una que se resuelve alargando el filing.
 
 **B · Noticia Playbook — 3 to 5 movements, then the Opinión:**
 
@@ -188,10 +223,42 @@ demands; `readingTime: 3` or `4`.
 - **Devices**: two to four, each answering a question — ecuación, reparto,
   serie, duelo, mapa or cronología (`dynamic-element-library.md`; the budget
   and the exclusive pairs apply as everywhere).
-- **Opinión de Playbook**: one or two paragraphs that synthesize the reading
-  obtained **after** the analysis. Never a recap of the article.
-- **Close**: no moraleja. A consequence, an open tension, a pending decision,
-  a number to watch, or a concrete question the market hasn't answered.
+- **Opinión de Playbook**: exactly one paragraph, same default as every other
+  format (`voice-and-style.md` §2), that synthesizes the reading obtained
+  **after** the analysis. Never a recap of the article. **This is always the
+  article's last body content** — nothing follows it except the `Fuentes:`
+  footer, which the render pipeline lifts out of the body regardless (§6).
+  Changed 2026-09-13 (publisher) from "one or two paragraphs": the render
+  only fences the single `<p>` carrying the literal
+  `**Opinión de Playbook:**` lead-in, so a second paragraph — written as this
+  tier's default, not as a deliberate ask — renders as plain text trailing
+  the green callout. That reads on the page as though something follows the
+  Opinión, which is exactly what a Deep Dive on the CBF/Copa do Brasil
+  rights sale did before a human reviewer caught it live. §3's 2026-08-07
+  precedent (a human reviewer can explicitly ask for a two-paragraph split)
+  still stands on any tier; what changed is that a Deep Dive no longer
+  defaults to it.
+- **Close**: no moraleja. Land it as the last sentence of that one Opinión
+  paragraph, not a separate beat after it — a consequence, an open tension, a
+  pending decision, a number to watch, or a concrete question the market
+  hasn't answered.
+
+**Never use conceptual analysis to hide an evidence gap.** If a conclusion
+depends on a figure, contract, ownership structure, causality or valuation
+that can't be verified: look for more evidence, chase the reporting, reframe
+the question, say plainly what isn't known yet, or don't publish it yet — in
+that order. Analytical language dressing up a gap in the reporting is a
+worse failure than an admitted gap, because it reads as confidence the piece
+doesn't have.
+
+**Calibrate certainty with plain words, not just the evidence-level labels**
+(`voice-and-style.md` §8): **sabemos** (hecho confirmado — nivel 01) /
+**parece** (reporte de terceros o señal, no confirmado — nivel 02) /
+**podría** (interpretación o hipótesis — niveles 03-04) / **no sabemos
+todavía** (evidence gap, dicho explícitamente). Same four levels as §8, in the
+words a reader actually parses mid-sentence rather than a taxonomy label. Never
+fill a "no sabemos todavía" with confident prose because the narrative reads
+better that way.
 
 **The exit test:** the reader can explain what happened, how it works, where
 the money is, what incentives exist, who controls what, and what may change

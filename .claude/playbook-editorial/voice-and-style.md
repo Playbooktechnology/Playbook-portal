@@ -396,6 +396,16 @@ only the names? If yes, it is still too generic. Rewrite it until it can't.
 A weak read does more damage than a short piece with no opinion at all. The
 Opinión explains the mecanismo; it does not deliver a moraleja.
 
+**The Opinión has to earn its space** (moat playbook guide, 2026-09-13). It
+does that through one of: cálculo, benchmark, mecanismo, antecedente,
+contradicción, incentivo, cambio de control, cambio de poder de negociación,
+riesgo, consecuencia, una pregunta concreta, o información importante que
+falta. It does **not** earn its space by: repeating the noticia; saying
+something is "importante" without saying why; turning the story into "good
+idea or bad idea"; or handing the industry a generic recommendation. Any of
+those four is the tell that the piece skipped straight to Opinión without
+finding the palanca first.
+
 ### How each format uses it
 
 | Format | Opinión |
@@ -505,6 +515,10 @@ alerta de última hora** — calm and analytical even when the underlying story 
 dramatic. The reader should finish feeling they got something a press summary
 wouldn't give them.
 
+**Español de México, tuteo.** When a piece addresses the reader directly (rare
+outside a device caption or a direct question), use "tú", never "usted" — the
+same register as every worked example in this guide.
+
 This is easiest to get wrong in the fact movement, where translating a source too
 literally carries its urgency across with its facts. A Reuters paragraph is
 built to be lifted whole; rebuild the paragraph in Playbook's register instead of
@@ -562,17 +576,56 @@ piece, not a translation exercise.
 ### Fórmulas bajo vigilancia
 
 Not banned. But every time one appears, ask: **can I say this more specifically
-and less interchangeably?**
+and less interchangeably?** (List merged and expanded 2026-09-13, moat playbook
+guide, to fold in a parallel list that had been circulating separately —
+this is the one home for it now.)
 
 - "confirma una tendencia"
 - "el mensaje es claro"
 - "no es un detalle menor"
 - "marca la ruta"
-- "el verdadero examen"
+- "el verdadero examen" / "el verdadero reto no es…"
 - "más allá de la anécdota"
-- "la pregunta ya no es…"
-- "no solo X, sino Y"
-- "para México/LATAM…"
+- "este caso demuestra que…" / "esto demuestra que…"
+- "la pregunta ya no es…" / "la pregunta no es X, sino Y" / "la pregunta,
+  entonces…" as an opening
+- "no solo X, sino Y" (the whole negative-parallelism family above shares its
+  one-per-piece cap; this entry is the reminder it's watched, not a second
+  rule)
+- "no es X, es Y" (salvo el uso excepcional, ya cubierto arriba: uno por
+  pieza, en el thesis beat)
+- "no se trata de X, sino de Y"
+- "no tanto por…"
+- "más que…" / "más que X, estamos ante Y"
+- "para México/LATAM…" / "para México y Latinoamérica esto representa…"
+- "la clave será…"
+- "parece interesante"
+- "nos metimos a…"
+- "en un mundo donde…"
+- "en el dinámico panorama…"
+- "esto marca un antes y un después"
+- "solo el tiempo dirá"
+- "queda por ver"
+- "la industria observa con atención"
+- "el futuro está por escribirse"
+- "lo relevante aquí"
+- "la lectura aquí es bastante clara"
+
+Watched but not on the interchangeable-phrase list, for the same reason —
+each is a shortcut around doing the work the voice actually asks for:
+moralejas (§6 already bans them outright), lenguaje corporativo (see "No —
+escribir para parecer sofisticado" above), metáforas artificiales, párrafos
+demasiado simétricos, conclusiones redondas por obligación (the hammer line
+above is earned, never a quota), frases construidas para sonar profundas, and
+certeza donde solo existe hipótesis (§8's evidence levels exist precisely so
+this doesn't happen — a nivel 03/04 claim written like nivel 01 is the
+mistake, not a style choice).
+
+**Vocabulario: evita "mirar/miramos/miro" cuando el sentido es analizar datos
+o dar seguimiento a una métrica.** Usa revisar, analizar, seguir, evaluar,
+medir, comparar, entender, tener en cuenta. "Miramos los números" es un calco
+de "we look at the numbers" que no dice qué se hizo con ellos; "analizamos los
+números" o "revisamos los números" sí.
 
 ### Que no huela a IA
 
