@@ -370,6 +370,15 @@ into a Playbook opinion. Per editorial decision 2026-08-06, TFBR articles carry
 **no** `Opinión de Playbook` at all — the analysis is the author's and it
 already closes with the partner's read.
 
+**Same rule for byline `Aldo Sales` (editorial decision 2026-09-22, the Novig
+piece).** These run with `mostrarAutor: true` and are a column derived from
+Aldo's own reel/argument, not a Noticias piece drafted from a source — the
+whole article already is his read. Never add a `**Opinión de Playbook:**`
+lead-in or box to one: fold whatever closing take the piece needs into the
+ordinary body copy instead, and end on the author's own last line rather than
+a separately fenced take. If the human supplies an exact closing (as they did
+for Novig), use it verbatim, as plain paragraphs, in place of a generated one.
+
 ---
 
 ## 6. What the page does with all this

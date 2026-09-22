@@ -23,18 +23,22 @@ import { productForSource } from '@/lib/analytics-events';
 import { ArticleSources } from '@/components/article/ArticleSources';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { splitAfterParagraph } from '@/lib/split-after-paragraph';
+import { splitBeforeAside, splitAtMidpoint } from '@/lib/split-before-aside';
+import { ArticleNewsletterCta } from '@/components/article/ArticleNewsletterCta';
 import { hubForArticle, hubPath } from '@/lib/hubs';
 import {
   hubForSource,
   extractMoneyTrailFromHtml,
   extractMoneyTrailFromParagraphs,
   markOpinionCallout,
+  markCollabNote,
   markLeadIns,
   caseNumber,
   caseStatus,
   shotLabel,
   weekdayFor,
   OPINION_TEXT_PREFIX,
+  COLLAB_TEXT_PREFIX,
 } from '@/lib/product-hubs';
 import { applyBodyDevices, deviceFromParagraph, createDeviceLedger } from '@/lib/article-devices';
 import { extractSourcesFromHtml, extractSourcesFromParagraphs } from '@/lib/article-sources';
@@ -233,6 +237,7 @@ type PlainBlock =
   | { kind: 'text'; text: string }
   | { kind: 'leadin'; label: string; text: string }
   | { kind: 'opinion'; text: string }
+  | { kind: 'collab'; text: string }
   | { kind: 'device'; html: string }
   | { kind: 'trail'; stops: string[] };
 
@@ -267,6 +272,9 @@ function plainBlocksFor(
     if (isProduct && OPINION_TEXT_PREFIX.test(p)) {
       return { kind: 'opinion', text: p.replace(OPINION_TEXT_PREFIX, '') };
     }
+    if (isProduct && COLLAB_TEXT_PREFIX.test(p)) {
+      return { kind: 'collab', text: p.replace(COLLAB_TEXT_PREFIX, '') };
+    }
     if (isProduct) {
       const device = deviceFromParagraph(p, { articleDate });
       if (device && ledger.take(device.name)) {
@@ -299,6 +307,14 @@ function PlainBlockView({ block }: { block: PlainBlock }) {
       </aside>
     );
   }
+  if (block.kind === 'collab') {
+    return (
+      <aside className="shot-opinion">
+        <span className="shot-opinion-kicker">Sobre esta colaboración</span>
+        <p>{block.text}</p>
+      </aside>
+    );
+  }
   if (block.kind === 'device') {
     // Markup assembled by lib/article-devices.ts's builders from the
     // editor's own plain text, with every interpolation entity-escaped
@@ -314,6 +330,30 @@ function PlainBlockView({ block }: { block: PlainBlock }) {
     );
   }
   return <p>{block.text}</p>;
+}
+
+// Same placement rule as the HTML path (splitBeforeAside / splitAtMidpoint
+// in lib/split-before-aside.ts): the newsletter CTA goes right before the
+// 'opinion' block when the piece has one (always the body's last block per
+// format-tiers.md §1's architecture), or at the halfway point of the
+// remaining blocks otherwise — never stranded after the final paragraph,
+// where a piece with no Opinión (Aldo Sales bylines) can run long. Legacy
+// plain-text bodies only (see hasNativeBody's comment above) — every
+// article authored from here on takes the HTML path instead.
+function renderPlainBlocksWithCta(blocks: PlainBlock[]) {
+  const opinionIndex = blocks.findIndex(b => b.kind === 'opinion');
+  const splitIndex = opinionIndex !== -1 ? opinionIndex : Math.ceil(blocks.length / 2);
+  return (
+    <>
+      {blocks.slice(0, splitIndex).map((block, i) => (
+        <PlainBlockView key={`pre-${i}`} block={block} />
+      ))}
+      <ArticleNewsletterCta />
+      {blocks.slice(splitIndex).map((block, i) => (
+        <PlainBlockView key={`post-${i}`} block={block} />
+      ))}
+    </>
+  );
 }
 
 export default async function ArticuloPage({ params }: Props) {
@@ -680,11 +720,19 @@ export default async function ArticuloPage({ params }: Props) {
   // label can never double as a scan mark.
   const htmlBody =
     rawHtmlBody && hub
-      ? markLeadIns(markOpinionCallout(applyBodyDevices(rawHtmlBody, meta.readingTime, article.priority, { articleDate: meta.date })))
+      ? markLeadIns(markCollabNote(markOpinionCallout(applyBodyDevices(rawHtmlBody, meta.readingTime, article.priority, { articleDate: meta.date }))))
       : rawHtmlBody;
   const splitHtml = htmlBody ? splitAfterParagraph(htmlBody, 3) : null;
   const blocks = plainBlocksFor(bodyParagraphs, article.source, meta.readingTime, article.priority, meta.date);
   const splitPlain = blocks.length > 3 ? [blocks.slice(0, 3), blocks.slice(3)] : null;
+
+  // Newsletter CTA: computed on whatever comes after the ad's own split
+  // (or the whole body, when the piece is too short for an ad) rather than
+  // interacting with it — the ad splits at paragraph 3, near the top, and
+  // the Opinión callout, when present, is always the body's last block, so
+  // the two split points never compete for the same spot.
+  const htmlBodyTail = htmlBody ? (splitHtml ? splitHtml[1] : htmlBody) : null;
+  const ctaSplitHtml = htmlBodyTail ? (splitBeforeAside(htmlBodyTail) ?? splitAtMidpoint(htmlBodyTail)) : null;
 
   // The "siguiente expediente" handoff already shows the next case — keep
   // it out of "Sigue leyendo" so the foot never repeats a link.
@@ -719,10 +767,30 @@ export default async function ArticuloPage({ params }: Props) {
                 <>
                   <ProductHtml html={splitHtml[0]} source={article.source} />
                   <AdSlot slot="inline-article" />
-                  <ProductHtml html={splitHtml[1]} source={article.source} />
+                  {ctaSplitHtml ? (
+                    <>
+                      <ProductHtml html={ctaSplitHtml[0]} source={article.source} />
+                      <ArticleNewsletterCta />
+                      <ProductHtml html={ctaSplitHtml[1]} source={article.source} />
+                    </>
+                  ) : (
+                    <>
+                      <ProductHtml html={splitHtml[1]} source={article.source} />
+                      <ArticleNewsletterCta />
+                    </>
+                  )}
+                </>
+              ) : ctaSplitHtml ? (
+                <>
+                  <ProductHtml html={ctaSplitHtml[0]} source={article.source} />
+                  <ArticleNewsletterCta />
+                  <ProductHtml html={ctaSplitHtml[1]} source={article.source} />
                 </>
               ) : (
-                <ProductHtml html={htmlBody} source={article.source} />
+                <>
+                  <ProductHtml html={htmlBody} source={article.source} />
+                  <ArticleNewsletterCta />
+                </>
               )
             ) : blocks.length ? (
               splitPlain ? (
@@ -731,12 +799,10 @@ export default async function ArticuloPage({ params }: Props) {
                     <PlainBlockView key={`a-${i}`} block={block} />
                   ))}
                   <AdSlot slot="inline-article" />
-                  {splitPlain[1].map((block, i) => (
-                    <PlainBlockView key={`b-${i}`} block={block} />
-                  ))}
+                  {renderPlainBlocksWithCta(splitPlain[1])}
                 </>
               ) : (
-                blocks.map((block, i) => <PlainBlockView key={i} block={block} />)
+                renderPlainBlocksWithCta(blocks)
               )
             ) : (
               <p>{article.excerpt}</p>

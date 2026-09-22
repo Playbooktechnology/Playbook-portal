@@ -694,6 +694,13 @@ error message — it's not a crash, just non-functional).
 
 ## 13. Claude Code Skills (`.claude/skills/`)
 
+The editorial rules these skills draft against — the publish/no-publish
+gate, the A/B/C/D router, voice, taxonomy, the Moat Check — live in the
+shared, symlinked tree at `.claude/playbook-editorial/`, documented end to
+end in [`docs/EDITORIAL_SYSTEM.md`](../docs/EDITORIAL_SYSTEM.md). Read that
+before touching anything about how an article gets drafted, routed or
+published; this section only maps which skill does what.
+
 - **`publish-newsletter`** — a fully automated, zero-human-review editorial
   pipeline: given one or more Playbook Substack URLs (Noticias, La
   Lana del Deporte, Infinitas), fetches each edition, treats each story as
@@ -717,6 +724,18 @@ error message — it's not a crash, just non-functional).
   as its write-side (that script's markdown-to-TipTap converter also
   supports `[text](url)` links and `- ` bullet lists, added for this
   skill's Fuentes block).
+- **`publish-partner-announcement`** — turns an inbound partner/sponsor
+  press kit into per-channel drafts (copy, taxonomy, a breaking-news
+  graphic asset spec, a channel plan). Never posts or schedules by itself —
+  every output is a draft for human execution. When the announcement also
+  warrants a portal article, it hands that off to `publish-sourced-article`,
+  which owns the cross-referencing and approval gate for that piece.
+- **`hub-builder`** — builds a coverage hub (`/coberturas/<slug>`) for an
+  external property Playbook doesn't own (a league, tournament or
+  franchise): intake gate, taxonomy tag and boundary rule, identity design,
+  module inventory, registration and QA. A hub is config plus assets, not a
+  new article format — it shares the same taxonomy, voice and format-tier
+  rules as the three publish-* skills above.
 - **`verify`** — how to run/verify the site locally: static checks, dev
   server against `POSTGRES_URL`, the global-Playwright import path, the
   ready-made smoke suites, and what to check per surface. Rewritten
@@ -826,6 +845,11 @@ diagnostic detail lives in `HANDOFF.md`:
   points here and to `HANDOFF.md` for everything else.
 - **`docs/image-dimensions.md`** — specific notes on image aspect
   ratios/dimensions across the site's editorial image slots.
+- **`docs/EDITORIAL_SYSTEM.md`** — the full editorial-depth spec (the Moat
+  Playbook guide): the publish/no-publish gate, the reader personas, the
+  A/B/C/D router, the shared analytical core, the Moat Check, voice rules
+  and CMS field discipline. Update it in the same change as any edit to
+  `.claude/playbook-editorial/` that shifts the rule, not after.
 - **This document** — update it when the *architecture* changes (new
   table, new route, new integration, a business rule that gets redefined)
   rather than for routine bug fixes or session notes, which belong in

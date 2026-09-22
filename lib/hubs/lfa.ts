@@ -234,11 +234,11 @@ export const LFA_HUB: Hub = {
   audience: {
     kicker: 'La afición',
     heading: 'El tamaño de la afición',
-    sub: 'Qué compra un patrocinador cuando compra a la LFA.',
+    sub: 'Qué compra un patrocinador cuando compra a la LFA Finsus.',
     figures: [
       {
         value: '3.8 millones',
-        label: 'Afición potencial a la LFA (cifra estimada)',
+        label: 'Afición potencial a la LFA Finsus (cifra estimada)',
         source: { ...GLOBAL_INTELLIGENCE },
       },
       {
@@ -284,7 +284,6 @@ export const LFA_HUB: Hub = {
   // straight from the 2026-08-19 mockup's "radar editorial" module.
   pillars: [
     { title: 'Capital + ownership', description: 'Quién invierte, cómo se estructura el capital y qué cambia para la Liga y sus franquicias.' },
-    { title: 'Expansión', description: 'Nuevas plazas, propietarios, estadios, demanda local y el modelo para crecer sin diluir el producto.' },
     { title: 'Marcas + commerce', description: 'Patrocinios, naming, licencias, merch y las categorías que todavía tienen espacio para entrar.' },
     { title: 'Media + audiencias', description: 'TV, streaming, distribución, consumo y cómo convertir atención en hábito y valor comercial.' },
     { title: 'Producto + talento', description: 'Profesionalización, desarrollo de jugadores, rutas internacionales y flag football como extensión del ecosistema.' },

@@ -452,10 +452,12 @@ function isPinned(article: Rankable, now: Date): boolean {
  * The top slot. Four rules, applied in order of authority:
  *
  *   pin      an explicit, self-expiring editorial override (heroPinnedUntil)
- *            wins outright, ahead of score and of `featured`. Still subject
- *            to rule 03 below -- a pin cannot promote an unconfirmed story
- *            over a confirmed one. See Rankable.heroPinnedUntil for why this
- *            exists and why `featured` alone wasn't enough.
+ *            wins outright, ahead of score and of `featured`, and ahead of
+ *            the news-track filter below -- a pin is checked across EVERY
+ *            track, La Lana and TFBR included. Still subject to rule 03: a
+ *            pin cannot promote an unconfirmed story over a confirmed one.
+ *            See Rankable.heroPinnedUntil for why this exists and why
+ *            `featured` alone wasn't enough.
  *   rule 03  an unconfirmed story can never take the slot from a confirmed one,
  *            at any score. The -2 decenas is the soft half of this; the bar is
  *            the hard half, and it is a filter, not a penalty.
@@ -464,12 +466,29 @@ function isPinned(article: Rankable, now: Date): boolean {
  *   featured a same-day editorial override, worth one day, applied last and
  *            only among candidates that already survived both rules above.
  *
- * Editorial products are excluded outright rather than losing on points: the
- * hero slot is a news slot, and "La Lana nunca pelea un lugar contra una nota
- * de última hora" is the whole reason the tracks are separate.
+ * Editorial products are excluded from the AUTOMATIC ranking rather than
+ * losing on points: the hero slot is a news slot by default, and "La Lana
+ * nunca pelea un lugar contra una nota de última hora" is the whole reason
+ * the tracks are separate. A pin is a deliberate human override of that
+ * default (2026-09-11, publisher asked to pin a La Lana edition as hero for
+ * a window) -- it is exactly the "I want THIS to lead" escape hatch
+ * `heroPinnedUntil` was built for, and gating it to the news track too was
+ * never the intent, just an accident of filtering by track before ever
+ * checking for a pin.
  */
 export function selectHero<T extends Rankable>(articles: T[], now: Date = new Date()): T | null {
-  const news = rankArticles((articles || []).filter(a => trackFor(a.source) === 'news'), now);
+  const all = articles || [];
+
+  // Pin: checked across every track, before the news-track filter even runs.
+  // Same confirmed-bar as rule 03 below, just evaluated over the whole pool
+  // instead of only the news one, so an unconfirmed pinned row still can't
+  // jump a confirmed one.
+  const confirmedAll = all.filter(isConfirmed);
+  const pinPool = confirmedAll.length ? confirmedAll : all;
+  const pinned = pinPool.filter(a => isPinned(a, now));
+  if (pinned.length) return pinned[0];
+
+  const news = rankArticles(all.filter(a => trackFor(a.source) === 'news'), now);
   if (!news.length) return null;
 
   // Rule 03: prefer confirmed. Unconfirmed stories are eligible only if the
@@ -477,13 +496,6 @@ export function selectHero<T extends Rankable>(articles: T[], now: Date = new Da
   // just cannot lead over something that actually happened.
   const confirmed = news.filter(isConfirmed);
   let pool = confirmed.length ? confirmed : news;
-
-  // Pin: an active, confirmed pin wins outright, before rule 01 or any score
-  // comparison. Deliberately checked against `pool` (post rule-03), never
-  // against the raw `news` list, so an unconfirmed pinned row still can't
-  // jump the confirmed bar.
-  const pinned = pool.filter(a => isPinned(a, now));
-  if (pinned.length) return pinned[0];
 
   // Rule 01: past two days, yield to any fresher candidate.
   const fresh = pool.filter(a => daysSince(a.date, now) <= TOP_SLOT_MAX_DAYS);
