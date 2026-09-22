@@ -303,9 +303,14 @@ function parseDelta(raw: string): Delta | null {
   const from = match[1].trim();
   const to = match[2].trim();
   if (!from || from.length > 26 || !to || to.length > 26 || !/\d/.test(from) || !/\d/.test(to)) return null;
-  const a = splitFigure(from) && parseNumeric(splitFigure(from)!.num);
-  const b = splitFigure(to) && parseNumeric(splitFigure(to)!.num);
-  const dir = a && b && a.value !== b.value ? (b.value > a.value ? 'up' : 'down') : null;
+  // absoluteMagnitudeOf, not a raw digit-string comparison: the two sides
+  // routinely disagree about scale ("3,000 atletas" vs "1.4M atletas"), and
+  // comparing only the digits before any M/K/millones suffix reversed the
+  // arrow on exactly that kind of pair (2026-09-18, the Hyrox growth Salto,
+  // which read 3,000 > 1.4 and drew a decline for 467× growth).
+  const a = absoluteMagnitudeOf(from);
+  const b = absoluteMagnitudeOf(to);
+  const dir = a !== null && b !== null && a !== b ? (b > a ? 'up' : 'down') : null;
   return { from, to, caption: (match[3] || '').trim(), dir };
 }
 
@@ -316,11 +321,23 @@ function buildDelta(delta: Delta): string {
   // prints the percent change so the reader never does the division — and a
   // derived number can't contradict the prose. Units disagreeing (a
   // currency change, not growth) or a zero base silently omit it.
+  //
+  // Uses absoluteMagnitudeOf rather than denominatedOf/magnitudeOf on purpose
+  // (2026-09-18): magnitudeOf treats a bare number as already-in-millions,
+  // which is right for comparing same-scale budget figures but silently
+  // wrong the moment one side carries an explicit M/K suffix and the other
+  // doesn't — "3,000 atletas → 1.4M atletas" computed as -100% instead of
+  // the real ~467x. absoluteMagnitudeOf is the one built for arithmetic
+  // across disagreeing scale words; the prefix (currency symbol etc.) is
+  // still checked separately so a peso figure never gets diffed against a
+  // dollar one.
   let moveChip = '';
-  const from = denominatedOf(delta.from);
-  const to = denominatedOf(delta.to);
-  if (from && to && from.unit === to.unit && from.value > 0) {
-    const pct = ((to.value - from.value) / from.value) * 100;
+  const fromPre = splitFigure(delta.from)?.pre.replace(/\s+/g, '').toUpperCase() ?? '';
+  const toPre = splitFigure(delta.to)?.pre.replace(/\s+/g, '').toUpperCase() ?? '';
+  const fromVal = absoluteMagnitudeOf(delta.from);
+  const toVal = absoluteMagnitudeOf(delta.to);
+  if (fromVal !== null && toVal !== null && fromPre === toPre && fromVal > 0) {
+    const pct = ((toVal - fromVal) / fromVal) * 100;
     const text = `${pct >= 0 ? '+' : '−'}${formatNumeric(Math.abs(pct), Math.abs(pct) >= 10 ? 0 : 1)}%`;
     moveChip = `<span class="lect-salto-pct" data-dir="${pct < 0 ? 'down' : 'up'}">${esc(text)}</span>`;
   }
@@ -1162,8 +1179,8 @@ const VS_RE = /^([\s\S]+?)\s+(?:vs\.?|versus)\s+([\s\S]+)$/i;
 const SCALES: [RegExp, number][] = [
   [/\bbillones\b/i, 1_000_000],
   [/\b(?:mil\s+millones|bn)\b/i, 1_000],
-  [/\b(?:millones|mdd|mdp)\b|M\s*$/i, 1],
-  [/K\s*$/i, 0.001],
+  [/\b(?:millones|mdd|mdp)\b|^\s*M\b/i, 1],
+  [/^\s*K\b/i, 0.001],
 ];
 
 /** What one unit of the SCALES table is worth in base units. */

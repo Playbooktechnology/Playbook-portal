@@ -146,6 +146,14 @@ export const articles = pgTable(
     // to true so every existing and ordinarily-created row stays exactly as
     // visible as before this column existed.
     listed: boolean('listed').notNull().default(true),
+    // A genuine, self-expiring editorial override for the homepage hero slot
+    // (lib/rank.ts's selectHero) -- see that file's Rankable.heroPinnedUntil
+    // comment for the 2026-09-08 incident this exists to fix: `featured`
+    // alone cannot override a real boleta score gap, and the fix is a plain
+    // "win until this timestamp", not a thumb on the score. Null (the
+    // default) means no pin, which is every row's steady state; nothing
+    // reads this column unless it is set.
+    heroPinnedUntil: timestamp('hero_pinned_until', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
     updatedBy: uuid('updated_by').references(() => editors.id, { onDelete: 'set null' }),

@@ -295,6 +295,25 @@ export type Rankable = {
   // corpus has no such thing as an unconfirmed flag, and defaulting the other
   // way would silently bar every legacy row from the hero slot.
   confirmed?: boolean | null;
+  // A genuine editorial override, distinct from `featured`. Added
+  // 2026-09-08: the publisher asked for Playbook's own alliance-announcement
+  // piece to lead the homepage over a same-day story that legitimately
+  // outscored it on the boleta (73 vs 70) -- a real, deliberate "I want THIS
+  // to lead" decision, not a case where the boleta was mis-answered. Faking
+  // the boleta to manufacture the outcome was rejected on the spot: "the
+  // number is never authored" (see scoreFromBoleta's own comment) is the
+  // whole point of this file, and a placement decision is not a fact about
+  // the story. `featured` was the obvious first reach, but it is capped at
+  // FEATURED_BOOST (9) specifically so it "can win its own level and can
+  // never leave it" -- by design too weak to override a real score gap, and
+  // by late in the day (its boost decays from `date`'s midnight, not from
+  // when the flag was set) it had faded to ~1.3, nowhere near the 3-point
+  // gap here. So: a plain, self-expiring timestamp. Set it, it wins the top
+  // slot outright (still behind rule 03's confirmed bar, never behind an
+  // unconfirmed story); past the timestamp it is exactly as if the field
+  // were never set. No admin UI yet -- set via scripts/update-article.ts's
+  // JSON input, same as any other field.
+  heroPinnedUntil?: string | Date | null;
 };
 
 export function daysSince(dateStr: string, now: Date): number {
@@ -423,9 +442,22 @@ function isConfirmed(article: Rankable): boolean {
   return article.confirmed !== false;
 }
 
+function isPinned(article: Rankable, now: Date): boolean {
+  if (!article.heroPinnedUntil) return false;
+  const until = new Date(article.heroPinnedUntil);
+  return !Number.isNaN(until.getTime()) && until.getTime() > now.getTime();
+}
+
 /**
- * The top slot. Three rules, applied in the spec's own order of authority:
+ * The top slot. Four rules, applied in order of authority:
  *
+ *   pin      an explicit, self-expiring editorial override (heroPinnedUntil)
+ *            wins outright, ahead of score and of `featured`, and ahead of
+ *            the news-track filter below -- a pin is checked across EVERY
+ *            track, La Lana and TFBR included. Still subject to rule 03: a
+ *            pin cannot promote an unconfirmed story over a confirmed one.
+ *            See Rankable.heroPinnedUntil for why this exists and why
+ *            `featured` alone wasn't enough.
  *   rule 03  an unconfirmed story can never take the slot from a confirmed one,
  *            at any score. The -2 decenas is the soft half of this; the bar is
  *            the hard half, and it is a filter, not a penalty.
@@ -434,12 +466,29 @@ function isConfirmed(article: Rankable): boolean {
  *   featured a same-day editorial override, worth one day, applied last and
  *            only among candidates that already survived both rules above.
  *
- * Editorial products are excluded outright rather than losing on points: the
- * hero slot is a news slot, and "La Lana nunca pelea un lugar contra una nota
- * de última hora" is the whole reason the tracks are separate.
+ * Editorial products are excluded from the AUTOMATIC ranking rather than
+ * losing on points: the hero slot is a news slot by default, and "La Lana
+ * nunca pelea un lugar contra una nota de última hora" is the whole reason
+ * the tracks are separate. A pin is a deliberate human override of that
+ * default (2026-09-11, publisher asked to pin a La Lana edition as hero for
+ * a window) -- it is exactly the "I want THIS to lead" escape hatch
+ * `heroPinnedUntil` was built for, and gating it to the news track too was
+ * never the intent, just an accident of filtering by track before ever
+ * checking for a pin.
  */
 export function selectHero<T extends Rankable>(articles: T[], now: Date = new Date()): T | null {
-  const news = rankArticles((articles || []).filter(a => trackFor(a.source) === 'news'), now);
+  const all = articles || [];
+
+  // Pin: checked across every track, before the news-track filter even runs.
+  // Same confirmed-bar as rule 03 below, just evaluated over the whole pool
+  // instead of only the news one, so an unconfirmed pinned row still can't
+  // jump a confirmed one.
+  const confirmedAll = all.filter(isConfirmed);
+  const pinPool = confirmedAll.length ? confirmedAll : all;
+  const pinned = pinPool.filter(a => isPinned(a, now));
+  if (pinned.length) return pinned[0];
+
+  const news = rankArticles(all.filter(a => trackFor(a.source) === 'news'), now);
   if (!news.length) return null;
 
   // Rule 03: prefer confirmed. Unconfirmed stories are eligible only if the

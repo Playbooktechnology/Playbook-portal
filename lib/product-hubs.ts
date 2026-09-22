@@ -453,10 +453,72 @@ export function markOpinionCallout(html: string): string {
     );
   }
 
+  const m = html.match(OPINION_HTML_RE);
+  if (!m || m.index === undefined) return html;
+
+  const attrs = m[1];
+  const rest = capitalizeFirstLetter(m[3]);
+  const start = m.index;
+  let tailStart = start + m[0].length;
+
+  // The editorial voice regularly writes the Opinión as two short paragraphs
+  // (reencuadre, then palanca/consecuencia) rather than the single paragraph
+  // this device was first built around (see voice-and-style.md §5's "always
+  // exactly one paragraph" rule -- a rule the drafts kept breaking in
+  // practice). A second, undeclared paragraph used to fall OUTSIDE the
+  // <aside>, printing as a stray line right after the callout box. Fixed by
+  // folding in every immediately-following <p> up to (not including) the
+  // Fuentes line or the next block element, instead of stopping at the
+  // first </p>.
+  const FOLLOWING_P_RE = /^\s*<p([^>]*)>([\s\S]*?)<\/p>/;
+  let extra = '';
+  for (;;) {
+    const rem = html.slice(tailStart);
+    const fm = rem.match(FOLLOWING_P_RE);
+    if (!fm) break;
+    const plainText = fm[2].replace(/<[^>]+>/g, '');
+    if (/^\s*Fuentes:/i.test(plainText)) break;
+    extra += `<p${fm[1]}>${fm[2]}</p>`;
+    tailStart += fm[0].length;
+  }
+
+  return (
+    `${html.slice(0, start)}<aside class="shot-opinion">` +
+    `<span class="shot-opinion-kicker">Opinión de Playbook</span><p${attrs}>${rest}</p>${extra}</aside>` +
+    html.slice(tailStart)
+  );
+}
+
+// A stray lowercase first letter shows up on some Opinión paragraphs (the
+// drafting habit of continuing straight off the "Opinión de Playbook:" colon
+// as if it were mid-sentence). The callout always opens a new sentence, so
+// force it.
+function capitalizeFirstLetter(text: string): string {
+  return text.replace(/^(\s*)([a-záéíóúñ])/, (_m, ws: string, c: string) => ws + c.toUpperCase());
+}
+
+// The partnership-disclosure paragraph gets the SAME visual treatment as
+// the opinion callout (fenced, per-product tinted) so it reads as its own
+// object rather than a fourth reporting paragraph — the exact complaint a
+// publisher raised about the LFA alliance pieces (2026-09-09): a bold
+// "Sobre esta colaboración:" lead-in alone still numbered like every other
+// paragraph and looked like it belonged to the reporting, not a disclosure
+// fenced off from it. Deliberately its OWN function rather than folding
+// into markOpinionCallout: the two paragraphs mean different things (one is
+// Playbook's take, the other is "here is our commercial relationship to the
+// subject of this article") and a body can carry both, in which case each
+// needs its own fence, not one box swallowing two unrelated paragraphs.
+// Reuses .shot-opinion's CSS wholesale (border, tint, per-product mark) —
+// a second stylesheet block for an identical box would be the exact kind
+// of forked copy _GOVERNANCE.md's incident exists to prevent.
+const COLLAB_HTML_RE = /<p([^>]*)>(\s*(?:<strong>)?\s*Sobre esta colaboraci[oó]n:?\s*(?:<\/strong>)?:?\s*)([\s\S]*?)<\/p>/;
+export const COLLAB_TEXT_PREFIX = /^\s*(?:\*\*)?\s*Sobre esta colaboraci[oó]n:?\s*(?:\*\*)?:?\s*/;
+
+export function markCollabNote(html: string): string {
   return html.replace(
-    OPINION_HTML_RE,
+    COLLAB_HTML_RE,
     (_m, attrs: string, _label: string, rest: string) =>
-      `<aside class="shot-opinion"><span class="shot-opinion-kicker">Opinión de Playbook</span><p${attrs}>${rest}</p></aside>`,
+      `<aside class="shot-opinion"><span class="shot-opinion-kicker">Sobre esta colaboración</span><p${attrs}>${rest}</p></aside>`,
   );
 }
 
