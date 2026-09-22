@@ -798,8 +798,8 @@
     "semantic_hash": "9553ee663ff75956277884a9b61344eb"
   },
   "components/shared/NewsletterForm.tsx": {
-    "mtime": 1790108205.0385182,
-    "seen": 1790108832.3821793,
+    "mtime": 1790115795.2333815,
+    "seen": 1790115960.922414,
     "ast_hash": "af6c577e14049ace9098fbf3c2cb3f65",
     "semantic_hash": ""
   },
@@ -990,8 +990,8 @@
     "semantic_hash": "3517c37306d8dfb4a8843369b2dd8f15"
   },
   "lib/article-devices.ts": {
-    "mtime": 1789788283.7362914,
-    "seen": 1790108832.3822277,
+    "mtime": 1790115793.6293814,
+    "seen": 1790115960.9232852,
     "ast_hash": "7f9fd3ffa91db67548e021aa78ae4f98",
     "semantic_hash": ""
   },
@@ -1560,20 +1560,20 @@
     "semantic_hash": ""
   },
   ".claude/playbook-editorial/fields-and-taxonomy.md": {
-    "mtime": 1790057611.0771842,
-    "seen": 1790108832.3825126,
-    "ast_hash": "28b1452bfec4b205845f76b5ac64b412",
+    "mtime": 1790115795.2293816,
+    "seen": 1790115960.927266,
+    "ast_hash": "ad16f973d32c4774a82df975d4760ed4",
     "semantic_hash": ""
   },
   ".claude/playbook-editorial/format-tiers.md": {
-    "mtime": 1788434278.907221,
-    "seen": 1790108832.382515,
-    "ast_hash": "451c546a8347890b3e3c5153907e79db",
+    "mtime": 1790115795.2293816,
+    "seen": 1790115960.9272678,
+    "ast_hash": "31b43ebd4eb341f1961329fd36e58a7b",
     "semantic_hash": ""
   },
   ".claude/playbook-editorial/images.md": {
-    "mtime": 1789770387.1453302,
-    "seen": 1790108832.3825178,
+    "mtime": 1790115793.3893814,
+    "seen": 1790115960.9272697,
     "ast_hash": "48a415341781a0818123fe21d45198ac",
     "semantic_hash": ""
   },
@@ -1584,8 +1584,8 @@
     "semantic_hash": ""
   },
   ".claude/playbook-editorial/voice-and-style.md": {
-    "mtime": 1789845174.816577,
-    "seen": 1790108832.3825347,
+    "mtime": 1790115793.3893814,
+    "seen": 1790115960.9273264,
     "ast_hash": "79bb26ded28ee755e28db8792b2b7611",
     "semantic_hash": ""
   },
@@ -1608,20 +1608,20 @@
     "semantic_hash": ""
   },
   ".claude/skills/publish-newsletter/references/fields-and-taxonomy.md": {
-    "mtime": 1790057611.0771842,
-    "seen": 1790108832.3825881,
-    "ast_hash": "28b1452bfec4b205845f76b5ac64b412",
+    "mtime": 1790115795.2293816,
+    "seen": 1790115960.9279103,
+    "ast_hash": "ad16f973d32c4774a82df975d4760ed4",
     "semantic_hash": ""
   },
   ".claude/skills/publish-newsletter/references/format-tiers.md": {
-    "mtime": 1788434278.907221,
-    "seen": 1790108832.38259,
-    "ast_hash": "451c546a8347890b3e3c5153907e79db",
+    "mtime": 1790115795.2293816,
+    "seen": 1790115960.9279122,
+    "ast_hash": "31b43ebd4eb341f1961329fd36e58a7b",
     "semantic_hash": ""
   },
   ".claude/skills/publish-newsletter/references/images.md": {
-    "mtime": 1789770387.1453302,
-    "seen": 1790108832.3825917,
+    "mtime": 1790115793.3893814,
+    "seen": 1790115960.9279141,
     "ast_hash": "48a415341781a0818123fe21d45198ac",
     "semantic_hash": ""
   },
@@ -1632,8 +1632,8 @@
     "semantic_hash": ""
   },
   ".claude/skills/publish-newsletter/references/voice-and-style.md": {
-    "mtime": 1789845174.816577,
-    "seen": 1790108832.3826046,
+    "mtime": 1790115793.3893814,
+    "seen": 1790115960.9280825,
     "ast_hash": "79bb26ded28ee755e28db8792b2b7611",
     "semantic_hash": ""
   },
@@ -1656,20 +1656,20 @@
     "semantic_hash": ""
   },
   ".claude/skills/publish-sourced-article/references/fields-and-taxonomy.md": {
-    "mtime": 1790057611.0771842,
-    "seen": 1790108832.3826358,
-    "ast_hash": "28b1452bfec4b205845f76b5ac64b412",
+    "mtime": 1790115795.2293816,
+    "seen": 1790115960.9286072,
+    "ast_hash": "ad16f973d32c4774a82df975d4760ed4",
     "semantic_hash": ""
   },
   ".claude/skills/publish-sourced-article/references/format-tiers.md": {
-    "mtime": 1788434278.907221,
-    "seen": 1790108832.3826377,
-    "ast_hash": "451c546a8347890b3e3c5153907e79db",
+    "mtime": 1790115795.2293816,
+    "seen": 1790115960.9286091,
+    "ast_hash": "31b43ebd4eb341f1961329fd36e58a7b",
     "semantic_hash": ""
   },
   ".claude/skills/publish-sourced-article/references/images.md": {
-    "mtime": 1789770387.1453302,
-    "seen": 1790108832.3826396,
+    "mtime": 1790115793.3893814,
+    "seen": 1790115960.9286108,
     "ast_hash": "48a415341781a0818123fe21d45198ac",
     "semantic_hash": ""
   },
@@ -1680,8 +1680,8 @@
     "semantic_hash": ""
   },
   ".claude/skills/publish-sourced-article/references/voice-and-style.md": {
-    "mtime": 1789845174.816577,
-    "seen": 1790108832.3826497,
+    "mtime": 1790115793.3893814,
+    "seen": 1790115960.928837,
     "ast_hash": "79bb26ded28ee755e28db8792b2b7611",
     "semantic_hash": ""
   },
@@ -2214,15 +2214,15 @@
     "semantic_hash": ""
   },
   ".claude/skills/hub-builder/references/fields-and-taxonomy.md": {
-    "mtime": 1790057611.0771842,
-    "seen": 1790108832.3825471,
-    "ast_hash": "28b1452bfec4b205845f76b5ac64b412",
+    "mtime": 1790115795.2293816,
+    "seen": 1790115960.9274745,
+    "ast_hash": "ad16f973d32c4774a82df975d4760ed4",
     "semantic_hash": ""
   },
   ".claude/skills/hub-builder/references/format-tiers.md": {
-    "mtime": 1788434278.907221,
-    "seen": 1790108832.3825505,
-    "ast_hash": "451c546a8347890b3e3c5153907e79db",
+    "mtime": 1790115795.2293816,
+    "seen": 1790115960.9274762,
+    "ast_hash": "31b43ebd4eb341f1961329fd36e58a7b",
     "semantic_hash": ""
   },
   ".claude/skills/hub-builder/references/identity-design.md": {
@@ -2232,8 +2232,8 @@
     "semantic_hash": ""
   },
   ".claude/skills/hub-builder/references/images.md": {
-    "mtime": 1789770387.1453302,
-    "seen": 1790108832.3825564,
+    "mtime": 1790115793.3893814,
+    "seen": 1790115960.9275117,
     "ast_hash": "48a415341781a0818123fe21d45198ac",
     "semantic_hash": ""
   },
@@ -2274,8 +2274,8 @@
     "semantic_hash": ""
   },
   ".claude/skills/hub-builder/references/voice-and-style.md": {
-    "mtime": 1789845174.816577,
-    "seen": 1790108832.3825777,
+    "mtime": 1790115793.3893814,
+    "seen": 1790115960.9277399,
     "ast_hash": "79bb26ded28ee755e28db8792b2b7611",
     "semantic_hash": ""
   },
@@ -2316,20 +2316,20 @@
     "semantic_hash": ""
   },
   ".claude/skills/publish-partner-announcement/references/fields-and-taxonomy.md": {
-    "mtime": 1790057611.0771842,
-    "seen": 1790108832.3826184,
-    "ast_hash": "28b1452bfec4b205845f76b5ac64b412",
+    "mtime": 1790115795.2293816,
+    "seen": 1790115960.9283183,
+    "ast_hash": "ad16f973d32c4774a82df975d4760ed4",
     "semantic_hash": ""
   },
   ".claude/skills/publish-partner-announcement/references/format-tiers.md": {
-    "mtime": 1788434278.907221,
-    "seen": 1790108832.38262,
-    "ast_hash": "451c546a8347890b3e3c5153907e79db",
+    "mtime": 1790115795.2293816,
+    "seen": 1790115960.9283197,
+    "ast_hash": "31b43ebd4eb341f1961329fd36e58a7b",
     "semantic_hash": ""
   },
   ".claude/skills/publish-partner-announcement/references/images.md": {
-    "mtime": 1789770387.1453302,
-    "seen": 1790108832.382622,
+    "mtime": 1790115793.3893814,
+    "seen": 1790115960.9283214,
     "ast_hash": "48a415341781a0818123fe21d45198ac",
     "semantic_hash": ""
   },
@@ -2352,8 +2352,8 @@
     "semantic_hash": ""
   },
   ".claude/skills/publish-partner-announcement/references/voice-and-style.md": {
-    "mtime": 1789845174.816577,
-    "seen": 1790108832.3826292,
+    "mtime": 1790115793.3893814,
+    "seen": 1790115960.9284425,
     "ast_hash": "79bb26ded28ee755e28db8792b2b7611",
     "semantic_hash": ""
   },
@@ -2790,9 +2790,9 @@
     "semantic_hash": ""
   },
   "app/(public)/articulo/[id]/page.tsx": {
-    "mtime": 1790108245.0705192,
-    "seen": 1790108832.381889,
-    "ast_hash": "bb045984515c7f2280ad52ad3c32ce00",
+    "mtime": 1790115852.653385,
+    "seen": 1790115960.9174395,
+    "ast_hash": "578c1fd7f72c45faae8ad89d5f518961",
     "semantic_hash": ""
   },
   "app/api/search/route.ts": {
@@ -2862,8 +2862,8 @@
     "semantic_hash": ""
   },
   "components/article/ArticleNewsletterCta.tsx": {
-    "mtime": 1790108200.094518,
-    "seen": 1790108832.3820977,
+    "mtime": 1790115795.2333815,
+    "seen": 1790115960.9209192,
     "ast_hash": "da21ef1cd3e5ca69b40f24e435757d41",
     "semantic_hash": ""
   },
@@ -2874,9 +2874,9 @@
     "semantic_hash": ""
   },
   "lib/split-before-aside.ts": {
-    "mtime": 1790108191.7105176,
-    "seen": 1790108832.3823068,
-    "ast_hash": "c9aca2e7fb1662eabda1532f56530800",
+    "mtime": 1790115827.7213836,
+    "seen": 1790115960.9246175,
+    "ast_hash": "35e0402329e05393f3fa8c2fb1b39aff",
     "semantic_hash": ""
   },
   "scripts/check-format-tier.ts": {
@@ -2994,32 +2994,32 @@
     "semantic_hash": ""
   },
   "public/assets/img/barca-dubai-ohana-cover.jpg": {
-    "mtime": 1790057808.097487,
-    "seen": 1790108832.3827503,
+    "mtime": 1790115793.6333814,
+    "seen": 1790115960.9306371,
     "ast_hash": "1b4f045dfe3cfa9b4fbe0aa8d7f73fbe",
     "semantic_hash": ""
   },
   "public/assets/img/bbc-sport-logo-cover.jpg": {
-    "mtime": 1789621608.2925134,
-    "seen": 1790108832.3827515,
+    "mtime": 1790115793.6333814,
+    "seen": 1790115960.9306395,
     "ast_hash": "092dd00cbd8dd1980988221aa1fd9ad0",
     "semantic_hash": ""
   },
   "public/assets/img/benfica-adidas-campus-reveal.jpg": {
-    "mtime": 1789615237.1568224,
-    "seen": 1790108832.3827527,
+    "mtime": 1790115793.6373816,
+    "seen": 1790115960.9306417,
     "ast_hash": "0c734bb2edda42a0c924cc19adaf2538",
     "semantic_hash": ""
   },
   "public/assets/img/bezos-saverin-liverpool-cover.jpg": {
-    "mtime": 1789656624.1590889,
-    "seen": 1790108832.382754,
+    "mtime": 1790115793.7373815,
+    "seen": 1790115960.930643,
     "ast_hash": "2dfae34769b77010a09d4de923add4af",
     "semantic_hash": ""
   },
   "public/assets/img/brasil-casino-online-congreso-cover.jpg": {
-    "mtime": 1789770387.1453302,
-    "seen": 1790108832.382755,
+    "mtime": 1790115793.7413814,
+    "seen": 1790115960.9306448,
     "ast_hash": "d2ddf46a83b57b40d6fc66aec1f954c8",
     "semantic_hash": ""
   },
@@ -3030,8 +3030,8 @@
     "semantic_hash": ""
   },
   "public/assets/img/copa-do-brasil-trofeo-flamengo-2025-cover.jpg": {
-    "mtime": 1789770387.1493304,
-    "seen": 1790108832.3827577,
+    "mtime": 1790115793.9093814,
+    "seen": 1790115960.9306777,
     "ast_hash": "a2b89b01714ebc3a7db33054a8fd45d8",
     "semantic_hash": ""
   },
@@ -3054,32 +3054,32 @@
     "semantic_hash": ""
   },
   "public/assets/img/eldense-estadio-pepico-amat-cover.jpg": {
-    "mtime": 1789770956.9255824,
-    "seen": 1790108832.3827705,
+    "mtime": 1790115793.9973814,
+    "seen": 1790115960.9308922,
     "ast_hash": "1496a4e3b9e7fbb5c4d5f6bf5018b32a",
     "semantic_hash": ""
   },
   "public/assets/img/fifa-world-cup-trophy.jpg": {
-    "mtime": 1789623044.2971578,
-    "seen": 1790108832.3827848,
+    "mtime": 1790115793.9973814,
+    "seen": 1790115960.931126,
     "ast_hash": "97ead670adc057a46519b023140771be",
     "semantic_hash": ""
   },
   "public/assets/img/flamengo-betano-arrascaeta-cover.jpg": {
-    "mtime": 1789770387.1533303,
-    "seen": 1790108832.3827863,
+    "mtime": 1790115794.0013814,
+    "seen": 1790115960.9311278,
     "ast_hash": "30eb6b7a7e429c1355ff92df35aa2f3f",
     "semantic_hash": ""
   },
   "public/assets/img/flamengo-betano-jersey-cover.jpg": {
-    "mtime": 1789788283.7458694,
-    "seen": 1790108832.3827872,
+    "mtime": 1790115794.0013814,
+    "seen": 1790115960.9311297,
     "ast_hash": "89fd597e0cf507604096bbff8059b539",
     "semantic_hash": ""
   },
   "public/assets/img/fmf-sede-car-cover.jpg": {
-    "mtime": 1789771029.8590508,
-    "seen": 1790108832.3827949,
+    "mtime": 1790115794.1253815,
+    "seen": 1790115960.9312217,
     "ast_hash": "446358fe0730dc73bf3da2d347d59176",
     "semantic_hash": ""
   },
@@ -3090,32 +3090,32 @@
     "semantic_hash": ""
   },
   "public/assets/img/hyrox-sled-push-cover.jpg": {
-    "mtime": 1789770387.1573303,
-    "seen": 1790108832.3828092,
+    "mtime": 1790115794.2573814,
+    "seen": 1790115960.931461,
     "ast_hash": "8d5f0d7ed3d2bd1cd8c956fbcd2117ef",
     "semantic_hash": ""
   },
   "public/assets/img/infantino-dhs-landscape-cover.jpg": {
-    "mtime": 1790037865.9377997,
-    "seen": 1790108832.3828144,
+    "mtime": 1790115794.3293815,
+    "seen": 1790115960.9315202,
     "ast_hash": "0e68cd863ba7b5af96a6a869684fc41d",
     "semantic_hash": ""
   },
   "public/assets/img/inter-miami-aznar-nu-stadium-cover.jpg": {
-    "mtime": 1789770841.3735757,
-    "seen": 1790108832.3828173,
+    "mtime": 1790115794.3453815,
+    "seen": 1790115960.9315488,
     "ast_hash": "9ce6854580ec8b612530aeace3827d01",
     "semantic_hash": ""
   },
   "public/assets/img/kerolin-nc-courage-celebration.jpg": {
-    "mtime": 1789623044.29525,
-    "seen": 1790108832.382821,
+    "mtime": 1790115794.3493814,
+    "seen": 1790115960.9315789,
     "ast_hash": "d30e42102f7ab1bbac81403010c785b8",
     "semantic_hash": ""
   },
   "public/assets/img/laliga-balon-conectado-cover.jpg": {
-    "mtime": 1789656624.1608467,
-    "seen": 1790108832.3828263,
+    "mtime": 1790115794.3493814,
+    "seen": 1790115960.9316404,
     "ast_hash": "a022c98fee9bdd85203be365d5c1fc1c",
     "semantic_hash": ""
   },
@@ -3174,8 +3174,8 @@
     "semantic_hash": ""
   },
   "public/assets/img/liga-femenil-bbva-nueva-identidad-cover.jpg": {
-    "mtime": 1789656548.7118962,
-    "seen": 1790108832.3828483,
+    "mtime": 1790115794.3533814,
+    "seen": 1790115960.9320698,
     "ast_hash": "3076daa976e77cedb3b9ebd05e6c3a0d",
     "semantic_hash": ""
   },
@@ -3192,8 +3192,8 @@
     "semantic_hash": ""
   },
   "public/assets/img/lottomatica-cirsa-logos-cover.jpg": {
-    "mtime": 1789621608.296183,
-    "seen": 1790108832.3828523,
+    "mtime": 1790115794.5493815,
+    "seen": 1790115960.9321315,
     "ast_hash": "9bbeefc2a0cbb5071bfc23a212820b22",
     "semantic_hash": ""
   },
@@ -3204,26 +3204,26 @@
     "semantic_hash": ""
   },
   "public/assets/img/premier-league-logo-cover.jpg": {
-    "mtime": 1789621608.3055925,
-    "seen": 1790108832.3828762,
+    "mtime": 1790115794.5493815,
+    "seen": 1790115960.932502,
     "ast_hash": "6487bd4cb6bd597ad0a28c00ed02c3b4",
     "semantic_hash": ""
   },
   "public/assets/img/premier-league-trophy-cover.jpg": {
-    "mtime": 1789621617.6317568,
-    "seen": 1790108832.3828773,
+    "mtime": 1790115794.6413815,
+    "seen": 1790115960.9325035,
     "ast_hash": "a79ef50910d0d28135f024bae3c4287a",
     "semantic_hash": ""
   },
   "public/assets/img/rays-tropicana-field-dugout-cover.jpg": {
-    "mtime": 1789621832.6486242,
-    "seen": 1790108832.3828788,
+    "mtime": 1790115794.6453815,
+    "seen": 1790115960.932505,
     "ast_hash": "5f94ec27f7b23a71b013793a56f6cc28",
     "semantic_hash": ""
   },
   "public/assets/img/rfef-logo-cover.jpg": {
-    "mtime": 1789621608.302048,
-    "seen": 1790108832.3828802,
+    "mtime": 1790115794.6493814,
+    "seen": 1790115960.9325066,
     "ast_hash": "0bbf622ad6f396cdcacd4dd544e1659a",
     "semantic_hash": ""
   },
@@ -3234,20 +3234,20 @@
     "semantic_hash": ""
   },
   "public/assets/img/serie-a-simonelli-cover.jpg": {
-    "mtime": 1789655081.9014215,
-    "seen": 1790108832.3828895,
+    "mtime": 1790115794.6493814,
+    "seen": 1790115960.932629,
     "ast_hash": "a174e45444b0b6f1ce4f439542794974",
     "semantic_hash": ""
   },
   "public/assets/img/socios-com-app-cover.jpg": {
-    "mtime": 1789621608.3002913,
-    "seen": 1790108832.3828907,
+    "mtime": 1790115794.6493814,
+    "seen": 1790115960.932631,
     "ast_hash": "45aa9bbb7db2dcaebfafebf877ef3df3",
     "semantic_hash": ""
   },
   "public/assets/img/strauss-uefa-referees-cover.jpg": {
-    "mtime": 1789621608.2943606,
-    "seen": 1790108832.3828921,
+    "mtime": 1790115794.6533816,
+    "seen": 1790115960.9326322,
     "ast_hash": "fc84d88565e17ddfb92ed63202845183",
     "semantic_hash": ""
   },
@@ -3258,26 +3258,26 @@
     "semantic_hash": ""
   },
   "public/assets/img/telemundo-deportes-cover-1920.jpg": {
-    "mtime": 1789656579.0529978,
-    "seen": 1790108832.382899,
+    "mtime": 1790115794.6773815,
+    "seen": 1790115960.9327207,
     "ast_hash": "56bea427fcfce5e2eb3e3511a58c7382",
     "semantic_hash": ""
   },
   "public/assets/img/telemundo-deportes-cover.jpg": {
-    "mtime": 1789621608.3037455,
-    "seen": 1790108832.3829,
+    "mtime": 1790115794.6813815,
+    "seen": 1790115960.9327228,
     "ast_hash": "6dc1043a7d0695daedaa799075ff6409",
     "semantic_hash": ""
   },
   "public/assets/img/tmj-felkrem-founders.jpg": {
-    "mtime": 1789611035.4368773,
-    "seen": 1790108832.3829086,
+    "mtime": 1790115794.6813815,
+    "seen": 1790115960.932847,
     "ast_hash": "310a32ca1bf79c4d2738ed1e0774763f",
     "semantic_hash": ""
   },
   "public/assets/img/uefa-fifa-stake-sale-vote-cover.jpg": {
-    "mtime": 1789656624.1567643,
-    "seen": 1790108832.3829103,
+    "mtime": 1790115794.7293816,
+    "seen": 1790115960.9328487,
     "ast_hash": "e11ebac199207da513c1ff6e60bdb9b1",
     "semantic_hash": ""
   },
@@ -3291,6 +3291,18 @@
     "mtime": 1789598449.3577206,
     "seen": 1790108832.3829203,
     "ast_hash": "a27c9ca577fdc510757d8595d3caf17b",
+    "semantic_hash": ""
+  },
+  "public/assets/img/novig-sydney-sweeney-cover.png": {
+    "mtime": 1790115795.3533816,
+    "seen": 1790115960.9323456,
+    "ast_hash": "67b7ebac644e6884f724bd7904409a06",
+    "semantic_hash": ""
+  },
+  "public/assets/img/novig-sydney-sweeney-jersey-cover.webp": {
+    "mtime": 1790115795.3573816,
+    "seen": 1790115960.9323475,
+    "ast_hash": "af15be1d53ce6c7e42c33f1d8bc8810c",
     "semantic_hash": ""
   }
 }
