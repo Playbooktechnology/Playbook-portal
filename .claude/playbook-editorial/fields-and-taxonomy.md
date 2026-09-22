@@ -38,6 +38,9 @@ imageUrl, imageCredit`.
   is known. Flip it `true` only when a human explicitly asks the byline to show
   (a guest collaboration is exactly that case; a normal Substack item usually
   isn't).
+- **`author: "Aldo Sales"`** — always pairs with `mostrarAutor: true` and with
+  **no** `Opinión de Playbook` box (`format-tiers.md` §3b's TFBR attribution
+  note carries the exact rule and its rationale).
 
 ---
 
@@ -333,24 +336,21 @@ is the one case a run sets it on its own.
 ## Dates
 
 - **`date`** — `YYYY-MM-DD`, **confirmed from the source page**, never guessed
-  from context. "From context" includes today's own date: a run publishing a
-  sourced article is not dating the article by when the session happens to be
-  running, it is dating the event the source reports. Three of five sourced
-  articles in one session (publisher, 2026-09-13) shipped with `date` set to
-  whatever day the skill happened to run instead of the source's own dateline
-  — TelevisaUnivision/Genius Sports (published 9 sep, filed as 10 sep), CBF
-  (published 10 sep, filed as 12 sep), Reuters/DFB (published 11 sep, filed
-  as 13 sep) — because the habit of "today's date" quietly substituted for
-  the actual check. Confirm it the same way every time: the source page's own
-  `article:published_time` meta tag or `datePublished` JSON-LD, a wire
-  byline, or (for a co-issuer's own release) its own dateline — never the
-  session clock. **`update-article.ts` cannot fix this after publish** (`date`
-  is deliberately excluded from its updatable columns, see that script's own
-  comment) — a wrong `date` caught later needs a direct, deliberate correction
-  outside that script, not a routine patch, which is one more reason to get it
-  right before the insert.
+  from context.
 - **`dateFormatted`** — e.g. `"21 jul 2026"` (day, 3-letter lowercase month,
   year).
+
+**Never default to today's system date.** (Team correction, 2026-09-22, on
+the New Balance/Decathlon lawsuit piece: the article ran with the session's
+current date instead of the source's actual publish date, three days off.)
+"Today" is the date the run happens, not the date the story happened — those
+are different facts, and the field asks for the second one. Before setting
+`date`, read the publish date/timestamp off the primary source itself, and if
+the story was cross-referenced across several outlets published on different
+days (common when reconstructing a paywalled or blocked primary source via
+search), use the earliest confirmed publish date among them, not the day the
+draft was written. This applies to every new article, in every funnel,
+without exception — it is not a one-off fix for that piece.
 
 For a fast-developing story where the exact time matters (a vote, an
 announcement tied to a specific wire timestamp), it's fine to fold a time onto
