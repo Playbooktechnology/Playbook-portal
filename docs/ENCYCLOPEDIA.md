@@ -764,6 +764,24 @@ all, including a literal no-op; Node middleware (stable since Next.js
 "middleware" entries for the full multi-session diagnostic trail if this
 ever needs revisiting.
 
+**A repo transfer between GitHub accounts silently breaks Vercel's
+auto-deploy** (2026-09-22, the repo moving from `nicopizarros` to
+`Playbooktechnology`). GitHub Actions kept firing fine on every push —
+`ci.yml` is a repo-local feature with no third-party dependency — but
+Vercel stopped deploying `main` at all, with no error surfaced anywhere:
+its Project Settings → Git page still showed the repo as "Connected" to
+the right `owner/repo`, and the GitHub App's "Repository access" was
+correctly set to "All repositories". Nothing about that state told either
+side a webhook was missing. The fix was **disconnecting and reconnecting
+the Git repository** from Vercel's Project Settings → Git page, which
+re-registers the webhook against the repo as it exists today — a `git
+push` alone, a new PR, or re-saving the same settings do not do this.
+Symptom to watch for: a merged PR simply never appears in Vercel's
+Deployments list, not even as a failed build. The manual escape hatch
+(Project Settings → Git → **Deploy Hooks**, `curl -X POST` the generated
+URL) still deploys `main` on demand regardless of webhook state, and is
+worth creating once per project so this never blocks a release again.
+
 ## 15. How to Run Locally
 
 ```bash
