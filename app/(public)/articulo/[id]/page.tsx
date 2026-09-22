@@ -23,7 +23,7 @@ import { productForSource } from '@/lib/analytics-events';
 import { ArticleSources } from '@/components/article/ArticleSources';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { splitAfterParagraph } from '@/lib/split-after-paragraph';
-import { splitBeforeAside } from '@/lib/split-before-aside';
+import { splitBeforeAside, splitAtMidpoint } from '@/lib/split-before-aside';
 import { ArticleNewsletterCta } from '@/components/article/ArticleNewsletterCta';
 import { hubForArticle, hubPath } from '@/lib/hubs';
 import {
@@ -332,31 +332,24 @@ function PlainBlockView({ block }: { block: PlainBlock }) {
   return <p>{block.text}</p>;
 }
 
-// Same placement rule as the HTML path's splitBeforeAside: the newsletter
-// CTA goes right before the 'opinion' block when the piece has one (always
-// the body's last block per format-tiers.md §1's architecture), or at the
-// foot otherwise. Legacy plain-text bodies only (see hasNativeBody's
-// comment above) — every article authored from here on takes the HTML
-// path instead.
+// Same placement rule as the HTML path (splitBeforeAside / splitAtMidpoint
+// in lib/split-before-aside.ts): the newsletter CTA goes right before the
+// 'opinion' block when the piece has one (always the body's last block per
+// format-tiers.md §1's architecture), or at the halfway point of the
+// remaining blocks otherwise — never stranded after the final paragraph,
+// where a piece with no Opinión (Aldo Sales bylines) can run long. Legacy
+// plain-text bodies only (see hasNativeBody's comment above) — every
+// article authored from here on takes the HTML path instead.
 function renderPlainBlocksWithCta(blocks: PlainBlock[]) {
   const opinionIndex = blocks.findIndex(b => b.kind === 'opinion');
-  if (opinionIndex === -1) {
-    return (
-      <>
-        {blocks.map((block, i) => (
-          <PlainBlockView key={i} block={block} />
-        ))}
-        <ArticleNewsletterCta />
-      </>
-    );
-  }
+  const splitIndex = opinionIndex !== -1 ? opinionIndex : Math.ceil(blocks.length / 2);
   return (
     <>
-      {blocks.slice(0, opinionIndex).map((block, i) => (
+      {blocks.slice(0, splitIndex).map((block, i) => (
         <PlainBlockView key={`pre-${i}`} block={block} />
       ))}
       <ArticleNewsletterCta />
-      {blocks.slice(opinionIndex).map((block, i) => (
+      {blocks.slice(splitIndex).map((block, i) => (
         <PlainBlockView key={`post-${i}`} block={block} />
       ))}
     </>
@@ -739,7 +732,7 @@ export default async function ArticuloPage({ params }: Props) {
   // the Opinión callout, when present, is always the body's last block, so
   // the two split points never compete for the same spot.
   const htmlBodyTail = htmlBody ? (splitHtml ? splitHtml[1] : htmlBody) : null;
-  const ctaSplitHtml = htmlBodyTail ? splitBeforeAside(htmlBodyTail) : null;
+  const ctaSplitHtml = htmlBodyTail ? (splitBeforeAside(htmlBodyTail) ?? splitAtMidpoint(htmlBodyTail)) : null;
 
   // The "siguiente expediente" handoff already shows the next case — keep
   // it out of "Sigue leyendo" so the foot never repeats a link.
