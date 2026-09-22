@@ -38,6 +38,9 @@ imageUrl, imageCredit`.
   is known. Flip it `true` only when a human explicitly asks the byline to show
   (a guest collaboration is exactly that case; a normal Substack item usually
   isn't).
+- **`author: "Aldo Sales"`** — always pairs with `mostrarAutor: true` and with
+  **no** `Opinión de Playbook` box (`format-tiers.md` §3b's TFBR attribution
+  note carries the exact rule and its rationale).
 
 ---
 
