@@ -30,8 +30,8 @@ import { NewsletterForm } from '@/components/shared/NewsletterForm';
 export const metadata: Metadata = {
   title: 'El Marcador de Negocios',
   description:
-    'Los acuerdos comerciales del deporte en México y Latinoamérica, semana a semana: patrocinios, ' +
-    'derechos de transmisión, retail, inversión y estadios, con monto, duración y estatus.',
+    'Los acuerdos comerciales que mueven el negocio del deporte, registrados semana a semana: ' +
+    'patrocinios, derechos de transmisión, retail, inversión y estadios.',
   alternates: { canonical: `${SITE_URL}/marcador` },
   robots: { index: true, follow: true },
 };
@@ -54,8 +54,8 @@ export default async function MarcadorPage() {
         <p className="mk-kicker">Playbook · Datos</p>
         <h1>El Marcador de Negocios</h1>
         <p className="mk-dek">
-          Los acuerdos comerciales del deporte en México y Latinoamérica, registrados semana a semana:
-          quién firmó con quién, por cuánto y por cuánto tiempo.
+          Los acuerdos comerciales que mueven el negocio del deporte, registrados semana a semana:
+          patrocinios, derechos de transmisión, retail, inversión y estadios.
         </p>
         <p className="mk-updated">
           Semana {week.week} · {shortDate(week.start)} al {shortDate(week.end)}
@@ -179,8 +179,8 @@ export default async function MarcadorPage() {
         <h2 id="mk-method-title">Metodología</h2>
         <ul>
           <li>
-            Registramos acuerdos comerciales del deporte con impacto en México y Latinoamérica, en cinco
-            tipos: patrocinio, derechos de transmisión, retail y licencias, inversión y propiedad, y
+            Registramos acuerdos comerciales del deporte en todo el mundo, con énfasis en los que tocan a
+            México y Latinoamérica, en cinco tipos: patrocinio, derechos de transmisión, retail y licencias, inversión y propiedad, y
             estadios e infraestructura.
           </li>
           <li>
