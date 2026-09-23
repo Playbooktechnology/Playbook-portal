@@ -5,7 +5,7 @@
    chip and the featured card's accents. The featured block reuses the
    rail's .side-deals-kicker/.side-deals-figures on the same black ground.
    ============================================================ */
-.mk-page{padding:40px 0 72px;}
+.mk-page{padding-top:40px;padding-bottom:72px;}
 
 .mk-hero{border-bottom:2px solid var(--ink);padding-bottom:22px;margin-bottom:28px;}
 .mk-kicker,.mk-updated{
