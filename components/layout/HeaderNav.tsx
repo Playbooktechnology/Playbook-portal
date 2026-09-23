@@ -174,6 +174,16 @@ export function HeaderNav({
           <div className="navmenu-group">
             <p className="navmenu-group-head">Publicaciones</p>
             {productItems}
+            {/* Not a publication: a data destination Playbook builds. Listed
+                here by the publisher's call (2026-09-23) rather than as a
+                header tab, which the header had no width for. No chip: it
+                has no product identity token. */}
+            <Link className="navmenu-item" href="/marcador">
+              <span className="navmenu-item-body">
+                <span className="navmenu-item-name">El Marcador de Negocios</span>
+                <span className="navmenu-item-desc">Los acuerdos comerciales del deporte, semana a semana</span>
+              </span>
+            </Link>
           </div>
           {sectionLinks.length > 0 && (
             <div className="navmenu-group navmenu-group-secondary">
@@ -259,6 +269,9 @@ export function HeaderNav({
                 {product.name}
               </Link>
             ))}
+            <Link className="nav-drawer-link" href="/marcador" onClick={close}>
+              El Marcador de Negocios
+            </Link>
             {sectionLinks.map(link => (
               <a className="nav-drawer-link nav-drawer-sub" key={link.href} href={sectionHref(link.href)} onClick={close}>
                 {link.label}
