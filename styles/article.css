@@ -133,6 +133,22 @@
 
 .article-cta{margin-top:30px;position:relative;z-index:1;}
 
+/* ——— Newsletter CTA inside the reading column ——— */
+/* Same visual language as the homepage's .mid-cta-box (styles/sections.css)
+   but stacked, not row-flex: .article-body caps at 68ch, too narrow for
+   copy + a 380px pill form side by side without either one cramping. */
+.article-newsletter-cta{
+  display:flex;flex-direction:column;gap:16px;align-items:flex-start;
+  margin:32px 0;padding:24px 22px;border:1px solid var(--ink);border-radius:4px;
+  background:var(--paper);
+}
+.article-newsletter-cta-copy h2{
+  font-family:var(--serif-display);font-weight:400;font-size:21px;letter-spacing:.01em;
+  margin:0 0 8px;text-transform:uppercase;
+}
+.article-newsletter-cta-copy h2 em{font-style:normal;color:var(--gray-dark);border-bottom:3px solid var(--green);}
+.article-newsletter-cta-copy p{font-size:13.5px;color:var(--gray-txt);margin:0;font-weight:400;}
+
 /* ——— Sigue leyendo (artículos relacionados) ——— */
 .article-related{margin-top:52px;padding-top:32px;border-top:2px solid var(--ink);}
 .article-related h2{font-family:var(--serif-display);font-weight:400;font-size:20px;text-transform:uppercase;margin:0 0 12px;}

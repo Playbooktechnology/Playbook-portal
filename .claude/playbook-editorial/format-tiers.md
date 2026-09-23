@@ -154,16 +154,29 @@ Every movement opens with its own **specific** bold lead-in
 `El contexto` set), and a continuation paragraph inside a movement runs
 unheaded.
 
-A human reviewer can still explicitly ask for more (2026-08-07: *"split into
-two paragraphs on the opinion… it doesn't matter if it is too long"*), and that
-overrides this default like any other revision request. Know the technical
-shape when it happens: `**Opinión de Playbook:**` is matched against exactly
-one `<p>`, so only the paragraph opening with that literal lead-in gets the fenced
-callout. A second paragraph split off after it (e.g. a closing `**La apuesta:**`
-beat) renders as ordinary body text immediately below the callout. That is the
-expected outcome of a deliberate split, not a bug to route around by cramming
-everything back into one paragraph. It is also why the Opinión movement is the
-one that never runs two paragraphs (`voice-and-style.md` §2).
+**No exceptions to this, from any reviewer, for any reason (retired
+2026-09-16).** A 2026-08-07 note used to read this as overridable on explicit
+request ("split into two paragraphs on the opinion… it doesn't matter if it
+is too long"). That carve-out is exactly what produced a recurring, visible
+site bug: a scan of published articles on 2026-09-16 found 16 live pieces,
+dating back to 2026-06-16, where the Opinión's second paragraph (or a closing
+beat like `**La apuesta:**` or `**El desgaste:**` split off after it) rendered
+as plain, unstyled body text sitting below the green callout, because at the
+time `**Opinión de Playbook:**` was matched against exactly one `<p>` and only
+that paragraph got the fenced box. `lib/product-hubs.ts`'s `markOpinionCallout`
+was hardened the day before (2026-09-15, PR #113) to fold every immediately
+following `<p>` into the box too, up to the Fuentes line — so a split Opinión
+no longer strands text outside the callout. **That render-time fold-in is a
+safety net, not permission to keep splitting.** It exists for whatever slips
+through; it does not relax the standard. A two-paragraph closing take is still
+a worse Opinión — looser, and (per §2's "one bold lead-in per format") a
+second bolded beat like `**La apuesta:**` folds into the same undifferentiated
+box with no visual distinction of its own. If the closing take does not fit in
+one paragraph, cut it down or move the extra material into the body as its own
+movement — never split the Opinión itself. `scripts/check-voice.mjs`
+hard-fails (exit 1, no `--strict` needed) the moment it detects this shape at
+draft time; do not publish past that failure by editing around the checker or
+by relying on the renderer to catch it instead.
 
 ---
 
@@ -188,8 +201,9 @@ demands; `readingTime: 3` or `4`.
 - **Devices**: two to four, each answering a question — ecuación, reparto,
   serie, duelo, mapa or cronología (`dynamic-element-library.md`; the budget
   and the exclusive pairs apply as everywhere).
-- **Opinión de Playbook**: one or two paragraphs that synthesize the reading
-  obtained **after** the analysis. Never a recap of the article.
+- **Opinión de Playbook**: exactly one paragraph (same rule as format B, §3
+  above, no exceptions) that synthesizes the reading obtained **after** the
+  analysis. Never a recap of the article.
 - **Close**: no moraleja. A consequence, an open tension, a pending decision,
   a number to watch, or a concrete question the market hasn't answered.
 
@@ -361,6 +375,15 @@ Render it under its own `## La visión de Interticket` heading and never fold it
 into a Playbook opinion. Per editorial decision 2026-08-06, TFBR articles carry
 **no** `Opinión de Playbook` at all — the analysis is the author's and it
 already closes with the partner's read.
+
+**Same rule for byline `Aldo Sales` (editorial decision 2026-09-22, the Novig
+piece).** These run with `mostrarAutor: true` and are a column derived from
+Aldo's own reel/argument, not a Noticias piece drafted from a source — the
+whole article already is his read. Never add a `**Opinión de Playbook:**`
+lead-in or box to one: fold whatever closing take the piece needs into the
+ordinary body copy instead, and end on the author's own last line rather than
+a separately fenced take. If the human supplies an exact closing (as they did
+for Novig), use it verbatim, as plain paragraphs, in place of a generated one.
 
 ---
 
