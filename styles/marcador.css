@@ -157,9 +157,11 @@
   .mk-table tr{padding:12px 0;border-bottom:1px solid var(--rule);}
   .mk-table td{border:none;padding:3px 0;display:flex;gap:10px;align-items:baseline;}
   .mk-table td::before{
-    content:attr(data-label);flex:0 0 72px;font-size:10px;font-weight:700;letter-spacing:.06em;
+    content:attr(data-label);flex:0 0 72px;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.06em;
     text-transform:uppercase;color:var(--gray-txt);
   }
+  /* On the stacked card an empty field is a labelled "·"; drop the row. */
+  .mk-table td.mk-blank{display:none;}
   .mk-table .mk-deal{display:block;padding-bottom:6px;}
   .mk-table .mk-deal::before{content:none;}
   .mk-table .mk-num{text-align:left;}

@@ -99,9 +99,9 @@ export function DealsTable({ deals, today }: { deals: Deal[]; today: string }) {
                     {d.summary && <span className="mk-deal-summary">{d.summary}</span>}
                   </td>
                   <td data-label="Tipo">{DEAL_TYPE_LABEL[d.type] ?? d.type}</td>
-                  <td data-label="País">{d.country || '·'}</td>
-                  <td data-label="Deporte">{d.sport || '·'}</td>
-                  <td data-label="Duración">{d.duration || '·'}</td>
+                  <td className={d.country ? undefined : 'mk-blank'} data-label="País">{d.country || '·'}</td>
+                  <td className={d.sport ? undefined : 'mk-blank'} data-label="Deporte">{d.sport || '·'}</td>
+                  <td className={d.duration ? undefined : 'mk-blank'} data-label="Duración">{d.duration || '·'}</td>
                   <td className="mk-num mk-amount" data-label="Monto">{dealAmountLabel(d)}</td>
                   <td data-label="Estatus">
                     <span className={`mk-status mk-status--${d.status}`}>
