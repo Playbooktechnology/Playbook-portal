@@ -29,6 +29,9 @@ import { scoreFromBoleta, trackFor, type Boleta } from '../lib/rank';
 import { TIPTAP_EXTENSIONS } from '../lib/tiptap-extensions';
 import { slugify } from '../lib/slugify';
 import { validateTags, formatTagIssues, REQUIRED_PROPERTY_BY_SOURCE } from '../lib/taxonomy';
+import { articleUrl } from '../lib/article-url';
+import { submitToIndexNow } from '../lib/indexnow';
+import { SITE_URL } from '../lib/site-url';
 import { buildIndex, rank } from './find-duplicates.mjs';
 import { analyseDraftDevices } from './check-draft-devices';
 import { analyseTier } from './check-format-tier';
@@ -297,6 +300,7 @@ async function insertOne(input: ArticleInput, dryRun = false) {
       if (!inserted) {
         return { status: 'duplicate' as const, title: input.title, sourceUrl: input.sourceUrl };
       }
+      await submitToIndexNow([articleUrl(SITE_URL, inserted.id)]);
       return { status: 'ok' as const, id: inserted.id, title: inserted.title };
     } catch (err: unknown) {
       if ((err as { code?: string })?.code === '23505' && attempt === 0) {
