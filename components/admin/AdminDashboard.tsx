@@ -30,6 +30,7 @@ import { FooterTab } from './tabs/FooterTab';
 import { SettingsTab } from './tabs/SettingsTab';
 import { TeamTab } from './tabs/TeamTab';
 import { ReadersTab } from './tabs/ReadersTab';
+import { DealsTab } from './tabs/DealsTab';
 import { LivePreview } from './LivePreview';
 
 // `group` drives the section headers rendered above the tab rail
@@ -45,6 +46,7 @@ const TAB_DEFS = [
   { key: 'video', label: 'Video', group: 'Contenido editorial' },
   { key: 'infinitas', label: 'Infinitas', group: 'Contenido editorial' },
   { key: 'hubs', label: 'Hubs de producto', group: 'Contenido editorial' },
+  { key: 'deals', label: 'Marcador de Negocios', group: 'Contenido editorial' },
   { key: 'products', label: 'Productos', group: 'Secciones de portada' },
   { key: 'stats', label: 'Números', group: 'Secciones de portada' },
   { key: 'testimonials', label: 'Testimonios', group: 'Secciones de portada' },
@@ -59,7 +61,7 @@ const TAB_DEFS = [
 
 // Tabs that don't edit draft state (they act on the server immediately or
 // are pure reference), so the topbar save button doesn't apply to them.
-const SAVELESS_TABS: ReadonlySet<string> = new Set(['team', 'readers']);
+const SAVELESS_TABS: ReadonlySet<string> = new Set(['team', 'readers', 'deals']);
 
 type TabKey = (typeof TAB_DEFS)[number]['key'];
 const DEFAULT_ORDER: TabKey[] = TAB_DEFS.map(t => t.key);
@@ -366,6 +368,7 @@ export function AdminDashboard({ initialContent, initialContentVersion, initialA
             {activeTab === 'settings' && <SettingsTab data={content.siteSettings} onChange={updateSection('siteSettings')} />}
             {activeTab === 'team' && <TeamTab onToast={pushToast} />}
             {activeTab === 'readers' && <ReadersTab />}
+            {activeTab === 'deals' && <DealsTab onToast={pushToast} />}
           </section>
 
           <aside className="admin-preview-pane" aria-label="Vista previa en vivo">
