@@ -52,7 +52,7 @@ import { VisitBeacon } from '@/components/analytics/VisitBeacon';
 // kicker over each section, the flag gradient in the masthead.
 //
 // The property's mark is used as NOMINATIVE REFERENCE — it identifies what
-// this coverage is about. The "Exclusiva Playbook" eyebrow and the Playbook
+// this coverage is about. The "Alianza Playbook" title tag and the Playbook
 // header/footer stay prominent precisely so the page never reads as an
 // official league property.
 
@@ -106,8 +106,8 @@ export default async function HubPage({ params }: { params: Promise<{ slug: stri
     <main className="hubx" data-hub={hub.slug} id={`hub-${hub.slug}`}>
       {/* Per-hub reporting: GA4's automatic page_view already has the URL,
           but this carries the slug as a dimension so "how is LFA doing"
-          survives the route rename that docs/TODO.md §0.0 is still weighing
-          (/coberturas/* -> /exclusivas/*). */}
+          survives the route rename that docs/TODO.md §0 is still weighing
+          (/coberturas/* -> /alianzas/*). */}
       <VisitBeacon event="hub_visit" params={{ hub_slug: hub.slug, product: `hub:${hub.slug}` }} />
       {/* ------------------------------------------------------- Masthead
           CO-BRANDING PER THE LEAGUE'S OWN KIT ("Asociación con otros logos

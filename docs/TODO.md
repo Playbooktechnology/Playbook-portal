@@ -57,28 +57,21 @@ the reasoning; `scripts/scaffold-hub.ts` is the standing test (proved by
 scaffolding and removing an `nfl-mexico` hub the same day).
 
 **QA pass before sharing with the LFA (2026-08-25). Publisher ruled on the
-two open questions that day; the first has since been superseded:**
+two open questions the same day; both were settled — one has since been
+superseded:**
 
-- **Discoverability: SUPERSEDED 2026-09-08.** `listed: false` had been the
-  desired state since 2026-08-25 (below, kept for history). Publisher then
-  reversed that call on 2026-09-08: the hub is now `listed: true`, showing in
-  the header's **Alianzas** zone (renamed from "Exclusivas" the same day, see
-  item 0) and back in the sitemap and index. Note the two launch articles
-  reserved for this moment (`quien-es-el-fan-de-la-lfa`,
-  `lfa-finsus-y-playbook-se-alian`, see `scripts/publish-lfa-launch.ts`) were
-  deliberately **left at their own row-level `listed: false`** in this same
-  pass — a separate decision — so the hub's "Lo último" still shows the
-  `emptyState` copy until those rows are flipped too.
-  <br>*Superseded text, 2026-08-25:* "leave it exactly as it is... The hub is
-  reachable by URL (verified 200) and absent from the nav, the sitemap and
-  the index (`robots: noindex, nofollow`)... 'it is not accessible via the
-  home page, but if you know the address you can access it.'" See the
-  a61b4f3 commit title, "unlisted means undiscoverable, not unreachable", for
-  the mechanism this used while it stood.
+- **Discoverability: SUPERSEDED 2026-09-08.** The 2026-08-25 ruling
+  (`listed: false`, "not accessible via the home page, but if you know the
+  address you can access it") stood for two weeks. Publisher, 2026-09-08,
+  direct instruction: rename the "Exclusivas" nav zone to **"Alianzas"** and
+  list LFA FINSUS in it. `lib/hubs/lfa.ts` now sets `listed: true` — the hub
+  is in the nav, the sitemap, and indexable (robots index/follow). The
+  history above (the a61b4f3 "unlisted means undiscoverable, not
+  unreachable" reasoning) stays as a record of the prior decision, not as a
+  live constraint.
 - **Linking out to the LFA: dropped for now.** Publisher, 2026-08-25. The hub
   deliberately carries no outbound link to any league property. Revisit only
-  if the league asks. (Unaffected by the discoverability reversal above —
-  a separate question, still standing.)
+  if the league asks. Unaffected by the discoverability change above.
 
 **RESOLVED 2026-09-02 — the same photograph no longer renders twice.**
 `/assets/img/lfa-reyes-accion-mayo-2026.jpg` was both the lead story's own
@@ -95,17 +88,16 @@ credited LFA photograph**, distinct from the lead, for this slot — set
 
 **Open, in priority order:**
 
-0. **Route namespace vs. nav label.** The reader-facing zone was
-   **"Exclusivas"** (publisher, 2026-08-18), renamed to **"Alianzas"**
-   (publisher, 2026-09-08, same day the hub went from `listed: false` to
-   `true` — see item 0 above), but the route is still `/coberturas/<slug>`.
-   The original justification for that namespace was that the nav label and
-   address bar would agree; they still don't, now under a second name.
-   Renaming was free while the hub was unlisted (nothing linked to it, it was
-   out of the sitemap) — **it is no longer free**: the hub is now linked from
-   the nav and present in the sitemap, so a route rename needs a 301 from
-   `/coberturas/*`. Decide deliberately; either answer is defensible, but the
-   cost only goes up.
+0. **Route namespace vs. nav label.** The reader-facing zone is now
+   **"Alianzas"** (publisher, 2026-09-08; was "Exclusivas", 2026-08-18) but
+   the route is still `/coberturas/<slug>`. The original justification for
+   that namespace was that the nav label and address bar would agree; they
+   no longer do. Renaming was free while the hub was unlisted (nothing
+   linked to it, it was out of the sitemap) — **it is no longer free**: as
+   of 2026-09-08 the hub is listed (`lib/hubs/lfa.ts`, `listed: true`),
+   linked from the nav and present in the sitemap, so a route rename now
+   needs a 301 from `/coberturas/*` (e.g. to `/alianzas/*`). Decide
+   deliberately; either answer is defensible, but the cost only goes up.
 
 1. **The LFA hub's numbers need public citations — and the page no longer
    says so.** Every figure still traces to a source by construction

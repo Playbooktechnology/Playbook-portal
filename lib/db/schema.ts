@@ -2,6 +2,7 @@ import {
   pgTable,
   text,
   integer,
+  bigint,
   smallint,
   boolean,
   timestamp,
@@ -146,6 +147,14 @@ export const articles = pgTable(
     // to true so every existing and ordinarily-created row stays exactly as
     // visible as before this column existed.
     listed: boolean('listed').notNull().default(true),
+    // A genuine, self-expiring editorial override for the homepage hero slot
+    // (lib/rank.ts's selectHero) -- see that file's Rankable.heroPinnedUntil
+    // comment for the 2026-09-08 incident this exists to fix: `featured`
+    // alone cannot override a real boleta score gap, and the fix is a plain
+    // "win until this timestamp", not a thumb on the score. Null (the
+    // default) means no pin, which is every row's steady state; nothing
+    // reads this column unless it is set.
+    heroPinnedUntil: timestamp('hero_pinned_until', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
     updatedBy: uuid('updated_by').references(() => editors.id, { onDelete: 'set null' }),
@@ -287,4 +296,34 @@ export const media = pgTable('media', {
   url: text('url').notNull(),
   uploadedBy: uuid('uploaded_by').references(() => editors.id, { onDelete: 'set null' }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+// ---------------------------------------------------------------- Deals (El Marcador de Negocios)
+// One row per commercial agreement tracked by the homepage rail module and
+// /marcador. Structured on purpose, unlike "La cifra del día" (derived from
+// article text): the year total is a sum of money and has to add up exactly.
+// Enum-like columns hold stable keys; labels live in lib/deals.ts.
+
+export const deals = pgTable('deals', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  date: text('date').notNull(), // YYYY-MM-DD, same convention as articles.date
+  brand: text('brand').notNull(),
+  counterparty: text('counterparty').notNull(),
+  type: text('type').notNull(), // patrocinio | derechos | retail | inversion | estadios
+  country: text('country').notNull().default(''),
+  sport: text('sport').notNull().default(''),
+  duration: text('duration').notNull().default(''),
+  // Whole US dollars. Null when the amount isn't known at all.
+  amountUsd: bigint('amount_usd', { mode: 'number' }),
+  amountDisclosed: boolean('amount_disclosed').notNull().default(false),
+  status: text('status').notNull().default('reportado'), // confirmado | reportado
+  summary: text('summary').notNull().default(''),
+  articleUrl: text('article_url').notNull().default(''),
+  featured: boolean('featured').notNull().default(false),
+  playbookRead: text('playbook_read'),
+  // Up to three {value, label} pairs for the featured card; derived from
+  // amount/duration/date when empty.
+  keyFigures: jsonb('key_figures').$type<{ value: string; label: string }[]>().notNull().default([]),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });

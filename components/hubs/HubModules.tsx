@@ -201,12 +201,25 @@ function articleMeta(article: Article): string {
   return bits.join(' · ');
 }
 
-/** The card used for every article that is not the lead. */
+/**
+ * The card used for every article that is not the lead. Carries a thumbnail
+ * now (2026-09-08, publisher's call): a hub with only two or three pieces
+ * was shipping one photograph and a stack of bare text links beside it,
+ * which read as "this piece matters, these don't" rather than as a size
+ * hierarchy. Same degradation as the lead — no imageUrl, no <img>, the card
+ * still renders on title and meta alone (see HubStream's own comment).
+ */
 function HubItem({ article }: { article: Article }) {
   return (
     <Link className="hubx-item" href={articlePath(article.id)}>
-      <span className="hubx-item-title">{article.title}</span>
-      <span className="hubx-item-meta">{articleMeta(article)}</span>
+      {article.imageUrl && (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img className="hubx-item-photo" src={article.imageUrl} alt="" loading="lazy" />
+      )}
+      <span className="hubx-item-body">
+        <span className="hubx-item-title">{article.title}</span>
+        <span className="hubx-item-meta">{articleMeta(article)}</span>
+      </span>
     </Link>
   );
 }
@@ -247,11 +260,6 @@ export function HubStream({ hub, articles }: { hub: Hub; articles: Article[] }) 
       <h2 className="hubx-head" id="hubx-stream">Lo último</h2>
       {lead ? (
         <>
-          <p className="hubx-sub">
-            {articles.length === 1
-              ? `1 pieza etiquetada como cobertura de ${hub.name}.`
-              : `${articles.length} piezas etiquetadas como cobertura de ${hub.name}.`}
-          </p>
           <div className="hubx-latest" data-rail={rail.length > 0}>
             <Link className="hubx-lead" href={articlePath(lead.id)}>
               {lead.imageUrl && (

@@ -90,6 +90,21 @@ the facts:
    count) before trusting it — this costs one command and catches exactly the
    kind of error a reader would catch first.
 
+0d. **A 404 on the exact URL handed over is not proof the story is wrong or the
+   link is dead — check for a typo in the outlet's own slug before concluding
+   either.** (2026-09-10, a Palco23 update on the FIFA women's-calendar
+   complaint.) A pasted Palco23 URL 404'd on both WebFetch and `curl` with a
+   browser UA. The first instinct — guess which word was misspelled and "fix"
+   it — landed on the wrong word (correcting "comisioon" to "comisión" when
+   the actual typo was in Palco23's own slug, which spells "europea" as
+   "euroopea") and still 404'd. **The outlet's own on-site search resolves it
+   in one request, correctly, without guessing:**
+   `curl -A '<UA>' "https://<outlet>/?s=<keywords>"`, then grep the results
+   for the headline and its `href`. Guessing at spelling variants is
+   unbounded — there is no way to know which word carries the typo without
+   checking each one — so reach for the outlet's search before a second or
+   third spelling guess, not after.
+
 1. **A syndicated copy of the same wire on a reachable host.** A Reuters story
    runs verbatim on dozens of local radio and regional news sites; those serve
    automated fetches normally. This is the closest thing to the primary and
@@ -163,6 +178,41 @@ source.
 If, after genuinely trying, no other outlet has covered the story (a truly
 exclusive or very fresh item), **say so explicitly** rather than inventing a
 second source, and draft from the primary article alone.
+
+### When every outlet is repeating the same frame, that frame is a lead, not a conclusion
+
+(2026-09-07, the Wimbledon/influencers run, on explicit publisher feedback that
+a prior run — Club León's sale — read as shallow analysis.) Every English-language
+outlet covering Wimbledon's decision not to accredit influencers ran the same
+headline shape: "Wimbledon shuns/bans/rejects influencers after US Open chaos."
+Cross-referencing three more outlets that all repeat the identical frame is not
+independence, it is the same finding four times. **The frame itself is the thing
+to test**, not just the facts inside it.
+
+Two moves found the real story here, and both are generalizable:
+
+1. **Look for a fact-check or explainer piece from a quality outlet, not just more
+   news reports of the same announcement.** ESPN had run its own dedicated piece
+   days earlier — "Separating fact from fiction: the US Open influencer
+   controversy" — establishing that the spectators in the viral disruptive videos
+   were never accredited by the USTA at all; they were ordinary ticket holders.
+   The entire premise the Wimbledon headlines assumed (accredited influencers
+   caused the chaos) was already false in the record, one search away.
+2. **Check what the subject of the story does on its own channels, not just what
+   it announced.** Wimbledon's own TikTok campaign (#JoinTheStory) and its
+   sponsors' paid influencer deals (Evian with Polly Sayer and Emma Raducanu)
+   were both active and easy to find, and they directly contradict "Wimbledon
+   shuns influencers." Wimbledon is not rejecting influencer marketing, it is
+   refusing a press-style accreditation category it can't script or edit. That
+   reframing, not the announcement itself, was the actual palanca.
+
+**Both searches take minutes and neither is optional cross-referencing** in the
+sense §2 already requires — they are a specific, repeatable check to run
+whenever the incoming coverage has converged on one clean narrative: search for
+"[topic] fact check" / "separating fact from fiction" style pieces, and search
+for what the story's own subject does elsewhere that the headline doesn't
+mention. A consensus narrative repeated by five outlets is not five
+confirmations; it is one narrative that has not yet been tested.
 
 ### Read each primary co-issuer's own posting — BEFORE drafting, not at field-filling time
 
