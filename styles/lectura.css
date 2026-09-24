@@ -1321,9 +1321,14 @@
 .lect-cascada-row[data-kind="anchor"] .lect-cascada-bar{background:var(--lect-accent);}
 .lect-cascada-row[data-kind="down"] .lect-cascada-bar{background:#c0392b;opacity:.75;}
 .lect-cascada-row[data-kind="up"] .lect-cascada-bar{background:color-mix(in srgb,var(--lect-accent) 65%,var(--gray-txt));}
+/* A closing anchor below zero: same red as the falling steps, at full
+   strength because it is an anchor, not one of the moves that got there. */
+.lect-cascada-row[data-kind="anchor"][data-below] .lect-cascada-bar{background:#c0392b;}
 [data-theme="dark"] .lect-cascada-row[data-kind="down"] .lect-cascada-bar{background:#e0616b;}
+[data-theme="dark"] .lect-cascada-row[data-kind="anchor"][data-below] .lect-cascada-bar{background:#e0616b;}
 @media(prefers-color-scheme:dark){
   :root:not([data-theme="light"]) .lect-cascada-row[data-kind="down"] .lect-cascada-bar{background:#e0616b;}
+  :root:not([data-theme="light"]) .lect-cascada-row[data-kind="anchor"][data-below] .lect-cascada-bar{background:#e0616b;}
 }
 .lect-cascada-value{font-size:13px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;}
 .lect-cascada-row[data-kind="down"] .lect-cascada-value{color:var(--gray-txt);}
