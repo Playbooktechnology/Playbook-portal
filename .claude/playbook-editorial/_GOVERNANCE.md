@@ -33,6 +33,8 @@ it belongs in a file that already exists:
 | `fields-and-taxonomy.md` | the `ArticleInput` fields, taxonomy, priority, dates |
 | `images.md` | cover sourcing, credits, the crop check, in-body images |
 | `postura-editorial.md` | the sensitivity protocol: when a story touches an ally/prospect/source — relevance × sensitivity matrix, protocolo amarillo, publicar/escalar/frenar |
+| `editorial-gate.md` | the pre-draft publish/no-publish/radar decision, why a comunicado or a chart isn't a reason by itself, the reader persona roster |
+| `moat-check.md` | the post-draft ten-question control, its three gates and their severity floor, the four grades |
 
 A seventh file is a last resort, not a first instinct. If a rule seems not to
 fit anywhere, it is usually a rule about an existing topic stated at the wrong
