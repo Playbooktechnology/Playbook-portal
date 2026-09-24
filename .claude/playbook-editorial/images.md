@@ -157,14 +157,34 @@ deal. Match the actual subject — the company, the sport, the venue, the person
 Playbook doesn't restrict sourcing to free-license libraries. **Cast a wide net
 across distinct platforms, not just varied queries on the same one:**
 
+- official team/league/federation/company press rooms and media galleries
 - general image search (Google Images, Bing Images)
 - Wikimedia Commons
 - Flickr (Creative Commons)
-- official team/league/company press rooms and media galleries
 - editorial photo agencies (Reuters Pictures, Shutterstock, and LATAM sports
   agencies such as Mexsport or Imago7 when the subject is Mexican/LATAM)
 
 Not just Unsplash/Pexels-style free libraries.
+
+**Don't anchor on Wikimedia and treat the organization's own site as a last
+resort.** (Publisher directive, 2026-09-17, citing
+`/articulo/la-saudi-pro-league-deja-que-los-creators-vendan-sus-partidos` as the
+standard to match.) That run's first several passes stayed inside Wikimedia —
+broad search, then narrower club/player/venue subcategories — and kept
+surfacing generic, off-topic results (a stadium exterior with no league
+branding visible) before anyone checked the Saudi Pro League's own site. It had
+exactly what the story needed: official photography of Ronaldo with visible
+"ROSHN SAUDI LEAGUE" branding, published under a direct "Foto: Saudi Pro
+League" credit. Wikimedia is one option among several, not the default
+starting point — when the story's subject is an identifiable organization (a
+league, federation, club, brand), **check its own newsroom or media gallery
+early, in the same pass as the general search, not after Wikimedia has already
+been tried two or three ways.** It is very often the source with the right
+people, the correct current branding, and image quality Wikimedia's incidental
+sports photography can't match — and crediting it directly (`"Foto: [Club/
+Liga/Organización]"`) is not a fallback compromise, it is frequently the more
+correct and specific credit, because it names the actual rights holder the
+photo came from rather than a third party who happened to also publish it.
 
 **Search in English first** even when the article is in Spanish —
 English-language queries tend to surface far better and more specific editorial
@@ -174,7 +194,8 @@ actually shows the right person, team, or venue.
 
 If the first angle or platform only turns up generic results, keep trying
 others (the company/person name, the venue, the specific event, sport + business
-angle, a different search engine or agency entirely) before settling.
+angle, a different search engine or agency entirely) before settling — and that
+rotation should reach the subject's own official site early, not last.
 
 ### A press release's own graphic is not a cover
 
@@ -210,6 +231,22 @@ caution — extra verification passes, hesitation, treating a find as "risky"
 — to a club crest, a company logo, a press-room headshot, or a team's own
 match photography. Verify the photo is genuinely on-topic and correctly
 credited (per "Verify and credit" above), and use it.
+
+### The competitor exclusion — never 2Playbook
+
+**Never credit 2Playbook as an image source, and never put it on the
+`Fuentes:` line either** (publisher directive, 2026-09-21, on the JD
+Sports/Grupo Axo run — a first published draft had used a 2Playbook photo as
+the cover). 2Playbook covers the same sports-business beat Playbook does;
+crediting a direct competitor, in a photo caption or in the credit line, reads
+as promoting their coverage from inside a Playbook article. This applies even
+when 2Playbook's own image is genuinely the best-looking candidate found —
+keep searching (the official source's own press/media page is usually there
+if you look past the obvious wire copy, as it was on this run: JD Sports'
+own `jd-brand-first` strategy page at jdplc.com had real store photography
+hosted on JD's own domain) rather than defaulting to it. If no alternative
+exists after a genuine broad search, say so in the run report instead of
+using the 2Playbook image.
 
 ### When a photo carries no credit at all
 

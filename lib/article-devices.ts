@@ -2254,7 +2254,7 @@ function buildRanking(ranking: { title: string; rows: RankRow[] }): string {
 // guard — first + Σ(middles) must land on the last anchor within the
 // same 2.5% rounding tolerance, or the device rejects rather than lend a
 // designed element's authority to numbers that don't add up.
-type CascadeStep = { label: string; value: string; delta: number; offsetPct: number; widthPct: number; kind: 'anchor' | 'down' | 'up' };
+type CascadeStep = { label: string; value: string; delta: number; offsetPct: number; widthPct: number; kind: 'anchor' | 'down' | 'up'; below?: boolean };
 
 function parseCascade(raw: string): CascadeStep[] | null {
   const items = stripTags(raw).split(ITEM_SEP);
@@ -2272,14 +2272,24 @@ function parseCascade(raw: string): CascadeStep[] | null {
     const parsed = denominatedOf(bare);
     if (!parsed) return null;
     rows.push({ label, value: bare, signed: negative ? -parsed.value : parsed.value, display });
-    if ((negative || positive) && (rows.length === 1 || rows.length === items.length)) return null;
+    // The first anchor is where the path starts, so it is always an unsigned
+    // magnitude. The last anchor is a VALUE, not a delta, and a waterfall is
+    // allowed to land below zero — record revenue that still ends in a net
+    // loss is exactly the shape this device exists to draw (2026-09-24, the
+    // Manchester United FY2026 results, where the old guard rejected the
+    // declaration and dropped it to plain text). So `−` is accepted on the
+    // last row and only `+`, which would read as a delta, still rejects.
+    if (rows.length === 1 && (negative || positive)) return null;
+    if (rows.length === items.length && positive) return null;
   }
   const units = new Set(rows.map(r => denominatedOf(r.value)!.unit));
   if (units.size !== 1) return null;
 
   const first = rows[0];
   const last = rows[rows.length - 1];
-  if (first.signed <= 0 || last.signed <= 0) return null;
+  // Only the opening anchor has to be a positive magnitude: it is the top of
+  // the axis and the denominator of both the tolerance check and the geometry.
+  if (first.signed <= 0) return null;
   const middles = rows.slice(1, -1);
   // Middle terms carry their sign in the declaration; an unsigned middle
   // term is treated as the subtraction it almost always is only if... no —
@@ -2288,10 +2298,25 @@ function parseCascade(raw: string): CascadeStep[] | null {
   const sum = first.signed + middles.reduce((acc, row) => acc + row.signed, 0);
   if (Math.abs(sum - last.signed) / first.signed > 0.025) return null;
 
-  const scale = first.signed;
+  // The axis spans from the opening anchor down to the lowest point the path
+  // actually touches — zero when nothing crosses it, the floor of the running
+  // balance (or the closing anchor) when something does. With `floor` at 0,
+  // `pct` collapses to the old `value / first` arithmetic, so every cascade
+  // published before negative anchors were allowed draws byte-identically.
+  const path: number[] = [first.signed];
+  let cursor = first.signed;
+  for (const row of middles) {
+    cursor += row.signed;
+    path.push(cursor);
+  }
+  const floor = Math.min(0, ...path, last.signed);
+  const span = first.signed - floor;
+  const pct = (value: number) => ((value - floor) / span) * 100;
+  const zero = pct(0);
+
   let running = first.signed;
   const steps: CascadeStep[] = [
-    { label: first.label, value: first.value, delta: first.signed, offsetPct: 0, widthPct: 100, kind: 'anchor' },
+    { label: first.label, value: first.value, delta: first.signed, offsetPct: zero, widthPct: pct(first.signed) - zero, kind: 'anchor' },
   ];
   for (const row of middles) {
     const from = running;
@@ -2302,18 +2327,22 @@ function parseCascade(raw: string): CascadeStep[] | null {
       label: row.label,
       value: row.display.replace(/^-/, '−'),
       delta: row.signed,
-      offsetPct: Math.max(0, (lo / scale) * 100),
-      widthPct: Math.max(1.2, ((hi - lo) / scale) * 100),
+      offsetPct: pct(lo),
+      widthPct: Math.max(1.2, pct(hi) - pct(lo)),
       kind: row.signed < 0 ? 'down' : 'up',
     });
   }
+  // A closing anchor below zero is drawn from the zero line leftward, and
+  // keeps its sign in the printed value — `£43M` where the club lost £43M
+  // would be the one number on the chart that reads as its own opposite.
   steps.push({
     label: last.label,
-    value: last.value,
+    value: last.signed < 0 ? last.display.replace(/^-/, '−') : last.value,
     delta: last.signed,
-    offsetPct: 0,
-    widthPct: Math.max(1.2, (last.signed / scale) * 100),
+    offsetPct: pct(Math.min(0, last.signed)),
+    widthPct: Math.max(1.2, pct(Math.max(0, last.signed)) - pct(Math.min(0, last.signed))),
     kind: 'anchor',
+    below: last.signed < 0,
   });
   return steps;
 }
@@ -2322,7 +2351,7 @@ function buildCascade(steps: CascadeStep[]): string {
   const rows = steps
     .map(
       step =>
-        `<div class="lect-cascada-row" data-kind="${step.kind}">` +
+        `<div class="lect-cascada-row" data-kind="${step.kind}"${step.below ? ' data-below="1"' : ''}>` +
         `<span class="lect-cascada-label">${esc(step.label)}</span>` +
         `<span class="lect-cascada-track" data-lect-grow aria-hidden="true">` +
         `<span class="lect-cascada-bar" data-lect-seg style="margin-left:${step.offsetPct.toFixed(2)}%;width:${step.widthPct.toFixed(2)}%"></span></span>` +

@@ -548,7 +548,9 @@ here. **`hincha`** is the worked example: normal in Argentina, Chile, Uruguay
 and most of South America, but a Mexican reader hears it as imported, not as
 their own word for it. The piece already used `fan` and `afición` naturally
 everywhere else in the body; `hincha` was the one word that broke that
-register.
+register. The same problem shows up with any other Argentinism, Chileanism or
+Spainism that slips in by reflex: `pibe`, `boludo`, `laburo`, `che`, `guita`,
+`quilombo`, `tío` (as a Spanish filler word), and so on.
 
 The same test applies beyond that one word: before a sports or general-Spanish
 term goes into a draft, ask whether Playbook's own Mexican audience says it, or
@@ -558,6 +560,13 @@ for the same position is the same distinction. This is not the Spanglish rule
 above, which is about English loanwords; this is about **which Spanish**, and
 the fix is always the plain Mexican word already sitting in the rest of the
 piece, not a translation exercise.
+
+**The exception is when the story itself calls for it.** A direct quote from
+an Argentine source, or a piece centered on Argentine/Uruguayan football where
+`hincha` is the word the protagonists themselves use, stays as written — there
+the regionalism is part of the source's voice, not the writer's habit. The
+test is the same one the Spanglish rule uses above: is this someone quoted in
+the piece talking, or is it the writer defaulting to habit?
 
 ### Fórmulas bajo vigilancia
 
@@ -648,10 +657,39 @@ juego significan 624 minutos nuevos de inventario potencial."*
 
 ### Hard mechanical rules
 
+- **Never use an AI-cliché reframe construction**, above all *"la pregunta
+  real no es X, sino Y"* and its family: *"no se trata de X, sino de Y"*,
+  *"esto no es solo X, es Y"*, *"lo que parece X es en realidad Y"*, *"en el
+  fondo, esto es sobre X"*. (Publisher, 2026-09-19, on the MLS/Altius8
+  Opinión: *"la pregunta real no es cuánto vale este sponsorship, sino qué le
+  compra a MLS centralizar inventario"*, flagged as reading like AI output on
+  sight.) The tell isn't the idea, it's the announcing. These templates spend
+  a whole sentence staging a reframe before delivering it, which is exactly
+  the LLM tic of narrating its own reasoning move instead of just making it.
+  **State the read directly instead:** "Lo que MLS realmente compra al
+  centralizar este inventario es poder de negociación" says the same thing in
+  half the words with no staging clause. This is a stricter, separate rule
+  from §2's negative parallelism ("no es X, es Y"), which stays allowed once
+  per piece at the thesis — the difference is a plain reframe vs. one that
+  announces itself as a reframe first. When in doubt: if the sentence could
+  open with "la verdadera pregunta/razón/historia" and still make sense with
+  the subject swapped out, it's the template, not the analysis, and it goes.
 - **Never use an em dash (`—`) in drafted text**, in any field. Use commas,
   periods, parentheses, or "y"/"pero". (The device syntaxes in
   `dynamic-element-library.md` are the sole exception: their ` — ` separator is
   parser syntax, not prose.)
+- **`*single asterisks*` render as italics; write them with confidence.**
+  (2026-09-19, after a verbatim La Lana ingest — INDYCAR/Pato O'Ward — shipped
+  `*connector*` and a dozen other spans as literal asterisks on the live page.
+  The gap was in `parseInlineMarks` in `scripts/publish-newsletter.ts`, which
+  only recognized `**bold**` and `[link](url)`; it's fixed now and every
+  publish path shares that one function, so this applies to all three skills.)
+  Use italics the way house style already implies elsewhere: a foreign word or
+  borrowed term (*engagement*, *merchandise*), a publication or show name, or
+  — on a verbatim La Lana ingest — whatever emphasis the source author's own
+  markdown carried. Don't reach for `**bold**` as a substitute when the source
+  or the sentence calls for italics; the two marks read differently and now
+  both work.
 - **Metric units always.** Convert feet, miles, yards, pounds, acres into
   meters/kilometers/kilos before they reach any field. "7,300 pies de altura"
   is a unit the reader has to translate mid-sentence; "más de 2,200 metros" is
@@ -664,6 +702,24 @@ juego significan 624 minutos nuevos de inventario potencial."*
   Money and percentages in plain prose get an automatic marker highlight
   (capped at 6 per article); the single most important figure goes **bold**,
   which makes it count up.
+- **A non-USD figure carries its USD equivalent in parentheses.** (Publisher
+  directive, 2026-09-17, on the Chelsea/Clearlake piece, citing the FT's own
+  convention: *"Walter and Boehly will receive £950 million ($1.3 billion) for
+  their combined stake in a deal that values the club at £5 billion ($6.7
+  billion) including debt."*) A piece almost never stays in one currency: this
+  one moved from £950M/£5,000M to the Lakers sale in US$ and the Liverpool
+  comparison in US$, and without a conversion the £ figures go untethered the
+  moment the piece crosses into dollars — the reader can no longer place £950M
+  against US$12,500M without doing the math themselves. Convert on the figure's
+  **first appearance in each field** (body, excerpt, Cifra clave caption) and
+  give it immediately after, in the FT's own shape: "£950 millones (US$1,300
+  millones)". Don't repeat the parenthetical on every later restatement of the
+  same number in the same field. A device's own **value** slot keeps the
+  original currency only (`Cifra clave`'s 24-character cap has no room for a
+  conversion); put the USD figure in the device's caption instead, in prose,
+  not in the caption's reserved attribution parenthetical
+  (`dynamic-element-library.md`'s "Cifra clave" section) — that slot credits a
+  source, not a currency.
 - **Explain the financial mechanism in the reader's words, not the filing's.**
   (Publisher, 2026-08-15, on a deep dive about a federal probe into an owner's
   insurance companies: *"entidades afiliadas, por algo más simple"* and *"que
@@ -755,6 +811,27 @@ up.
 origin, not the relay.** A story reaching Playbook through an aggregator that
 credits the Financial Times is a Financial Times fact; the aggregator's name
 never enters the piece.
+
+**The specialized sports-business trade press (Sportico, Front Office Sports,
+Sports Business Journal) is where this rule bites hardest, not where it stops
+applying.** (Publisher, 2026-09-07, on the Goodell contract-extension run.)
+These outlets do carry genuine original analysis often enough that the
+exclusivity test regularly resolves "yes" — Sportico's own team-by-team revenue
+estimates, built from financial-distribution reports nobody else tracks the
+same way, are a real example, not a courtesy citation. The failure mode is
+different from the Sky Sports one above: not attributing a widely-known fact to
+whoever supplied the link, but **naming the same outlet two or three times
+across consecutive figures in one piece** because every number in a financial
+section happens to trace back to its research. The piece then reads as an
+annotated Sportico printout instead of a Playbook analysis built partly from
+Sportico's work. The fix is not to stop citing them — it is to attribute the
+**cluster once**, with enough of the method to earn the citation ("Sportico,
+que rastrea los reportes de distribución financiera que la liga envía a sus
+equipos, calcula que…"), and then let the rest of that cluster's figures stand
+on that one attribution instead of repeating the brand name as a tic. A fact
+from a second, unrelated source inside the same piece earns its own citation
+same as always; this is about one source's own figures, not about outlets in
+general.
 
 ---
 

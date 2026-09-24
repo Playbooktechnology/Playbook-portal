@@ -54,6 +54,8 @@ type Entry = {
   priority?: number;
   featured?: boolean;
   readingTime?: number;
+  source?: string;
+  publication?: string;
   imageUrl?: string;
   imageCredit?: string;
   // Self-expiring homepage-hero override (lib/rank.ts's selectHero). ISO
@@ -74,6 +76,8 @@ const COLUMNS = {
   readingTime: articles.readingTime,
   imageUrl: articles.imageUrl,
   imageCredit: articles.imageCredit,
+  source: articles.source,
+  publication: articles.publication,
   heroPinnedUntil: articles.heroPinnedUntil,
 } as const;
 
