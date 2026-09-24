@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { getPublicArticles } from '@/lib/data/articles';
 import { getSiteContent } from '@/lib/data/site-content';
+import { getAllDeals } from '@/lib/data/deals';
 import { shouldShowAuthor } from '@/lib/related-articles';
 import { TAXONOMY, type TaxonomyTier } from '@/lib/taxonomy';
 import { PRODUCT_HUBS } from '@/lib/product-hubs';
@@ -44,13 +45,14 @@ function mostRecentDate(dates: string[]): Date | undefined {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [articles, content] = await Promise.all([getPublicArticles(), getSiteContent()]);
+  const [articles, content, deals] = await Promise.all([getPublicArticles(), getSiteContent(), getAllDeals()]);
   const entries: MetadataRoute.Sitemap = [];
 
   const latestArticleDate = mostRecentDate(articles.map(a => a.date));
 
   entries.push({ url: `${SITE_URL}/`, lastModified: latestArticleDate, ...TIERS.home });
   entries.push({ url: `${SITE_URL}/archivo`, lastModified: latestArticleDate, ...TIERS.archive });
+  entries.push({ url: `${SITE_URL}/marcador`, lastModified: mostRecentDate(deals.map(d => d.date)), ...TIERS.archive });
 
   // Product hubs (2026-08-05): each product's own front page. Same tier as
   // the archive — they aggregate articles — with lastModified from that

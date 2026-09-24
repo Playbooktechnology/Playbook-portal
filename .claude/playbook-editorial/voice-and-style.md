@@ -267,7 +267,25 @@ and `infantino-desafia-a-montagliani-…-se-resquebraja` are both live rows whos
 id no longer matches their title, because the id is minted at insert and never
 migrates.
 
-### A procedural step is not a verdict — the title must not read like one
+### The title states the fact; the body delivers the read
+
+(Playbook team, 2026-09-17, on the FIBA attendance and Senate college-sports
+drafts.) A title that already resolves the analytical payoff — "no es solo por
+más partidos", "que su propia autora admite que no basta" — spends the piece's
+one reveal before the reader opens it, and reads as longer and more effortful
+than a title has any business being. Two first drafts did this in the same
+run: *"El Mundial de Basquetbol Femenil bate récord de asistencia, y no es
+solo por más partidos"* and *"El Senado avanza la ley de deportes
+universitarios que su propia autora admite que no basta"*. Both are accurate.
+Both were rejected. They published as *"El Mundial de Basquetbol Femenil bate
+récord de asistencia"* and *"El Senado aprueba en lo general la nueva ley
+federal para el deporte universitario"* — the plain fact, nothing resolved.
+
+**The title names what happened; the palanca (§1) stays inside the body.**
+This is stricter than "one clause" above: a title can be one clause and still
+fail this if that clause is the analysis rather than the event. Test it by
+reading the title alone — if it already tells the reader what to conclude, cut
+the concluding half and let the first movement of the body carry it instead.
 
 (Playbook team, 2026-09-10, on a Liga MX amparo draft.) A federal court
 **admitting** a lawsuit for review is not the same event as the lawsuit
@@ -383,8 +401,8 @@ Opinión explains the mecanismo; it does not deliver a moraleja.
 | Format | Opinión |
 |---|---|
 | A · Noticia breve / Industry Shots Tier 2 | **None** (guide, 2026-08-13 — it stopped being "not obligatory" and became not carried) |
-| B · Noticia Playbook (Noticias) | One or two short paragraphs, a concrete second layer |
-| C · Deep Dive | One or two paragraphs synthesizing the read obtained **after** the analysis — never a recap |
+| B · Noticia Playbook (Noticias) | Exactly one paragraph, a concrete second layer (§6 above) |
+| C · Deep Dive | Exactly one paragraph synthesizing the read obtained **after** the analysis — never a recap (§6 above) |
 | D · La Lana del Deporte | Three bullets of roughly equal weight |
 | Infinitas | As the format it adopts (A/B/C), with the women's-sport read |
 | TFBR | **None** — the partner's `## La visión de Interticket` closes it |
@@ -555,6 +573,61 @@ and less interchangeably?**
 - "la pregunta ya no es…"
 - "no solo X, sino Y"
 - "para México/LATAM…"
+
+### Que no huela a IA
+
+**Non-negotiable, team directive 2026-09-19.** Every published piece must read
+as if a Playbook editor wrote it start to finish, not as if a model drafted it.
+This is stricter than "fórmulas bajo vigilancia" above: those are watched, this
+is a hard bar to clear before anything ships. If a piece has more than one of
+the tells below, it goes back to the draft stage, whatever format tier it is.
+
+**The tells to hunt for, specifically:**
+
+- **The false-balance triplet.** "No solo X, sino también Y" and its cousins
+  ("por un lado… por otro lado", "si bien es cierto que… también es cierto
+  que"). One clean claim beats two clauses performing nuance the story didn't
+  ask for. (Already flagged above; here it is a hard fail, not a watchlist
+  item.)
+- **The three-item list for its own sake.** A model defaults to bullets or
+  triads ("control, transparencia y sostenibilidad"; "un reto, una
+  oportunidad y una advertencia") even when the story only supports one or two
+  real points. If a list doesn't come from the reporting, cut it to what
+  actually happened.
+- **Throat-clearing openers and closers.** "Es importante destacar que…",
+  "Cabe mencionar que…", "En resumen…", "En conclusión…", "Vale la pena
+  señalar que…", "Habrá que ver cómo evoluciona esto". None of these carry
+  information; they announce that information is coming, or that the piece is
+  ending. Cut the phrase and start with the fact.
+- **The manufactured big-picture close.** A tidy moral, a "solo el tiempo
+  dirá", a sentence that zooms out to "la industria del deporte" or "el futuro
+  del negocio" when the story itself never earned that scope. Playbook's own
+  closing move is the Opinión's mechanism-level insight, never a vague
+  gesture at History or the Industry.
+- **Symmetrical sentence architecture.** Two clauses of near-identical length
+  built around the same connector, repeated paragraph after paragraph, reads
+  as generated even when each sentence is individually fine. Vary sentence
+  length on purpose; a punchy four-word sentence after a long one is a feature,
+  not sloppiness.
+- **Hedge-stacking.** "Podría", "posiblemente", "parece indicar", "sugiere que
+  tal vez" piled on the same claim. Playbook states what is confirmed plainly
+  and flags what isn't with ONE marker (`.claude/playbook-editorial/*` evidence
+  levels, §8), never several softeners at once.
+- **Generic connective tissue.** "Además", "Asimismo", "Por otro lado", "Cabe
+  destacar que" opening consecutive paragraphs. If removing the connector
+  changes nothing, it was filler holding two unrelated sentences together
+  instead of a real transition earned by the reporting.
+- **Adjectives doing the work nouns and verbs should do.** "Crucial",
+  "fundamental", "significativo", "notable", "clave" (outside the `Cifra
+  clave` device name) attached to something whose importance was never
+  actually shown. Show the number or the mechanism that makes it crucial;
+  don't just call it that.
+
+**The self-check, every piece, every tier:** read the draft once purely
+hunting for these eight patterns, out loud if it helps. A piece that needed
+zero fixes on this pass is rare and worth noting; a piece needing more than
+one or two is not ready, regardless of what the format-tier and device checks
+already passed. This runs as part of Checklist de publicación item 13 (§12).
 
 ### La aritmética
 
@@ -812,6 +885,8 @@ the last gate in both skills' decision flow.
 10. ¿Los gráficos explican algo o solo decoran?
 11. ¿Quitamos la frase intercambiable o demasiado perfecta?
 12. ¿El texto termina antes de explicar de más?
+13. ¿Pasamos el chequeo "que no huela a IA" (§7) — sin tríadas de relleno,
+    sin cierre moralizante, sin conectores genéricos entre párrafos?
 
 > **La definición final.** Playbook escribe para alguien que conoce el deporte
 > y quiere entender mejor su negocio. Abre con el movimiento, elimina el
