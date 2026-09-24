@@ -155,12 +155,25 @@ const pct = (a, p) => {
   return s[Math.floor((s.length * p) / 100)];
 };
 
+// The renderer boxes exactly one <p>: whichever one opens with the literal
+// `**Opinión de Playbook:**` lead-in. Anything non-structural after it in the
+// paragraph list ships as plain text sitting below the callout — the exact
+// bug voice-and-style.md §2 and format-tiers.md §3 warn about. Detected
+// against the STRUCTURAL-filtered list so device/heading/caption lines never
+// count as the trailing paragraph.
+function findOpinionSplit(paragraphs) {
+  const idx = paragraphs.findIndex(p => /^\*\*Opini[oó]n de Playbook:\*\*/i.test(p));
+  if (idx === -1 || idx === paragraphs.length - 1) return null;
+  return { trailing: paragraphs.length - 1 - idx, preview: paragraphs[idx + 1].slice(0, 60) };
+}
+
 function analyse(article) {
   const md = article.bodyMarkdown || '';
   const paragraphs = md
     .split(/\n{2,}/)
     .map(p => p.trim())
     .filter(p => p && !STRUCTURAL.test(p));
+  const opinionSplit = findOpinionSplit(paragraphs);
   // the bold lead-in is UI, not part of the sentence the reader parses
   const prose = paragraphs.map(p => p.replace(/^\*\*[^*]+:\*\*\s*/, ''));
   const pWords = prose.map(words);
@@ -183,6 +196,7 @@ function analyse(article) {
     ),
     negatives: countNegatives(md),
     emDashes: prose.filter(p => p.includes('—')).length,
+    opinionSplit,
   };
 }
 
@@ -195,10 +209,17 @@ function main() {
   const strict = process.argv.includes('--strict');
   const articles = JSON.parse(readFileSync(path, 'utf8'));
   let flagged = 0;
+  let hardFail = false;
 
   for (const a of articles) {
     const m = analyse(a);
     const flags = [];
+    if (m.opinionSplit) {
+      flags.push(
+        `⚠ RENDER BUG: La Opinión no es el último párrafo — ${m.opinionSplit.trailing} párrafo(s) quedan fuera del recuadro verde y se publican como texto suelto ("${m.opinionSplit.preview}…"). Fusiona todo en el único <p> de **Opinión de Playbook:** antes de publicar (voice-and-style.md §2, format-tiers.md §3).`,
+      );
+      hardFail = true;
+    }
     if (m.medianParagraph > TARGETS.medianParagraphWords)
       flags.push(`párrafo mediano ${m.medianParagraph}p (rango 40-80, se marca pasando ${TARGETS.medianParagraphWords})`);
     if (m.p75Paragraph > TARGETS.p75ParagraphWords)
@@ -229,7 +250,11 @@ function main() {
   }
 
   console.log(`\n${articles.length - flagged}/${articles.length} artículos dentro del ritmo de Playbook.`);
-  if (flagged && strict) process.exit(1);
+  // opinionSplit is a guaranteed live-page rendering defect, not a style
+  // judgment call — it fails the run even without --strict, unlike every
+  // other check here, so it can't ship past a self-check that's only ever
+  // read for the other, softer flags.
+  if (hardFail || (flagged && strict)) process.exit(1);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) main();
