@@ -30,6 +30,40 @@ const SCOPE = 'https://www.googleapis.com/auth/analytics.readonly';
 // this path instead.
 const ARTICLE_PATH_FRAGMENT = '/articulo';
 
+// The slug out of a GA4 `pagePath`, in EITHER URL shape.
+//
+// This used to be a single `/[?&]id=([^&]+)/` match against the raw path,
+// which silently stopped matching anything on 2026-09-02: that is the day
+// article URLs moved from `/articulo?id=<slug>` to `/articulo/<slug>`
+// (lib/article-url.ts). Every GA4 row recorded since then is the path form,
+// so the regex found no `id=`, every row was filtered out, and
+// topArticleIds() returned [] — which lib/most-read.ts reads as "configured
+// but no data" and quietly falls through. The homepage module has therefore
+// shown nothing from GA4 since the migration, with no error anywhere.
+//
+// Both shapes are parsed because GA4's 7-day window can still straddle old
+// rows, and because middleware.ts keeps 301-ing the legacy URL permanently.
+export function articleIdFromPagePath(pagePath: string): string | null {
+  const [path, query = ''] = pagePath.split('?');
+  const bySegment = path.match(/\/articulo\/([^/#]+)/);
+  if (bySegment) return safeDecode(bySegment[1]);
+  const byQuery = query.match(/(?:^|&)id=([^&#]+)/);
+  if (byQuery) return safeDecode(byQuery[1]);
+  return null;
+}
+
+// A malformed percent-escape in a crawled URL throws on decodeURIComponent
+// and would take the whole module down with it; the raw value is still a
+// usable key, it just won't match an article id, which is the same outcome
+// as dropping the row.
+function safeDecode(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
 function base64url(input: string | Buffer) {
   return Buffer.from(input).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
@@ -109,6 +143,13 @@ export async function runReport(
 export async function topArticleIds({ days = 7, limit = 10 }: { days?: number; limit?: number } = {}) {
   if (!isConfigured()) return null;
 
+  // One article shows up under several pagePaths (trailing slash, utm_*
+  // query strings, and both URL shapes across the 2026-09-02 migration), so
+  // ask for more rows than we need and fold them together below — asking for
+  // exactly `limit` rows would let one article's views split across variants
+  // and rank below an article with fewer real readers.
+  const rowLimit = Math.max(limit * 5, 50);
+
   // 30-minute freshness window via Next's per-fetch data cache — replaces
   // legacy's Cache-Control: max-age=1800 on its now-gone /api/top-articles
   // route, so the homepage (force-dynamic) doesn't hit the GA4 Data API on
@@ -122,19 +163,20 @@ export async function topArticleIds({ days = 7, limit = 10 }: { days?: number; l
         filter: { fieldName: 'pagePath', stringFilter: { matchType: 'CONTAINS', value: ARTICLE_PATH_FRAGMENT } },
       },
       orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-      limit,
+      limit: rowLimit,
     },
-    { revalidateSeconds: 1800 }
+    { revalidateSeconds: 3600 }
   );
 
-  return rows
-    .map(row => {
-      const pagePath = row.dimensionValues[0].value || '';
-      const match = pagePath.match(/[?&]id=([^&]+)/);
-      return {
-        id: match ? decodeURIComponent(match[1]) : null,
-        pageviews: Number(row.metricValues[0].value) || 0,
-      };
-    })
-    .filter((r): r is { id: string; pageviews: number } => !!r.id);
+  const byId = new Map<string, number>();
+  for (const row of rows) {
+    const id = articleIdFromPagePath(row.dimensionValues[0].value || '');
+    if (!id) continue;
+    byId.set(id, (byId.get(id) ?? 0) + (Number(row.metricValues[0].value) || 0));
+  }
+
+  return [...byId.entries()]
+    .map(([id, pageviews]) => ({ id, pageviews }))
+    .sort((a, b) => b.pageviews - a.pageviews)
+    .slice(0, limit);
 }

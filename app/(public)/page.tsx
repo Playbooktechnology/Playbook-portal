@@ -4,7 +4,7 @@ import { getSiteContent } from '@/lib/data/site-content';
 import { NewsGrid } from '@/components/home/NewsGrid';
 import { HomeChoreography } from '@/components/home/HomeChoreography';
 import { SiteMotion } from '@/components/SiteMotion';
-import { MostReadSection } from '@/components/home/MostReadSection';
+import { MostReadColumn } from '@/components/home/MostReadColumn';
 import { StillMattersSection } from '@/components/home/StillMattersSection';
 import { HomeSidebar } from '@/components/home/HomeSidebar';
 import { TopicDirectory } from '@/components/home/TopicDirectory';
@@ -60,12 +60,12 @@ export default async function HomePage() {
   return (
     <>
       <main className="container news-section" id="noticias">
-        <NewsGrid articles={articles} sidebar={<HomeSidebar />} />
-        {/* "Más leídas" as a full-width band under the news package
-            (2026-08-06 — it lived in the rail and stretched it far past
-            the 1+5 columns on tablets; see MostReadSection's comment).
-            Not a growth of the 1+5: a derived module, like the one below. */}
-        <MostReadSection />
+        {/* "Lo más leído" moved out of a full-width band here and into the
+            LEFT column under the hero (2026-09-25 — see MostReadColumn for
+            why). Passed in as a server-rendered node for the same reason
+            `sidebar` is: NewsGrid is a client component, and this module
+            needs GA4 and DB access. */}
+        <NewsGrid articles={articles} sidebar={<HomeSidebar />} mostRead={<MostReadColumn />} />
         {/* "Lo que sigue importando" — directly below (design brief,
             2026-08-05): starred/featured stories from the last ~12 days
             that the rotation above no longer shows. Same React-cached

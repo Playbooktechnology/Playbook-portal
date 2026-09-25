@@ -1,12 +1,22 @@
 // Homepage layout counts, ported verbatim from legacy/js/articles.js /
 // legacy/admin/dashboard.js — kept in one place so the DB-backed pages and
 // (in Phase 4) the admin preview agree on what "on the homepage" means.
-// The homepage shows exactly hero + 5 list rows (1+5). That count is a
-// negotiated compromise with the sales side — a short text block before
-// the commercial sections — so don't grow it (a 9-card feed grid was
-// added and reverted in the Fase 7 session for exactly this reason).
+// The homepage shows hero + 9 list rows (1+9).
+//
+// It was 1+5 from launch to 2026-09-25 as a negotiated compromise with the
+// sales side — a short text block before the commercial sections — and a
+// 9-card feed grid was added and reverted in the Fase 7 session on exactly
+// those grounds. The publisher revoked that agreement on 2026-09-25: with
+// the rail measuring 1122px against the lead story's 636px and the 5-row
+// list's 664px, the three columns were visibly ragged. Nine rows come to
+// ~1176px, which squares the band. The sales side's actual position is
+// preserved where it counts — the inline-feed ad stays pinned after the
+// sixth story instead of riding the end of the list (see NewsGrid).
+//
+// So: this is a deliberate reversal with a named owner and a date, not
+// drift. Don't restore the 5 without asking them.
 export const LEAD_COUNT = 1;
-export const LIST_COUNT = 5;
+export const LIST_COUNT = 9;
 export const TICKER_COUNT = 6;
 export const RELATED_COUNT = 3;
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { Fragment, useEffect, useRef, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 import { rankArticles, selectHero } from '@/lib/rank';
 import { LEAD_COUNT, LIST_COUNT, KNOWN_SOURCES, SOURCE_LABELS } from '@/lib/constants';
@@ -67,18 +67,43 @@ const SOURCE_EXIT: Record<string, { short: string; note: string }> = {
 // this is a pure client-side re-filter — the 180ms fade is cosmetic, not
 // covering a loading state.
 //
-// The news package is deliberately compact: hero + 5-row list + 300px
-// sidebar in ONE three-column band. The 1+5 count is a negotiated
-// compromise with the sales side (keep the text block short so readers
-// reach the commercial sections quickly) — do not grow it; polish it.
-// A first pass of this session added a 9-card feed below it and that was
-// reverted for exactly this reason. The inline-feed ad slot sits after
-// the sixth story (end of the list), native format, collapsed while
-// empty (see styles/ads.css). The sidebar (Más leídas + rail ad +
-// newsletter module) arrives as a pre-rendered ReactNode from the server
-// (see HomeSidebar) — source filters re-rank the stories without ever
-// re-rendering it.
-export function NewsGrid({ articles, sidebar }: { articles: Article[]; sidebar?: React.ReactNode }) {
+// The news package is hero + list + 300px sidebar in ONE three-column band.
+//
+// The list was 5 rows from launch until 2026-09-25, as a negotiated
+// compromise with the sales side (keep the text block short so readers reach
+// the commercial sections quickly); an earlier 9-card attempt was reverted
+// on those grounds. The publisher revoked that agreement on 2026-09-25 to
+// square up the three columns, and the count is now LIST_COUNT=9. This is a
+// deliberate reversal, not a regression — do not "restore" the 5 without
+// asking them.
+//
+// It was decided on measurement, not taste: at 1280px the rail (newsletter +
+// La cifra + El Marcador) runs 1122px against the lead story's 636px and the
+// 5-row list's 664px, so both left and centre ended ~460px short. Nine rows
+// come to ~1176px; the left column closes its own gap with the "Lo más
+// leído" block below the hero (mostRead, passed in from the server the same
+// way `sidebar` is).
+//
+// The inline-feed ad slot stays pinned AFTER THE SIXTH STORY (hero + five
+// rows) rather than riding the end of the list, so growing the list does not
+// push the commercial slot ~460px down the page — the part of the sales
+// compromise that survives the count change. Native format, collapsed while
+// empty (see styles/ads.css).
+//
+// Both `sidebar` and `mostRead` arrive as pre-rendered ReactNodes from the
+// server — source filters re-rank the stories without ever re-rendering
+// them.
+const AD_AFTER_STORY = 6;
+
+export function NewsGrid({
+  articles,
+  sidebar,
+  mostRead,
+}: {
+  articles: Article[];
+  sidebar?: React.ReactNode;
+  mostRead?: React.ReactNode;
+}) {
   const [activeSource, setActiveSource] = useState('all');
   const gridRef = useRef<HTMLDivElement>(null);
   // The source a still-running fade-out will commit when it finishes — the
@@ -194,6 +219,10 @@ export function NewsGrid({ articles, sidebar }: { articles: Article[]; sidebar?:
   const hero = selectHero(filtered) ?? filtered[0] ?? null;
   const list = filtered.filter(a => a !== hero).slice(0, LIST_COUNT);
   const overflow = Math.max(0, filtered.length - LEAD_COUNT - LIST_COUNT);
+  // Index of the row the ad follows. The hero is story 1, so story 6 is row
+  // 5 — index 4. A filtered source with fewer stories than that keeps the ad
+  // at the end of whatever list it has, rather than dropping the slot.
+  const adAfterRow = Math.min(AD_AFTER_STORY - LEAD_COUNT - 1, list.length - 1);
 
   return (
     <>
@@ -243,12 +272,17 @@ export function NewsGrid({ articles, sidebar }: { articles: Article[]; sidebar?:
             <p className="empty-state">Sin artículos en esta categoría todavía.</p>
           ) : (
             <>
-              {hero && <LeadStory article={hero} />}
+              <div className="news-lead-col">
+                {hero && <LeadStory article={hero} />}
+                {mostRead}
+              </div>
               <div className="news-list">
-                {list.map(a => (
-                  <NewsRow key={a.id} article={a} heading="h3" />
+                {list.map((a, i) => (
+                  <Fragment key={a.id}>
+                    <NewsRow article={a} heading="h3" />
+                    {i === adAfterRow && <AdSlot slot="inline-feed" />}
+                  </Fragment>
                 ))}
-                <AdSlot slot="inline-feed" />
               </div>
             </>
           )}

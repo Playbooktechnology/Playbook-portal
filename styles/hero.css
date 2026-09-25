@@ -54,6 +54,14 @@
    editoriales y deja el rail en su lugar. */
 .news-grid .empty-state{grid-column:span 2;}
 
+/* The left column of the news band. The vertical rule and right padding
+   used to live on .lead-story itself; they moved here on 2026-09-25 when
+   "Lo más leído" joined the column under the hero — on .lead-story the
+   divider stopped at the hero's last line and left the new block hanging
+   outside the column it belongs to. .lead-story keeps both properties for
+   its other call sites (archive, hubs), so the override is scoped. */
+.news-lead-col{border-right:1px solid var(--rule);padding-right:36px;}
+.news-lead-col>.lead-story{border-right:none;padding-right:0;}
 .lead-story{display:block;position:relative;border-right:1px solid var(--rule);padding-right:36px;padding-left:16px;border-left:3px solid transparent;transition:border-color var(--duration-base) var(--ease-out);}
 .lead-story[data-source="noticias"]{border-left-color:var(--src-industry);}
 .lead-story[data-source="la-lana"]{border-left-color:var(--src-lana);}
