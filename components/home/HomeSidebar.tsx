@@ -8,7 +8,7 @@ import { extractPullFigure, extractCifraFromBody } from '@/lib/product-hubs';
 import { articlePath } from '@/lib/article-url';
 
 // Right rail of the homepage news package (Fase 7 UX). Server component:
-// MostReadSection needs GA4 data access. Rendered by
+// La cifra del día needs DB access. Rendered by
 // app/(public)/page.tsx and passed INTO the client-side NewsGrid as a
 // ReactNode prop — the sidebar never re-renders when the reader changes
 // source filters, only the stories do.

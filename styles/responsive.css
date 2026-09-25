@@ -144,6 +144,7 @@
    above for why these two breakpoints are deliberately different). */
 @media(max-width:920px){
   .news-grid{grid-template-columns:1fr;}
+  .news-lead-col{border-right:none;padding-right:0;}
   .lead-story{border-right:none;padding-right:0;border-bottom:1px solid var(--rule);padding-bottom:24px;margin-bottom:20px;}
   /* Fase 7 UX: la banda de tres columnas colapsa — hero, lista y
      sidebar apilados, sin sticky ni borde de rail (el ad rail-home
