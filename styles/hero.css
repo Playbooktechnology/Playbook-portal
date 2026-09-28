@@ -54,6 +54,15 @@
    editoriales y deja el rail en su lugar. */
 .news-grid .empty-state{grid-column:span 2;}
 
+/* Columna 1 de .news-grid (Homepage layout, 2026-09-28): la nota principal
+   más, debajo, el bloque "Lo más leído" (ver MostReadRail.tsx). Un flex
+   column simple — mismo recurso que .sidebar-sticky ya usa para la
+   columna 3 — para que la altura real de la columna sea hero + rail, no
+   solo la del hero, y cierre el hueco que dejaba la barra lateral más
+   alta. Sin regla de mobile aparte: bajo 920px .news-grid ya colapsa a
+   una columna (responsive.css) y este wrapper cae en su lugar, justo
+   después del hero.*/
+.lead-col{display:flex;flex-direction:column;}
 .lead-story{display:block;position:relative;border-right:1px solid var(--rule);padding-right:36px;padding-left:16px;border-left:3px solid transparent;transition:border-color var(--duration-base) var(--ease-out);}
 .lead-story[data-source="noticias"]{border-left-color:var(--src-industry);}
 .lead-story[data-source="la-lana"]{border-left-color:var(--src-lana);}
@@ -71,6 +80,23 @@
 .lead-story .desc{font-size:16px;line-height:1.55;color:var(--gray-dark);margin:0 0 16px;max-width:56ch;font-weight:400;}
 .byline{font-size:12px;color:var(--gray-txt);font-weight:400;}
 .lead-story .tag-pill-row{margin-top:12px;}
+
+/* "Lo más leído" (MostReadRail.tsx) — mismo lenguaje tipográfico que
+   .side-title (Anton mayúsculas, misma escala de 20px) pero con la línea
+   superior de 1px que pide el spec del bloque, no los 2px de .side-title:
+   diferenciación deliberada entre "módulo de la barra lateral" y "bloque
+   de la columna de la nota principal". */
+.lmr{margin-top:28px;padding-right:36px;}
+.lmr-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-top:1px solid var(--ink);padding-top:12px;}
+.lmr-head h2{font-family:var(--serif-display);font-weight:400;font-size:20px;text-transform:uppercase;margin:0;}
+.lmr-sub{font-family:var(--serif-display);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-txt);white-space:nowrap;}
+.lmr-list{list-style:none;margin:6px 0 0;padding:0;}
+.lmr-item{display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;align-items:start;padding:13px 0;border-top:1px solid var(--rule);color:inherit;}
+.lmr-item:hover .lmr-title,.lmr-item:focus-visible .lmr-title{color:var(--green);}
+.lmr-rank{font-family:var(--serif-display);font-size:26px;line-height:1;color:var(--ink);}
+.lmr-body{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.lmr-title{font-family:var(--sans);font-weight:600;font-size:13.5px;line-height:1.32;transition:color var(--duration-fast) ease;}
+.lmr-meta{font-size:11px;color:var(--gray-txt);}
 
 /* Stretched-link pattern: .lead-story/.news-row hold the box (border,
    padding, hover/focus state) but are no longer anchors themselves — their
