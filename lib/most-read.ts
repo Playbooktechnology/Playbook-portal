@@ -4,6 +4,7 @@ import { db } from './db/client';
 import { articleReads } from './db/schema';
 import { topArticleIds } from './ga4';
 import { getPublicArticles, type Article } from './data/articles';
+import { baseScore } from './rank';
 
 // Backs components/home/MostReadSection.tsx ("Más leídas", the homepage
 // top 5). Two data sources, in order of preference (2026-08-06 — until
@@ -92,6 +93,26 @@ export async function getMostReadRail(excludeId?: string): Promise<MostReadItem[
     })
     .filter((item): item is MostReadItem => item !== null)
     .slice(0, 5);
+
+  return items.length >= 3 ? items : null;
+}
+
+// Third rung, editorial rather than analytics — this is the one that
+// actually keeps the column-1 gap closed (2026-09-28 feedback: a fresh
+// environment with neither GA4 configured nor enough article_reads rows
+// left "Lo más leído" empty and reopened the exact hueco this block
+// exists to fill). No traffic signal required, so it's never really
+// empty: ranks the whole pool by the same 0-99 boleta score
+// StillMattersSection uses, excludes whatever's already on screen
+// (`excludeIds` = hero + the visible list, passed in by the caller, which
+// is the only place that knows what's currently shown), takes the top 5.
+export async function getMostReadRailFallback(excludeIds: Set<string>): Promise<MostReadItem[] | null> {
+  const pool = await getPublicArticles();
+  const items = pool
+    .filter(a => !excludeIds.has(a.id) && (a.source !== 'opinion' || a.featured))
+    .sort((a, b) => baseScore(b) - baseScore(a) || (b.date || '').localeCompare(a.date || ''))
+    .slice(0, 5)
+    .map(article => ({ article, count: 0 }));
 
   return items.length >= 3 ? items : null;
 }
