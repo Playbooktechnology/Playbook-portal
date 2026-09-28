@@ -95,6 +95,10 @@
    source border sat flush against the next row's, reading as one
    continuous stripe rather than distinct per-story color accents. */
 .news-list{display:flex;flex-direction:column;gap:10px;}
+/* Rows 6-9 — desktop only, see MOBILE_LIST_COUNT. display:contents keeps
+   them flex items of .news-list so the gap and the :first-child padding
+   rule behave as if the wrapper were not there. */
+.news-list-extra{display:contents;}
 .news-row{display:block;position:relative;padding:16px 0 16px 14px;border-bottom:1px solid var(--rule);border-left:3px solid transparent;transition:border-color var(--duration-base) var(--ease-out),transform var(--duration-base) var(--ease-out);}
 .news-row:first-child{padding-top:0;}
 .news-row:hover,.news-row:focus-within{border-bottom-color:rgba(0,0,0,.15);transform:translateY(-2px);}

@@ -145,6 +145,11 @@
 @media(max-width:920px){
   .news-grid{grid-template-columns:1fr;}
   .news-lead-col{border-right:none;padding-right:0;}
+  /* The extra rows exist to match the rail's height in the three-column
+     band; stacked, they only push La cifra and El Marcador ~570px further
+     down (measured 3.3 screens deep at 390px). Phones keep the 5 rows they
+     have always had. */
+  .news-list-extra{display:none;}
   .lead-story{border-right:none;padding-right:0;border-bottom:1px solid var(--rule);padding-bottom:24px;margin-bottom:20px;}
   /* Fase 7 UX: la banda de tres columnas colapsa — hero, lista y
      sidebar apilados, sin sticky ni borde de rail (el ad rail-home

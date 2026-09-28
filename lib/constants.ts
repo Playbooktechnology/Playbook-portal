@@ -17,6 +17,13 @@
 // drift. Don't restore the 5 without asking them.
 export const LEAD_COUNT = 1;
 export const LIST_COUNT = 9;
+// …but only above the 920px breakpoint, where the three columns actually
+// exist. Below it everything stacks, there is no column to square up, and
+// the four extra rows only push La cifra and El Marcador further down: they
+// sat 3.3 screens deep at 390px wide before this cap. Mobile therefore keeps
+// the 5 rows it has always had (NewsGrid renders the rest inside a wrapper
+// that styles/responsive.css hides).
+export const MOBILE_LIST_COUNT = 5;
 export const TICKER_COUNT = 6;
 export const RELATED_COUNT = 3;
 

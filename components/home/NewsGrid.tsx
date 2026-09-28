@@ -3,7 +3,7 @@
 import { Fragment, useEffect, useRef, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 import { rankArticles, selectHero } from '@/lib/rank';
-import { LEAD_COUNT, LIST_COUNT, KNOWN_SOURCES, SOURCE_LABELS } from '@/lib/constants';
+import { LEAD_COUNT, LIST_COUNT, MOBILE_LIST_COUNT, KNOWN_SOURCES, SOURCE_LABELS } from '@/lib/constants';
 import { hubForSource } from '@/lib/product-hubs';
 import type { Article } from '@/lib/data/articles';
 import { LeadStory } from '../article/LeadStory';
@@ -277,12 +277,25 @@ export function NewsGrid({
                 {mostRead}
               </div>
               <div className="news-list">
-                {list.map((a, i) => (
+                {list.slice(0, MOBILE_LIST_COUNT).map((a, i) => (
                   <Fragment key={a.id}>
                     <NewsRow article={a} heading="h3" />
                     {i === adAfterRow && <AdSlot slot="inline-feed" />}
                   </Fragment>
                 ))}
+                {/* The rows that only exist to square up the desktop
+                    columns. `display:contents` keeps them flex items of
+                    .news-list, so the list reads as one run at every width;
+                    below 920px the wrapper goes display:none instead (see
+                    MOBILE_LIST_COUNT). The ad always lands inside the group
+                    above, so it stays visible on phones. */}
+                {list.length > MOBILE_LIST_COUNT && (
+                  <div className="news-list-extra">
+                    {list.slice(MOBILE_LIST_COUNT).map(a => (
+                      <NewsRow key={a.id} article={a} heading="h3" />
+                    ))}
+                  </div>
+                )}
               </div>
             </>
           )}
