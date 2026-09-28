@@ -67,14 +67,14 @@ const SOURCE_EXIT: Record<string, { short: string; note: string }> = {
 // this is a pure client-side re-filter — the 180ms fade is cosmetic, not
 // covering a loading state.
 //
-// The news package is deliberately compact: hero + 5-row list + 300px
-// sidebar in ONE three-column band. The 1+5 count is a negotiated
-// compromise with the sales side (keep the text block short so readers
-// reach the commercial sections quickly) — do not grow it; polish it.
-// A first pass of this session added a 9-card feed below it and that was
-// reverted for exactly this reason. The inline-feed ad slot sits after
-// the sixth story (end of the list), native format, collapsed while
-// empty (see styles/ads.css). The sidebar (Newsletter + La cifra del día +
+// The news package is a three-column band: hero + list + 300px sidebar.
+// The list ran 5 rows from Fase 7 onward (a negotiated compromise with the
+// sales side; a prior 9-card attempt was reverted for that reason) and
+// went back to 9 with sales's sign-off once "Lo más leído" gave column 1
+// somewhere to put the extra height too (Homepage layout, 2026-09-28) —
+// see lib/constants.ts's LIST_COUNT. The inline-feed ad slot sits after
+// the last story (end of the list), native format, collapsed while empty
+// (see styles/ads.css). The sidebar (Newsletter + La cifra del día +
 // El Marcador de Negocios) arrives as a pre-rendered ReactNode from the
 // server (see HomeSidebar) — source filters re-rank the stories without
 // ever re-rendering it. `mostReadRail` (see MostReadRail.tsx) is the same
