@@ -710,11 +710,22 @@ juego significan 624 minutos nuevos de inventario potencial."*
   one moved from £950M/£5,000M to the Lakers sale in US$ and the Liverpool
   comparison in US$, and without a conversion the £ figures go untethered the
   moment the piece crosses into dollars — the reader can no longer place £950M
-  against US$12,500M without doing the math themselves. Convert on the figure's
-  **first appearance in each field** (body, excerpt, Cifra clave caption) and
-  give it immediately after, in the FT's own shape: "£950 millones (US$1,300
-  millones)". Don't repeat the parenthetical on every later restatement of the
-  same number in the same field. A device's own **value** slot keeps the
+  against US$12,500M without doing the math themselves. Give it immediately
+  after the figure, in the FT's own shape: "£950 millones (US$1,300 millones)".
+
+  **Once per zone, not once per figure** (publisher, 2026-09-29, superseding
+  the "first appearance in each field" wording this rule shipped with). The
+  zones are: the excerpt, the lede before the first `##`, each `##` section,
+  the Opinión, and a `Cifra clave` caption. Convert the **first** non-USD
+  figure of each; every later figure in that same zone may stay in its own
+  currency. It is a floor, not a cap: a before/after pair reads better with
+  both sides converted. The earlier wording read as every distinct figure, which works on
+  a piece with three numbers and collapses on a financial one: the Manchester
+  United FY2026 results carried 43 figures in pounds, and converting each
+  would have spent a fifth of a Deep Dive's word budget on parentheses and
+  made the prose unreadable. One anchor per zone is what the rule is actually
+  for — the reader never goes a section without a dollar reference, and never
+  reads a paragraph that is more conversion than sentence. A device's own **value** slot keeps the
   original currency only (`Cifra clave`'s 24-character cap has no room for a
   conversion); put the USD figure in the device's caption instead, in prose,
   not in the caption's reserved attribution parenthetical
@@ -964,11 +975,11 @@ since). This is the last gate in both skills' decision flow.
 12. ¿El texto termina antes de explicar de más?
 13. ¿Pasamos el chequeo "que no huela a IA" (§7) — sin tríadas de relleno,
     sin cierre moralizante, sin conectores genéricos entre párrafos?
-14. ¿Cada cifra en una divisa distinta al dólar lleva su equivalente en USD
-    entre paréntesis, en su primera aparición de **cada** campo — cuerpo,
-    excerpt y pie de `Cifra clave`? (§7; `check-voice.mjs` lo marca desde
-    2026-09-28, cuando la nota del veto a las apuestas en Brasil se publicó
-    con 2 de 11 conversiones y la regla llevaba once días escrita.)
+14. ¿La **primera** cifra en divisa distinta al dólar de cada zona lleva su
+    equivalente en USD entre paréntesis — excerpt, entrada, cada sección
+    `##`, Opinión y pie de `Cifra clave`? (§7; `check-voice.mjs` lo marca
+    desde 2026-09-28, cuando la nota del veto a las apuestas en Brasil se
+    publicó con 2 de 11 conversiones y la regla llevaba once días escrita.)
 
 > **La definición final.** Playbook escribe para alguien que conoce el deporte
 > y quiere entender mejor su negocio. Abre con el movimiento, elimina el
