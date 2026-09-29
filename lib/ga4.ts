@@ -68,6 +68,41 @@ function base64url(input: string | Buffer) {
   return Buffer.from(input).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
+// The service-account key as OpenSSL needs it, from whatever shape the
+// paste into Vercel actually left behind.
+//
+// The value is copied by hand out of a downloaded JSON file, which gives two
+// ways to get it subtly wrong, neither visible in the dashboard (the value is
+// masked):
+//   - the JSON's own surrounding double quotes come along for the ride;
+//   - the key carries literal \n escapes rather than real newlines.
+// Both produce the same unhelpful failure — Node throws
+// `error:1E08010C:DECODER routines::unsupported` (ERR_OSSL_UNSUPPORTED),
+// which names neither the variable nor the cause. That is exactly how this
+// integration failed on 2026-09-29, after the credentials were otherwise
+// configured correctly.
+//
+// So: tolerate both, and when the result still is not a PEM key, say which
+// env var is wrong and what it should look like, in words the person pasting
+// it can act on. Shipping an OpenSSL hex code to someone who just followed a
+// setup guide is not a diagnosis.
+export function normalizePrivateKey(raw: string): string {
+  let key = raw.trim();
+  if (key.length > 1 && ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'")))) {
+    key = key.slice(1, -1);
+  }
+  key = key.replace(/\\n/g, '\n').trim();
+
+  if (!key.startsWith('-----BEGIN') || !key.includes('-----END')) {
+    throw new Error(
+      'GA4_SERVICE_ACCOUNT_PRIVATE_KEY no tiene forma de llave PEM. Debe empezar con ' +
+        '"-----BEGIN PRIVATE KEY-----" y terminar con "-----END PRIVATE KEY-----", copiada del campo ' +
+        '"private_key" del JSON de la cuenta de servicio, sin las comillas que la rodean en el archivo.'
+    );
+  }
+  return key;
+}
+
 export function isConfigured() {
   return !!(process.env.GA4_PROPERTY_ID && process.env.GA4_SERVICE_ACCOUNT_EMAIL && process.env.GA4_SERVICE_ACCOUNT_PRIVATE_KEY);
 }
@@ -83,7 +118,7 @@ async function getAccessToken(): Promise<string> {
     exp: now + 3600,
   }));
   const signingInput = `${header}.${claims}`;
-  const privateKey = (process.env.GA4_SERVICE_ACCOUNT_PRIVATE_KEY as string).replace(/\\n/g, '\n');
+  const privateKey = normalizePrivateKey(process.env.GA4_SERVICE_ACCOUNT_PRIVATE_KEY as string);
   const signature = crypto.createSign('RSA-SHA256').update(signingInput).sign(privateKey);
   const jwt = `${signingInput}.${base64url(signature)}`;
 
