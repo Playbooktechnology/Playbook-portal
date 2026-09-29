@@ -45,15 +45,36 @@ const queryFirstPartyReads = unstable_cache(
   { revalidate: 3600 },
 );
 
+// Neither source may take the homepage down with it. This module is one
+// block in a rail; the page renders without it.
+//
+// That was not true until 2026-09-29, and it cost a live 500: lib/ga4.ts
+// THROWS on a rejected token exchange or a non-2xx Data API response, and
+// nothing here caught it. While GA4 was unconfigured isConfigured() returned
+// null before any network call, so the throw was unreachable and the gap
+// invisible — the first deploy that actually carried GA4 credentials turned
+// the whole homepage into an error page. A degradation path that has never
+// run is a guess, not a fallback.
+async function safely<T>(label: string, run: () => Promise<T>): Promise<T | null> {
+  try {
+    return await run();
+  } catch (err) {
+    // Logged, not swallowed: a silently empty module is how the GA4 parser
+    // stayed broken for three weeks (see lib/ga4.ts).
+    console.error(`[most-read] ${label} falló, se degrada sin romper la página:`, err);
+    return null;
+  }
+}
+
 export async function getMostReadArticles(): Promise<MostReadItem[] | null> {
-  // GA4 rows are [{ id, pageviews }]; null = not configured. An empty
-  // array from a configured-but-young property falls through to
+  // GA4 rows are [{ id, pageviews }]; null = not configured OR it failed.
+  // An empty array from a configured-but-young property falls through to
   // first-party data rather than hiding a module we have real data for.
-  const ga4 = await topArticleIds({ days: 7, limit: 10 });
+  const ga4 = await safely('GA4', () => topArticleIds({ days: 7, limit: 10 }));
   let ranked: { id: string; count: number }[] =
     ga4?.map(r => ({ id: r.id, count: r.pageviews })) ?? [];
   if (!ranked.length) {
-    ranked = await queryFirstPartyReads();
+    ranked = (await safely('el registro propio', () => queryFirstPartyReads())) ?? [];
   }
   if (!ranked.length) return null;
 
