@@ -102,6 +102,92 @@ const VERB =
   '|vende|venden|mueve|mueven|pone|ponen|dice|dicen|sabe|saben|vale|valen|toca|tocan' +
   ')';
 
+// The USD parenthetical (voice-and-style.md §7, publisher directive
+// 2026-09-17, scope narrowed 2026-09-29). A non-USD figure carries its USD
+// equivalent in parentheses ONCE PER ZONE: the excerpt, the lede before the
+// first `##`, each `##` section, the Opinión, and a Cifra clave caption. Only
+// the first figure of each zone needs it; the rest stay in their own currency.
+//
+// Added 2026-09-28 after the Brazil betting-ban piece published with 2 of 11
+// conversions. The rule had been written for eleven days and read at drafting
+// time, but it lived only in §7 prose: nothing in the checklist and nothing
+// here asked for it at the gate, so it depended on the drafter remembering.
+// The mechanical flags in this file — em dash, antithesis — never get missed
+// for exactly that reason.
+//
+// The zone scope replaced a per-figure one the next day: read literally, the
+// original wording asked for 43 parentheticals in the Manchester United
+// FY2026 piece. A check that fires 37 times on an article a reader would call
+// correct is a check everyone learns to scroll past, which is worse than no
+// check at all.
+//
+// Bare `$` is deliberately absent: it would match the `US$` this rule is
+// about. A device's own VALUE slot is exempt (dynamic-element-library.md caps
+// it at 24 characters, with no room for a conversion), which falls out of
+// STRUCTURAL filtering the device lines out of prose; the one device the rule
+// names explicitly, `Cifra clave`, is checked separately because its
+// conversion belongs in the caption.
+const NON_USD = /(?:R\$|MX\$|A\$|C\$|CHF\s?|£|€|¥)\s?\d[\d.,]*(?:\s?(?:mil\s+millones|millones|mil|[MBK]\b))?/;
+const USD_AFTER = /^\s*\(US\$/;
+
+// The first non-USD figure in `text`, when it is not followed by its
+// conversion. null means the zone is clean — either no foreign figure at all,
+// or the one that opens it is already converted.
+function firstUnconverted(text) {
+  const m = text.match(NON_USD);
+  if (!m) return null;
+  return USD_AFTER.test(text.slice(m.index + m[0].length)) ? null : m[0].trim();
+}
+
+// Body zones, in reading order. Headings and device declarations are dropped
+// from the prose but `## ` still opens a new zone, and the Opinión gets its
+// own because it restates the piece's figures for a reader who may have
+// jumped straight to it.
+function bodyZones(md) {
+  const zones = [];
+  let current = { label: 'la entrada', text: [] };
+  const close = () => {
+    if (current.text.length) zones.push(current);
+  };
+  for (const block of md.split(/\n{2,}/).map(b => b.trim()).filter(Boolean)) {
+    if (/^## /.test(block)) {
+      close();
+      current = { label: `la sección "${block.replace(/^##\s*/, '').slice(0, 38)}"`, text: [] };
+      continue;
+    }
+    if (/^\*\*Opini[oó]n de Playbook:\*\*/i.test(block)) {
+      close();
+      current = { label: 'la Opinión', text: [] };
+    }
+    if (STRUCTURAL.test(block)) continue;
+    current.text.push(block);
+  }
+  close();
+  return zones;
+}
+
+function missingUsdZones(md) {
+  return bodyZones(md)
+    .map(z => ({ zone: z.label, figure: firstUnconverted(z.text.join('\n\n')) }))
+    .filter(z => z.figure);
+}
+
+// `Cifra clave: R$268.5M — lo que Betano paga al año… (Globo)`. The value slot
+// keeps its own currency; the conversion goes in the caption's prose, not in
+// the trailing parenthetical, which credits a source rather than a currency.
+function cifraClaveMissingUsd(md) {
+  const out = [];
+  for (const line of md.split(/\n{2,}/)) {
+    const decl = line.trim().match(/^Cifra clave:\s*(.+)$/);
+    if (!decl) continue;
+    const [value, ...rest] = decl[1].split(' — ');
+    if (!NON_USD.test(value)) continue;
+    const caption = rest.join(' — ').replace(/\s*\([^)]*\)\s*$/, '');
+    if (!/US\$/.test(caption)) out.push(value.trim());
+  }
+  return out;
+}
+
 const NEGATIVE_PARALLELISM = [
   // 1. "no es X, es Y" / "el golpe no vino de A, vino de B" / "no compró X,
   //    compró Y" / "no defendió X, cambió Y". Optional "sino (que)" or "pero"
@@ -197,6 +283,9 @@ function analyse(article) {
     negatives: countNegatives(md),
     emDashes: prose.filter(p => p.includes('—')).length,
     opinionSplit,
+    usdZones: missingUsdZones(md),
+    usdExcerpt: firstUnconverted(article.excerpt || ''),
+    usdCifra: cifraClaveMissingUsd(md),
   };
 }
 
@@ -233,6 +322,12 @@ function main() {
     if (m.negatives > TARGETS.maxNegativeParallelism)
       flags.push(`${m.negatives} antítesis, familia completa incl. "no solo X, sino Y" (objetivo ≤${TARGETS.maxNegativeParallelism})`);
     if (m.emDashes) flags.push(`${m.emDashes} párrafo(s) de prosa con guion largo`);
+    for (const z of m.usdZones)
+      flags.push(`${z.figure} abre ${z.zone} sin su equivalente en USD (voice-and-style.md §7: una conversión por zona)`);
+    if (m.usdExcerpt)
+      flags.push(`${m.usdExcerpt} abre el excerpt sin su equivalente en USD`);
+    if (m.usdCifra.length)
+      flags.push(`Cifra clave en ${m.usdCifra.join(', ')} sin la conversión en el pie (el slot de valor conserva su divisa; el USD va en la prosa del pie)`);
     // A long paragraph is normal in the archive; a page made of them is not.
     if (m.paragraphs && m.longOnes.length / m.paragraphs > TARGETS.maxLongShare) {
       flags.push(
