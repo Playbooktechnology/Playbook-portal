@@ -67,18 +67,32 @@ const SOURCE_EXIT: Record<string, { short: string; note: string }> = {
 // this is a pure client-side re-filter — the 180ms fade is cosmetic, not
 // covering a loading state.
 //
-// The news package is deliberately compact: hero + 5-row list + 300px
-// sidebar in ONE three-column band. The 1+5 count is a negotiated
-// compromise with the sales side (keep the text block short so readers
-// reach the commercial sections quickly) — do not grow it; polish it.
-// A first pass of this session added a 9-card feed below it and that was
-// reverted for exactly this reason. The inline-feed ad slot sits after
-// the sixth story (end of the list), native format, collapsed while
-// empty (see styles/ads.css). The sidebar (Más leídas + rail ad +
-// newsletter module) arrives as a pre-rendered ReactNode from the server
-// (see HomeSidebar) — source filters re-rank the stories without ever
-// re-rendering it.
-export function NewsGrid({ articles, sidebar }: { articles: Article[]; sidebar?: React.ReactNode }) {
+// The news package is a three-column band: hero + list + 300px sidebar.
+// The list ran 5 rows from Fase 7 onward (a negotiated compromise with the
+// sales side; a prior 9-card attempt was reverted for that reason) and
+// went back to 9 with sales's sign-off once "Lo más leído" gave column 1
+// somewhere to put the extra height too (Homepage layout, 2026-09-28) —
+// see lib/constants.ts's LIST_COUNT. The inline-feed ad slot sits after
+// the last story (end of the list), native format, collapsed while empty
+// (see styles/ads.css). The sidebar (Newsletter + La cifra del día +
+// El Marcador de Negocios) arrives as a pre-rendered ReactNode from the
+// server (see HomeSidebar) — source filters re-rank the stories without
+// ever re-rendering it. `mostReadRail` (see MostReadRail.tsx) is the same
+// pattern applied to column 1: it renders below the hero inside
+// `.lead-col`, a plain flex column, so column 1's rendered height stops
+// being just the hero's — closing the gap the sidebar's extra height used
+// to leave under it (Homepage layout, 2026-09-28). Below 920px this same
+// wrapper is what makes it fall in right after the hero instead of
+// getting stranded at the very end with the rest of the sidebar.
+export function NewsGrid({
+  articles,
+  sidebar,
+  mostReadRail,
+}: {
+  articles: Article[];
+  sidebar?: React.ReactNode;
+  mostReadRail?: React.ReactNode;
+}) {
   const [activeSource, setActiveSource] = useState('all');
   const gridRef = useRef<HTMLDivElement>(null);
   // The source a still-running fade-out will commit when it finishes — the
@@ -243,7 +257,10 @@ export function NewsGrid({ articles, sidebar }: { articles: Article[]; sidebar?:
             <p className="empty-state">Sin artículos en esta categoría todavía.</p>
           ) : (
             <>
-              {hero && <LeadStory article={hero} />}
+              <div className="lead-col">
+                {hero && <LeadStory article={hero} />}
+                {mostReadRail}
+              </div>
               <div className="news-list">
                 {list.map(a => (
                   <NewsRow key={a.id} article={a} heading="h3" />

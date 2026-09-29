@@ -1,12 +1,16 @@
 // Homepage layout counts, ported verbatim from legacy/js/articles.js /
 // legacy/admin/dashboard.js — kept in one place so the DB-backed pages and
 // (in Phase 4) the admin preview agree on what "on the homepage" means.
-// The homepage shows exactly hero + 5 list rows (1+5). That count is a
-// negotiated compromise with the sales side — a short text block before
-// the commercial sections — so don't grow it (a 9-card feed grid was
-// added and reverted in the Fase 7 session for exactly this reason).
+// The homepage shows hero + 9 list rows (1+9). The count was 1+5 from
+// Fase 7 onward — a negotiated compromise with the sales side, short
+// enough to reach the commercial sections quickly, and a prior 9-card
+// attempt was reverted for exactly that reason. Re-confirmed with the
+// sales side and raised back to 9 (Homepage layout, 2026-09-28) alongside
+// "Lo más leído", which fills the column-1 space the taller sidebar used
+// to leave empty — don't grow it again without checking that trade-off is
+// still the same.
 export const LEAD_COUNT = 1;
-export const LIST_COUNT = 5;
+export const LIST_COUNT = 9;
 export const TICKER_COUNT = 6;
 export const RELATED_COUNT = 3;
 

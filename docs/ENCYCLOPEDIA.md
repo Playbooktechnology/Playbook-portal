@@ -503,7 +503,7 @@ links/SEO from before the migration.
 - `lib/site-url.ts` — resolves the canonical public origin
   (`SITE_URL` env → Vercel's `VERCEL_PROJECT_PRODUCTION_URL` →
   `VERCEL_URL` → hardcoded fallback) for metadata/canonical/sitemap/RSS use.
-- `lib/constants.ts` — `LEAD_COUNT=1`, `LIST_COUNT=5`, `TICKER_COUNT=6`,
+- `lib/constants.ts` — `LEAD_COUNT=1`, `LIST_COUNT=9`, `TICKER_COUNT=6`,
   `RELATED_COUNT=3`, `FREE_ARTICLES_PER_MONTH=3`, `KNOWN_SOURCES`/
   `SOURCE_LABELS`.
 - `lib/tiptap-extensions.ts` — the **single shared array** of TipTap

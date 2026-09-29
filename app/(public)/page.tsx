@@ -7,6 +7,7 @@ import { SiteMotion } from '@/components/SiteMotion';
 import { MostReadSection } from '@/components/home/MostReadSection';
 import { StillMattersSection } from '@/components/home/StillMattersSection';
 import { HomeSidebar } from '@/components/home/HomeSidebar';
+import { MostReadRail } from '@/components/home/MostReadRail';
 import { TopicDirectory } from '@/components/home/TopicDirectory';
 import { OpinionSection } from '@/components/sections/OpinionSection';
 import { ProductsSection } from '@/components/sections/ProductsSection';
@@ -60,7 +61,7 @@ export default async function HomePage() {
   return (
     <>
       <main className="container news-section" id="noticias">
-        <NewsGrid articles={articles} sidebar={<HomeSidebar />} />
+        <NewsGrid articles={articles} sidebar={<HomeSidebar />} mostReadRail={<MostReadRail />} />
         {/* "Más leídas" as a full-width band under the news package
             (2026-08-06 — it lived in the rail and stretched it far past
             the 1+5 columns on tablets; see MostReadSection's comment).
