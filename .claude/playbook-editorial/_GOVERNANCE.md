@@ -68,4 +68,9 @@ before/after token table and an assumptions section.
 **7. Syncing.** `scripts/sync-skill-feedback.sh "<summary>"` pushes
 `.claude/skills/` **and** `.claude/playbook-editorial/` to `main` together. If a
 future refactor moves shared content again, update that script's `SYNC_PATHS`
-in the same commit or the feedback loop silently stops carrying it.
+in the same commit or the feedback loop silently stops carrying it. It
+replaces both paths wholesale, so since 2026-09-29 it refuses to run while
+`main` holds edits to them that your branch hasn't merged: run
+`git merge origin/main` first. (Before that guard, two stale syncs,
+`e0e234f` and `c8ffc12`, silently deleted other sessions' rules, including
+this tree's gate and Moat Check.)
