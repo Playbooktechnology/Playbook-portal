@@ -1241,12 +1241,26 @@ exclusive with `Duelo`**, which caps at two actors.
 Cascada: Ingresos — US$4,210M · Producción — −US$1,900M · Derechos — −US$1,400M · Margen — US$910M
 ```
 
-`Recibo` lists a total's parts; the waterfall shows the PATH. 3–7 rows:
-first and last are unsigned anchors, every middle term carries its sign
-(`−`/`+` — an unsigned middle is ambiguous and rejects). One denomination
-throughout, and the arithmetic is CHECKED: first + Σ(middles) must land on
-the last anchor within the Recibo's same 2.5% rounding tolerance, or the
-device rejects. **Mutually exclusive with `Recibo`.**
+`Recibo` lists a total's parts; the waterfall shows the PATH. 3–7 rows, every
+middle term carrying its sign (`−`/`+` — an unsigned middle is ambiguous and
+rejects). One denomination throughout, and the arithmetic is CHECKED: first +
+Σ(middles) must land on the last anchor within the Recibo's same 2.5% rounding
+tolerance, or the device rejects. **Mutually exclusive with `Recibo`.**
+
+**The opening anchor is an unsigned positive magnitude; the closing anchor may
+be negative** (2026-09-24). It is a value, not a delta, so a path that ends
+below zero is written with `−` and draws from the zero line leftward, in the
+falling steps' red:
+
+```
+Cascada: Ingresos — £677.6M · Gastos operativos — −£701.9M · Venta de jugadores — +£46.9M · Costos financieros — −£69.6M · Impuestos — +£4.0M · Resultado neto — −£43.0M
+```
+
+Until that date both anchors had to be positive, which rejected every
+record-revenue-into-a-net-loss story — the exact shape the device is for. The
+Manchester United FY2026 results ran without it because the declaration
+silently degraded to plain text. A `+` on the closing anchor still rejects: it
+would read as a delta.
 
 ### `Perfil:` — the actor card
 

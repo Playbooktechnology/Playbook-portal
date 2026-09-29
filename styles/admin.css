@@ -357,6 +357,16 @@ textarea.input { min-height: 76px; resize: vertical; line-height: 1.5; }
 .team-row-meta { font-size: 12px; color: var(--gray-txt); overflow: hidden; text-overflow: ellipsis; }
 .team-row-meta.is-expired { color: #a3550f; font-weight: 600; }
 
+/* ---------- DealsTab (El Marcador de Negocios) ---------- */
+.deal-row .team-row-main { flex: 1; }
+.deal-form { border: 1px solid var(--rule); border-radius: 12px; background: var(--paper); padding: 4px 18px 16px; margin-bottom: 22px; }
+.deal-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 18px; }
+.field-check { flex-direction: row; align-items: center; gap: 8px; align-self: end; }
+.deal-figures { border: none; margin: 0 0 14px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.deal-figure-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
+.deal-form-actions { display: flex; align-items: center; gap: 10px; }
+@media (max-width: 640px) { .deal-form-grid { grid-template-columns: 1fr; } }
+
 @media (max-width: 900px) {
   .team-invite-form { grid-template-columns: 1fr; align-items: stretch; }
 }

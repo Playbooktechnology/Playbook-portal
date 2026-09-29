@@ -107,6 +107,8 @@ Syntax: `Cascada: Ingresos — US$4,210M · Producción — −US$1,900M · Dere
 −US$1,400M · Margen — US$910M`. First and last are anchors, middle terms
 signed; self-checking arithmetic exactly like the Recibo's total guard. The
 shape quarterly-margin and "a dónde se fue el dinero" stories actually have.
+The closing anchor may be negative (2026-09-24) so a path can land below zero;
+the opening one stays a positive magnitude.
 
 ### 6 · `Perfil:` — the actor card
 One person or institution at the story's center, as a card: role, since-when,

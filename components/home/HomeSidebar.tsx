@@ -1,6 +1,6 @@
 import { NewsletterForm } from '@/components/shared/NewsletterForm';
 import { DailyFigure } from './DailyFigure';
-import { ElectionBoard } from './ElectionBoard';
+import { DealsBoard } from './DealsBoard';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { getPublicArticles, getArticleById } from '@/lib/data/articles';
 import { rankArticles, selectHero } from '@/lib/rank';
@@ -27,12 +27,11 @@ import { articlePath } from '@/lib/article-url';
 //   hub heroes use. Skips the hero story so the rail adds information
 //   instead of repeating the headline sitting next to it; collapses to
 //   nothing on days when no ranked story carries a figure.
-// - El tablero de la FIFA (2026-08-15): a standing scoreboard of where the
-//   six confederations sit on the FIFA presidency ahead of the March 2027
-//   Congress, read from lib/data/fifa-election.ts (no query, no CMS). It
-//   returns null once fewer than two camps still hold votes, so it retires
-//   itself when the fight ends instead of waiting to be deleted. Placed
-//   here per the rule above — new modules go below the newsletter block.
+// - El Marcador de Negocios (2026-09-23, replaced El tablero de la FIFA):
+//   the week's featured deal, three more, and the year's confirmed total,
+//   read from the `deals` table (components/home/DealsBoard.tsx). Edited in
+//   /admin, same 60s tagged cache as the articles pool. Placed here per the
+//   rule above — new modules go below the newsletter block.
 // - rail-home ad. Más leídas moved OUT of the rail (2026-08-06, user
 //   feedback from an iPad: the rail stretched far past the 1+5 columns
 //   and left a page-tall hole) — it's now the full-width band under the
@@ -102,7 +101,7 @@ export async function HomeSidebar() {
           </a>
         </section>
       )}
-      <ElectionBoard />
+      <DealsBoard />
       <AdSlot slot="rail-home" />
     </div>
   );
