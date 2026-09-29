@@ -8,7 +8,14 @@ fields marked **differs by funnel** below are set differently, and each skill's
 Field shape: `title, excerpt, teaser, bodyMarkdown, author, date,
 dateFormatted, publication, source, tagsScope, tagsSport, tagsVertical,
 priority, featured, mostrarAutor, readingTime, substackUrl, sourceUrl,
-imageUrl, imageCredit`.
+imageUrl, imageCredit, tier`.
+
+- **`tier`** — the router's A/B/C/D call (`format-tiers.md` §1). Optional in
+  the type (an older draft that never sets it still publishes), but it is
+  the only thing that lets `scripts/check-format-tier.ts`'s real, blocking
+  gate inside `scripts/publish-newsletter.ts` do its job (`moat-check.md`).
+  Omitting it doesn't skip a check that would otherwise run — it skips the
+  check entirely. Set it on every article.
 
 ---
 
@@ -23,6 +30,14 @@ imageUrl, imageCredit`.
   click. Carries the defining figure when `title` doesn't.
 - **`teaser`** — 1–3 plain sentences, no formatting. RSS description and
   pre-editor fallback. **NOT the body.**
+- **Never use `title`, `excerpt` or `teaser` to introduce a reading the body
+  doesn't support** (moat playbook guide, 2026-09-13). There is no separate
+  SEO-title field — `title` does that job too, per §3's "SEO lives in
+  metadata only" — so a headline or hook reaching for a stronger claim than
+  the article backs is the one place an unsupported interpretation could
+  sneak past the Moat Check (`moat-check.md`) unnoticed. Informativo,
+  natural, específico; sin clickbait; sin exagerar el estatus real de la
+  noticia.
 - **`bodyMarkdown`** — see `format-tiers.md`. `**bold**` / `##` formatted prose
   plus any `![alt](url)` images. Never raw HTML.
 - **`author`** — leave `""` unless a byline is genuinely known. **Never prepend
@@ -336,7 +351,22 @@ is the one case a run sets it on its own.
 ## Dates
 
 - **`date`** — `YYYY-MM-DD`, **confirmed from the source page**, never guessed
-  from context.
+  from context. "From context" includes today's own date: a run publishing a
+  sourced article is not dating the article by when the session happens to be
+  running, it is dating the event the source reports. Three of five sourced
+  articles in one session (publisher, 2026-09-13) shipped with `date` set to
+  whatever day the skill happened to run instead of the source's own dateline
+  — TelevisaUnivision/Genius Sports (published 9 sep, filed as 10 sep), CBF
+  (published 10 sep, filed as 12 sep), Reuters/DFB (published 11 sep, filed
+  as 13 sep) — because the habit of "today's date" quietly substituted for
+  the actual check. Confirm it the same way every time: the source page's own
+  `article:published_time` meta tag or `datePublished` JSON-LD, a wire
+  byline, or (for a co-issuer's own release) its own dateline — never the
+  session clock. **`update-article.ts` cannot fix this after publish** (`date`
+  is deliberately excluded from its updatable columns, see that script's own
+  comment) — a wrong `date` caught later needs a direct, deliberate correction
+  outside that script, not a routine patch, which is one more reason to get it
+  right before the insert.
 - **`dateFormatted`** — e.g. `"21 jul 2026"` (day, 3-letter lowercase month,
   year).
 
