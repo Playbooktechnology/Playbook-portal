@@ -947,8 +947,8 @@ Length does not demonstrate depth. Selection does.
 
 ## 12. Checklist de publicación
 
-Run these twelve before considering a piece done (guide, 2026-08-13). This is
-the last gate in both skills' decision flow.
+Run these fourteen before considering a piece done (guide, 2026-08-13, grown
+since). This is the last gate in both skills' decision flow.
 
 1. ¿Elegimos correctamente entre A, B, C y D? (`format-tiers.md` §1)
 2. ¿El movimiento principal aparece desde el inicio?
@@ -964,6 +964,11 @@ the last gate in both skills' decision flow.
 12. ¿El texto termina antes de explicar de más?
 13. ¿Pasamos el chequeo "que no huela a IA" (§7) — sin tríadas de relleno,
     sin cierre moralizante, sin conectores genéricos entre párrafos?
+14. ¿Cada cifra en una divisa distinta al dólar lleva su equivalente en USD
+    entre paréntesis, en su primera aparición de **cada** campo — cuerpo,
+    excerpt y pie de `Cifra clave`? (§7; `check-voice.mjs` lo marca desde
+    2026-09-28, cuando la nota del veto a las apuestas en Brasil se publicó
+    con 2 de 11 conversiones y la regla llevaba once días escrita.)
 
 > **La definición final.** Playbook escribe para alguien que conoce el deporte
 > y quiere entender mejor su negocio. Abre con el movimiento, elimina el

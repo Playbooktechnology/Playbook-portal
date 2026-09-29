@@ -102,6 +102,60 @@ const VERB =
   '|vende|venden|mueve|mueven|pone|ponen|dice|dicen|sabe|saben|vale|valen|toca|tocan' +
   ')';
 
+// The USD parenthetical (voice-and-style.md §7, publisher directive
+// 2026-09-17). A non-USD figure carries its USD equivalent in parentheses on
+// its FIRST appearance in each field — body prose, excerpt, and the Cifra
+// clave caption are three separate fields — and never on later restatements
+// of the same number in the same field.
+//
+// Added 2026-09-28 after the Brazil betting-ban piece published with 2 of 11
+// first appearances converted. The rule had been written for eleven days and
+// read at drafting time, but it lived only in §7 prose: nothing in the
+// twelve-point checklist and nothing here asked for it at the gate, so it
+// depended on the drafter remembering. The mechanical flags in this file —
+// em dash, antithesis — never get missed for exactly that reason.
+//
+// Bare `$` is deliberately absent: it would match the `US$` this rule is
+// about. A device's own VALUE slot is exempt (dynamic-element-library.md caps
+// it at 24 characters, with no room for a conversion), which falls out of
+// STRUCTURAL filtering the device lines out of prose; the one device the rule
+// names explicitly, `Cifra clave`, is checked separately below because its
+// conversion belongs in the caption.
+const NON_USD = /(?:R\$|MX\$|A\$|C\$|CHF\s?|£|€|¥)\s?\d[\d.,]*(?:\s?(?:mil\s+millones|millones|mil|[MBK]\b))?/g;
+const USD_AFTER = /^\s*\(US\$/;
+// "R$268.5 millones" and "R$268.5M" are the same number wearing two shapes;
+// collapse to the symbol plus digits so the second one counts as a repeat.
+const figureKey = fig => fig.replace(/\s?(?:mil\s+millones|millones|mil|[MBK]\b)\s*$/, '').replace(/\s+/g, '');
+
+function missingUsd(text) {
+  const seen = new Set();
+  const missing = [];
+  for (const m of text.matchAll(NON_USD)) {
+    const key = figureKey(m[0]);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    if (!USD_AFTER.test(text.slice(m.index + m[0].length))) missing.push(m[0].trim());
+  }
+  return missing;
+}
+
+// `Cifra clave: R$268.5M — lo que Betano paga al año… (Globo)`. The value slot
+// keeps its own currency; the conversion goes in the caption's prose, not in
+// the trailing parenthetical, which credits a source rather than a currency.
+function cifraClaveMissingUsd(md) {
+  const out = [];
+  for (const line of md.split(/\n{2,}/)) {
+    const decl = line.trim().match(/^Cifra clave:\s*(.+)$/);
+    if (!decl) continue;
+    const [value, ...rest] = decl[1].split(' — ');
+    if (!NON_USD.test(value)) continue;
+    NON_USD.lastIndex = 0;
+    const caption = rest.join(' — ').replace(/\s*\([^)]*\)\s*$/, '');
+    if (!/US\$/.test(caption)) out.push(value.trim());
+  }
+  return out;
+}
+
 const NEGATIVE_PARALLELISM = [
   // 1. "no es X, es Y" / "el golpe no vino de A, vino de B" / "no compró X,
   //    compró Y" / "no defendió X, cambió Y". Optional "sino (que)" or "pero"
@@ -197,6 +251,9 @@ function analyse(article) {
     negatives: countNegatives(md),
     emDashes: prose.filter(p => p.includes('—')).length,
     opinionSplit,
+    usdBody: missingUsd(prose.join('\n\n')),
+    usdExcerpt: missingUsd(article.excerpt || ''),
+    usdCifra: cifraClaveMissingUsd(md),
   };
 }
 
@@ -233,6 +290,12 @@ function main() {
     if (m.negatives > TARGETS.maxNegativeParallelism)
       flags.push(`${m.negatives} antítesis, familia completa incl. "no solo X, sino Y" (objetivo ≤${TARGETS.maxNegativeParallelism})`);
     if (m.emDashes) flags.push(`${m.emDashes} párrafo(s) de prosa con guion largo`);
+    if (m.usdBody.length)
+      flags.push(`${m.usdBody.length} cifra(s) sin su equivalente en USD en el cuerpo: ${m.usdBody.join(', ')} (voice-and-style.md §7)`);
+    if (m.usdExcerpt.length)
+      flags.push(`${m.usdExcerpt.length} cifra(s) sin su equivalente en USD en el excerpt: ${m.usdExcerpt.join(', ')}`);
+    if (m.usdCifra.length)
+      flags.push(`Cifra clave en ${m.usdCifra.join(', ')} sin la conversión en el pie (el slot de valor conserva su divisa; el USD va en la prosa del pie)`);
     // A long paragraph is normal in the archive; a page made of them is not.
     if (m.paragraphs && m.longOnes.length / m.paragraphs > TARGETS.maxLongShare) {
       flags.push(
