@@ -114,7 +114,7 @@ persona; el nivel y tipo de explicación sí. Detalle: `editorial-gate.md`.
 
 ## El Moat Check (`moat-check.md`)
 
-Corre en Step 7, junto al checklist de doce puntos existente (no lo
+Corre en Step 7, junto al checklist de catorce puntos existente (no lo
 reemplaza). Diez preguntas; las 4, 5 y 6 son gates:
 
 1. ¿Por qué esta historia merece espacio en Playbook?
