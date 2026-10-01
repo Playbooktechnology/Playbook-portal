@@ -18,12 +18,27 @@ import { articlePath } from '@/lib/article-url';
 //     after hydration, but the default "Todo" view is what both first
 //     paint and this module agree on — same reference getArchiveArticles
 //     already uses for "what is on the homepage".
-//   - 4 items, kicker "Sigue siendo noticia" per item — editorial
-//     judgment, not a generic "featured" label or a second archive.
+//   - kicker "Sigue siendo noticia" per item — editorial judgment, not a
+//     generic "featured" label or a second archive.
+//
+// 2026-10-01: moved OUT of a full-width band under "Más noticias" and INTO
+// the news package's left column, under the lead story, as compact rows. It
+// is the same module and the same selection — only its placement and its row
+// shape changed — because the rail (newsletter + La cifra + El Marcador) runs
+// far taller than the other two columns and left a visible hole under the
+// hero. Filling it with this module costs no new query and no new editorial
+// work: these articles were already being chosen, just further down the page.
+// It renders nowhere else; do not also mount it below, or the same four
+// stories appear twice on one screen.
 //
 // Window: brief proposes 10–14 days; 12 until editorial confirms.
 const WINDOW_DAYS = 12;
 const ITEM_COUNT = 4;
+// Below three the column reads as a stub rather than a module — two leftover
+// stories under a heading look like the end of a list, not a selection
+// (publisher, 2026-10-01). It collapses instead, and the left column is just
+// the hero, which is what it was before this module moved here.
+const MIN_ITEMS = 3;
 // 2026-08-20: this used to gate on the legacy `priority` field directly
 // (≥4 stars), which the 0-99 boleta rewrite (lib/rank.ts) superseded.
 // baseScore() already does the right thing for both graded and
@@ -54,20 +69,20 @@ export function StillMattersSection({ articles }: { articles: Article[] }) {
 
   // Quiet weeks (nothing starred inside the window that isn't already on
   // the homepage) collapse the module entirely — an empty "still matters"
-  // band would say the opposite of what it means.
-  if (!items.length) return null;
+  // module would say the opposite of what it means.
+  if (items.length < MIN_ITEMS) return null;
 
   return (
-    <section className="still-matters" aria-label="Lo que sigue importando">
+    <section className="still-matters" aria-labelledby="still-matters-title">
       <div className="still-matters-head">
-        <h2>Lo que sigue importando</h2>
-        <p className="sub">Historias que no son nuevas, pero siguen moviendo al negocio.</p>
+        <h2 className="side-title" id="still-matters-title">Lo que sigue importando</h2>
       </div>
-      <div className="still-matters-grid">
+      <div className="still-matters-list">
         {items.map(article => (
           <Link
-            className="still-matters-card reveal"
+            className="still-matters-row"
             data-source={article.source}
+            data-analytics="hp_click_sigue"
             href={articlePath(article.id)}
             key={article.id}
           >

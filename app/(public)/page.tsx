@@ -8,6 +8,7 @@ import { MostReadSection } from '@/components/home/MostReadSection';
 import { StillMattersSection } from '@/components/home/StillMattersSection';
 import { HomeSidebar } from '@/components/home/HomeSidebar';
 import { TopicDirectory } from '@/components/home/TopicDirectory';
+import { TopicsBar } from '@/components/home/TopicsBar';
 import { OpinionSection } from '@/components/sections/OpinionSection';
 import { ProductsSection } from '@/components/sections/ProductsSection';
 import { MidCta } from '@/components/sections/MidCta';
@@ -60,18 +61,19 @@ export default async function HomePage() {
   return (
     <>
       <main className="container news-section" id="noticias">
-        <NewsGrid articles={articles} sidebar={<HomeSidebar />} />
-        {/* "Más leídas" as a full-width band under the news package
-            (2026-08-06 — it lived in the rail and stretched it far past
-            the 1+5 columns on tablets; see MostReadSection's comment).
-            Not a growth of the 1+5: a derived module, like the one below. */}
+        {/* "Lo que sigue importando" moved out of a full-width band below
+            this package and INTO the left column, under the hero
+            (2026-10-01 — see StillMattersSection for why). It is mounted
+            HERE and nowhere else: mounting it twice would put the same four
+            stories on screen twice. Passed as a server-rendered node for the
+            same reason `sidebar` is — NewsGrid is a client component. */}
+        <NewsGrid
+          articles={articles}
+          sidebar={<HomeSidebar />}
+          stillMatters={<StillMattersSection articles={articles} />}
+          topicsBar={<TopicsBar />}
+        />
         <MostReadSection />
-        {/* "Lo que sigue importando" — directly below (design brief,
-            2026-08-05): starred/featured stories from the last ~12 days
-            that the rotation above no longer shows. Same React-cached
-            articles array, no extra query; renders nothing on weeks with
-            no qualifying stories. */}
-        <StillMattersSection articles={articles} />
       </main>
 
       <AdSlot slot="leaderboard-home" />

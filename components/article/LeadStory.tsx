@@ -21,10 +21,17 @@ import { articlePath } from '@/lib/article-url';
 // from the card's left border + tag colors. The <h1> moves INSIDE the
 // visual in that case — one heading per card either way, just placed
 // differently — so the title isn't rendered twice.
-export function LeadStory({ article }: { article: Article }) {
+export function LeadStory({
+  article,
+  analyticsEvent,
+}: {
+  article: Article;
+  /** Set only by the homepage (see components/analytics/SiteEvents.tsx). */
+  analyticsEvent?: string;
+}) {
   return (
     <div className="lead-story reveal" data-source={article.source}>
-      <a className="card-link" href={articlePath(article.id)}>
+      <a className="card-link" data-analytics={analyticsEvent} href={articlePath(article.id)}>
         {article.imageUrl ? (
           <div className="lead-photo">
             {/* Editor-supplied URL, arbitrary host -- see

@@ -93,7 +93,7 @@ export async function HomeSidebar() {
       {cifra && (
         <section className="side-module side-cifra" aria-labelledby="side-cifra-title">
           <h2 className="side-title" id="side-cifra-title">La cifra del día</h2>
-          <a className="side-cifra-card" href={articlePath(cifra.id)}>
+          <a className="side-cifra-card" data-analytics="hp_click_cifra" href={articlePath(cifra.id)}>
             <DailyFigure figure={cifra.figure} />
             {cifra.caption && <span className="side-cifra-caption">{cifra.caption}</span>}
             <span className="side-cifra-story">{cifra.title}</span>

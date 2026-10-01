@@ -30,8 +30,96 @@ const SCOPE = 'https://www.googleapis.com/auth/analytics.readonly';
 // this path instead.
 const ARTICLE_PATH_FRAGMENT = '/articulo';
 
+// The slug out of a GA4 `pagePath`, in EITHER URL shape.
+//
+// This used to be a single `/[?&]id=([^&]+)/` match against the raw path,
+// which silently stopped matching anything on 2026-09-02: that is the day
+// article URLs moved from `/articulo?id=<slug>` to `/articulo/<slug>`
+// (lib/article-url.ts). Every GA4 row recorded since then is the path form,
+// so the regex found no `id=`, every row was filtered out, and
+// topArticleIds() returned [] — which lib/most-read.ts reads as "configured
+// but no data" and quietly falls through. The homepage module has therefore
+// shown nothing from GA4 since the migration, with no error anywhere.
+//
+// Both shapes are parsed because GA4's 7-day window can still straddle old
+// rows, and because middleware.ts keeps 301-ing the legacy URL permanently.
+export function articleIdFromPagePath(pagePath: string): string | null {
+  const [path, query = ''] = pagePath.split('?');
+  const bySegment = path.match(/\/articulo\/([^/#]+)/);
+  if (bySegment) return safeDecode(bySegment[1]);
+  const byQuery = query.match(/(?:^|&)id=([^&#]+)/);
+  if (byQuery) return safeDecode(byQuery[1]);
+  return null;
+}
+
+// A malformed percent-escape in a crawled URL throws on decodeURIComponent
+// and would take the whole module down with it; the raw value is still a
+// usable key, it just won't match an article id, which is the same outcome
+// as dropping the row.
+function safeDecode(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
 function base64url(input: string | Buffer) {
   return Buffer.from(input).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+// The service-account key as OpenSSL needs it, from whatever shape the
+// paste into Vercel actually left behind.
+//
+// The value is copied by hand out of a downloaded JSON file, which gives two
+// ways to get it subtly wrong, neither visible in the dashboard (the value is
+// masked):
+//   - the JSON's own surrounding double quotes come along for the ride;
+//   - the key carries literal \n escapes rather than real newlines.
+// Both produce the same unhelpful failure — Node throws
+// `error:1E08010C:DECODER routines::unsupported` (ERR_OSSL_UNSUPPORTED),
+// which names neither the variable nor the cause. That is exactly how this
+// integration failed on 2026-09-29, after the credentials were otherwise
+// configured correctly.
+//
+// So: tolerate both, and when the result still is not a PEM key, say which
+// env var is wrong and what it should look like, in words the person pasting
+// it can act on. Shipping an OpenSSL hex code to someone who just followed a
+// setup guide is not a diagnosis.
+export function normalizePrivateKey(raw: string): string {
+  let key = raw.trim();
+
+  // The whole downloaded JSON, pasted as-is, is accepted and the key lifted
+  // out of it. Selecting exactly the private_key VALUE by hand means dragging
+  // across one ~1,700-character line to land on both `-----BEGIN` and the
+  // final `-----`, with the file's own quotes and trailing comma just outside
+  // the selection — and getting it wrong produces a key that looks fine in a
+  // masked dashboard field. That is what happened here on 2026-09-29: the
+  // armor lines were left out of the selection twice. "Paste the file" has no
+  // such failure mode, and it is the same secret either way.
+  if (key.startsWith('{')) {
+    try {
+      const parsed = JSON.parse(key);
+      if (parsed && typeof parsed.private_key === 'string') key = parsed.private_key.trim();
+    } catch {
+      // Not valid JSON after all; fall through and treat it as a raw key.
+    }
+  }
+
+  if (key.length > 1 && ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'")))) {
+    key = key.slice(1, -1);
+  }
+  key = key.replace(/\\n/g, '\n').trim();
+
+  if (!key.startsWith('-----BEGIN') || !key.includes('-----END')) {
+    throw new Error(
+      'GA4_SERVICE_ACCOUNT_PRIVATE_KEY no tiene forma de llave PEM. Lo más simple es pegar el ' +
+        'contenido COMPLETO del JSON de la cuenta de servicio en esta variable: la llave se extrae sola. ' +
+        'Si prefieres pegar solo la llave, debe empezar con "-----BEGIN PRIVATE KEY-----" y terminar con ' +
+        '"-----END PRIVATE KEY-----"; esas dos líneas son parte de la llave y sin ellas no se puede leer.'
+    );
+  }
+  return key;
 }
 
 export function isConfigured() {
@@ -49,7 +137,7 @@ async function getAccessToken(): Promise<string> {
     exp: now + 3600,
   }));
   const signingInput = `${header}.${claims}`;
-  const privateKey = (process.env.GA4_SERVICE_ACCOUNT_PRIVATE_KEY as string).replace(/\\n/g, '\n');
+  const privateKey = normalizePrivateKey(process.env.GA4_SERVICE_ACCOUNT_PRIVATE_KEY as string);
   const signature = crypto.createSign('RSA-SHA256').update(signingInput).sign(privateKey);
   const jwt = `${signingInput}.${base64url(signature)}`;
 
@@ -109,46 +197,40 @@ export async function runReport(
 export async function topArticleIds({ days = 7, limit = 10 }: { days?: number; limit?: number } = {}) {
   if (!isConfigured()) return null;
 
-  // Unlike lib/ga4-analytics.ts's calls (the authenticated admin panel,
-  // where a GA4 error should surface so an editor can see and fix it),
-  // this function backs the public homepage's "Más leídas" module via
-  // lib/most-read.ts — a bad/misconfigured service-account key (the
-  // classic mistake: pasting the PEM without the literal \n line breaks)
-  // or a transient GA4 Data API error must never take the homepage down.
-  // Caught here and treated the same as "not configured" (null) so the
-  // caller falls back to the site's own first-party read counts, exactly
-  // as the module already degrades when GA4 genuinely isn't set up.
-  try {
-    // 30-minute freshness window via Next's per-fetch data cache — replaces
-    // legacy's Cache-Control: max-age=1800 on its now-gone /api/top-articles
-    // route, so the homepage (force-dynamic) doesn't hit the GA4 Data API on
-    // every single request.
-    const rows = await runReport(
-      {
-        dateRanges: [{ startDate: `${days}daysAgo`, endDate: 'today' }],
-        dimensions: [{ name: 'pagePath' }],
-        metrics: [{ name: 'screenPageViews' }],
-        dimensionFilter: {
-          filter: { fieldName: 'pagePath', stringFilter: { matchType: 'CONTAINS', value: ARTICLE_PATH_FRAGMENT } },
-        },
-        orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-        limit,
-      },
-      { revalidateSeconds: 1800 }
-    );
+  // One article shows up under several pagePaths (trailing slash, utm_*
+  // query strings, and both URL shapes across the 2026-09-02 migration), so
+  // ask for more rows than we need and fold them together below — asking for
+  // exactly `limit` rows would let one article's views split across variants
+  // and rank below an article with fewer real readers.
+  const rowLimit = Math.max(limit * 5, 50);
 
-    return rows
-      .map(row => {
-        const pagePath = row.dimensionValues[0].value || '';
-        const match = pagePath.match(/[?&]id=([^&]+)/);
-        return {
-          id: match ? decodeURIComponent(match[1]) : null,
-          pageviews: Number(row.metricValues[0].value) || 0,
-        };
-      })
-      .filter((r): r is { id: string; pageviews: number } => !!r.id);
-  } catch (err) {
-    console.error('[ga4] topArticleIds failed, falling back to first-party reads:', err);
-    return null;
+  // 30-minute freshness window via Next's per-fetch data cache — replaces
+  // legacy's Cache-Control: max-age=1800 on its now-gone /api/top-articles
+  // route, so the homepage (force-dynamic) doesn't hit the GA4 Data API on
+  // every single request.
+  const rows = await runReport(
+    {
+      dateRanges: [{ startDate: `${days}daysAgo`, endDate: 'today' }],
+      dimensions: [{ name: 'pagePath' }],
+      metrics: [{ name: 'screenPageViews' }],
+      dimensionFilter: {
+        filter: { fieldName: 'pagePath', stringFilter: { matchType: 'CONTAINS', value: ARTICLE_PATH_FRAGMENT } },
+      },
+      orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
+      limit: rowLimit,
+    },
+    { revalidateSeconds: 3600 }
+  );
+
+  const byId = new Map<string, number>();
+  for (const row of rows) {
+    const id = articleIdFromPagePath(row.dimensionValues[0].value || '');
+    if (!id) continue;
+    byId.set(id, (byId.get(id) ?? 0) + (Number(row.metricValues[0].value) || 0));
   }
+
+  return [...byId.entries()]
+    .map(([id, pageviews]) => ({ id, pageviews }))
+    .sort((a, b) => b.pageviews - a.pageviews)
+    .slice(0, limit);
 }
