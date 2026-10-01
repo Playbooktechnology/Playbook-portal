@@ -990,8 +990,8 @@
     "semantic_hash": "3517c37306d8dfb4a8843369b2dd8f15"
   },
   "lib/article-devices.ts": {
-    "mtime": 1790819753.812969,
-    "seen": 1790819875.688964,
+    "mtime": 1790821001.7849534,
+    "seen": 1790821019.3208604,
     "ast_hash": "59593e5e676dc165d748c68359f3ac95",
     "semantic_hash": ""
   },
@@ -1554,8 +1554,8 @@
     "semantic_hash": ""
   },
   ".claude/playbook-editorial/dynamic-element-library.md": {
-    "mtime": 1790819753.8096907,
-    "seen": 1790819875.6942372,
+    "mtime": 1790821001.7614713,
+    "seen": 1790821019.3289263,
     "ast_hash": "669f454ba04a7025b7f064ea576c3224",
     "semantic_hash": ""
   },
@@ -1602,8 +1602,8 @@
     "semantic_hash": ""
   },
   ".claude/skills/publish-newsletter/references/dynamic-element-library.md": {
-    "mtime": 1790819753.8096907,
-    "seen": 1790819875.6951625,
+    "mtime": 1790821001.7614713,
+    "seen": 1790821019.3306153,
     "ast_hash": "669f454ba04a7025b7f064ea576c3224",
     "semantic_hash": ""
   },
@@ -1650,8 +1650,8 @@
     "semantic_hash": ""
   },
   ".claude/skills/publish-sourced-article/references/dynamic-element-library.md": {
-    "mtime": 1790819753.8096907,
-    "seen": 1790819875.6972153,
+    "mtime": 1790821001.7614713,
+    "seen": 1790821019.3325434,
     "ast_hash": "669f454ba04a7025b7f064ea576c3224",
     "semantic_hash": ""
   },
@@ -2052,8 +2052,8 @@
     "semantic_hash": ""
   },
   "components/admin/estilo/samples.ts": {
-    "mtime": 1790819753.8096907,
-    "seen": 1790819875.6836307,
+    "mtime": 1790821001.7649753,
+    "seen": 1790821019.3128746,
     "ast_hash": "20f1e6460fdd8d3587fe8e30a361e092",
     "semantic_hash": ""
   },
@@ -2202,8 +2202,8 @@
     "semantic_hash": ""
   },
   ".claude/skills/hub-builder/references/dynamic-element-library.md": {
-    "mtime": 1790819753.8096907,
-    "seen": 1790819875.6945288,
+    "mtime": 1790821001.7614713,
+    "seen": 1790821019.3294477,
     "ast_hash": "669f454ba04a7025b7f064ea576c3224",
     "semantic_hash": ""
   },
@@ -2304,8 +2304,8 @@
     "semantic_hash": ""
   },
   ".claude/skills/publish-partner-announcement/references/dynamic-element-library.md": {
-    "mtime": 1790819753.8096907,
-    "seen": 1790819875.696344,
+    "mtime": 1790821001.7614713,
+    "seen": 1790821019.331796,
     "ast_hash": "669f454ba04a7025b7f064ea576c3224",
     "semantic_hash": ""
   },
@@ -2550,8 +2550,8 @@
     "semantic_hash": ""
   },
   "scripts/test-device-guards.ts": {
-    "mtime": 1790819753.8143237,
-    "seen": 1790819875.69216,
+    "mtime": 1790821001.7882075,
+    "seen": 1790821019.3257756,
     "ast_hash": "dba1511fb5b9a133fdb34d4ce449bd90",
     "semantic_hash": ""
   },
@@ -2784,9 +2784,9 @@
     "semantic_hash": ""
   },
   "app/(public)/articulo/[id]/page.tsx": {
-    "mtime": 1790819644.7433422,
-    "seen": 1790819875.6809776,
-    "ast_hash": "578c1fd7f72c45faae8ad89d5f518961",
+    "mtime": 1790821001.3214715,
+    "seen": 1790821019.3087964,
+    "ast_hash": "30dd35636e6ed17235619b80ef074563",
     "semantic_hash": ""
   },
   "app/api/search/route.ts": {
