@@ -31,7 +31,7 @@ export const SAMPLES: SampleDef[] = [
   { name: 'Cadena', group: 'Mercado y propiedad', note: 'la cadena de dueños', syntax: 'Cadena: Lakers · 1979 — Jerry Buss — US$67.5M · 2025 — Mark Walter — US$10,000M · 2026 — Kushner y Iger — US$12,500M' },
   { name: 'Contrato', group: 'Mercado y propiedad', note: 'el term sheet, con "hoy" sobre el plazo', syntax: 'Contrato: Apple TV ↔ MLS · Monto — US$250M por año · Plazo — 2023 a 2032 · Cláusula — salida mutua en 2028' },
   { name: 'Control', group: 'Mercado y propiedad', note: 'el traspaso sin precio revelado', syntax: 'Control: EverPass Media · De — NFL 32 Equity y RedBird · A — DAZN · Incluye — derechos comerciales de Sunday Ticket · Términos — no revelados' },
-  { name: 'Alcance', group: 'Mercado y propiedad', note: 'qué cubre y qué deja fuera', syntax: 'Alcance: Sunday Ticket comercial · Incluye — bares y restaurantes · Incluye — plataforma multipantalla · Fuera — hogares (YouTube TV) · Fuera — mercados internacionales' },
+  { name: 'Alcance', group: 'Mercado y propiedad', note: 'qué cubre y, si se sabe, qué deja fuera', syntax: 'Alcance: Sunday Ticket comercial · Incluye — bares y restaurantes · Incluye — plataforma multipantalla · Fuera — hogares (YouTube TV) · Fuera — mercados internacionales' },
   // — Interpretación y geografía
   { name: 'Mapa', group: 'Interpretación y geografía', note: 'los bandos, en geografía real', syntax: 'Mapa: Concacaf · En el comunicado — resto · Sin firmar — MEX' },
   { name: 'Escenarios', group: 'Interpretación y geografía', note: 'lectura de Playbook, vocabulario fijo', syntax: 'Escenarios: Los derechos de la Liga MX · Renueva con Televisa — probable · Se parte en paquetes — posible · Streaming puro — lejano' },
