@@ -45,7 +45,14 @@
    de 5 + rail de 300px en UNA banda de tres columnas. El conteo 1+5 es
    un compromiso negociado con el lado comercial (bloque de texto corto
    antes de las secciones que les interesan) — pulirlo, no crecerlo. */
-.news-grid{display:grid;grid-template-columns:1.35fr 1fr 300px;gap:36px;margin-bottom:8px;align-items:start;}
+/* align-items:stretch (was start) so the three columns are the same height
+   by construction rather than by luck. The rail's height is the variable
+   one — La cifra collapses on days with no figure, El Marcador grows with
+   the week's deals — and stretching lets the other two absorb whatever it
+   turns out to be, instead of leaving a hole under the hero. The leftover
+   height is then shared out among the rows inside each column (see
+   .news-lead-col and .news-list below). */
+.news-grid{display:grid;grid-template-columns:1.35fr 1fr 300px;gap:36px;margin-bottom:8px;align-items:stretch;}
 /* "Más noticias" link (Fase 1 del roadmap de agosto 2026): antes vivía en
    .section-head, arriba del paquete de noticias, junto al título -- se
    movió acá, debajo del bloque entero, a pedido del usuario. */
@@ -54,6 +61,17 @@
    editoriales y deja el rail en su lugar. */
 .news-grid .empty-state{grid-column:span 2;}
 
+/* The left column of the news band: the lead story plus "Lo que sigue
+   importando". The vertical rule and the right padding used to live on
+   .lead-story itself and moved here on 2026-10-01 — on .lead-story the
+   divider stopped at the hero's last line and left the module below it
+   hanging outside the column it belongs to. .lead-story keeps both
+   properties for its other call sites (archive, hubs), so the override is
+   scoped to this wrapper. */
+.news-lead-col{display:flex;flex-direction:column;border-right:1px solid var(--rule);padding-right:36px;}
+.news-lead-col>.lead-story{border-right:none;padding-right:0;}
+/* The hero keeps its natural height; the module below it takes the rest. */
+.news-lead-col>.still-matters{flex:1;}
 .lead-story{display:block;position:relative;border-right:1px solid var(--rule);padding-right:36px;padding-left:16px;border-left:3px solid transparent;transition:border-color var(--duration-base) var(--ease-out);}
 .lead-story[data-source="noticias"]{border-left-color:var(--src-industry);}
 .lead-story[data-source="la-lana"]{border-left-color:var(--src-lana);}
@@ -86,7 +104,18 @@
 /* gap, not just the row's own padding: without it each row's colored
    source border sat flush against the next row's, reading as one
    continuous stripe rather than distinct per-story color accents. */
+/* Rows share out whatever height the band ends up with, so the centre
+   column ends level with the rail instead of stopping short. They keep a
+   min-height so a short day cannot squash them, and the ad never grows —
+   a stretched empty slot would open a gap in the middle of the list. */
 .news-list{display:flex;flex-direction:column;gap:10px;}
+.news-list>.news-row,.news-list-extra>.news-row{flex:1 1 auto;min-height:96px;}
+.news-list>.ad-slot{flex:0 0 auto;}
+/* Rows 6-9: desktop only (see MOBILE_LIST_COUNT). display:contents keeps
+   them flex items of .news-list, so the growth rule above still reaches
+   them and the gap and :first-child padding behave as if the wrapper were
+   not there. */
+.news-list-extra{display:contents;}
 .news-row{display:block;position:relative;padding:16px 0 16px 14px;border-bottom:1px solid var(--rule);border-left:3px solid transparent;transition:border-color var(--duration-base) var(--ease-out),transform var(--duration-base) var(--ease-out);}
 .news-row:first-child{padding-top:0;}
 .news-row:hover,.news-row:focus-within{border-bottom-color:rgba(0,0,0,.15);transform:translateY(-2px);}

@@ -928,18 +928,32 @@ a.lana-board-row:hover .lana-board-conexion{color:#fff;}
 /* ============================================================
    Homepage module — "Lo que sigue importando"
    ============================================================ */
-.still-matters{margin-top:44px;padding-top:26px;border-top:2px solid var(--ink);}
-.still-matters-head{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:20px;}
-.still-matters-head h2{font-family:var(--serif-display);font-weight:400;font-size:20px;letter-spacing:.02em;text-transform:uppercase;margin:0;}
-.still-matters-head .sub{font-size:12.5px;color:var(--gray-txt);margin:0;}
-.still-matters-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
-.still-matters-card{display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--rule);color:inherit;transition:border-color var(--duration-base) var(--ease-out);}
-.still-matters-card:hover{border-top-color:var(--ink);}
-.still-matters-kicker{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-txt);}
+/* 2026-10-01: was a four-across band under the news package; now compact
+   rows inside the news band's LEFT column, under the lead story (see
+   components/home/StillMattersSection.tsx). It borrows the rail's
+   .side-title so the three columns read as one system, and it is a FLEX
+   COLUMN whose rows grow: .news-lead-col hands it the height left over
+   after the hero, and the rows share it out so the column ends level with
+   the other two. */
+.still-matters{margin-top:28px;display:flex;flex-direction:column;min-height:0;}
+.still-matters-head{margin-bottom:4px;}
+.still-matters-list{display:flex;flex-direction:column;flex:1;}
+.still-matters-row{
+  display:flex;flex-direction:column;gap:5px;justify-content:center;
+  flex:1;min-height:76px;padding:12px 0;
+  border-bottom:1px solid var(--rule);color:inherit;
+  transition:border-color var(--duration-base) var(--ease-out);
+}
+.still-matters-row:last-child{border-bottom:none;}
+.still-matters-row:hover{border-bottom-color:var(--ink);}
+.still-matters-kicker{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-txt);}
 .still-matters-kicker::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--src-lana);flex-shrink:0;}
-.still-matters-card h3{font-size:15px;font-weight:700;line-height:1.32;margin:0;}
-.still-matters-card:hover h3{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px;}
-.still-matters-card .byline{font-size:11.5px;color:var(--gray-txt);}
+.still-matters-row h3{
+  font-family:var(--sans);font-size:15px;font-weight:700;line-height:1.3;margin:0;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.still-matters-row:hover h3{color:var(--green);}
+.still-matters-row .byline{font-size:11.5px;color:var(--gray-txt);}
 
 /* ============================================================
    Responsive
@@ -954,7 +968,6 @@ a.lana-board-row:hover .lana-board-conexion{color:#fff;}
   .scoreboard-label{min-height:0;}
   .infhub-lead-card{grid-template-columns:1fr;gap:20px;}
   .infhub-grid{grid-template-columns:repeat(2,1fr);gap:22px;}
-  .still-matters-grid{grid-template-columns:repeat(2,1fr);gap:20px;}
 }
 @media(max-width:640px){
   .hub{padding:24px 0 48px;}
@@ -974,7 +987,6 @@ a.lana-board-row:hover .lana-board-conexion{color:#fff;}
   .lana-board-row{grid-template-columns:minmax(0,1fr) auto;gap:10px;}
   .lana-board-fecha,.lana-board-exp{display:none;}
   .infhub-grid{grid-template-columns:1fr;}
-  .still-matters-grid{grid-template-columns:1fr;}
   .money-trail-label{font-size:19px;letter-spacing:.1em;}
   .tfbr-partner-strip{justify-content:center;text-align:center;}
   .shot-progress{right:12px;bottom:12px;padding:6px 7px 5px;}

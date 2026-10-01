@@ -160,7 +160,7 @@
 /* ——— "Lo que sigue importando": the kicker dot breathes on hover and the
    card presses like everything else tappable. Entrance stagger comes from
    the existing .reveal system (per-parent 60ms cadence). ——— */
-.still-matters-card:hover .still-matters-kicker::before{transform:scale(1.5);}
+.still-matters-row:hover .still-matters-kicker::before{transform:scale(1.5);}
 .still-matters-kicker::before{transition:transform var(--duration-base) var(--ease-out);}
 
 /* ——— Press states: everything tappable acknowledges the tap. Kept out of
@@ -169,7 +169,7 @@
   .product:active,
   .news-row:active,
   .lead-story:active,
-  .still-matters-card:active,
+  .still-matters-row:active,
   .analysis-card:active,
   .infsec-lead:active,
   .infsec-row:active,

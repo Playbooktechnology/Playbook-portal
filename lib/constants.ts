@@ -1,12 +1,27 @@
 // Homepage layout counts, ported verbatim from legacy/js/articles.js /
 // legacy/admin/dashboard.js — kept in one place so the DB-backed pages and
 // (in Phase 4) the admin preview agree on what "on the homepage" means.
-// The homepage shows exactly hero + 5 list rows (1+5). That count is a
-// negotiated compromise with the sales side — a short text block before
-// the commercial sections — so don't grow it (a 9-card feed grid was
-// added and reverted in the Fase 7 session for exactly this reason).
+// The homepage shows hero + 9 list rows (1+9).
+//
+// It was 1+5 from launch to 2026-10-01 as a negotiated compromise with the
+// sales side — a short text block before the commercial sections — and a
+// 9-card feed grid was added and reverted in the Fase 7 session on those
+// grounds. The publisher revoked that agreement on 2026-10-01: the rail
+// (newsletter + La cifra + El Marcador) runs ~1,120px against a 636px lead
+// story and a 664px five-row list, so the band read as ragged. The sales
+// side's actual position survives where it counts — the inline-feed ad stays
+// pinned after the sixth story instead of riding the end of the list (see
+// NewsGrid).
+//
+// A deliberate reversal with a named owner and a date, not drift. Don't
+// restore the 5 without asking them.
 export const LEAD_COUNT = 1;
-export const LIST_COUNT = 5;
+export const LIST_COUNT = 9;
+// …above the 920px breakpoint only, where the three columns exist. Below it
+// everything stacks, there is no column to square up, and the extra rows only
+// push La cifra and El Marcador further down. Phones keep the 5 they have
+// always had; NewsGrid renders the rest inside a wrapper responsive.css hides.
+export const MOBILE_LIST_COUNT = 5;
 export const TICKER_COUNT = 6;
 export const RELATED_COUNT = 3;
 

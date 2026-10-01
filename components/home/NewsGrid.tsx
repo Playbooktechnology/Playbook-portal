@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { Fragment, useEffect, useRef, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 import { rankArticles, selectHero } from '@/lib/rank';
-import { LEAD_COUNT, LIST_COUNT, KNOWN_SOURCES, SOURCE_LABELS } from '@/lib/constants';
+import { LEAD_COUNT, LIST_COUNT, MOBILE_LIST_COUNT, KNOWN_SOURCES, SOURCE_LABELS } from '@/lib/constants';
 import { hubForSource } from '@/lib/product-hubs';
 import type { Article } from '@/lib/data/articles';
 import { LeadStory } from '../article/LeadStory';
@@ -67,18 +67,39 @@ const SOURCE_EXIT: Record<string, { short: string; note: string }> = {
 // this is a pure client-side re-filter — the 180ms fade is cosmetic, not
 // covering a loading state.
 //
-// The news package is deliberately compact: hero + 5-row list + 300px
-// sidebar in ONE three-column band. The 1+5 count is a negotiated
-// compromise with the sales side (keep the text block short so readers
-// reach the commercial sections quickly) — do not grow it; polish it.
-// A first pass of this session added a 9-card feed below it and that was
-// reverted for exactly this reason. The inline-feed ad slot sits after
-// the sixth story (end of the list), native format, collapsed while
-// empty (see styles/ads.css). The sidebar (Más leídas + rail ad +
-// newsletter module) arrives as a pre-rendered ReactNode from the server
-// (see HomeSidebar) — source filters re-rank the stories without ever
-// re-rendering it.
-export function NewsGrid({ articles, sidebar }: { articles: Article[]; sidebar?: React.ReactNode }) {
+// The news package is hero + list + 300px sidebar in ONE three-column band.
+//
+// The list was 5 rows until 2026-10-01 (see LIST_COUNT for why that changed
+// and who changed it). The band is also `align-items: stretch` now, with the
+// leftover height shared out among the rows of the left and centre columns,
+// so all three end level whatever the rail happens to contain that day —
+// La cifra collapses on days with no figure, El Marcador grows with the
+// week's deals, and the columns beside them no longer care.
+//
+// The inline-feed ad slot stays pinned AFTER THE SIXTH STORY (hero + five
+// rows) rather than riding the end of the list, so growing the list does not
+// push the commercial slot ~460px down the page — the part of the sales
+// compromise that survives the count change. Native format, collapsed while
+// empty (see styles/ads.css).
+//
+// `sidebar` and `stillMatters` arrive as pre-rendered ReactNodes from the
+// server — source filters re-rank the stories without ever re-rendering
+// them. Note what that means for `stillMatters`: it is selected against the
+// DEFAULT "Todo" view, so it does not reshuffle when the reader picks a
+// source chip. That is deliberate (it is an editorial selection, not a view
+// of the filter) and it is why its no-duplicates guarantee is stated for
+// first paint only — see StillMattersSection.
+const AD_AFTER_STORY = 6;
+
+export function NewsGrid({
+  articles,
+  sidebar,
+  stillMatters,
+}: {
+  articles: Article[];
+  sidebar?: React.ReactNode;
+  stillMatters?: React.ReactNode;
+}) {
   const [activeSource, setActiveSource] = useState('all');
   const gridRef = useRef<HTMLDivElement>(null);
   // The source a still-running fade-out will commit when it finishes — the
@@ -194,6 +215,10 @@ export function NewsGrid({ articles, sidebar }: { articles: Article[]; sidebar?:
   const hero = selectHero(filtered) ?? filtered[0] ?? null;
   const list = filtered.filter(a => a !== hero).slice(0, LIST_COUNT);
   const overflow = Math.max(0, filtered.length - LEAD_COUNT - LIST_COUNT);
+  // Index of the row the ad follows. The hero is story 1, so story 6 is row
+  // 5 — index 4. A filtered source with fewer stories than that keeps the ad
+  // at the end of whatever list it has, rather than dropping the slot.
+  const adAfterRow = Math.min(AD_AFTER_STORY - LEAD_COUNT - 1, list.length - 1);
 
   return (
     <>
@@ -243,12 +268,29 @@ export function NewsGrid({ articles, sidebar }: { articles: Article[]; sidebar?:
             <p className="empty-state">Sin artículos en esta categoría todavía.</p>
           ) : (
             <>
-              {hero && <LeadStory article={hero} />}
+              <div className="news-lead-col">
+                {hero && <LeadStory article={hero} />}
+                {stillMatters}
+              </div>
               <div className="news-list">
-                {list.map(a => (
-                  <NewsRow key={a.id} article={a} heading="h3" />
+                {list.slice(0, MOBILE_LIST_COUNT).map((a, i) => (
+                  <Fragment key={a.id}>
+                    <NewsRow article={a} heading="h3" />
+                    {i === adAfterRow && <AdSlot slot="inline-feed" />}
+                  </Fragment>
                 ))}
-                <AdSlot slot="inline-feed" />
+                {/* The rows that exist only to square up the desktop columns.
+                    `display:contents` keeps them flex items of .news-list, so
+                    the list reads as one run at every width; below 920px the
+                    wrapper goes display:none instead (MOBILE_LIST_COUNT). The
+                    ad always lands in the group above, so phones keep it. */}
+                {list.length > MOBILE_LIST_COUNT && (
+                  <div className="news-list-extra">
+                    {list.slice(MOBILE_LIST_COUNT).map(a => (
+                      <NewsRow key={a.id} article={a} heading="h3" />
+                    ))}
+                  </div>
+                )}
               </div>
             </>
           )}
