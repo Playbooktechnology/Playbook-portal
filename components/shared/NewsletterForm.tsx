@@ -9,6 +9,12 @@ function isValidEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+// Which `placement` values sit on the homepage. 'mid-cta' is the CMS-editable
+// band; it also renders inside the /admin live preview, where GA4 is not
+// loaded at all (the script is in the (public) layout), so that copy sends
+// nothing.
+const HOMEPAGE_PLACEMENTS = new Set<string>(['home-sidebar', 'mid-cta']);
+
 // Ported from legacy/js/ui.js's initNewsletterForms(). The form still posts
 // to an external Substack URL in a new tab (target="_blank") — this
 // component can't know the real subscription result, so "success" here is
@@ -71,6 +77,24 @@ export function NewsletterForm({
       placement,
       product: resolvePageProduct(window.location.pathname),
     });
+    // Second name for the same act, asked for with the homepage module
+    // events (2026-10-01): `hp_newsletter_submit` makes the newsletter
+    // comparable against the hero, the list and the rail in one report,
+    // where `newsletter_signup` is the site-wide conversion and spans every
+    // surface. Fired straight from here rather than through a
+    // `data-analytics` attribute because this is already a client component
+    // with a submit handler — the attribute exists to spare SERVER
+    // components a handler, and there is nothing to spare here.
+    //
+    // Only from the two forms that are on the homepage. The hub, article and
+    // Marcador forms keep `newsletter_signup` alone: an `hp_` event from
+    // /coberturas would make the homepage number a lie.
+    if (HOMEPAGE_PLACEMENTS.has(placement)) {
+      trackEvent('hp_newsletter_submit', {
+        placement,
+        product: resolvePageProduct(window.location.pathname),
+      });
+    }
     if (reduced || !fieldsRef.current) {
       window.setTimeout(() => setIsSuccess(true), 50);
       return;

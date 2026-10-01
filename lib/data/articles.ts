@@ -5,6 +5,7 @@ import { db } from '../db/client';
 import { articles } from '../db/schema';
 import { rankArticles, selectHero } from '../rank';
 import { LEAD_COUNT, LIST_COUNT, normalizeSource } from '../constants';
+import { TOPIC_TIER_KEYS, articleInTopic, topicBySlug } from '../topics';
 import type { TaxonomyTier } from '../taxonomy';
 import { authorDisplayName } from '@/lib/author-name';
 import { HUBS } from '../hubs';
@@ -227,6 +228,15 @@ export type ArchiveFilters = {
   scope?: string;
   sport?: string;
   vertical?: string;
+  // Grouped topic slugs (lib/topics.ts), added 2026-10-01 alongside the raw
+  // tiers above rather than replacing them. A topic covers SEVERAL taxonomy
+  // values — ?deporte=futbol is Fútbol plus Liga MX, ?deporte=futbol-americano
+  // is NFL, which no article is tagged 'Fútbol americano' for — so it cannot
+  // be expressed as ?sport=. Both forms stay valid: every ?sport=Liga%20MX
+  // link in the wild keeps filtering to exactly Liga MX.
+  deporte?: string;
+  industria?: string;
+  ambito?: string;
 };
 
 // Same definition as legacy/js/archive-page.js's overflowArticles(): the
@@ -259,6 +269,15 @@ export async function getArchiveArticles(filters: ArchiveFilters): Promise<Artic
     if (filters.scope && filters.scope !== 'all' && !a.tagsScope.includes(filters.scope)) return false;
     if (filters.sport && filters.sport !== 'all' && !a.tagsSport.includes(filters.sport)) return false;
     if (filters.vertical && filters.vertical !== 'all' && !a.tagsVertical.includes(filters.vertical)) return false;
+    // A slug that matches no topic filters nothing, rather than returning an
+    // empty archive: a mistyped or retired topic in an old link should land
+    // the reader on the full archive, not on a dead end.
+    for (const tier of TOPIC_TIER_KEYS) {
+      const slug = filters[tier];
+      if (!slug || slug === 'all') continue;
+      const topic = topicBySlug(tier, slug);
+      if (topic && !articleInTopic(a, tier, topic)) return false;
+    }
     return true;
   });
 }
