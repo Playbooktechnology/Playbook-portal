@@ -107,21 +107,21 @@ const CASES: Case[] = [
   },
   { text: 'Control: EverPass Media · De — RedBird', render: false, why: 'A is required — half a transfer is not one' },
 
-  // Alcance: the boundary, which needs both sides.
+  // Alcance: needs an inside; the outside is optional since 2026-10-01.
   {
     text: 'Alcance: Sunday Ticket comercial · Incluye — bares y restaurantes · Fuera — hogares (YouTube TV)',
     render: true,
-    why: 'one row each side is the minimum real boundary',
+    why: 'one row each side, the full boundary',
   },
   {
     text: 'Alcance: Sunday Ticket comercial · Incluye — bares · Incluye — restaurantes · Incluye — hoteles',
-    render: false,
-    why: 'no outside: a scope with nothing excluded is an Alineación, not a boundary',
+    render: true,
+    why: 'inside only: renders as one full-width column when the reporting has no real exclusion',
   },
   {
     text: 'Alcance: Sunday Ticket comercial · Fuera — hogares · Fuera — internacional',
     render: false,
-    why: 'no inside: the mirror of the same rule',
+    why: 'no inside: a scope with nothing in it is not a scope',
   },
 
   // Condiciones: fixed state vocabulary, like Escenarios' likelihoods.

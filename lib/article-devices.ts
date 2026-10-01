@@ -2710,10 +2710,11 @@ function buildPyramid(pyramid: Pyramid): string {
 //   Contraste:   what a party claims against what the same document
 //                measures — voice-and-style.md §6's own rule, made visual
 //
-// Two of them enforce a both-sides rule (`Alcance` needs an inside AND an
-// outside, `Contraste` needs a claim AND a measurement) because a
-// one-sided declaration is a list wearing a boundary's clothes, and the
-// whole point of each is the gap.
+// `Contraste` enforces a both-sides rule (a claim AND a measurement)
+// because a one-sided declaration is a list wearing a boundary's clothes,
+// and the whole point of it is the gap. `Alcance` shipped with the same
+// rule and relaxed it on 2026-10-01: its outside is optional (see that
+// section below).
 
 // ———————————————————————————————————————————————————————————— Control
 // `Control: EverPass Media · De — NFL 32 Equity y RedBird · A — DAZN ·
@@ -2834,10 +2835,13 @@ function buildControl(control: Control): string {
 // stay with somebody else. In prose that distinction routinely costs a
 // whole paragraph and still reads as a hedge.
 //
-// The both-sides rule is the device: at least one `Incluye` AND at least
-// one `Fuera`, or it rejects. A scope declaration listing only what is
-// included is an `Alineación` with extra steps, and the exclusions are the
-// reporting — anyone can list what a press release claims.
+// At least one `Incluye`, or it rejects; `Fuera` is optional (publisher,
+// 2026-10-01). It shipped requiring both sides, and on the LMP Banamex
+// piece that rule forced in the only exclusion the reporting had: another
+// league's naming deal, which this one never covered. A borrowed exclusion
+// is worse than none, so an inside-only scope now renders as a single
+// full-width column with no "Queda fuera" heading. A `Fuera`-only
+// declaration still rejects: a scope with nothing inside is not a scope.
 //
 // No magnitude is drawn and none is implied. `Reparto` splits one whole
 // into measured shares; this is a binary membership with no sizes, so the
@@ -2871,8 +2875,8 @@ function parseScope(raw: string): Scope | null {
     if (!text || text.length > 60) return null;
     rows.push({ text, inside });
   }
-  // The boundary rule: a scope with no outside is not a scope.
-  if (!rows.some(r => r.inside) || !rows.some(r => !r.inside)) return null;
+  // A scope needs something inside it; the outside is optional.
+  if (!rows.some(r => r.inside)) return null;
   return { subject, rows };
 }
 
@@ -2897,12 +2901,16 @@ function buildScope(scope: Scope): string {
       .filter(r => r.inside === inside)
       .map(r => r.text)
       .join(', ');
-  const spoken = `Alcance de ${scope.subject}. Incluye: ${side(true)}. Queda fuera: ${side(false)}`;
+  const hasOutside = scope.rows.some(r => !r.inside);
+  const spoken =
+    `Alcance de ${scope.subject}. Incluye: ${side(true)}` + (hasOutside ? `. Queda fuera: ${side(false)}` : '');
   return (
     `<div class="lect-device lect-alcance" role="note" aria-label="${esc(spoken)}">` +
     `<span class="lect-device-label">El alcance</span>` +
     `<span class="lect-alc-subject">${esc(scope.subject)}</span>` +
-    `<div class="lect-alc-cols">${column(true)}${column(false)}</div></div>`
+    (hasOutside
+      ? `<div class="lect-alc-cols">${column(true)}${column(false)}</div></div>`
+      : `<div class="lect-alc-cols" data-cols="1">${column(true)}</div></div>`)
   );
 }
 
