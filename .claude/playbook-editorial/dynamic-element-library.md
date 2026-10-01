@@ -1360,12 +1360,23 @@ a hedge.
 
 - First item is the subject (≤52, no ` — `); then 2–6 rows labelled
   `Incluye` / `Dentro` / `Cubre` or `Fuera` / `Excluye`, values ≤60.
-- **At least one of each, or it rejects.** A scope listing only what is
-  included is an `Alineación` with extra steps — the exclusions are the
-  reporting, since anyone can repeat what a release claims.
-- The two columns are **equal width by construction**. Membership here is
-  binary and drawing one side bigger would invent a magnitude; that is
-  `Reparto`'s job, not this one.
+- **At least one `Incluye` row, or it rejects. `Fuera` is optional**
+  (publisher, 2026-10-01, on the LMP Banamex piece, superseding the
+  both-sides rule this device shipped with). The only exclusion that draft
+  could name was the LMB's name going to Banorte, a different league's deal
+  that this one never covered, and the publisher cut it because one league's
+  sponsor does not depend on the other's. The old rule had forced that
+  borrowed row in to make the device render. When the reporting has a real
+  exclusion **of this deal**, put it in: it is still the half a press
+  release leaves out. When it has none, ship the `Incluye` side alone, and
+  it draws as a single full-width column with no "Queda fuera" heading.
+  Never fill `Fuera` with another deal's terms, and never with what wasn't
+  disclosed (monto, plazo): an undisclosed term is not an exclusion, it
+  belongs in the prose. A `Fuera`-only declaration still rejects, because a
+  scope with nothing inside it is not a scope.
+- When both sides are present, the two columns are **equal width by
+  construction**. Membership here is binary and drawing one side bigger
+  would invent a magnitude; that is `Reparto`'s job, not this one.
 
 ### `Condiciones:` — what still has to be true
 
