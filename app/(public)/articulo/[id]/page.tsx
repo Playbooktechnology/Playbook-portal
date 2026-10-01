@@ -816,7 +816,20 @@ export default async function ArticuloPage({ params }: Props) {
               apparatus; the topics disclosure drops its own hairline when
               this rule precedes it (styles/lectura.css). */}
           <div className="lect-rule lect-rule-foot" aria-hidden="true" />
-          <ArticleTopics article={article} />
+          {/* Only the five fields the disclosure reads. ArticleTopics is a
+              client component, so whatever object it receives is serialized
+              into the page's RSC payload whole: passing the full `article`
+              row shipped bodyJson, bodyHtml and the score_boleta audit
+              (including its editorial `notes`) to every reader's browser. */}
+          <ArticleTopics
+            article={{
+              source: article.source,
+              tagsScope: article.tagsScope,
+              tagsSport: article.tagsSport,
+              tagsVertical: article.tagsVertical,
+              tagsProperty: article.tagsProperty,
+            }}
+          />
           <ShareRow url={canonicalUrl} title={article.title} />
           {article.substackUrl && (
             <a className="btn light article-cta" href={article.substackUrl} target="_blank" rel="noopener noreferrer">
