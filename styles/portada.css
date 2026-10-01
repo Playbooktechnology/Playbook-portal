@@ -265,3 +265,57 @@
 }
 .side-deals-cta:hover,.side-deals-cta:focus-visible{background:var(--green);color:var(--ink-fixed);}
 
+
+/* ——— "Temas" (2026-10-01): the subject row under the source chips. The
+   chips above slice the same package by PRODUCT; this row leaves it for a
+   SUBJECT, so it reads as a different kind of control — label on the left,
+   chips in the middle, the full panel behind a disclosure on the right.
+   Every entry comes from the allow-list in lib/topics.ts, which is what
+   keeps leagues off this surface. ——— */
+.topics-bar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  margin:14px 0 4px;padding-top:12px;border-top:1px solid var(--rule);
+}
+.topics-bar-label{
+  font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
+  font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gray-txt);
+  flex-shrink:0;
+}
+.topics-bar-chips{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1;min-width:0;}
+.topics-chip{
+  display:inline-flex;align-items:center;padding:5px 12px;
+  border:1px solid var(--rule);border-radius:999px;
+  font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--ink);
+  transition:border-color var(--duration-fast) ease,background var(--duration-fast) ease;
+}
+.topics-chip:hover,.topics-chip:focus-visible{border-color:var(--ink);background:var(--paper-soft);}
+/* The disclosure reuses NavMenu, which ships header-sized triggers; this
+   brings its button down to chip scale without touching the header. */
+.topics-bar .navmenu{margin-left:auto;flex-shrink:0;}
+.topics-bar .navmenu-trigger{font-size:12.5px;padding:5px 10px;}
+
+/* ——— The three-column topic panel, shared by the homepage disclosure and
+   the header's "Temas ▾" (components/home/TopicsPanel.tsx). ——— */
+/* Three columns, same primitive as .is-nosotros: same radius, border,
+   shadow and offset — a second panel, not a second pattern. */
+.navmenu-panel.is-temas{
+  width:min(600px,92vw);padding:18px;
+  grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;
+}
+.navmenu-panel.is-temas .topics-panel-group{min-width:0;gap:2px;}
+.navmenu-panel.is-temas .navmenu-group-head{margin-bottom:10px;}
+.topics-panel-link{font-size:13.5px;}
+.topics-panel-foot{grid-column:1/-1;border-top:1px solid var(--rule);margin-top:4px;padding-top:10px;}
+.topics-panel-all{
+  font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);
+  display:inline-flex;align-items:center;gap:6px;
+}
+.topics-panel-all:hover,.topics-panel-all:focus-visible{color:var(--green);}
+
+@media(max-width:640px){
+  .topics-bar{gap:10px;}
+  .topics-bar .navmenu{margin-left:0;}
+  /* One column below 640px: three 1fr columns of topic links inside a
+     92vw panel leave ~90px each, which wraps every label. */
+  .navmenu-panel.is-temas{grid-template-columns:1fr;gap:14px;}
+}

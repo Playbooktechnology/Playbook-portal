@@ -1,29 +1,20 @@
 import Link from 'next/link';
 import { TemaIcon, TEMA_ICON_BY_TOPIC } from '@/components/icons/tema';
+import { INDUSTRY_TOPICS, SPORT_TOPICS, topicHref } from '@/lib/topics';
 
 // Homepage entry point into the archive (Fase 7 UX), from the v23
-// prototype's topic-directory pattern: a bordered six-column grid of topic
-// links (three columns on mobile, see styles/sections.css), hover in
-// brand green. Twelve topics — six sports, six business verticals — each
-// linking to the real /archivo filter for it, so every cell lands on a
-// working, pre-filtered collection page. Values must match lib/taxonomy.ts
-// exactly (they're what /archivo validates against); labels are display
-// shorthand where the taxonomy value is too long for a cell.
+// prototype's topic-directory pattern: a bordered grid of topic links
+// (three columns on mobile, see styles/sections.css), hover in brand green.
+//
+// 2026-10-01: the twelve hardcoded topics here included Liga MX, NFL, NBA
+// and F1. Leagues are no longer offered as topics anywhere on the site
+// (publisher) — they are reached through "Alianzas" — so this block now
+// reads the same allow-list as the Temas row and the nav panel
+// (lib/topics.ts). One list, three surfaces: a topic added or retired moves
+// all three at once, and a new league tag in the CMS reaches none of them.
 const TOPICS: { label: string; href: string }[] = [
-  { label: 'Fútbol', href: '/archivo?sport=F%C3%BAtbol' },
-  { label: 'Liga MX', href: '/archivo?sport=Liga%20MX' },
-  { label: 'NFL', href: '/archivo?sport=NFL' },
-  { label: 'NBA', href: '/archivo?sport=NBA' },
-  { label: 'Béisbol', href: '/archivo?sport=B%C3%A9isbol' },
-  // F1 renders label-only for now: its glyph carries the Formula 1
-  // wordmark and is withheld pending a redraw (see components/icons/tema).
-  { label: 'F1', href: '/archivo?sport=F1' },
-  { label: 'Derechos de TV', href: '/archivo?vertical=Derechos%20de%20TV%20y%20Streaming' },
-  { label: 'Patrocinios', href: '/archivo?vertical=Patrocinios' },
-  { label: 'Finanzas', href: '/archivo?vertical=Finanzas%20y%20Negocio' },
-  { label: 'Inversión', href: '/archivo?vertical=Private%20Equity%20e%20Inversiones' },
-  { label: 'Venues', href: '/archivo?vertical=Infraestructura%20y%20Venues' },
-  { label: 'Audiencias', href: '/archivo?vertical=Audiencias%20y%20Consumo' },
+  ...SPORT_TOPICS.map(t => ({ label: t.label, href: topicHref('deporte', t.slug) })),
+  ...INDUSTRY_TOPICS.map(t => ({ label: t.label, href: topicHref('industria', t.slug) })),
 ];
 
 export function TopicDirectory() {

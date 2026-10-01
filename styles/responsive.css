@@ -210,12 +210,20 @@
    tighten, and the logo steps down one notch. Combined with the 52px base
    logo in header.css this clears the whole band with margin — verified by
    re-sweeping 320-1600px in 20px steps, zero overflow at every width.
-   Upper bound is 1399px, not ~1300px: a first pass stopped at 1319px and
+   Upper bound was 1399px, not ~1300px: a first pass stopped at 1319px and
    the sweep immediately found the full-width header overflowing again at
    1320-1360px (28px, 19px, 9px), because the uncompacted row genuinely
    needs ~1380px. The band ends where the content actually fits, not where
-   it looked like it should. */
-@media(min-width:1181px) and (max-width:1399px){
+   it looked like it should.
+   Raised to 1559px on 2026-10-01, for exactly that reason and by exactly
+   that method. The "Temas" menu added to the nav (lib/topics.ts's panel,
+   reused from the homepage) costs ~120px, so the uncompacted row stopped
+   fitting at 1399px: a sweep of 1180-1700px in 10px steps on the preview
+   found the header overflowing from 1400px (51px) down to 1px at 1500px —
+   the whole laptop band between the old bound and where the roomy row now
+   fits. The new bound keeps ~55px of margin past the last overflowing
+   width instead of landing on it. */
+@media(min-width:1181px) and (max-width:1559px){
   .nav{gap:14px;padding-left:18px;padding-right:18px;}
   .nav-links{gap:17px;font-size:13px;}
   .brand img{height:44px;}

@@ -8,6 +8,7 @@ import { MostReadSection } from '@/components/home/MostReadSection';
 import { StillMattersSection } from '@/components/home/StillMattersSection';
 import { HomeSidebar } from '@/components/home/HomeSidebar';
 import { TopicDirectory } from '@/components/home/TopicDirectory';
+import { TopicsBar } from '@/components/home/TopicsBar';
 import { OpinionSection } from '@/components/sections/OpinionSection';
 import { ProductsSection } from '@/components/sections/ProductsSection';
 import { MidCta } from '@/components/sections/MidCta';
@@ -70,6 +71,7 @@ export default async function HomePage() {
           articles={articles}
           sidebar={<HomeSidebar />}
           stillMatters={<StillMattersSection articles={articles} />}
+          topicsBar={<TopicsBar />}
         />
         <MostReadSection />
       </main>

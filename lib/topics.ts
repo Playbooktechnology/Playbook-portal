@@ -103,3 +103,87 @@ export function industryLabel(verticals: string[] | null | undefined): string | 
   }
   return verticals[0] ?? null;
 }
+
+// ------------------------------------------------------- Tiers and lookups
+// One tier per column of the Temas panel. `param` is the query key the
+// archive reads, and it is a NEW key rather than a reuse of ?sport=: a
+// grouped topic and a raw taxonomy value are different things, and the old
+// links have to keep working untouched. /archivo?sport=Liga%20MX still
+// filters to exactly Liga MX; /archivo?deporte=futbol covers Fútbol AND
+// Liga MX. Both are legitimate, so both exist.
+export const TOPIC_TIERS = {
+  deporte: { label: 'Por deporte', topics: SPORT_TOPICS, field: 'tagsSport' },
+  industria: { label: 'Por industria', topics: INDUSTRY_TOPICS, field: 'tagsVertical' },
+  ambito: { label: 'Por ámbito', topics: SCOPE_TOPICS, field: 'tagsScope' },
+} as const;
+
+export type TopicTier = keyof typeof TOPIC_TIERS;
+export const TOPIC_TIER_KEYS = Object.keys(TOPIC_TIERS) as TopicTier[];
+
+export function topicBySlug(tier: TopicTier, slug: string): Topic | undefined {
+  return TOPIC_TIERS[tier].topics.find(t => t.slug === slug);
+}
+
+/** The archive URL for a topic — the one place these links are built. */
+export function topicHref(tier: TopicTier, slug: string): string {
+  return `/archivo?${tier}=${encodeURIComponent(slug)}`;
+}
+
+/** Every allow-listed topic, flattened, for the chips row to rank. */
+export function allTopics(): { tier: TopicTier; topic: Topic }[] {
+  return TOPIC_TIER_KEYS.flatMap(tier => TOPIC_TIERS[tier].topics.map(topic => ({ tier, topic })));
+}
+
+/**
+ * Does this article belong to the topic? True when ANY of the topic's
+ * taxonomy values appears in the article's tags for that tier.
+ */
+export function articleInTopic(
+  article: { tagsSport: string[]; tagsVertical: string[]; tagsScope: string[] },
+  tier: TopicTier,
+  topic: Topic,
+): boolean {
+  const tags = article[TOPIC_TIERS[tier].field];
+  return topic.values.some(value => tags.includes(value));
+}
+
+/**
+ * The six topics to promote in the chips row: the allow-listed topics with
+ * the most articles in `articles`, ties broken by the allow-list's own order
+ * so the row is stable rather than reshuffling on every rebuild.
+ *
+ * Ámbito is excluded: Nacional and Internacional split the whole archive
+ * between them (311/91 today), so they would win on volume every time and
+ * crowd out the topics a reader actually browses by. They stay in the panel,
+ * where they are a useful axis rather than a popularity contest.
+ */
+export function topTopics(
+  articles: { tagsSport: string[]; tagsVertical: string[]; tagsScope: string[] }[],
+  limit = 6,
+): { tier: TopicTier; topic: Topic; count: number }[] {
+  return allTopics()
+    .filter(({ tier }) => tier !== 'ambito')
+    .map((entry, index) => ({
+      ...entry,
+      count: articles.filter(a => articleInTopic(a, entry.tier, entry.topic)).length,
+      index,
+    }))
+    .filter(t => t.count > 0)
+    .sort((a, b) => b.count - a.count || a.index - b.index)
+    .slice(0, limit)
+    .map(({ tier, topic, count }) => ({ tier, topic, count }));
+}
+
+/**
+ * What the chips row shows when the 30-day window is empty or the query
+ * fails — a quiet fortnight must not blank the row. Six fixed topics in the
+ * allow-list's order, which is also the editorial priority.
+ */
+export const FALLBACK_TOP_TOPICS: { tier: TopicTier; topic: Topic }[] = [
+  { tier: 'industria', topic: INDUSTRY_TOPICS[0] },
+  { tier: 'deporte', topic: SPORT_TOPICS[0] },
+  { tier: 'industria', topic: INDUSTRY_TOPICS[1] },
+  { tier: 'industria', topic: INDUSTRY_TOPICS[6] },
+  { tier: 'deporte', topic: SPORT_TOPICS[1] },
+  { tier: 'industria', topic: INDUSTRY_TOPICS[2] },
+];

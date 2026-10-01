@@ -6,6 +6,7 @@ import { signOut } from 'next-auth/react';
 import { ThemeToggle } from '../theme/ThemeToggle';
 import { SearchBox } from './SearchBox';
 import { NavMenu } from './NavMenu';
+import { TopicsPanel } from '@/components/home/TopicsPanel';
 import type { NavLink } from '@/lib/data/site-content';
 import { PRODUCT_HUBS } from '@/lib/product-hubs';
 import { HUBS, UPCOMING_HUBS, hubPath } from '@/lib/hubs';
@@ -199,6 +200,16 @@ export function HeaderNav({
               ))}
             </div>
           )}
+        </NavMenu>
+
+        {/* Temas: the subject axis, as opposed to Publicaciones (what we
+            make) and Alianzas (who we make it with). Same panel as the
+            homepage's "Todos los temas" — one definition in TopicsPanel, so
+            the two can't promise different taxonomies. No league appears in
+            it by construction (lib/topics.ts is an allow-list); league
+            coverage belongs to Alianzas, below. */}
+        <NavMenu label="Temas" wide panelClassName="is-temas">
+          <TopicsPanel />
         </NavMenu>
 
         {/* The standing rule is the structural signal that what follows is

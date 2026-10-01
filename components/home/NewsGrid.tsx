@@ -95,10 +95,12 @@ export function NewsGrid({
   articles,
   sidebar,
   stillMatters,
+  topicsBar,
 }: {
   articles: Article[];
   sidebar?: React.ReactNode;
   stillMatters?: React.ReactNode;
+  topicsBar?: React.ReactNode;
 }) {
   const [activeSource, setActiveSource] = useState('all');
   const gridRef = useRef<HTMLDivElement>(null);
@@ -241,6 +243,11 @@ export function NewsGrid({
           </button>
         ))}
       </div>
+
+      {/* Temas sits under the source chips: the chips slice the SAME
+          package by product, this row leaves it for a subject. Server-
+          rendered node for the same reason `sidebar` is. */}
+      {topicsBar}
 
       {exitHub && exitCopy && (
         <div
