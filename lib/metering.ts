@@ -76,17 +76,21 @@ async function getOrCreateAnonReaderId(): Promise<string | null> {
 // check first (cheapest, no DB read for editors), then the bot exemption
 // (also no DB read), then the anonymous-quota path (the only branch that
 // touches article_reads/anon_readers).
+// METERING_ENABLED gates the WALL, not the read log. Until 2026-09-25 this
+// function returned at the very top when the flag was off, which also
+// skipped every logRead() below it — so turning the wall off on 2026-09-02
+// silently stopped the site counting readers at all. `article_reads` holds
+// 17,890 rows and not one is newer than that date; the homepage's "Lo más
+// leído" lost its fallback source and nobody was told.
+//
+// Logging is now independent: readers are counted whether or not anyone is
+// ever walled. The cost is the two queries the old early return saved (the
+// month-dedupe SELECT and, at most once per identity/article/month, the
+// INSERT) — paid deliberately, because a publisher with no read data is
+// worse off than one paying for two indexed queries per article view.
+// Editors and bots still never log, and the quota COUNT only runs when the
+// wall is actually on.
 export async function resolveEntitlement(articleId: string): Promise<Entitlement> {
-  // The wall is sidelined (see METERING_ENABLED in lib/constants.ts). Return
-  // before the session lookup and before any DB work: with nobody being
-  // metered there is no read to log and no quota to count, so this also
-  // drops two queries per article view.
-  //
-  // 'quota' rather than a new reason: every existing caller already treats
-  // it as "full access, nothing owed", and inventing a reason string would
-  // mean touching each of them for no behavioural difference.
-  if (!METERING_ENABLED) return { kind: 'full', reason: 'quota' };
-
   const session = await auth();
 
   if (session?.user?.role === 'editor') {
@@ -113,6 +117,15 @@ export async function resolveEntitlement(articleId: string): Promise<Entitlement
 
   const alreadyReadThisArticle = await hasReadThisMonth(identity, articleId, monthKey);
   if (alreadyReadThisArticle) return { kind: 'full', reason: 'quota' };
+
+  // Wall off: record the read and grant access without counting the month's
+  // quota — that COUNT only decides walling, so with nobody to wall it is
+  // pure cost. 'quota' rather than a new reason: every existing caller
+  // already treats it as "full access, nothing owed".
+  if (!METERING_ENABLED) {
+    await logRead(identity, articleId);
+    return { kind: 'full', reason: 'quota' };
+  }
 
   const readsThisMonth = await countReadsThisMonth(identity, monthKey);
   if (readsThisMonth < FREE_ARTICLES_PER_MONTH) {

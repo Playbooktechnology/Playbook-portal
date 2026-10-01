@@ -16,6 +16,7 @@
 // is per-document sharing, not governed by the GA4 property permissions
 // grant at all.
 import crypto from 'crypto';
+import { normalizePrivateKey } from './ga4';
 
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
@@ -53,7 +54,9 @@ async function getAccessToken(): Promise<string> {
     exp: now + 3600,
   }));
   const signingInput = `${header}.${claims}`;
-  const privateKey = (process.env.GA4_SERVICE_ACCOUNT_PRIVATE_KEY as string).replace(/\\n/g, '\n');
+  // Same credential as lib/ga4.ts, so the same paste hazards apply — share
+  // its normalizer rather than keeping a second, laxer copy of the parsing.
+  const privateKey = normalizePrivateKey(process.env.GA4_SERVICE_ACCOUNT_PRIVATE_KEY as string);
   const signature = crypto.createSign('RSA-SHA256').update(signingInput).sign(privateKey);
   const jwt = `${signingInput}.${base64url(signature)}`;
 
