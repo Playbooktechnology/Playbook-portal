@@ -109,32 +109,46 @@ export async function runReport(
 export async function topArticleIds({ days = 7, limit = 10 }: { days?: number; limit?: number } = {}) {
   if (!isConfigured()) return null;
 
-  // 30-minute freshness window via Next's per-fetch data cache — replaces
-  // legacy's Cache-Control: max-age=1800 on its now-gone /api/top-articles
-  // route, so the homepage (force-dynamic) doesn't hit the GA4 Data API on
-  // every single request.
-  const rows = await runReport(
-    {
-      dateRanges: [{ startDate: `${days}daysAgo`, endDate: 'today' }],
-      dimensions: [{ name: 'pagePath' }],
-      metrics: [{ name: 'screenPageViews' }],
-      dimensionFilter: {
-        filter: { fieldName: 'pagePath', stringFilter: { matchType: 'CONTAINS', value: ARTICLE_PATH_FRAGMENT } },
+  // Unlike lib/ga4-analytics.ts's calls (the authenticated admin panel,
+  // where a GA4 error should surface so an editor can see and fix it),
+  // this function backs the public homepage's "Más leídas" module via
+  // lib/most-read.ts — a bad/misconfigured service-account key (the
+  // classic mistake: pasting the PEM without the literal \n line breaks)
+  // or a transient GA4 Data API error must never take the homepage down.
+  // Caught here and treated the same as "not configured" (null) so the
+  // caller falls back to the site's own first-party read counts, exactly
+  // as the module already degrades when GA4 genuinely isn't set up.
+  try {
+    // 30-minute freshness window via Next's per-fetch data cache — replaces
+    // legacy's Cache-Control: max-age=1800 on its now-gone /api/top-articles
+    // route, so the homepage (force-dynamic) doesn't hit the GA4 Data API on
+    // every single request.
+    const rows = await runReport(
+      {
+        dateRanges: [{ startDate: `${days}daysAgo`, endDate: 'today' }],
+        dimensions: [{ name: 'pagePath' }],
+        metrics: [{ name: 'screenPageViews' }],
+        dimensionFilter: {
+          filter: { fieldName: 'pagePath', stringFilter: { matchType: 'CONTAINS', value: ARTICLE_PATH_FRAGMENT } },
+        },
+        orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
+        limit,
       },
-      orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-      limit,
-    },
-    { revalidateSeconds: 1800 }
-  );
+      { revalidateSeconds: 1800 }
+    );
 
-  return rows
-    .map(row => {
-      const pagePath = row.dimensionValues[0].value || '';
-      const match = pagePath.match(/[?&]id=([^&]+)/);
-      return {
-        id: match ? decodeURIComponent(match[1]) : null,
-        pageviews: Number(row.metricValues[0].value) || 0,
-      };
-    })
-    .filter((r): r is { id: string; pageviews: number } => !!r.id);
+    return rows
+      .map(row => {
+        const pagePath = row.dimensionValues[0].value || '';
+        const match = pagePath.match(/[?&]id=([^&]+)/);
+        return {
+          id: match ? decodeURIComponent(match[1]) : null,
+          pageviews: Number(row.metricValues[0].value) || 0,
+        };
+      })
+      .filter((r): r is { id: string; pageviews: number } => !!r.id);
+  } catch (err) {
+    console.error('[ga4] topArticleIds failed, falling back to first-party reads:', err);
+    return null;
+  }
 }
