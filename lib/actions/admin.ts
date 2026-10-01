@@ -12,6 +12,9 @@ import { SITE_CONTENT_CACHE_TAG, type SiteContentData } from '@/lib/data/site-co
 import { TIPTAP_EXTENSIONS } from '@/lib/tiptap-extensions';
 import { slugify } from '@/lib/slugify';
 import { validateTags, formatTagIssues, REQUIRED_PROPERTY_BY_SOURCE } from '@/lib/taxonomy';
+import { articleUrl } from '@/lib/article-url';
+import { submitToIndexNow } from '@/lib/indexnow';
+import { SITE_URL } from '@/lib/site-url';
 
 // Controlled-vocabulary backstop (TODO #1): the dashboard's checkbox UI
 // can only produce canonical tags, so this guards the programmatic
@@ -266,6 +269,9 @@ export async function createArticle(input: ArticleInput & { id?: string }): Prom
       });
 
       revalidateTag(ARTICLES_CACHE_TAG);
+      if (inserted.status === 'published') {
+        await submitToIndexNow([articleUrl(SITE_URL, inserted.id)]);
+      }
       return { article: inserted };
     } catch (err: unknown) {
       // Same id-collision fallback as app/api/update-articles/route.ts: a
