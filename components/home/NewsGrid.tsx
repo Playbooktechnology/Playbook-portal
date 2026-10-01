@@ -276,13 +276,13 @@ export function NewsGrid({
           ) : (
             <>
               <div className="news-lead-col">
-                {hero && <LeadStory article={hero} />}
+                {hero && <LeadStory article={hero} analyticsEvent="hp_click_hero" />}
                 {stillMatters}
               </div>
               <div className="news-list">
                 {list.slice(0, MOBILE_LIST_COUNT).map((a, i) => (
                   <Fragment key={a.id}>
-                    <NewsRow article={a} heading="h3" />
+                    <NewsRow article={a} heading="h3" analyticsEvent="hp_click_lista" />
                     {i === adAfterRow && <AdSlot slot="inline-feed" />}
                   </Fragment>
                 ))}
@@ -294,7 +294,7 @@ export function NewsGrid({
                 {list.length > MOBILE_LIST_COUNT && (
                   <div className="news-list-extra">
                     {list.slice(MOBILE_LIST_COUNT).map(a => (
-                      <NewsRow key={a.id} article={a} heading="h3" />
+                      <NewsRow key={a.id} article={a} heading="h3" analyticsEvent="hp_click_lista" />
                     ))}
                   </div>
                 )}

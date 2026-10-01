@@ -93,7 +93,52 @@ export type PlaybookEvent =
   | 'hub_visit'
   | 'product_hub_visit'
   | 'email_wall_view'
-  | 'email_wall_cta';
+  | 'email_wall_cta'
+  // ---- Homepage modules (2026-10-01). The `hp_` prefix is a promise, not
+  // decoration: these fire ONLY from the homepage, because the surfaces that
+  // declare them (`data-analytics`, read by SiteEvents) are rendered only by
+  // homepage-mounted components. The same NewsRow on /archivo carries no
+  // attribute and sends nothing — otherwise "clicks on the homepage list"
+  // would quietly include the archive and the number would mean nothing.
+  //
+  // They exist to answer one question the current events cannot: now that the
+  // package is hero + 9 rows + "Sigue siendo noticia" + Temas + the rail, WHICH
+  // of those modules earns its space. page_view can't tell them apart.
+  //
+  // None are Vercel-mirrored (see VERCEL_MIRRORED): they are high-volume
+  // navigation, which is exactly what the asymmetry at the top of this file
+  // exists to keep off a per-event bill. `hp_newsletter_submit` is the one that
+  // looks like a conversion, and the conversion is already mirrored under its
+  // own name — `newsletter_signup`, fired by the same submit with a
+  // `placement`. The hp_ one is the homepage-module reading of that same act,
+  // not a second subscription.
+  | 'hp_click_hero'
+  | 'hp_click_lista'
+  | 'hp_click_sigue'
+  | 'hp_click_cifra'
+  | 'hp_click_marcador'
+  | 'hp_click_temas'
+  | 'hp_newsletter_submit';
+
+// The homepage events, as a runtime set: SiteEvents reads an event name out of
+// a DOM attribute, and an attribute is a string — TypeScript cannot vouch for
+// it. Validating against this set means a typo in a `data-analytics` value is
+// dropped instead of creating a junk event name in GA4 that nobody notices for
+// a month.
+const HOMEPAGE_EVENTS = new Set<string>([
+  'hp_click_hero',
+  'hp_click_lista',
+  'hp_click_sigue',
+  'hp_click_cifra',
+  'hp_click_marcador',
+  'hp_click_temas',
+]);
+
+/** The declared event name, if it is one we actually publish. */
+export function homepageEvent(name: string | null | undefined): PlaybookEvent | null {
+  if (!name) return null;
+  return HOMEPAGE_EVENTS.has(name) ? (name as PlaybookEvent) : null;
+}
 
 // Mirrored into Vercel Web Analytics as well as GA4. Conversions and
 // destination visits only -- see the asymmetry note at the top.

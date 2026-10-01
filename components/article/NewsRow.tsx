@@ -36,10 +36,13 @@ export function NewsRow({
   article,
   heading = 'h3',
   withTagPills = false,
+  analyticsEvent,
 }: {
   article: Article;
   heading?: Heading;
   withTagPills?: boolean;
+  /** Set only by the homepage; every other call site sends nothing. */
+  analyticsEvent?: string;
 }) {
   const Heading = heading;
   const href = articlePath(article.id);
@@ -60,7 +63,7 @@ export function NewsRow({
 
   if (!withTagPills) {
     return (
-      <a className="news-row reveal" data-source={article.source} href={href}>
+      <a className="news-row reveal" data-analytics={analyticsEvent} data-source={article.source} href={href}>
         {inner}
       </a>
     );
@@ -68,7 +71,7 @@ export function NewsRow({
 
   return (
     <div className="news-row reveal" data-source={article.source}>
-      <a className="card-link" href={href}>
+      <a className="card-link" data-analytics={analyticsEvent} href={href}>
         {inner}
       </a>
       <TagPillRow article={article} />

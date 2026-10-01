@@ -57,7 +57,7 @@ export async function DealsBoard() {
             </div>
           ))}
         </dl>
-        <DealLink href={featured.articleUrl || '/marcador'} className="side-deals-read">
+        <DealLink href={featured.articleUrl || '/marcador'} className="side-deals-read" analyticsEvent="hp_click_marcador">
           Leer el análisis →
         </DealLink>
       </article>
@@ -68,7 +68,7 @@ export async function DealsBoard() {
           <ul className="side-deals-list">
             {rail.deals.map(d => (
               <li key={d.id}>
-                <DealLink href={d.articleUrl || '/marcador'} className="side-deals-row">
+                <DealLink href={d.articleUrl || '/marcador'} className="side-deals-row" analyticsEvent="hp_click_marcador">
                   <span className="side-deals-row-name">{dealTitle(d)}</span>
                   <span className="side-deals-row-amount">{dealAmountLabel(d)}</span>
                   <span className="side-deals-row-type">{DEAL_TYPE_LABEL[d.type] ?? d.type}</span>
@@ -88,7 +88,7 @@ export async function DealsBoard() {
         </p>
       )}
 
-      <Link className="side-deals-cta" href="/marcador">
+      <Link className="side-deals-cta" data-analytics="hp_click_marcador" href="/marcador">
         Ver el marcador completo →
       </Link>
     </section>

@@ -37,7 +37,7 @@ export async function TopicsBar() {
         ))}
       </div>
       <NavMenu label="Todos los temas" align="end" wide panelClassName="is-temas">
-        <TopicsPanel />
+        <TopicsPanel analyticsEvent="hp_click_temas" />
       </NavMenu>
     </div>
   );
