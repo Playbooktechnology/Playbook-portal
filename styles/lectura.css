@@ -1831,6 +1831,9 @@ mark.lect-fig{
    is never the only signal. */
 .lect-alc-subject{display:block;font-family:var(--sans);font-weight:800;font-size:clamp(16px,2vw,20px);color:var(--ink);margin-bottom:14px;}
 .lect-alc-cols{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);background:var(--paper-soft);}
+/* Inside-only scope (2026-10-01): no "Queda fuera" column, so the one
+   column takes the full width instead of leaving an empty half. */
+.lect-alc-cols[data-cols="1"]{grid-template-columns:1fr;}
 .lect-alc-col{padding:14px 16px 16px;min-width:0;}
 .lect-alc-col[data-side="out"]{border-left:1px solid var(--rule);}
 .lect-alc-head{
