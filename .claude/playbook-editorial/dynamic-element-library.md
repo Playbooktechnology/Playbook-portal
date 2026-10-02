@@ -1463,8 +1463,9 @@ read.
 These need no syntax and never touch the budget:
 
 - **Bold lead-ins** (`**El plan:**`) → product-colored scan marks, plus a
-  numbered beat (`01`, `02`) down the margin on Noticias and La Lana. They are
-  load-bearing UI; see `voice-and-style.md` §5.
+  numbered beat (`01`, `02`) down the margin on La Lana only (Noticias dropped
+  its numbering 2026-09-09). They are load-bearing UI; see
+  `voice-and-style.md` §5.
 - **A bold span that is only a figure** (`**70%**`, `**US$9,612 millones**`) →
   counts up on scroll. Keep the single most important figure bold.
 - **Money and percentages in plain prose** → marker-swipe highlight, capped at
