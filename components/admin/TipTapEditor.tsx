@@ -66,7 +66,13 @@ export function TipTapEditor({ content, onChange }: Props) {
     extensions: TIPTAP_EXTENSIONS,
     content: content && Object.keys(content).length ? content : { type: 'doc', content: [{ type: 'paragraph' }] },
     immediatelyRender: false,
-    onUpdate: ({ editor }) => onChange(editor.getJSON()),
+    // getJSON() hands back ProseMirror's attrs objects as-is, and those are
+    // null-prototype (Object.create(null)). React's Server Action encoder
+    // won't serialize a non-plain object: it sends a temporary client
+    // reference instead, and saveArticle's generateHTML then throws
+    // "Cannot access level on the server" on the first heading. The JSON
+    // round-trip rebuilds every attrs as a plain object.
+    onUpdate: ({ editor }) => onChange(JSON.parse(JSON.stringify(editor.getJSON()))),
     editorProps: {
       handleDrop: (_view, event) => {
         const file = event.dataTransfer?.files?.[0];
