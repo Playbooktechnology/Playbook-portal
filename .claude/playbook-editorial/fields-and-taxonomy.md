@@ -8,7 +8,14 @@ fields marked **differs by funnel** below are set differently, and each skill's
 Field shape: `title, excerpt, teaser, bodyMarkdown, author, date,
 dateFormatted, publication, source, tagsScope, tagsSport, tagsVertical,
 priority, featured, mostrarAutor, readingTime, substackUrl, sourceUrl,
-imageUrl, imageCredit`.
+imageUrl, imageCredit, tier`.
+
+- **`tier`** — the router's A/B/C/D call (`format-tiers.md` §1). Optional in
+  the type (an older draft that never sets it still publishes), but it is
+  the only thing that lets `scripts/check-format-tier.ts`'s real, blocking
+  gate inside `scripts/publish-newsletter.ts` do its job (`moat-check.md`).
+  Omitting it doesn't skip a check that would otherwise run — it skips the
+  check entirely. Set it on every article.
 
 ---
 
@@ -23,6 +30,14 @@ imageUrl, imageCredit`.
   click. Carries the defining figure when `title` doesn't.
 - **`teaser`** — 1–3 plain sentences, no formatting. RSS description and
   pre-editor fallback. **NOT the body.**
+- **Never use `title`, `excerpt` or `teaser` to introduce a reading the body
+  doesn't support** (moat playbook guide, 2026-09-13). There is no separate
+  SEO-title field — `title` does that job too, per §3's "SEO lives in
+  metadata only" — so a headline or hook reaching for a stronger claim than
+  the article backs is the one place an unsupported interpretation could
+  sneak past the Moat Check (`moat-check.md`) unnoticed. Informativo,
+  natural, específico; sin clickbait; sin exagerar el estatus real de la
+  noticia.
 - **`bodyMarkdown`** — see `format-tiers.md`. `**bold**` / `##` formatted prose
   plus any `![alt](url)` images. Never raw HTML.
 - **`author`** — leave `""` unless a byline is genuinely known. **Never prepend
@@ -351,6 +366,19 @@ days (common when reconstructing a paywalled or blocked primary source via
 search), use the earliest confirmed publish date among them, not the day the
 draft was written. This applies to every new article, in every funnel,
 without exception — it is not a one-off fix for that piece.
+
+This rule had to be written twice. It first shipped on 2026-09-13
+(publisher), after three of five sourced articles in one session were dated
+by the day the skill ran: TelevisaUnivision/Genius Sports (published 9 sep,
+filed as 10 sep), CBF (10 sep, filed as 12 sep) and Reuters/DFB (11 sep,
+filed as 13 sep). A stale sync of this tree reverted it two days later, which
+is how the 2026-09-22 piece above repeated the same miss. Confirm the date the
+same way every time: the source page's own `article:published_time` meta tag
+or `datePublished` JSON-LD, a wire byline, or a co-issuer's own dateline.
+**`update-article.ts` cannot fix a wrong `date` after publish** (`date` is
+deliberately excluded from its updatable columns, see that script's own
+comment), so a miss caught later needs a direct, deliberate correction, one
+more reason to get it right before the insert.
 
 For a fast-developing story where the exact time matters (a vote, an
 announcement tied to a specific wire timestamp), it's fine to fold a time onto

@@ -32,6 +32,17 @@ SYNC_PATHS=(".claude/skills" ".claude/playbook-editorial")
 
 git fetch origin main
 
+# The copy below replaces both paths wholesale, so a checkout that predates
+# main's latest edits to them would silently delete those edits (c8ffc12 and
+# e0e234f, 2026-09-13/15). Refuse unless main hasn't touched them since our base.
+BASE="$(git merge-base HEAD origin/main)"
+if ! git diff --quiet "$BASE" origin/main -- "${SYNC_PATHS[@]}"; then
+  echo "[sync-skill-feedback] ABORTED: origin/main changed ${SYNC_PATHS[*]} since this branch last merged it." >&2
+  echo "[sync-skill-feedback] Syncing now would revert these commits. Run 'git merge origin/main', then rerun:" >&2
+  git log --oneline "$BASE"..origin/main -- "${SYNC_PATHS[@]}" >&2
+  exit 1
+fi
+
 TMP_DIR="$(mktemp -d)"
 cleanup() { git worktree remove "$TMP_DIR" --force >/dev/null 2>&1 || true; }
 trap cleanup EXIT

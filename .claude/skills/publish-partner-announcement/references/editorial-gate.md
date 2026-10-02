@@ -1,0 +1,1 @@
+../../../playbook-editorial/editorial-gate.md
