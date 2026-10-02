@@ -357,9 +357,8 @@ Never `Contexto`, `Antecedentes`, `El acuerdo`.
 **Bold lead-ins are load-bearing UI.** Every movement opens with a short bold
 lead-in, 2–5 words, ending in a colon inside the bold (`**El plan:**`,
 `**El comparativo:**`, `**Los números:**`). The article page renders it as a
-product-colored scan mark, and on La Lana as a numbered beat (`01`, `02`)
-down the margin (Noticias dropped its numbering 2026-09-09, publisher's
-call). Readers skim the whole argument off them, so:
+product-colored scan mark, and on Noticias and La Lana as a numbered beat
+(`01`, `02`) down the margin. Readers skim the whole argument off them, so:
 
 - each must be **specific to its movement** — a generic label repeated across
   movements now visibly repeats down the margin;
@@ -818,33 +817,6 @@ happened to supply the link silently promotes a conduit to a source, tells the
 reader that Playbook's contribution was finding somebody else's article, and
 buries the party who actually made the decision behind the party who wrote it
 up.
-
-### Unconfirmed and not exclusive: "según reportes", with no names
-
-(Publisher, 2026-09-30, on the Vuelta a México draft; generalizes the
-instruction given 2026-09-28 for the FMF / Nieto Junco piece.) When a fact
-comes from media reports, is **not** confirmed by the party, and is **not** a
-super-exclusive, write it as **"según reportes"** (or "reportes indican", "se
-reportó") and name no one: not the outlet, and not the journalist or columnist
-who advanced it. A name enters the prose only when the report is a genuine
-super-exclusive under the test above, meaning the fact exists because that
-newsroom or reporter found it and the reporting is itself the news.
-
-| Sí | No |
-|---|---|
-| Según reportes, tendría cinco etapas, con montaña en La Malinche y cierre en la Ciudad de México, pero no hay confirmación oficial. | El periodista David Faitelson adelantó cinco etapas… |
-| Según reportes, Enrique Nieto Junco sería nombrado vicepresidente de la FMF el jueves. | Según FOX y Récord, Nieto Junco sería… |
-
-- **Journalists count the same as outlets.** A columnist's "puedo adelantarles"
-  is a report, not a source.
-- **A party speaking on the record to a newsroom is attributed to the party.**
-  Write "dijo en una entrevista", not "dijo a ESPN", unless the interview itself
-  is the exclusive.
-- **"Según reportes" does not upgrade a report to a fact.** Level 02 wording
-  stays conditional (sería, tendría) and says when nothing is confirmed.
-- This rule is about the body. The `Fuentes:` line is governed separately
-  (`format-tiers.md` §6) unless the publisher drops it for a given piece, as on
-  2026-09-28.
 
 **When several outlets carry the same fact off one originating scoop, credit the
 origin, not the relay.** A story reaching Playbook through an aggregator that
