@@ -402,7 +402,8 @@ conventions.** Write the markdown, get the design. Nothing here is built by
 hand at publish time.
 
 - `**Label:**` at the start of a paragraph → a product-colored scan mark, plus a
-  numbered beat (`01`, `02`) down the margin on Noticias and La Lana.
+  numbered beat (`01`, `02`) down the margin on La Lana only (Noticias dropped
+  its numbering 2026-09-09).
 - `**70%**` (a bold span that is *only* a figure) → counts up on scroll. Money
   and percentages in plain prose → automatic marker highlight.
 - The closing take, in **either** shape → the green fenced callout.
