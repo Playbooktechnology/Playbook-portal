@@ -357,8 +357,9 @@ Never `Contexto`, `Antecedentes`, `El acuerdo`.
 **Bold lead-ins are load-bearing UI.** Every movement opens with a short bold
 lead-in, 2–5 words, ending in a colon inside the bold (`**El plan:**`,
 `**El comparativo:**`, `**Los números:**`). The article page renders it as a
-product-colored scan mark, and on Noticias and La Lana as a numbered beat
-(`01`, `02`) down the margin. Readers skim the whole argument off them, so:
+product-colored scan mark, and on La Lana as a numbered beat (`01`, `02`)
+down the margin (Noticias dropped its numbering 2026-09-09, publisher's
+call). Readers skim the whole argument off them, so:
 
 - each must be **specific to its movement** — a generic label repeated across
   movements now visibly repeats down the margin;
@@ -547,6 +548,21 @@ paragraph, or an English word standing in for a Spanish one that reads fine
 the rule bans. When one is used, use it consistently through the piece rather
 than alternating with a translation — a headline that says `billionaire` and a
 body that says `milmillonario` reads as indecision.
+
+### La liga se llama "LFA Finsus"
+
+(LFA Finsus, via the publisher, 2026-10-02, reviewing the scouting piece:
+*"mencionar LFA Finsus cada vez que mencionemos a la Liga en todos los
+textos"*.) In copy, the Liga de Fútbol Americano Profesional is **`LFA
+Finsus`** — its commercial name, title sponsor included — every time we name
+it: title, excerpt, teaser, body and device captions. With an article it is
+`la LFA Finsus` (`a la LFA Finsus`, `de la LFA Finsus`). Never the bare
+`LFA`, and don't use `la Liga` as a stand-in for the name; it can only appear
+inside a fixed line like the alliance note (`el negocio alrededor de la
+Liga`). The `LFA` **taxonomy tag** and the `/coberturas/lfa` slug do not
+change: those are system identifiers, not copy. Franchise names stay as the
+brand kit writes them (`Caudillos de Chihuahua`, not `Caudillos de la LFA
+Finsus`).
 
 ### Español de México, no de otro país
 
