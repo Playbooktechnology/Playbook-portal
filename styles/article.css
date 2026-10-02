@@ -19,6 +19,18 @@
 .article-page{padding-top:36px;padding-bottom:64px;max-width:760px;}
 .back-link{display:inline-block;margin-bottom:28px;}
 
+/* Unlisted-article notice (lib/preview-token.ts). Shown to the editor, who
+   gets the shareable private link inside it, and to whoever opened that
+   link, who needs to know the page is a draft and not the published site.
+   Token colours only, so it follows both themes. */
+.preview-banner{
+  margin:0 0 28px;padding:12px 16px;border:1px dashed var(--gray-txt);border-radius:4px;
+  font-size:13px;line-height:1.5;color:var(--ink);background:color-mix(in srgb,var(--green) 12%,var(--paper));
+}
+.preview-banner-url{
+  display:block;margin-top:6px;font-size:12px;word-break:break-all;user-select:all;
+}
+
 .article-detail{display:block;}
 
 /* ——— Cabecera: solo la ficha de publicación (identidad de marca, no

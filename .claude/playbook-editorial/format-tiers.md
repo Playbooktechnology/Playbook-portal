@@ -288,7 +288,15 @@ was written; what the portal adds is the design system around it. That is
    not the subheads, not La Opinión, not even a typo (flag typos in the run
    report instead of fixing them silently). The only markup you apply is
    what the original already implies: its own `##` subheads, its own bold,
-   its own promise block and bullets.
+   its own promise block and bullets. Drop every external link the edition
+   embeds in its prose; keep the anchor words as plain text (publisher,
+   2026-09-25). Keep a link back to an already-published Playbook article,
+   as a plain inline link, not inside `**bold**` (the markdown parser does
+   not turn a link inside bold into a real link).
+   `voice-and-style.md`'s drafting rules — the USD-parenthetical rule, the
+   publication checklist, `check-voice.mjs` — are informational only here,
+   same reasoning as point 5 below: they are written for prose this
+   pipeline drafts, and this prose is not drafted, it is copied.
 2. **Every image stays, in place.** Each embedded image from the edition is
    carried into the body where it appeared, with its credit; the edition's
    lead image is the cover. No swapping in "better" art.
