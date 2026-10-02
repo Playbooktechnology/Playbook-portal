@@ -84,6 +84,15 @@ type ArticleInput = {
   imageUrl: string;
   imageCredit?: string;
   /**
+   * Optional, default true. `false` inserts the row UNLISTED from the first
+   * write (listed=false, status='draft'): editor-only, out of every listing,
+   * shareable through a private preview link (lib/preview-token.ts). Until
+   * 2026-10-02 the only way to hold a piece back was to insert it listed and
+   * flip the flag afterwards, which left it public for the seconds between
+   * the two writes.
+   */
+  listed?: boolean;
+  /**
    * The router's format call (A/B/C/D, format-tiers.md §1). Optional so an
    * older draft that never sets it publishes exactly as before, unblocked --
    * but without it, scripts/check-format-tier.ts's gate below has nothing to
@@ -286,7 +295,8 @@ async function insertOne(input: ArticleInput, dryRun = false) {
     sourceUrl: input.sourceUrl,
     imageUrl: input.imageUrl,
     imageCredit: input.imageCredit || null,
-    status: 'published' as const,
+    listed: input.listed !== false,
+    status: input.listed === false ? ('draft' as const) : ('published' as const),
   };
 
   if (dryRun) {

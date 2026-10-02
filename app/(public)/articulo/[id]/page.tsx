@@ -50,11 +50,15 @@ import { SITE_URL } from '@/lib/site-url';
 import { articlePath, articleUrl } from '@/lib/article-url';
 import { authorDisplayName } from '@/lib/author-name';
 import { METERING_ENABLED } from '@/lib/constants';
+import { isValidPreviewToken, previewTokenFor } from '@/lib/preview-token';
 
 // The slug arrives as a path segment now, not as `?id=`. Next has already
 // percent-decoded it by the time it reaches us, so ids with accents or
 // slashes round-trip correctly without a decodeURIComponent here.
-type Props = { params: Promise<{ id: string }> };
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
 function canonicalUrlFor(id: string) {
   return articleUrl(SITE_URL, id);
@@ -356,8 +360,9 @@ function renderPlainBlocksWithCta(blocks: PlainBlock[]) {
   );
 }
 
-export default async function ArticuloPage({ params }: Props) {
+export default async function ArticuloPage({ params, searchParams }: Props) {
   const { id } = await params;
+  const { preview } = await searchParams;
   const meta = id ? await getArticleMetaById(id) : null;
 
   // Legacy served a soft 404 here (200 status, noindex, inline "no
@@ -375,10 +380,38 @@ export default async function ArticuloPage({ params }: Props) {
   // editor-only, not merely uncrawled, because "undiscoverable but still
   // fetchable" is not what unlisting an article is for when it is holding
   // back something like a not-yet-public partnership announcement.
+  //
+  // The one exception is a private preview link (lib/preview-token.ts): a
+  // valid `?preview=` token for THIS article opens it without a session, so
+  // a draft can be shown to someone outside Playbook (a partner reviewing
+  // its own piece) without handing them an editor account. An editor
+  // viewing an unlisted article is shown that link in a banner to copy.
+  let previewUrl: string | null = null;
+  let viaPreviewLink = false;
   if (!meta.listed) {
-    const session = await auth();
-    if (!session || session.user.role !== 'editor') notFound();
+    if (isValidPreviewToken(meta.id, preview)) {
+      viaPreviewLink = true;
+    } else {
+      const session = await auth();
+      if (!session || session.user.role !== 'editor') notFound();
+      const token = previewTokenFor(meta.id);
+      if (token) previewUrl = `${canonicalUrlFor(meta.id)}?preview=${token}`;
+    }
   }
+  const previewBanner = !meta.listed ? (
+    <aside className="preview-banner" role="note">
+      <strong>Vista previa privada.</strong>{' '}
+      Este artículo no es público: no aparece en el sitio, en búsquedas ni en Google.
+      {previewUrl ? (
+        <>
+          {' '}Link para compartir (abre solo este artículo, sin iniciar sesión):{' '}
+          <code className="preview-banner-url">{previewUrl}</code>
+        </>
+      ) : viaPreviewLink ? null : (
+        <> No hay link de vista previa disponible: falta AUTH_SECRET en el servidor.</>
+      )}
+    </aside>
+  ) : null;
 
   // Fetched unconditionally (cheap, single-row, React-cached) rather than
   // only in the full-access branch below: the site-wide "show author"
@@ -634,6 +667,7 @@ export default async function ArticuloPage({ params }: Props) {
         {partnerStrip}
         <main className="container article-page" id="articulo">
           <Link className="section-link back-link" href="/">← Volver a Playbook</Link>
+          {previewBanner}
           <article className={articleClass}>
             {header}
             {/* Relative path, not canonicalUrl: this value becomes Auth.js's
@@ -750,6 +784,7 @@ export default async function ArticuloPage({ params }: Props) {
       {partnerStrip}
       <main className="container article-page" id="articulo">
         <Link className="section-link back-link" href="/">← Volver a Playbook</Link>
+        {previewBanner}
 
         {/* Reading progress: the product's own mark fills as the reader
             advances through .article-body — only where there's a body to

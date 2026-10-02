@@ -357,8 +357,9 @@ Never `Contexto`, `Antecedentes`, `El acuerdo`.
 **Bold lead-ins are load-bearing UI.** Every movement opens with a short bold
 lead-in, 2–5 words, ending in a colon inside the bold (`**El plan:**`,
 `**El comparativo:**`, `**Los números:**`). The article page renders it as a
-product-colored scan mark, and on Noticias and La Lana as a numbered beat
-(`01`, `02`) down the margin. Readers skim the whole argument off them, so:
+product-colored scan mark, and on La Lana as a numbered beat (`01`, `02`)
+down the margin (Noticias dropped its numbering 2026-09-09, publisher's
+call). Readers skim the whole argument off them, so:
 
 - each must be **specific to its movement** — a generic label repeated across
   movements now visibly repeats down the margin;
