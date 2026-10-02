@@ -61,6 +61,15 @@ const TAB_DEFS = [
 
 // Tabs that don't edit draft state (they act on the server immediately or
 // are pure reference), so the topbar save button doesn't apply to them.
+// Server Actions only serialize plain objects. TipTap/ProseMirror hand back
+// null-prototype attrs objects, which React sends as temporary client
+// references, and saveArticle's generateHTML then throws ("Cannot access
+// level on the server"). Round-tripping at the call site guarantees a plain
+// payload no matter how the body reached the entry.
+function toPlain<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
 const SAVELESS_TABS: ReadonlySet<string> = new Set(['team', 'readers', 'deals']);
 
 type TabKey = (typeof TAB_DEFS)[number]['key'];
@@ -226,10 +235,10 @@ export function AdminDashboard({ initialContent, initialContentVersion, initialA
       dirty.map(async (entry): Promise<Outcome> => {
         try {
           if (!entry.inBaseline) {
-            const { article } = await createArticle(entry.data);
+            const { article } = await createArticle(toPlain(entry.data));
             return { clientKey: entry.clientKey, title: entry.data.title, ok: true, article };
           }
-          const result = await saveArticle(entry.data.id, entry.data, entry.baselineUpdatedAt!);
+          const result = await saveArticle(entry.data.id, toPlain(entry.data), entry.baselineUpdatedAt!);
           if (result.conflict) {
             const fresh = await reloadArticle(entry.data.id);
             return { clientKey: entry.clientKey, title: entry.data.title, ok: false, conflict: true, fresh };
