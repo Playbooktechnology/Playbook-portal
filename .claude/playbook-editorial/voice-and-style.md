@@ -539,6 +539,21 @@ the rule bans. When one is used, use it consistently through the piece rather
 than alternating with a translation — a headline that says `billionaire` and a
 body that says `milmillonario` reads as indecision.
 
+### La liga se llama "LFA Finsus"
+
+(LFA Finsus, via the publisher, 2026-10-02, reviewing the scouting piece:
+*"mencionar LFA Finsus cada vez que mencionemos a la Liga en todos los
+textos"*.) In copy, the Liga de Fútbol Americano Profesional is **`LFA
+Finsus`** — its commercial name, title sponsor included — every time we name
+it: title, excerpt, teaser, body and device captions. With an article it is
+`la LFA Finsus` (`a la LFA Finsus`, `de la LFA Finsus`). Never the bare
+`LFA`, and don't use `la Liga` as a stand-in for the name; it can only appear
+inside a fixed line like the alliance note (`el negocio alrededor de la
+Liga`). The `LFA` **taxonomy tag** and the `/coberturas/lfa` slug do not
+change: those are system identifiers, not copy. Franchise names stay as the
+brand kit writes them (`Caudillos de Chihuahua`, not `Caudillos de la LFA
+Finsus`).
+
 ### Español de México, no de otro país
 
 (Playbook team, 2026-09-10, on a published LFA piece: *"¿por qué pones hincha?
