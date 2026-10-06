@@ -584,6 +584,24 @@ the regionalism is part of the source's voice, not the writer's habit. The
 test is the same one the Spanglish rule uses above: is this someone quoted in
 the piece talking, or is it the writer defaulting to habit?
 
+### Entidades de gobierno extranjeras: nómbralas como las diría un lector mexicano
+
+(Playbook team, 2026-10-06, on an LA28 economic-impact draft: *"el uso de "el
+condado" no suena muy natural en español de México"*.) A Mexican reader has no
+"condado" in daily life; "el condado" as a bare subject ("el condado calcula",
+"el condado fijó metas") reads like a translated wire. The same goes for other
+foreign administrative units used as shorthand (`el condado`, `la comarca`,
+`el ayuntamiento` for a US city, `la diputación`).
+
+The fix: name the actor the way the reader would picture it, keeping it
+accurate. First mention carries the precise entity once ("el gobierno del
+condado de Los Ángeles"); after that use `el gobierno de Los Ángeles`, `las
+autoridades de Los Ángeles`, `la Junta de Supervisores` when it is that body,
+or simply `Los Ángeles` when the subject is obvious. Never repeat "el condado"
+as the default subject, never put it in a title, and never let the
+simplification blur a real distinction (county vs. city) that the story
+depends on: if the distinction matters, explain it once in a clause.
+
 ### Fórmulas bajo vigilancia
 
 Not banned. But every time one appears, ask: **can I say this more specifically
