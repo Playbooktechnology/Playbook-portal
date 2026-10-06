@@ -33,8 +33,10 @@ it belongs in a file that already exists:
 | `fields-and-taxonomy.md` | the `ArticleInput` fields, taxonomy, priority, dates |
 | `images.md` | cover sourcing, credits, the crop check, in-body images |
 | `postura-editorial.md` | the sensitivity protocol: when a story touches an ally/prospect/source — relevance × sensitivity matrix, protocolo amarillo, publicar/escalar/frenar |
+| `editorial-gate.md` | the pre-draft publish/no-publish/radar decision, why a comunicado or a chart isn't a reason by itself, the reader persona roster |
+| `moat-check.md` | the post-draft ten-question control, its three gates and their severity floor, the four grades |
 
-A seventh file is a last resort, not a first instinct. If a rule seems not to
+A new file is a last resort, not a first instinct. If a rule seems not to
 fit anywhere, it is usually a rule about an existing topic stated at the wrong
 altitude.
 
@@ -66,4 +68,9 @@ before/after token table and an assumptions section.
 **7. Syncing.** `scripts/sync-skill-feedback.sh "<summary>"` pushes
 `.claude/skills/` **and** `.claude/playbook-editorial/` to `main` together. If a
 future refactor moves shared content again, update that script's `SYNC_PATHS`
-in the same commit or the feedback loop silently stops carrying it.
+in the same commit or the feedback loop silently stops carrying it. It
+replaces both paths wholesale, so since 2026-09-29 it refuses to run while
+`main` holds edits to them that your branch hasn't merged: run
+`git merge origin/main` first. (Before that guard, two stale syncs,
+`e0e234f` and `c8ffc12`, silently deleted other sessions' rules, including
+this tree's gate and Moat Check.)
