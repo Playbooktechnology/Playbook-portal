@@ -397,6 +397,10 @@ only the names? If yes, it is still too generic. Rewrite it until it can't.
 A weak read does more damage than a short piece with no opinion at all. The
 Opinión explains the mecanismo; it does not deliver a moraleja.
 
+**The Opinión closes on a statement, never on a question** (team directive,
+2026-10-08): the last sentence gives the consequence or the limit of the
+evidence. The closing-question tell is in §7 "Que no huela a IA".
+
 ### How each format uses it
 
 | Format | Opinión |
@@ -648,8 +652,29 @@ the tells below, it goes back to the draft stage, whatever format tier it is.
   actually shown. Show the number or the mechanism that makes it crucial;
   don't just call it that.
 
+- **The closing question.** A last sentence that hands the reader a
+  rhetorical question ("La pregunta es si Guadalajara tiene demanda para…",
+  "¿cuánto de esto se puede repetir…?", "la pregunta es cuánto…"). It is the
+  manufactured close in a different costume: it gestures at depth instead of
+  delivering it. The Opinión ends on a statement: the mechanism, the
+  consequence, or the limit of what the numbers show ("con los datos
+  disponibles no se puede separar X de Y"). If the open question is real, say
+  what is missing to answer it, in the affirmative. (Team directive,
+  2026-10-08, Atlas and Valkyries pieces; applies to every tier and every
+  update to a live piece.)
+- **Interchangeable capability lists.** "Tiene capital, marca global, relaciones
+  de medios y maquinaria comercial": a list of generic strengths that fits any
+  league or company. Name the one asset that matters in this story and show it
+  with a number or a contract. (2026-10-08.)
+- **Working labels in the published text.** "Delta Playbook", "Tensión",
+  "Pregunta madre", "Reader persona", "Job-to-be-done", and any phrasing that
+  announces the piece's own originality ("lo que nadie te está diciendo", "la
+  historia Playbook es otra"). They are drafting scaffolding: the delta shows
+  in the content, it is never announced. (Team directive, 2026-10-07 and
+  2026-10-08.)
+
 **The self-check, every piece, every tier:** read the draft once purely
-hunting for these eight patterns, out loud if it helps. A piece that needed
+hunting for these eleven patterns, out loud if it helps. A piece that needed
 zero fixes on this pass is rare and worth noting; a piece needing more than
 one or two is not ready, regardless of what the format-tier and device checks
 already passed. This runs as part of Checklist de publicación item 13 (§12).
