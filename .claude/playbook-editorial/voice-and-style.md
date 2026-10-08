@@ -203,6 +203,12 @@ per paragraph, flags paragraphs past ~110 words (two movements fused, the point
 where the seam is worth hunting), and enforces the em-dash ban and the
 one-antithesis cap **including the "no solo … sino" form**.
 
+Since 2026-10-08 it also flags two §7 tells: an Opinión (or, in a tier A piece,
+the last paragraph) whose final sentence is a question or opens "La pregunta
+es…", and drafting labels left in the published text ("Delta Playbook",
+"Pregunta madre", "Reader persona", "lo que nadie te está diciendo"). Both are
+soft flags like the rest.
+
 **It is a mirror, not a gate.** It exits 0 by default so it can never block a
 deliberate editorial choice, and its word counts are the sanity check, not the
 rule — a flagged paragraph that genuinely carries one movement can ship. What
