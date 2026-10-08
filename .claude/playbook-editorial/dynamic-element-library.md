@@ -660,19 +660,6 @@ row next to money rows can't share a scale and silently drops the whole device
 back to per-row scaling, where every row peaks at 100% and four different
 magnitudes end up looking identical.
 
-**A count of 1,000 or more next to a scaled figure kills the device outright**
-(2026-10-06, Arsenal/Emirates run). Unlike the percentage case above, this one
-does not fall back: if any row carries a scale word (`M`, `millones`, `bn`,
-`mil millones`, `K`) and any other value is a bare number ≥1,000 (`60,704`
-seats, `88,000` jobs), the parser rejects the whole declaration
-(`mixedScaleBasis` in `lib/article-devices.ts`), because it can't tell a seat
-count from a figure someone dropped "millones" from. The draft then fails the
-device gate in `publish-newsletter.ts`. Worked example: `Duelo: Arsenal vs
-Tottenham · Aforo — 60,704 vs 62,850 · Ingreso de día de partido — £154M vs
-£126M` did not render. Fix it by keeping the Duelo to one unit (money rows only,
-or count rows only) and moving the other comparison into the prose next to it.
-Percentages and counts under 1,000 are exempt.
-
 Mixed currencies are allowed and the bars compare raw magnitudes, so only put
 two currencies in one row when the piece has already told the reader why that
 comparison holds.
