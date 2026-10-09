@@ -264,7 +264,9 @@ was written; what the portal adds is the design system around it. That is
    length, `priority` 4 by default (5 when the edition is genuinely the
    week's flagship), and the full expediente shell — case number, stamps,
    pull figure, the La Lana skin — which the article page applies from
-   `source: 'la-lana'` on its own.
+   `source: 'la-lana'` on its own. The byline is fixed too:
+   `author: "Guillermo Mejía"` with `mostrarAutor: true`
+   (`fields-and-taxonomy.md`).
 5. **`check-voice.mjs` is informational only for La Lana.** Run it, read it,
    report what it flags — and never edit the author's text to satisfy it.
    The checker calibrates the portal's own drafting; an approved edition
