@@ -175,8 +175,8 @@ en Estados Unidos` survives both.
 | `excerpt` | **the story's biggest figure verbatim** — the /la-lana hub hero pulls it from `title` + `excerpt` and renders nothing without it |
 | `imageUrl` | required; ratio between ~1.4:1 and 1.8:1 (it gets force-cropped to 16:10) |
 | `imageCredit` | required, specific — it backs the takedown clause in Términos |
-| `author` | never prepend "Por "; the template already does |
-| `mostrarAutor` | `false` by default; `true` for a guest collaboration |
+| `author` | `"Guillermo Mejía"` on every edition (publisher, 2026-10-09); a guest collaboration keeps the guest's own byline. Never prepend "Por "; the template already does |
+| `mostrarAutor` | `true` on every La Lana edition, so the byline shows (`fields-and-taxonomy.md` owns the rule) |
 | in-body images | `![alt](url)` straight off Substack, each followed by a `Foto: Playbook` caption paragraph, in source order |
 
 **Guest bylines.** When a guest byline should link out, the `author` field
