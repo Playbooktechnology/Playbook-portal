@@ -231,7 +231,11 @@ was written; what the portal adds is the design system around it. That is
    not the subheads, not La Opinión, not even a typo (flag typos in the run
    report instead of fixing them silently). The only markup you apply is
    what the original already implies: its own `##` subheads, its own bold,
-   its own promise block and bullets. Drop every external link the edition
+   its own promise block and bullets. Typography counts as text: keep curly
+   quotes and apostrophes as the source has them, and a missing final period
+   stays missing. Build the markdown from the post's stored `body_html` with a
+   script; retyping it produced straight quotes in three editions and one
+   added period (found 2026-10-09). Drop every external link the edition
    embeds in its prose; keep the anchor words as plain text (publisher,
    2026-09-25). Keep a link back to an already-published Playbook article,
    as a plain inline link, not inside `**bold**` (the markdown parser does
@@ -248,9 +252,14 @@ was written; what the portal adds is the design system around it. That is
    them taken from the piece's own reporting (`dynamic-element-library.md`
    rules apply unchanged) — plus the standard apparatus the portal owns
    (fields, taxonomy, `Fuentes` when the edition names primary sources, the
-   Ruta del dinero if the piece declares one). This 1–2 cap OVERRIDES the
+   Ruta del dinero if the piece declares one). This 1–2 range OVERRIDES the
    general device budget for verbatim La Lana ingests, even at `priority: 5`
    on a long read: the piece is the star, the devices are its setting.
+   It is a floor as well as a ceiling. Zero devices on a full-length La Lana
+   piece is a bug (`docs/la-lana-article-spec.md` §2, and the 2026-08-06
+   directive in `dynamic-element-library.md` §1): walk the whole device list
+   before deciding none fits. Two editions went out with none on 2026-09-25
+   and 2026-10-02 because "cap" was read as "optional".
 4. **Premier treatment in the metadata:** real `readingTime` from the actual
    length, `priority` 4 by default (5 when the edition is genuinely the
    week's flagship), and the full expediente shell — case number, stamps,
