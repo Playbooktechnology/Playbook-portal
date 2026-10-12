@@ -318,6 +318,21 @@ of how good the photo looks in isolation. A source article's own hero image is
 exactly as likely to be an awkward portrait crop as anything found by search, so
 this applies to the sourced funnel's default too.
 
+**A La Lana title card loses its edges on the article page** (publisher,
+2026-10-09, the Atlas stadium edition). The edition's cover is a 1920×1080
+card with the headline printed on it. The article page cuts it twice: the 16:10
+frame trims about 5% per side, and `parallax()` in `lib/motion-kit.ts` then
+scales the photo ×1.12 inside the frame. Only the central ~80% of the width is
+visible, x 192 to 1728 on a 1920 card, so a long headline loses its first and
+last letters ("UEVO ESTADIO … PROD"). Measure the title's bounding box before
+publishing. If it crosses x 192 or x 1728, re-frame the same card instead of
+swapping the art: place it at about 92% on a 1920×1200 (16:10) canvas, pinned to
+the bottom edge so the players stay cut by the canvas, and extend the top by
+mirror-tiling the card's own top rows. That keeps the title inside x 103 to 1817
+at every parallax position, and inside the 4:3 archive crop. The 1:1 archive crop
+will still trim a long title. Hosting rules above apply: the re-framed file is a
+custom asset.
+
 ---
 
 ## 2. In-body images — **differs by funnel**

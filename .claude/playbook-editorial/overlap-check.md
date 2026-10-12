@@ -133,6 +133,14 @@ first piece's core fact, it is not a different angle — it is A.**
 When both run, each must link the other, and neither may repeat the other's
 central figure as if it were news.
 
+**The write path enforces this.** `scripts/publish-newsletter.ts` refuses any
+item whose title plus excerpt scores 45% or more against the archive, and
+outcome D only passes with `--allow-overlap`, which the script reserves for a
+human who has looked. Ask the editor before using it, with the two theses
+side by side (the Atlas stadium edition was confirmed this way, 2026-10-09).
+Do not reword the excerpt to land under the cut: the score counts shared
+words, not whether the story is new.
+
 ---
 
 ## When the sources disagree

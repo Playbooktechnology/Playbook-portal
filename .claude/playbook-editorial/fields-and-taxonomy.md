@@ -38,6 +38,14 @@ imageUrl, imageCredit`.
   is known. Flip it `true` only when a human explicitly asks the byline to show
   (a guest collaboration is exactly that case; a normal Substack item usually
   isn't).
+- **La Lana del Deporte is the exception to both bullets above** (publisher,
+  2026-10-09): every edition ships `author: "Guillermo Mejía"` and
+  `mostrarAutor: true`, so his byline always shows. Set both on the draft;
+  an empty `author` on a La Lana row is a miss. A guest collaboration keeps
+  the guest's own byline (first bullet) and is the only departure. If an
+  edition's Substack byline names someone else, flag it in the run report
+  instead of relabeling it. (Four editions went out with an empty author
+  between 2026-09-04 and 2026-10-09; the rule was backfilled on all of them.)
 - **`author: "Aldo Sales"`** — always pairs with `mostrarAutor: true` and with
   **no** `Opinión de Playbook` box (`format-tiers.md` §3b's TFBR attribution
   note carries the exact rule and its rationale).
