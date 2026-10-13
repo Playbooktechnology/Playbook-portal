@@ -778,19 +778,31 @@ juego significan 624 minutos nuevos de inventario potencial."*
   against US$12,500M without doing the math themselves. Give it immediately
   after the figure, in the FT's own shape: "£950 millones (US$1,300 millones)".
 
-  **Once per zone, not once per figure** (publisher, 2026-09-29, superseding
-  the "first appearance in each field" wording this rule shipped with). The
-  zones are: the excerpt, the lede before the first `##`, each `##` section,
-  the Opinión, and a `Cifra clave` caption. Convert the **first** non-USD
-  figure of each; every later figure in that same zone may stay in its own
-  currency. It is a floor, not a cap: a before/after pair reads better with
-  both sides converted. The earlier wording read as every distinct figure, which works on
-  a piece with three numbers and collapses on a financial one: the Manchester
-  United FY2026 results carried 43 figures in pounds, and converting each
-  would have spent a fifth of a Deep Dive's word budget on parentheses and
-  made the prose unreadable. One anchor per zone is what the rule is actually
-  for — the reader never goes a section without a dollar reference, and never
-  reads a paragraph that is more conversion than sentence. A device's own **value** slot keeps the
+  **Every non-USD figure, not once per zone** (Playbook team, 2026-10-13, on
+  the Fundación Cox x FMF draft: *"quiero que pongas esa regla en todas las
+  cifras que no sean USD"*). Every figure in pesos, pounds, euros, reales or
+  any other currency carries its USD equivalent in parentheses, in the
+  excerpt, the teaser, the body, the Opinión and a `Cifra clave` caption,
+  every time it appears. This supersedes the 2026-09-29 scope, which asked
+  only for the **first** non-USD figure of each zone (excerpt, lede, each
+  `##` section, Opinión) and let the rest stay in their own currency. That
+  narrower scope existed because the Manchester United FY2026 results carried
+  43 figures in pounds; the team has now chosen the per-figure rule anyway.
+  The consequence for a dense financial piece is to **cut figures, not
+  conversions**: if a section carries so many numbers that the parentheses
+  crowd the sentence, keep the ones that carry the argument and move the rest
+  to a device or drop them.
+
+  **The conversion is Playbook's own arithmetic, never attributed.** Compute
+  it at the day's rate and write only the result, "MX$275 millones (US$15
+  millones)", never "(US$15 millones, según EFE)" or "unos US$15 millones"
+  (same Cox draft: the team asked for the "según EFE" to go). Record the rate,
+  its source and its date in the boleta notes (e.g. "MXN→USD 0.054665,
+  open.er-api, 12 oct") so a reviewer can rerun it, and round the result to
+  the precision of the original figure. Applies going forward; published
+  articles are only converted when they are otherwise being edited.
+
+  A device's own **value** slot keeps the
   original currency only (`Cifra clave`'s 24-character cap has no room for a
   conversion); put the USD figure in the device's caption instead, in prose,
   not in the caption's reserved attribution parenthetical
@@ -1040,11 +1052,13 @@ since). This is the last gate in both skills' decision flow.
 12. ¿El texto termina antes de explicar de más?
 13. ¿Pasamos el chequeo "que no huela a IA" (§7) — sin tríadas de relleno,
     sin cierre moralizante, sin conectores genéricos entre párrafos?
-14. ¿La **primera** cifra en divisa distinta al dólar de cada zona lleva su
-    equivalente en USD entre paréntesis — excerpt, entrada, cada sección
-    `##`, Opinión y pie de `Cifra clave`? (§7; `check-voice.mjs` lo marca
-    desde 2026-09-28, cuando la nota del veto a las apuestas en Brasil se
-    publicó con 2 de 11 conversiones y la regla llevaba once días escrita.)
+14. ¿**Cada** cifra en divisa distinta al dólar lleva su equivalente en USD
+    entre paréntesis, calculado por nosotros y sin atribuirlo a un medio, en
+    excerpt, teaser, cuerpo, Opinión y pie de `Cifra clave`? (§7; desde
+    2026-10-13 aplica a todas las cifras, no solo a la primera de cada zona.
+    `check-voice.mjs` lo marca desde 2026-09-28, cuando la nota del veto a las
+    apuestas en Brasil se publicó con 2 de 11 conversiones y la regla llevaba
+    once días escrita.)
 
 > **La definición final.** Playbook escribe para alguien que conoce el deporte
 > y quiere entender mejor su negocio. Abre con el movimiento, elimina el
