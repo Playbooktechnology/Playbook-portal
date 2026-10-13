@@ -272,6 +272,28 @@ guessing.
 fetch the photo's own page (not just a search-result thumbnail) and confirm what
 it depicts. **Never invent or guess an image URL or ID.**
 
+**Confirm a browser is allowed to show it, not only that it downloads**
+(publisher, 2026-10-13, the IFR State of the Game piece). A `200` from curl
+proves the file exists, not that playbook.la can display it. Some sites send
+`Cross-Origin-Resource-Policy: same-origin` on their media, which tells every
+browser to refuse the image when another site embeds it. The
+footballregulator.org.uk cover returned `200` to curl, looked fine in the
+review preview, and went live as an empty beige box. Two traps hid it: the
+preview inlines a local copy of the file, so it can never catch this, and that
+server answered `HEAD` with `404` while `GET` returned `200`, so `curl -I` gave
+the wrong answer in both directions. Check with a GET and read the headers:
+
+```
+curl -sS -A "<a normal browser UA>" -D - -o /dev/null "<imageUrl>" | grep -i -E "^HTTP|cross-origin-resource-policy|content-type"
+```
+
+`same-origin` or `same-site` on any host other than playbook.la means the cover
+will not render. The header covers the whole host, so one blocked photo rules
+out every image from that site: take a cross-referenced outlet's hero instead
+(the IFR piece ended on The Guardian's PA photo), or self-host it if the session
+has a path to `main` (above). After publishing, confirm the cover on the live
+page in a real browser (the `<img>` reports `naturalWidth > 0`), not with curl.
+
 Set `imageCredit` to identify the real source, whatever it is — `"Foto:
 [Fotógrafo] / Unsplash"`, `"Foto: [Agencia]"`, `"Foto: [Club/Liga/
 Organización]"` — matched to whatever the photo's own page attributes it to. It
