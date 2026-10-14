@@ -245,6 +245,22 @@ caution — extra verification passes, hesitation, treating a find as "risky"
 match photography. Verify the photo is genuinely on-topic and correctly
 credited (per "Verify and credit" above), and use it.
 
+**Between two on-topic photos of the same moment, prefer the one the
+protagonist distributed** (editor, 2026-10-14, on the Mastercard LVBP piece).
+Two photos of the press conference were available: the league's own, published
+with its release and credited to its photographer, and a posed shot of the
+three executives that Bloomberg Línea's reporter took for that outlet's
+article. The outlet's photo read better, and nothing in the exclusion above
+bars it. The editor asked which was safer on rights and published with the
+league's. The reason is the one this section already gives: an organization
+distributes its own photography to be used, while a news outlet's staff photo
+is its own editorial work, licensed to no one. An outlet's photo stays usable
+when it is the only on-topic image (the referenced article is still where the
+search starts, §1). When the protagonist's own photo of the same moment exists,
+it is the recommendation; if the outlet's is clearly better, show both in the
+draft presentation, say which carries less rights risk, and let the human
+choose.
+
 ### The competitor exclusion — never 2Playbook
 
 **Never credit 2Playbook as an image source, and never put it on the
