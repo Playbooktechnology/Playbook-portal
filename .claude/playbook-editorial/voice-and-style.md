@@ -321,6 +321,18 @@ sections that read as build-up to a win. Moved to the second paragraph, right
 after the lede, it changes what the reader carries into the rest of the piece
 instead of correcting it on the way out.
 
+**A sales agency does not get the rights** (editor, 2026-10-14, on the UEFA
+national-team agency piece). When a rights holder hires an agency to market
+and sell its rights, ownership does not move. The first title, *"La UEFA da a
+Relevent los derechos de la Eurocopa hasta 2036"*, read as a rights sale. The
+editor asked for titles closer to what the news said, and the piece published
+as *"La UEFA elige a Relevent para vender la Eurocopa y la Nations League"*.
+The rights holder is the subject, and the verbs name what each party does:
+`elige` / `nombra` for the holder, `venderá` / `comercializará` for the agency.
+Keep "da los derechos", "se queda con" and "compra" for an actual rights sale
+to a broadcaster, a platform or a buyer. The same reading applies to the body:
+say "la agencia que venderá…", never "el nuevo dueño de los derechos".
+
 ---
 
 ## 4. Openings

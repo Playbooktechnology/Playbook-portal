@@ -139,6 +139,19 @@ photography of the deal's principals is often better than anything a
 generic search turns up), and editorial agencies per the broad search
 below.
 
+**For a rights or commercial story, show the property at stake, not the
+organization's logo** (editor, 2026-10-14, on the UEFA national-team agency
+piece). The first draft carried a close-up of the UEFA crest, which was on
+topic, credited and loadable. The editor asked for "algo mucho más
+representativo de una Euro de UEFA", and the piece published with the Spanish
+federation's own photo of Morata lifting the trophy at the EURO 2024 final
+(`"Foto: RFEF"`). When the deal is about selling a competition, the competition
+is the subject: its trophy, a final, a recognisable moment of the tournament.
+A logo shot of the seller, the buyer or the agency is the fallback when no
+usable image of the property exists. The federations and clubs that won the
+competition are a good place to look, because their own galleries carry the
+trophy moment and credit cleanly under the organization rule below.
+
 **Credit the sports organization or company itself when that's genuinely
 the source** — `"Foto: [Liga/Club/Organización]"` — the same as any other
 source per "Verify and credit" above. This isn't a special case, it's the
