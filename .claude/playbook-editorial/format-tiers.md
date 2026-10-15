@@ -484,6 +484,23 @@ only confirmed a fact goes in the boleta notes, not on this line. Adding a
 fact to a live article does not add a slot: if a new source earns its place,
 another one leaves.
 
+**Which three** (editor, 2026-10-15, on the WNBA Finals venue piece: *"decide
+las 3 fuentes con base en las fuentes que sean más prestigiosas o las que sean
+directamente involucradas en la noticia"*). Fill the slots in this order and
+stop at three:
+
+1. **The parties directly involved**, each with its own posting: the
+   institution that announced it and its co-issuers (in that piece, the WNBA
+   and the Atlanta Hawks, who published the same release).
+2. **The most prestigious outlet whose own reporting the piece uses**: a
+   wire or a reference newsroom over a regional site or an aggregator, and an
+   outlet with an exclusive fact (in that piece, Front Office Sports, the only
+   one with the playoff attendance figures) over one that only repeated the
+   release.
+
+An outlet the run could not read (a 401 or paywall it never got past) does not
+take a slot, even if it was the link the editor sent; it stays as `sourceUrl`.
+
 First entry is the ORIGIN and gets the mark. One to three entries. Institution
 NAME alone, never a headline. Never an internal Playbook link (a backlink to
 prior coverage belongs inline in the prose — the renderer drops internal hrefs
