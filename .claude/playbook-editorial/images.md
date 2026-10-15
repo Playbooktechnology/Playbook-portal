@@ -271,7 +271,8 @@ well it fits; find the same moment from the club, league, federation or an
 agency outside the agency exclusion above.
 The same-day audit found two live covers credited `Foto: Récord` (the Liga
 Femenil BBVA identity piece and the FMF pyramid piece); they were flagged to
-the publisher for replacement rather than swapped silently.
+the publisher, who chose to keep them as published. The rule applies to
+new covers; do not re-flag or swap those two.
 
 **Never credit 2Playbook as an image source, and never put it on the
 `Fuentes:` line either** (publisher directive, 2026-09-21, on the JD
