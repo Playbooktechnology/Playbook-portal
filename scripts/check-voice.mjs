@@ -103,10 +103,12 @@ const VERB =
   ')';
 
 // The USD parenthetical (voice-and-style.md §7, publisher directive
-// 2026-09-17, scope narrowed 2026-09-29). A non-USD figure carries its USD
-// equivalent in parentheses ONCE PER ZONE: the excerpt, the lede before the
-// first `##`, each `##` section, the Opinión, and a Cifra clave caption. Only
-// the first figure of each zone needs it; the rest stay in their own currency.
+// 2026-09-17, scope narrowed 2026-09-29, widened again 2026-10-13). EVERY
+// non-USD figure carries its USD equivalent in parentheses — the excerpt, the
+// teaser, every body zone, the Opinión and a Cifra clave caption — not only
+// the first figure of each zone. The Playbook team chose the per-figure rule
+// on the Fundación Cox draft; the remedy for a dense piece is fewer figures,
+// not fewer conversions.
 //
 // Added 2026-09-28 after the Brazil betting-ban piece published with 2 of 11
 // conversions. The rule had been written for eleven days and read at drafting
@@ -115,11 +117,10 @@ const VERB =
 // The mechanical flags in this file — em dash, antithesis — never get missed
 // for exactly that reason.
 //
-// The zone scope replaced a per-figure one the next day: read literally, the
-// original wording asked for 43 parentheticals in the Manchester United
-// FY2026 piece. A check that fires 37 times on an article a reader would call
-// correct is a check everyone learns to scroll past, which is worse than no
-// check at all.
+// From 2026-09-29 to 2026-10-13 the check was per zone, after the original
+// wording asked for 43 parentheticals in the Manchester United FY2026 piece.
+// The team has since reinstated the per-figure rule, so the check lists every
+// unconverted figure again, each with the zone it sits in.
 //
 // Bare `$` is deliberately absent: it would match the `US$` this rule is
 // about. A device's own VALUE slot is exempt (dynamic-element-library.md caps
@@ -128,15 +129,17 @@ const VERB =
 // names explicitly, `Cifra clave`, is checked separately because its
 // conversion belongs in the caption.
 const NON_USD = /(?:R\$|MX\$|A\$|C\$|CHF\s?|£|€|¥)\s?\d[\d.,]*(?:\s?(?:mil\s+millones|millones|mil|[MBK]\b))?/;
+const NON_USD_ALL = new RegExp(NON_USD.source, 'g');
 const USD_AFTER = /^\s*\(US\$/;
 
-// The first non-USD figure in `text`, when it is not followed by its
-// conversion. null means the zone is clean — either no foreign figure at all,
-// or the one that opens it is already converted.
-function firstUnconverted(text) {
-  const m = text.match(NON_USD);
-  if (!m) return null;
-  return USD_AFTER.test(text.slice(m.index + m[0].length)) ? null : m[0].trim();
+// Every non-USD figure in `text` that is not followed by its conversion.
+// An empty list means the text is clean.
+function unconverted(text) {
+  const out = [];
+  for (const m of text.matchAll(NON_USD_ALL)) {
+    if (!USD_AFTER.test(text.slice(m.index + m[0].length))) out.push(m[0].trim());
+  }
+  return out;
 }
 
 // Body zones, in reading order. Headings and device declarations are dropped
@@ -167,9 +170,9 @@ function bodyZones(md) {
 }
 
 function missingUsdZones(md) {
-  return bodyZones(md)
-    .map(z => ({ zone: z.label, figure: firstUnconverted(z.text.join('\n\n')) }))
-    .filter(z => z.figure);
+  return bodyZones(md).flatMap(z =>
+    unconverted(z.text.join('\n\n')).map(figure => ({ zone: z.label, figure })),
+  );
 }
 
 // `Cifra clave: R$268.5M — lo que Betano paga al año… (Globo)`. The value slot
@@ -284,7 +287,8 @@ function analyse(article) {
     emDashes: prose.filter(p => p.includes('—')).length,
     opinionSplit,
     usdZones: missingUsdZones(md),
-    usdExcerpt: firstUnconverted(article.excerpt || ''),
+    usdExcerpt: unconverted(article.excerpt || ''),
+    usdTeaser: unconverted(article.teaser || ''),
     usdCifra: cifraClaveMissingUsd(md),
   };
 }
@@ -323,9 +327,9 @@ function main() {
       flags.push(`${m.negatives} antítesis, familia completa incl. "no solo X, sino Y" (objetivo ≤${TARGETS.maxNegativeParallelism})`);
     if (m.emDashes) flags.push(`${m.emDashes} párrafo(s) de prosa con guion largo`);
     for (const z of m.usdZones)
-      flags.push(`${z.figure} abre ${z.zone} sin su equivalente en USD (voice-and-style.md §7: una conversión por zona)`);
-    if (m.usdExcerpt)
-      flags.push(`${m.usdExcerpt} abre el excerpt sin su equivalente en USD`);
+      flags.push(`${z.figure} en ${z.zone} sin su equivalente en USD (voice-and-style.md §7: toda cifra no-USD lleva su conversión)`);
+    for (const f of m.usdExcerpt) flags.push(`${f} en el excerpt sin su equivalente en USD`);
+    for (const f of m.usdTeaser) flags.push(`${f} en el teaser sin su equivalente en USD`);
     if (m.usdCifra.length)
       flags.push(`Cifra clave en ${m.usdCifra.join(', ')} sin la conversión en el pie (el slot de valor conserva su divisa; el USD va en la prosa del pie)`);
     // A long paragraph is normal in the archive; a page made of them is not.
