@@ -474,7 +474,17 @@ photo). They're a direct competitor on the same beat; crediting them reads as
 promoting their coverage from inside a Playbook article, which the ordinary
 exclusive exception isn't worth making an exception to.
 
-First entry is the ORIGIN and gets the mark. Two to four entries. Institution
+**Three entries at most, never more** (Playbook team, 2026-10-15, on the
+Adobe x Australian Open update, whose line had grown to eleven names after a
+round of verification). The line credits who said it; it is not a record of
+everything read. When more than three sources carried facts, keep the origin
+plus the two that carried the most weight, and attribute any other fact that
+needs it inline in the prose ("según la Premier League"). Verification that
+only confirmed a fact goes in the boleta notes, not on this line. Adding a
+fact to a live article does not add a slot: if a new source earns its place,
+another one leaves.
+
+First entry is the ORIGIN and gets the mark. One to three entries. Institution
 NAME alone, never a headline. Never an internal Playbook link (a backlink to
 prior coverage belongs inline in the prose — the renderer drops internal hrefs
 from this line anyway).
