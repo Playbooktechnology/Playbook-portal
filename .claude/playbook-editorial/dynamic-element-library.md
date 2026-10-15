@@ -1434,6 +1434,19 @@ there is no sequence to assert.
   exclusive with `Cronología` — a story's own history and other actors'
   cases are different claims, and a Deep Dive with the slots may carry both.
 
+**The title names what the protagonist shares with the rows, never the trait
+the piece says sets it apart** (editor, 2026-10-14, on the Mastercard LVBP
+piece). The first draft titled the device *"Ligas de béisbol que en 2026
+llevan nombre de banco"*, with Banorte and Banamex as rows, under a paragraph
+saying the two Mexican circuits "también" took a bank's name, while the
+Opinión argued that Mastercard is a payments network and not a bank. The
+device put the protagonist in the category the analysis took it out of. It
+published as *"Ligas de béisbol que estrenaron nombre comercial en 2026"*,
+with each row naming the difference (`el banco Banorte, desde abril…`). When
+the read turns on how the protagonist differs from its precedents, the title
+states the fact they all share, the rows carry the difference, and the prose
+around the device never says "también" about the trait in dispute.
+
 ### `Contraste:` — the claim against the measurement
 
 ```

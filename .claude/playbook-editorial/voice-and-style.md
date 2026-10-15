@@ -321,6 +321,18 @@ sections that read as build-up to a win. Moved to the second paragraph, right
 after the lede, it changes what the reader carries into the rest of the piece
 instead of correcting it on the way out.
 
+**A sales agency does not get the rights** (editor, 2026-10-14, on the UEFA
+national-team agency piece). When a rights holder hires an agency to market
+and sell its rights, ownership does not move. The first title, *"La UEFA da a
+Relevent los derechos de la Eurocopa hasta 2036"*, read as a rights sale. The
+editor asked for titles closer to what the news said, and the piece published
+as *"La UEFA elige a Relevent para vender la Eurocopa y la Nations League"*.
+The rights holder is the subject, and the verbs name what each party does:
+`elige` / `nombra` for the holder, `venderá` / `comercializará` for the agency.
+Keep "da los derechos", "se queda con" and "compra" for an actual rights sale
+to a broadcaster, a platform or a buyer. The same reading applies to the body:
+say "la agencia que venderá…", never "el nuevo dueño de los derechos".
+
 ---
 
 ## 4. Openings
@@ -808,6 +820,18 @@ juego significan 624 minutos nuevos de inventario potencial."*
   not in the caption's reserved attribution parenthetical
   (`dynamic-element-library.md`'s "Cifra clave" section) — that slot credits a
   source, not a currency.
+
+  **Exception: a `Tablero` whose point is a ratio** (editor, 2026-10-14, on
+  the IFR State of the Game deep dive). When the tiles exist to compare a
+  proportion across rows, as in average loss per club with its share of revenue
+  for each division, the tile notes keep the ratio and skip the USD figure.
+  A tile note holds 24 characters. Fitting "US$29M; 59%" meant cutting "del
+  ingreso" from every tile and moving it into the strip's title, and the
+  device got harder to read in order to carry a number the reader can already
+  place from the converted figures in the surrounding text. The exception
+  covers only a `Tablero` built around a ratio; a `Tablero` of plain money
+  totals, a `Cifra clave` caption and all prose still carry the conversion.
+  Note the exception in the boleta notes when you use it.
 - **Explain the financial mechanism in the reader's words, not the filing's.**
   (Publisher, 2026-08-15, on a deep dive about a federal probe into an owner's
   insurance companies: *"entidades afiliadas, por algo más simple"* and *"que
