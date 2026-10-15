@@ -468,11 +468,20 @@ The one exception is an **exclusive**: when a fact exists only because a
 particular newsroom broke it, that newsroom is a primary source for that fact.
 A story everyone covered off the same press release has no exclusive in it.
 
-**2Playbook never goes on this line, exclusive or not** (publisher directive,
-2026-09-21 — see `images.md`'s matching competitor exclusion for the cover
-photo). They're a direct competitor on the same beat; crediting them reads as
-promoting their coverage from inside a Playbook article, which the ordinary
-exclusive exception isn't worth making an exception to.
+**Four outlets never go on this line, exclusive or not: 2Playbook, Récord,
+Estadio and Mediotiempo** (publisher directive, 2026-09-21 for 2Playbook,
+extended to the other three on 2026-10-15 — see `images.md`'s matching
+exclusion for the cover photo). 2Playbook is a direct competitor on the same
+beat; Récord, Estadio and Mediotiempo are the Mexican sports dailies Playbook's
+reader already sees, and crediting any of them reads as promoting their
+coverage from inside a Playbook article, which the ordinary exclusive
+exception isn't worth making an exception to. They can still be read to verify
+a fact; the credit goes to whoever said it (the club, the league, the
+federation, its own release) or to another outlet that carried it. If a fact
+exists only in one of them and nobody else confirms it, write it as "según
+reportes" or leave it out. The 2026-10-15 audit found three live articles with
+Récord on the line (Deyna Castellanos, Rebeca Bernal, Fox en Izzi y Sky); all
+three were re-credited.
 
 **Three entries at most, never more** (Playbook team, 2026-10-15, on the
 Adobe x Australian Open update, whose line had grown to eleven names after a

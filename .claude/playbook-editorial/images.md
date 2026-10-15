@@ -261,7 +261,17 @@ it is the recommendation; if the outlet's is clearly better, show both in the
 draft presentation, say which carries less rights risk, and let the human
 choose.
 
-### The competitor exclusion — never 2Playbook
+### The competitor exclusion — never 2Playbook, Récord, Estadio or Mediotiempo
+
+**The same four outlets barred from the `Fuentes:` line are barred as image
+credits** (publisher directive, 2026-10-15, extending the 2Playbook rule
+below to Récord, Estadio and Mediotiempo; `format-tiers.md` §6 owns the
+list). A photo hosted on or credited to any of them is not a cover, however
+well it fits; find the same moment from the club, league, federation or an
+agency outside the agency exclusion above.
+The same-day audit found two live covers credited `Foto: Récord` (the Liga
+Femenil BBVA identity piece and the FMF pyramid piece); they were flagged to
+the publisher for replacement rather than swapped silently.
 
 **Never credit 2Playbook as an image source, and never put it on the
 `Fuentes:` line either** (publisher directive, 2026-09-21, on the JD
