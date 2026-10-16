@@ -253,6 +253,29 @@ function findOpinionSplit(paragraphs) {
   return { trailing: paragraphs.length - 1 - idx, preview: paragraphs[idx + 1].slice(0, 60) };
 }
 
+// "Que no huela a IA" (voice-and-style.md §7, team directive 2026-10-08): the
+// Opinión closes on a statement, never on a rhetorical question. Looks at the
+// Opinión paragraph, or at the last prose paragraph when the piece has none
+// (tier A), and flags a final sentence that is a question or opens "La
+// pregunta es / ya no es / de fondo es…". Soft flag, like the rest.
+const CLOSING_QUESTION = /\bla pregunta (?:es|ya no es|sigue siendo|de fondo es|que queda es|ahora es)\b/i;
+export function findClosingQuestion(paragraphs) {
+  const idx = paragraphs.findIndex(p => /^\*\*Opini[oó]n de Playbook:\*\*/i.test(p));
+  const target = idx === -1 ? paragraphs[paragraphs.length - 1] : paragraphs[idx];
+  if (!target) return null;
+  const sentences = target.replace(/^\*\*[^*]+:\*\*\s*/, '').split(/(?<=[.!?])\s+/).filter(Boolean);
+  const last = sentences[sentences.length - 1] || '';
+  if (/[?]\s*$/.test(last) || CLOSING_QUESTION.test(last)) return last.slice(0, 70);
+  return null;
+}
+
+// Drafting scaffolding that must never reach the published text (§7).
+const WORKING_LABELS =
+  /\b(?:delta playbook|pregunta madre|reader persona|job[- ]to[- ]be[- ]done|lo que nadie te (?:est[aá] diciendo|dice|cuenta)|la historia playbook es)\b/gi;
+export function findWorkingLabels(md) {
+  return [...md.matchAll(WORKING_LABELS)].map(m => m[0]);
+}
+
 function analyse(article) {
   const md = article.bodyMarkdown || '';
   const paragraphs = md
@@ -283,6 +306,8 @@ function analyse(article) {
     negatives: countNegatives(md),
     emDashes: prose.filter(p => p.includes('—')).length,
     opinionSplit,
+    closingQuestion: findClosingQuestion(paragraphs),
+    workingLabels: findWorkingLabels(md),
     usdZones: missingUsdZones(md),
     usdExcerpt: firstUnconverted(article.excerpt || ''),
     usdCifra: cifraClaveMissingUsd(md),
@@ -321,6 +346,10 @@ function main() {
       flags.push(`sin línea martillo de ≤14p (archivo: ~1 de cada 5 párrafos)`);
     if (m.negatives > TARGETS.maxNegativeParallelism)
       flags.push(`${m.negatives} antítesis, familia completa incl. "no solo X, sino Y" (objetivo ≤${TARGETS.maxNegativeParallelism})`);
+    if (m.closingQuestion)
+      flags.push(`la Opinión (o el cierre) termina en pregunta: "${m.closingQuestion}…" (voice-and-style.md §7: cierra con una afirmación, no con una pregunta retórica)`);
+    if (m.workingLabels.length)
+      flags.push(`etiqueta de trabajo en el texto publicado: ${[...new Set(m.workingLabels)].join(', ')} (voice-and-style.md §7: el delta se nota en el contenido, no se anuncia)`);
     if (m.emDashes) flags.push(`${m.emDashes} párrafo(s) de prosa con guion largo`);
     for (const z of m.usdZones)
       flags.push(`${z.figure} abre ${z.zone} sin su equivalente en USD (voice-and-style.md §7: una conversión por zona)`);
