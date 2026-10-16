@@ -78,6 +78,43 @@ than the evidence. The Opinión explains incentives, control, business or
 consequences; **it never turns a possibility into an intention, or a
 contradiction into an accusation.**
 
+### Anuncios positivos de prospectos: que lo quieran compartir
+
+(Playbook team, 2026-10-12, on the Nestlé x NBA partnership draft: *"Nestlé y
+NBA son prospectos de Playbook, por lo tanto no quiero que suene a crítica, al
+contrario, quiero que la quieran compartir"*.) When the protagonist is a
+Playbook prospect or ally **and the news itself is a positive announcement**
+(a partnership, a sponsorship, a launch, an investment, an expansion), the
+piece is written so the protagonist would want to share it:
+
+- **The Opinión explains business value**: the strategy behind the move, the
+  mechanism, what it unlocks, the number or milestone to watch. It closes on a
+  forward-looking statement, never on a doubt about the protagonist's intent.
+- **No critical angles imported from outside the news.** Regulation, health,
+  past controversies or third-party criticism that the announcement itself
+  doesn't raise stay out of the piece. The worked example: the first draft
+  of the Nestlé x NBA note added Mexico's NOM-051 restrictions on sugary-drink
+  packaging and closed by asking whether the youth-participation goal was "a
+  sports program or a campaign by another name"; both were removed.
+- **The Playbook delta stays.** Context, strategy, precedent and the Mexico
+  angle still go in (in that run: Nestlé concentrating its marketing on fewer
+  brands, the KitKat x F1 precedent launched in Mexico, the NBA's Mexico City
+  game). Shareable does not mean a rewritten press release.
+
+**Where this rule stops.** It covers positive announcements only. When the
+news itself is uncomfortable for a prospect (governance, a dispute, losses, an
+accusation, a regulatory problem the story is about), §2's protocolo amarillo
+applies unchanged: more review, same independence, and §3's "must NEVER
+change" list still holds. This rule decides which angles a piece *adds*; it
+never removes a fact, a public statement or a contradiction that the news
+itself carries.
+
+**In a skill run:** the drafting session can't know the pipeline, so when a
+positive announcement involves a brand, league or company that could
+plausibly be a prospect, draft it in this register and say so in the draft
+presentation ("protagonista posiblemente prospecto: tono de valor de
+negocio"), so the human can confirm or ask for a sharper read.
+
 ---
 
 ## 3. Publicar, escalar o frenar

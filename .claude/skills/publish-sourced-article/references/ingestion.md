@@ -250,6 +250,19 @@ than silently dropping the co-issuer. If a joint release exists in only one
 place, that is one entry, not two: **under-fill the line rather than padding it
 with a homepage link or an editorial outlet.**
 
+**When a co-issuer's site won't load and no release from it turns up, a public
+post by the executive who announced the deal is its posting** (editor,
+2026-10-14, Mastercard LVBP). mastercard.com returned 403 to `curl` and to a
+headless browser, and search found no Mastercard release. The editor supplied
+the LinkedIn post in which Mastercard's country manager for Venezuela announced
+the sponsorship and asked for it on the line. An executive speaking for the
+company in that role is the company's own statement, so the entry carries the
+**company's** name (`[Mastercard](…)`), not the person's. Verify the post loads
+(LinkedIn served this one's full text to `curl` with a browser UA) and that it
+states the announcement itself; a post that only reshares or comments on the
+news stays off. Strip the share-tracking query string (`utm_*`, `rcm`) before
+the URL goes on the line: those parameters identify the member who shared it.
+
 The editorial outlets read above do their job by being read. They do **not** go
 on the line, unless one of them broke the story exclusively.
 

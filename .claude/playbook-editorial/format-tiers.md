@@ -468,13 +468,49 @@ The one exception is an **exclusive**: when a fact exists only because a
 particular newsroom broke it, that newsroom is a primary source for that fact.
 A story everyone covered off the same press release has no exclusive in it.
 
-**2Playbook never goes on this line, exclusive or not** (publisher directive,
-2026-09-21 — see `images.md`'s matching competitor exclusion for the cover
-photo). They're a direct competitor on the same beat; crediting them reads as
-promoting their coverage from inside a Playbook article, which the ordinary
-exclusive exception isn't worth making an exception to.
+**Four outlets never go on this line, exclusive or not: 2Playbook, Récord,
+Estadio and Mediotiempo** (publisher directive, 2026-09-21 for 2Playbook,
+extended to the other three on 2026-10-15 — see `images.md`'s matching
+exclusion for the cover photo). 2Playbook is a direct competitor on the same
+beat; Récord, Estadio and Mediotiempo are the Mexican sports dailies Playbook's
+reader already sees, and crediting any of them reads as promoting their
+coverage from inside a Playbook article, which the ordinary exclusive
+exception isn't worth making an exception to. They can still be read to verify
+a fact; the credit goes to whoever said it (the club, the league, the
+federation, its own release) or to another outlet that carried it. If a fact
+exists only in one of them and nobody else confirms it, write it as "según
+reportes" or leave it out. The 2026-10-15 audit found three live articles with
+Récord on the line (Deyna Castellanos, Rebeca Bernal, Fox en Izzi y Sky); all
+three were re-credited.
 
-First entry is the ORIGIN and gets the mark. Two to four entries. Institution
+**Three entries at most, never more** (Playbook team, 2026-10-15, on the
+Adobe x Australian Open update, whose line had grown to eleven names after a
+round of verification). The line credits who said it; it is not a record of
+everything read. When more than three sources carried facts, keep the origin
+plus the two that carried the most weight, and attribute any other fact that
+needs it inline in the prose ("según la Premier League"). Verification that
+only confirmed a fact goes in the boleta notes, not on this line. Adding a
+fact to a live article does not add a slot: if a new source earns its place,
+another one leaves.
+
+**Which three** (editor, 2026-10-15, on the WNBA Finals venue piece: *"decide
+las 3 fuentes con base en las fuentes que sean más prestigiosas o las que sean
+directamente involucradas en la noticia"*). Fill the slots in this order and
+stop at three:
+
+1. **The parties directly involved**, each with its own posting: the
+   institution that announced it and its co-issuers (in that piece, the WNBA
+   and the Atlanta Hawks, who published the same release).
+2. **The most prestigious outlet whose own reporting the piece uses**: a
+   wire or a reference newsroom over a regional site or an aggregator, and an
+   outlet with an exclusive fact (in that piece, Front Office Sports, the only
+   one with the playoff attendance figures) over one that only repeated the
+   release.
+
+An outlet the run could not read (a 401 or paywall it never got past) does not
+take a slot, even if it was the link the editor sent; it stays as `sourceUrl`.
+
+First entry is the ORIGIN and gets the mark. One to three entries. Institution
 NAME alone, never a headline. Never an internal Playbook link (a backlink to
 prior coverage belongs inline in the prose — the renderer drops internal hrefs
 from this line anyway).

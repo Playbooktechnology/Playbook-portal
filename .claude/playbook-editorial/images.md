@@ -139,6 +139,19 @@ photography of the deal's principals is often better than anything a
 generic search turns up), and editorial agencies per the broad search
 below.
 
+**For a rights or commercial story, show the property at stake, not the
+organization's logo** (editor, 2026-10-14, on the UEFA national-team agency
+piece). The first draft carried a close-up of the UEFA crest, which was on
+topic, credited and loadable. The editor asked for "algo mucho más
+representativo de una Euro de UEFA", and the piece published with the Spanish
+federation's own photo of Morata lifting the trophy at the EURO 2024 final
+(`"Foto: RFEF"`). When the deal is about selling a competition, the competition
+is the subject: its trophy, a final, a recognisable moment of the tournament.
+A logo shot of the seller, the buyer or the agency is the fallback when no
+usable image of the property exists. The federations and clubs that won the
+competition are a good place to look, because their own galleries carry the
+trophy moment and credit cleanly under the organization rule below.
+
 **Credit the sports organization or company itself when that's genuinely
 the source** — `"Foto: [Liga/Club/Organización]"` — the same as any other
 source per "Verify and credit" above. This isn't a special case, it's the
@@ -232,7 +245,34 @@ caution — extra verification passes, hesitation, treating a find as "risky"
 match photography. Verify the photo is genuinely on-topic and correctly
 credited (per "Verify and credit" above), and use it.
 
-### The competitor exclusion — never 2Playbook
+**Between two on-topic photos of the same moment, prefer the one the
+protagonist distributed** (editor, 2026-10-14, on the Mastercard LVBP piece).
+Two photos of the press conference were available: the league's own, published
+with its release and credited to its photographer, and a posed shot of the
+three executives that Bloomberg Línea's reporter took for that outlet's
+article. The outlet's photo read better, and nothing in the exclusion above
+bars it. The editor asked which was safer on rights and published with the
+league's. The reason is the one this section already gives: an organization
+distributes its own photography to be used, while a news outlet's staff photo
+is its own editorial work, licensed to no one. An outlet's photo stays usable
+when it is the only on-topic image (the referenced article is still where the
+search starts, §1). When the protagonist's own photo of the same moment exists,
+it is the recommendation; if the outlet's is clearly better, show both in the
+draft presentation, say which carries less rights risk, and let the human
+choose.
+
+### The competitor exclusion — never 2Playbook, Récord, Estadio or Mediotiempo
+
+**The same four outlets barred from the `Fuentes:` line are barred as image
+credits** (publisher directive, 2026-10-15, extending the 2Playbook rule
+below to Récord, Estadio and Mediotiempo; `format-tiers.md` §6 owns the
+list). A photo hosted on or credited to any of them is not a cover, however
+well it fits; find the same moment from the club, league, federation or an
+agency outside the agency exclusion above.
+The same-day audit found two live covers credited `Foto: Récord` (the Liga
+Femenil BBVA identity piece and the FMF pyramid piece); they were flagged to
+the publisher, who chose to keep them as published. The rule applies to
+new covers; do not re-flag or swap those two.
 
 **Never credit 2Playbook as an image source, and never put it on the
 `Fuentes:` line either** (publisher directive, 2026-09-21, on the JD
@@ -271,6 +311,28 @@ guessing.
 **Confirm the image actually exists and is genuinely on-topic before using it:**
 fetch the photo's own page (not just a search-result thumbnail) and confirm what
 it depicts. **Never invent or guess an image URL or ID.**
+
+**Confirm a browser is allowed to show it, not only that it downloads**
+(publisher, 2026-10-13, the IFR State of the Game piece). A `200` from curl
+proves the file exists, not that playbook.la can display it. Some sites send
+`Cross-Origin-Resource-Policy: same-origin` on their media, which tells every
+browser to refuse the image when another site embeds it. The
+footballregulator.org.uk cover returned `200` to curl, looked fine in the
+review preview, and went live as an empty beige box. Two traps hid it: the
+preview inlines a local copy of the file, so it can never catch this, and that
+server answered `HEAD` with `404` while `GET` returned `200`, so `curl -I` gave
+the wrong answer in both directions. Check with a GET and read the headers:
+
+```
+curl -sS -A "<a normal browser UA>" -D - -o /dev/null "<imageUrl>" | grep -i -E "^HTTP|cross-origin-resource-policy|content-type"
+```
+
+`same-origin` or `same-site` on any host other than playbook.la means the cover
+will not render. The header covers the whole host, so one blocked photo rules
+out every image from that site: take a cross-referenced outlet's hero instead
+(the IFR piece ended on The Guardian's PA photo), or self-host it if the session
+has a path to `main` (above). After publishing, confirm the cover on the live
+page in a real browser (the `<img>` reports `naturalWidth > 0`), not with curl.
 
 Set `imageCredit` to identify the real source, whatever it is — `"Foto:
 [Fotógrafo] / Unsplash"`, `"Foto: [Agencia]"`, `"Foto: [Club/Liga/

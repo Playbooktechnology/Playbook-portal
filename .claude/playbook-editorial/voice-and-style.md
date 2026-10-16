@@ -321,6 +321,18 @@ sections that read as build-up to a win. Moved to the second paragraph, right
 after the lede, it changes what the reader carries into the rest of the piece
 instead of correcting it on the way out.
 
+**A sales agency does not get the rights** (editor, 2026-10-14, on the UEFA
+national-team agency piece). When a rights holder hires an agency to market
+and sell its rights, ownership does not move. The first title, *"La UEFA da a
+Relevent los derechos de la Eurocopa hasta 2036"*, read as a rights sale. The
+editor asked for titles closer to what the news said, and the piece published
+as *"La UEFA elige a Relevent para vender la Eurocopa y la Nations League"*.
+The rights holder is the subject, and the verbs name what each party does:
+`elige` / `nombra` for the holder, `venderá` / `comercializará` for the agency.
+Keep "da los derechos", "se queda con" and "compra" for an actual rights sale
+to a broadcaster, a platform or a buyer. The same reading applies to the body:
+say "la agencia que venderá…", never "el nuevo dueño de los derechos".
+
 ---
 
 ## 4. Openings
@@ -594,6 +606,24 @@ the regionalism is part of the source's voice, not the writer's habit. The
 test is the same one the Spanglish rule uses above: is this someone quoted in
 the piece talking, or is it the writer defaulting to habit?
 
+### Entidades de gobierno extranjeras: nómbralas como las diría un lector mexicano
+
+(Playbook team, 2026-10-06, on an LA28 economic-impact draft: *"el uso de "el
+condado" no suena muy natural en español de México"*.) A Mexican reader has no
+"condado" in daily life; "el condado" as a bare subject ("el condado calcula",
+"el condado fijó metas") reads like a translated wire. The same goes for other
+foreign administrative units used as shorthand (`el condado`, `la comarca`,
+`el ayuntamiento` for a US city, `la diputación`).
+
+The fix: name the actor the way the reader would picture it, keeping it
+accurate. First mention carries the precise entity once ("el gobierno del
+condado de Los Ángeles"); after that use `el gobierno de Los Ángeles`, `las
+autoridades de Los Ángeles`, `la Junta de Supervisores` when it is that body,
+or simply `Los Ángeles` when the subject is obvious. Never repeat "el condado"
+as the default subject, never put it in a title, and never let the
+simplification blur a real distinction (county vs. city) that the story
+depends on: if the distinction matters, explain it once in a clause.
+
 ### Fórmulas bajo vigilancia
 
 Not banned. But every time one appears, ask: **can I say this more specifically
@@ -760,24 +790,48 @@ juego significan 624 minutos nuevos de inventario potencial."*
   against US$12,500M without doing the math themselves. Give it immediately
   after the figure, in the FT's own shape: "£950 millones (US$1,300 millones)".
 
-  **Once per zone, not once per figure** (publisher, 2026-09-29, superseding
-  the "first appearance in each field" wording this rule shipped with). The
-  zones are: the excerpt, the lede before the first `##`, each `##` section,
-  the Opinión, and a `Cifra clave` caption. Convert the **first** non-USD
-  figure of each; every later figure in that same zone may stay in its own
-  currency. It is a floor, not a cap: a before/after pair reads better with
-  both sides converted. The earlier wording read as every distinct figure, which works on
-  a piece with three numbers and collapses on a financial one: the Manchester
-  United FY2026 results carried 43 figures in pounds, and converting each
-  would have spent a fifth of a Deep Dive's word budget on parentheses and
-  made the prose unreadable. One anchor per zone is what the rule is actually
-  for — the reader never goes a section without a dollar reference, and never
-  reads a paragraph that is more conversion than sentence. A device's own **value** slot keeps the
+  **Every non-USD figure, not once per zone** (Playbook team, 2026-10-13, on
+  the Fundación Cox x FMF draft: *"quiero que pongas esa regla en todas las
+  cifras que no sean USD"*). Every figure in pesos, pounds, euros, reales or
+  any other currency carries its USD equivalent in parentheses, in the
+  excerpt, the teaser, the body, the Opinión and a `Cifra clave` caption,
+  every time it appears. This supersedes the 2026-09-29 scope, which asked
+  only for the **first** non-USD figure of each zone (excerpt, lede, each
+  `##` section, Opinión) and let the rest stay in their own currency. That
+  narrower scope existed because the Manchester United FY2026 results carried
+  43 figures in pounds; the team has now chosen the per-figure rule anyway.
+  The consequence for a dense financial piece is to **cut figures, not
+  conversions**: if a section carries so many numbers that the parentheses
+  crowd the sentence, keep the ones that carry the argument and move the rest
+  to a device or drop them.
+
+  **The conversion is Playbook's own arithmetic, never attributed.** Compute
+  it at the day's rate and write only the result, "MX$275 millones (US$15
+  millones)", never "(US$15 millones, según EFE)" or "unos US$15 millones"
+  (same Cox draft: the team asked for the "según EFE" to go). Record the rate,
+  its source and its date in the boleta notes (e.g. "MXN→USD 0.054665,
+  open.er-api, 12 oct") so a reviewer can rerun it, and round the result to
+  the precision of the original figure. Applies going forward; published
+  articles are only converted when they are otherwise being edited.
+
+  A device's own **value** slot keeps the
   original currency only (`Cifra clave`'s 24-character cap has no room for a
   conversion); put the USD figure in the device's caption instead, in prose,
   not in the caption's reserved attribution parenthetical
   (`dynamic-element-library.md`'s "Cifra clave" section) — that slot credits a
   source, not a currency.
+
+  **Exception: a `Tablero` whose point is a ratio** (editor, 2026-10-14, on
+  the IFR State of the Game deep dive). When the tiles exist to compare a
+  proportion across rows, as in average loss per club with its share of revenue
+  for each division, the tile notes keep the ratio and skip the USD figure.
+  A tile note holds 24 characters. Fitting "US$29M; 59%" meant cutting "del
+  ingreso" from every tile and moving it into the strip's title, and the
+  device got harder to read in order to carry a number the reader can already
+  place from the converted figures in the surrounding text. The exception
+  covers only a `Tablero` built around a ratio; a `Tablero` of plain money
+  totals, a `Cifra clave` caption and all prose still carry the conversion.
+  Note the exception in the boleta notes when you use it.
 - **Explain the financial mechanism in the reader's words, not the filing's.**
   (Publisher, 2026-08-15, on a deep dive about a federal probe into an owner's
   insurance companies: *"entidades afiliadas, por algo más simple"* and *"que
@@ -1022,11 +1076,13 @@ since). This is the last gate in both skills' decision flow.
 12. ¿El texto termina antes de explicar de más?
 13. ¿Pasamos el chequeo "que no huela a IA" (§7) — sin tríadas de relleno,
     sin cierre moralizante, sin conectores genéricos entre párrafos?
-14. ¿La **primera** cifra en divisa distinta al dólar de cada zona lleva su
-    equivalente en USD entre paréntesis — excerpt, entrada, cada sección
-    `##`, Opinión y pie de `Cifra clave`? (§7; `check-voice.mjs` lo marca
-    desde 2026-09-28, cuando la nota del veto a las apuestas en Brasil se
-    publicó con 2 de 11 conversiones y la regla llevaba once días escrita.)
+14. ¿**Cada** cifra en divisa distinta al dólar lleva su equivalente en USD
+    entre paréntesis, calculado por nosotros y sin atribuirlo a un medio, en
+    excerpt, teaser, cuerpo, Opinión y pie de `Cifra clave`? (§7; desde
+    2026-10-13 aplica a todas las cifras, no solo a la primera de cada zona.
+    `check-voice.mjs` lo marca desde 2026-09-28, cuando la nota del veto a las
+    apuestas en Brasil se publicó con 2 de 11 conversiones y la regla llevaba
+    once días escrita.)
 
 > **La definición final.** Playbook escribe para alguien que conoce el deporte
 > y quiere entender mejor su negocio. Abre con el movimiento, elimina el

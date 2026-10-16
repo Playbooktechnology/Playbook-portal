@@ -687,6 +687,16 @@
   display: flex;
   align-items: flex-end;
   min-height: clamp(330px, 40vw, 520px);
+  /* Ceiling for the stretch. The lead fills its row so the photograph ends
+     level with the rail, but the rail is not always two cards: AdSense auto
+     ads insert units into .hubx-side, and on 2026-10-14 two of them pushed
+     the row past 1,450px, so object-fit cropped the 16:10 cover to a sliver
+     a face filled entirely. The two-card rail tops out at 738px at the
+     widest two-column width, so 800px leaves the designed state untouched;
+     a taller row now leaves the lead at the top of its cell instead. The
+     single-column layout releases it (see the 900px breakpoint), because
+     there the copy, not the rail, sets the height. */
+  max-height: 800px;
   border: 1px solid var(--hub-edge);
   border-radius: 6px;
   text-decoration: none;
@@ -1048,6 +1058,9 @@
      width and the rail drops beneath it rather than being squeezed. */
   .hubx-latest,
   .hubx-inside { grid-template-columns: minmax(0, 1fr); }
+  /* Stacked, nothing stretches the lead: its height is its own copy, which
+     a long dek on a phone can push past any fixed ceiling. */
+  .hubx-lead { max-height: none; }
   .hubx-inside[data-art='true'] .hubx-access { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
   .hubx-hero-copy { max-width: 100%; }
   /* Below the two-column split the art no longer has a right-hand half to
