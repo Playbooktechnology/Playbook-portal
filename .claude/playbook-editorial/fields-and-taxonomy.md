@@ -109,7 +109,7 @@ from the lists below — a typo can no longer mint a tag, it stops the run.
 **`tagsScope`** — any of `Nacional`, `Internacional`. Array, can be empty.
 
 **`tagsSport`** — choose only from (case-sensitive, don't invent):
-`Fútbol, Liga MX, NFL, NBA, Béisbol, Tenis, Golf, F1, Olímpico,
+`Fútbol, Liga MX, NFL, NBA, WNBA, Béisbol, Tenis, Golf, F1, Olímpico,
 Multi-deporte / Otros` (`lib/taxonomy.ts`, `SPORT_OPTIONS`).
 
 **Pick the most specific value the story actually supports** before falling
@@ -129,6 +129,12 @@ fit:
   a sport with no tag of its own (e.g. cycling). It is not a stand-in for
   "didn't check if a specific tag existed." A story about MLB's Home Run Derby
   is `Béisbol`.
+- A **WNBA story** (the league, its teams, its media deals, its players) →
+  `WNBA`, not `NBA`. Added 2026-10-20 at the publisher's request, after the
+  WNBA Finals coverage had to borrow `NBA` for lack of its own tag. A story
+  about both leagues (a joint media deal, an owner with teams in each) carries
+  both. On the public site both roll up into the `Basquetbol` topic
+  (`lib/topics.ts`), so neither becomes its own front door.
 
 Before writing the final value, re-read the story's own core subject — not just
 the sports mentioned in passing — and check it against the list.

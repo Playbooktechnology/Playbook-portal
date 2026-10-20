@@ -394,7 +394,7 @@ Fixed, closed three-tier tag system, shared by the CMS and every public
 filter/tag page:
 
 - **`scope`**: Nacional, Internacional.
-- **`sport`**: Fútbol, Liga MX, NFL, NBA, Béisbol, Tenis, Golf, F1,
+- **`sport`**: Fútbol, Liga MX, NFL, NBA, WNBA, Béisbol, Tenis, Golf, F1,
   Olímpico, Multi-deporte / Otros.
 - **`vertical`**: Gobernanza y Regulación, Derechos de TV y Streaming,
   Fusiones y Adquisiciones, Patrocinios, Infraestructura y Venues, Sedes y
