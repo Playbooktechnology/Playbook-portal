@@ -442,6 +442,37 @@ forward arrow for TFBR. Nothing to write at drafting time — getting
 `publication`/`source` right is what selects the mark, which is one more reason
 a wrong source pair is a visible mistake and not just a filing error.
 
+### The update note on a published article (2026-10-20)
+
+(Playbook team, 2026-10-20, after the Josh Wander / 777 Partners article was
+revised five days after publishing.) Any change to the **facts** of a published
+article carries a dated note, so a reader who saw the first version can tell
+what moved. Two kinds, and the difference matters:
+
+- **Actualización:** the story advanced, or a published fact was incomplete
+  but not false. `*Actualizado el 20 de octubre de 2026: se precisaron los
+  US$500 millones y se sumó la venta del Vasco.*`
+- **Corrección:** what was published was wrong. Name the error and the fix:
+  `*Corrección, 20 de octubre de 2026: la nota decía X; lo correcto es Y.*`
+
+**Re-read the original source before calling it a correction.** In the
+worked example, "US$500 millones en restitución" looked like an error against
+the prosecutors' "forfeit at least $500 million", but AP's own text said
+restitution: the plea carried both, so it was an actualización.
+
+**Format and placement.** One italic paragraph, the date in full, one sentence
+on what changed. It goes **immediately before `**Opinión de Playbook:**`**
+(on La Lana, before `## La Opinión de Playbook`; on an A with no Opinión,
+just before `Fuentes:`). Placed after the Opinión, it pushes the Opinión out of
+its callout: `check-voice.mjs` flags that as a RENDER BUG. A second update gets
+its own paragraph after the first.
+
+**No note** for typos, style, a cover or credit swap, or tag and date changes
+made in the CMS. The note counts toward the word total; a marginal overshoot
+of the tier caused by the note alone is acceptable, and the Opinión is never
+cut to make room for it. Apply the change with `scripts/update-article.ts`
+(`publishing-mechanics.md`, "Fixing a published body").
+
 ### The `Fuentes:` credit line
 
 A final paragraph in this exact shape is lifted **out of the body** and set
