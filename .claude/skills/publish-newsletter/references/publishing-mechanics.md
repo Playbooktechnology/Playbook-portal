@@ -55,6 +55,10 @@ Run the corrected `bodyMarkdown` back through the same pipeline:
 npx tsx --env-file=.env.local scripts/update-article.ts <fix.json> --dry-run
 ```
 
+A change to the article's facts also carries a dated update note placed just
+before the Opinión: see `format-tiers.md`, "The update note on a published
+article".
+
 It patches only the fields an entry carries, matched on `id` or `sourceUrl`,
 and rebuilds `body_json` + `body_html` together whenever `bodyMarkdown` is
 present. Drop `--dry-run` once the diff looks right. This is also the tool for

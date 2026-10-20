@@ -49,6 +49,7 @@ y `hub-builder`.
 | 6. Campos y taxonomía | título, excerpt, tags, boleta, imagen | `fields-and-taxonomy.md`, `images.md` |
 | 7. Self-check + **Moat Check** | ¿está bien escrito, y merecía escribirse? | `voice-and-style.md` §12, `moat-check.md` |
 | 8/9. Publicación | (zero-review o con gate humano, según la skill) | `publishing-mechanics.md` de cada skill |
+| 10. Cambios después de publicar | ¿es actualización o corrección, y cómo se avisa? | `format-tiers.md` §6 ("The update note on a published article") |
 
 ## El flujo completo
 
