@@ -624,6 +624,30 @@ as the default subject, never put it in a title, and never let the
 simplification blur a real distinction (county vs. city) that the story
 depends on: if the distinction matters, explain it once in a clause.
 
+### Marcas y medios extranjeros poco conocidos: preséntalos en la primera mención
+
+(Playbook team, 2026-10-14, on the draft about the Saudi league losing its
+Brazilian broadcaster: *"solo siento que "La Band" no lo van a entender todos,
+no es como ESPN, por ejemplo"*.) A brand, outlet, network, sponsor or company
+that is big in its own country can be unknown to a Mexican reader. Dropping
+its bare name ("la Band", "Globo", "Betano", "DAZN Japón") assumes a context
+the reader doesn't have, and the sentence stops carrying information.
+
+The test: would a top player in Mexico recognize the name without context, the
+way they recognize ESPN, Televisa, Nike or Bimbo? If not, the first mention
+says what it is in a short clause, with the detail that matters for the story:
+"Band, la cadena de televisión abierta del Grupo Bandeirantes", "Betano, la
+casa de apuestas que patrocina al Brasileirão". After that, the bare name is
+fine.
+
+Two consequences:
+
+- **Unknown names stay out of the title.** The title can't carry the
+  explanation, so it names the thing the reader does know (the league, the
+  player, the country) and the body introduces the brand.
+- **Don't over-explain the obvious.** ESPN, Nike, FIFA, la NFL or el Real
+  Madrid need no introduction; explaining them reads as filler.
+
 ### Fórmulas bajo vigilancia
 
 Not banned. But every time one appears, ask: **can I say this more specifically
@@ -1059,7 +1083,7 @@ Length does not demonstrate depth. Selection does.
 
 ## 12. Checklist de publicación
 
-Run these fourteen before considering a piece done (guide, 2026-08-13, grown
+Run these fifteen before considering a piece done (guide, 2026-08-13, grown
 since). This is the last gate in both skills' decision flow.
 
 1. ¿Elegimos correctamente entre A, B, C y D? (`format-tiers.md` §1)
@@ -1083,6 +1107,10 @@ since). This is the last gate in both skills' decision flow.
     `check-voice.mjs` lo marca desde 2026-09-28, cuando la nota del veto a las
     apuestas en Brasil se publicó con 2 de 11 conversiones y la regla llevaba
     once días escrita.)
+15. ¿Cada marca, medio o empresa extranjera que un lector mexicano no
+    reconocería sin contexto se presenta en su primera mención, y queda fuera
+    del título? (§7, "Marcas y medios extranjeros poco conocidos"; desde
+    2026-10-14.)
 
 > **La definición final.** Playbook escribe para alguien que conoce el deporte
 > y quiere entender mejor su negocio. Abre con el movimiento, elimina el
