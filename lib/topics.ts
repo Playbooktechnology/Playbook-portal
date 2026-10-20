@@ -35,7 +35,7 @@ export type Topic = {
 export const SPORT_TOPICS: Topic[] = [
   { label: 'Fútbol', slug: 'futbol', values: ['Fútbol', 'Liga MX'] },
   { label: 'Fútbol americano', slug: 'futbol-americano', values: ['NFL'] },
-  { label: 'Basquetbol', slug: 'basquetbol', values: ['NBA'] },
+  { label: 'Basquetbol', slug: 'basquetbol', values: ['NBA', 'WNBA'] },
   { label: 'Béisbol', slug: 'beisbol', values: ['Béisbol'] },
   { label: 'Automovilismo', slug: 'automovilismo', values: ['F1'] },
   // Tenis, Golf and Olímpico are real tags with ~28 articles between them and
