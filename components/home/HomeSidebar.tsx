@@ -27,6 +27,7 @@ import { articlePath } from '@/lib/article-url';
 //   hub heroes use. Skips the hero story so the rail adds information
 //   instead of repeating the headline sitting next to it; collapses to
 //   nothing on days when no ranked story carries a figure.
+//   Scraped from the HEADLINE ONLY since 2026-10-21 — see the call below.
 // - El Marcador de Negocios (2026-09-23, replaced El tablero de la FIFA):
 //   the week's featured deal, three more, and the year's confirmed total,
 //   read from the `deals` table (components/home/DealsBoard.tsx). Edited in
@@ -43,18 +44,50 @@ export async function HomeSidebar() {
   let cifra: { figure: string; caption?: string; id: string; title: string } | null = null;
   for (const article of ranked) {
     if (article === hero) continue;
-    const figure = extractPullFigure(article.title, article.excerpt);
+    // THE HEADLINE ONLY — never the excerpt (publisher, 2026-10-21).
+    //
+    // The excerpt is where a story keeps its CONTEXT numbers, and this
+    // module has no way to tell one from the news. The Siroko × Chicago
+    // Bulls story is the case that forced it: the deal's value was never
+    // disclosed, the excerpt closed on the brand's €42 millones of 2024
+    // revenue, and the rail printed "€42 millones" over a headline about a
+    // sponsorship. Every reader gets the same wrong answer — that the deal
+    // is worth €42M. Auditing the day's whole front page, five of fourteen
+    // stories would have surfaced a context number the same way, among them
+    // a jersey's €210 price as "La cifra del día".
+    //
+    // A number that made it into the HEADLINE already passed an editor who
+    // decided it was the news. That is the judgment this module cannot make
+    // and does not have to: it borrows the one already made.
+    //
+    // It also fixes the caption hole underneath. A scraped figure carries no
+    // caption (only a declared Cifra clave does — see below), so the only
+    // context the reader gets is the headline sitting under it. When the
+    // number comes FROM that headline, the headline is a correct caption by
+    // construction; when it came from the excerpt, it was a caption for a
+    // different number.
+    //
+    // The cost is deliberate: fewer stories qualify, so the rail collapses
+    // more often. The alternative considered and rejected was to require a
+    // declared Cifra clave — of the fourteen stories on the front page that
+    // day exactly one declared one, which would have retired the module in
+    // practice rather than fixed it.
+    const figure = extractPullFigure(article.title);
     if (figure) {
       cifra = { figure, id: article.id, title: article.title };
       break;
     }
   }
   // A declared "Cifra clave:" in the chosen story's body always beats the
-  // scraped title/excerpt figure — the scrape can land on a CONTEXT number
-  // (calibration, 2026-08-05: the LIV Golf story led its excerpt with the
-  // PIF's historical 6,000 millones while the story's actual figure, the
-  // rumored US$250M, was the declared beat). One bounded by-id fetch for
-  // the single chosen article, React-cached like every other lookup.
+  // scraped headline figure — the editor's own pick, with its own caption,
+  // outranks anything read off the headline (calibration, 2026-08-05: the
+  // LIV Golf story led its excerpt with the PIF's historical 6,000 millones
+  // while the story's actual figure, the rumored US$250M, was the declared
+  // beat). That calibration answered the same complaint this module hit
+  // again on 2026-10-21, which is the tell: preferring the declared figure
+  // fixes the stories that HAVE one, and the excerpt scrape above was still
+  // free to invent a number for the rest. One bounded by-id fetch for the
+  // single chosen article, React-cached like every other lookup.
   if (cifra) {
     const full = await getArticleById(cifra.id);
     const declared = full && extractCifraFromBody(full.bodyHtml, full.teaser);
