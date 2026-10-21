@@ -1,5 +1,5 @@
 import { cache } from 'react';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
 import { db } from '../db/client';
 import { articles } from '../db/schema';
@@ -130,6 +130,77 @@ export const getArticleById = cache(async (id: string): Promise<Article | null> 
   const [row] = await db.select().from(articles).where(eq(articles.id, id)).limit(1);
   return row ? { ...row, source: normalizeSource(row.source) } : null;
 });
+
+// ------------------------------------------------- Declared "Cifra clave"
+// Which published articles declare a pull-figure, and the fragment that
+// declares it — for the homepage's La cifra del día, which needs to know
+// BEFORE choosing a story whether that story carries an editor-declared
+// figure (components/home/HomeSidebar.tsx explains why that order matters).
+//
+// The body is the only place the declaration lives, and the body is exactly
+// what LIST_COLUMNS refuses to ship (see its comment: fetching bodies on
+// list queries is what burned Neon's monthly transfer allowance in five
+// days). So this neither widens that query nor fetches N bodies one by one:
+// one query, only the rows that contain the convention, and `substring`
+// trims each to the ~600 characters around the declaration. Dozens of rows
+// of a few hundred bytes, not a table of full bodies.
+//
+// It returns the FRAGMENT, not a parsed figure, on purpose: parsing stays
+// with extractCifraFromBody in lib/product-hubs.ts, which is also what the
+// article page itself runs. A second parser in SQL would be the same rule
+// in two dialects, drifting the first time the convention changes.
+const queryDeclaredCifras = unstable_cache(
+  async (): Promise<Record<string, string>> => {
+    const rows = await db
+      .select({
+        id: articles.id,
+        // Plain string functions rather than `substring(... from '<regex>')`:
+        // the parser's own matching is case-insensitive, and the regex form
+        // of that in Postgres is a leading `(?i)`, whose parentheses collide
+        // with the rule that a pattern "containing parentheses" returns its
+        // first subexpression instead of the whole match. position()+substr()
+        // has no such corner, and lower() makes the search case-insensitive
+        // the same way the WHERE's ilike does.
+        fragment: sql<string | null>`substr(
+          ${articles.bodyHtml},
+          position('cifra clave' in lower(${articles.bodyHtml})),
+          600
+        )`,
+      })
+      .from(articles)
+      .where(
+        and(
+          eq(articles.status, 'published'),
+          eq(articles.listed, true),
+          sql`${articles.bodyHtml} ilike '%Cifra clave%'`,
+        ),
+      );
+    const out: Record<string, string> = {};
+    for (const row of rows) {
+      // Re-wrapped in a <p> because the substring starts AT the convention,
+      // past the paragraph's opening tag; the parser matches on the
+      // paragraph shape. The closing </p> comes from the fragment itself,
+      // and a declaration too long to close inside 600 characters simply
+      // fails to parse — the same inert outcome as a malformed one.
+      if (row.fragment) out[row.id] = `<p>${row.fragment}`;
+    }
+    return out;
+  },
+  ['articles-declared-cifras'],
+  { revalidate: 60, tags: [ARTICLES_CACHE_TAG] },
+);
+
+/** Article id → the HTML fragment declaring its `Cifra clave`, if it has one. */
+export async function getDeclaredCifras(): Promise<Record<string, string>> {
+  try {
+    return await queryDeclaredCifras();
+  } catch (err) {
+    // The rail has a headline-figure fallback and must never be the reason
+    // the homepage 500s (the "Más leídas" incident, 2026-09-30).
+    console.error('[cifra] no se pudieron leer las cifras declaradas:', err);
+    return {};
+  }
+}
 
 export type ArticleMeta = {
   /** Coverage tier, so the kicker can badge by hub destination. */
