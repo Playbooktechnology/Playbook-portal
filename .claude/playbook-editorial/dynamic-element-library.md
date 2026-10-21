@@ -190,10 +190,40 @@ numbers it visualizes) still holds everywhere else; this is the one shape where
 the device leads and the paragraph follows, because the arithmetic is what the
 beat is being used to set up.
 
-**The homepage reads this beat.** "La cifra del día" (sidebar) picks the top
-ranked story with a figure and PREFERS its declared Cifra clave over anything
-scraped from title/excerpt. Declaring the beat is how you control what number
-represents the story site-wide.
+**The homepage reads this beat, and since 2026-10-21 it is the only way a
+mid-body figure can reach it.** "La cifra del día" (sidebar) walks the ranked
+stories and takes the first declared `Cifra clave` it finds — ahead of any
+higher-ranked story, because a declared beat was vouched for by a human and
+carries its own caption. With none declared anywhere, it falls back to a figure
+in a HEADLINE, and it no longer reads the excerpt at all.
+
+That last part is why declaring matters more than it used to. The excerpt was
+dropped as a source because it is where a story keeps its context numbers: the
+Siroko × Chicago Bulls piece closed its excerpt on the brand's €42 millones of
+2024 revenue, the rail printed "€42 millones" over a headline about a
+sponsorship whose value was never disclosed, and the number read as the price of
+the deal. Deriving a caption automatically was tried and rejected on its output
+— four of nine came out as severed fragments ("Entregará al menos"). So the
+best figures, the ones living in the middle of the story (a deal's value, a
+study's result, the size of a fine), now reach the homepage **only if you
+declare them.** Nothing else will promote them.
+
+**Declare one whenever the story has a number the reader should remember.** Not
+"when a device fits" — this one is the default spend of the article's device
+budget, ahead of the rest of §2, and §1's "no device fits is the exception"
+directive applies to it first. A `Cifra clave` costs one device slot, which a
+Noticia Playbook (B) and anything longer can afford; tier A keeps its no-device
+rule (`format-tiers.md` §1) and simply does not feed the rail.
+
+**The six-word test, which is also the stop rule.** Before declaring, write what
+the number measures in six words or fewer: "lo que la FIFA ofrece por
+federación", "la facturación de Siroko en 2024". If you cannot — because the
+figure is an aggregate of two sources, or it needs a sentence of hedging, or you
+are not certain it is what you think it is — **there is no Cifra clave in this
+story.** Leave it out. A number nobody can caption in six words is a number the
+reader will caption for themselves, from the headline sitting under it, and that
+is exactly how €42 millones became the price of a sponsorship. Contrasted, not
+interpreted: the caption is the contrast.
 
 **The caption has to work away from the article** (2026-08-07). The rail prints
 it under the chip, where it is the only thing telling a reader what the number
