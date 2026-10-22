@@ -426,6 +426,13 @@ Decision order (cheapest checks first):
    `app/(public)/articulo/page.tsx` never even fetches the article body
    (see `getArticleMetaById` above).
 
+While the wall is off (`METERING_ENABLED` false), steps 2 and 4–6 are
+skipped on the page itself: it grants full access with no DB work, and the
+read is logged from the browser instead (`components/article/ReadBeacon.tsx`
+→ `app/api/read` → `recordRead`), once per browser per article per month.
+Same `article_reads` rows, without a database write on every crawl (the
+2026-10-22 Neon quota outage).
+
 Anonymous identity is a signed cookie (`pb_anon`), minted by
 `middleware.ts` using `lib/anon-cookie.ts` (Web Crypto HMAC-SHA256, so the
 same code works on Edge or Node runtime; reuses `AUTH_SECRET`, justified
