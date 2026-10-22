@@ -9,10 +9,35 @@ import { TOPIC_TIER_KEYS, articleInTopic, topicBySlug } from '../topics';
 import type { TaxonomyTier } from '../taxonomy';
 import { authorDisplayName } from '@/lib/author-name';
 import { HUBS } from '../hubs';
+import snapshotRows from './articles-snapshot.json';
 
 export type Article = typeof articles.$inferSelect;
 
 export const ARTICLES_CACHE_TAG = 'articles';
+
+// Outage fallback (2026-10-22). Neon's free plan locked the database on
+// quota and every article page 500'd while the homepage kept serving from
+// the cached list. articles-snapshot.json is that list (LIST_COLUMNS, no
+// body) captured from the live homepage payload the same day, so when the
+// database throws, listings and article pages degrade to title, image and
+// excerpt instead of an error. It is a stale copy by design: only reached
+// when a query fails, never when the database answers.
+const SNAPSHOT: Article[] = (snapshotRows as Record<string, unknown>[]).map(row => ({
+  ...row,
+  createdAt: new Date(row.createdAt as string),
+  updatedAt: new Date(row.updatedAt as string),
+  heroPinnedUntil: row.heroPinnedUntil ? new Date(row.heroPinnedUntil as string) : null,
+})) as unknown as Article[];
+const SNAPSHOT_IDS = new WeakSet<object>(SNAPSHOT);
+
+function snapshotArticle(id: string): Article | null {
+  return SNAPSHOT.find(a => a.id === id) ?? null;
+}
+
+/** True when `article` came from the outage snapshot rather than the database. */
+export function isSnapshotArticle(article: object): boolean {
+  return SNAPSHOT_IDS.has(article);
+}
 
 // Every column except bodyJson/bodyHtml (the two heavy ones — full TipTap
 // document + rendered HTML per article). Nothing that reads getAllArticles()
@@ -99,7 +124,13 @@ const queryPublishedArticles = unstable_cache(
 // React's cache() so multiple components (ticker, hero, list) don't each
 // issue their own query.
 export const getAllArticles = cache(async (): Promise<Article[]> => {
-  const rows = await queryPublishedArticles();
+  let rows: Article[];
+  try {
+    rows = await queryPublishedArticles();
+  } catch (err) {
+    console.error('[articles] list query failed, serving outage snapshot:', err);
+    rows = [...SNAPSHOT];
+  }
   return rows.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 });
 
@@ -127,7 +158,15 @@ export const getPublicArticles = cache(async (): Promise<Article[]> => {
 // after already resolving it another way within the same render doesn't
 // issue the same by-id lookup twice.
 export const getArticleById = cache(async (id: string): Promise<Article | null> => {
-  const [row] = await db.select().from(articles).where(eq(articles.id, id)).limit(1);
+  let row: Article | undefined;
+  try {
+    [row] = await db.select().from(articles).where(eq(articles.id, id)).limit(1);
+  } catch (err) {
+    const snap = snapshotArticle(id);
+    if (!snap) throw err;
+    console.error(`[articles] by-id query failed for ${id}, serving outage snapshot:`, err);
+    return snap;
+  }
   return row ? { ...row, source: normalizeSource(row.source) } : null;
 });
 
@@ -239,6 +278,17 @@ export type ArticleMeta = {
 // with the same id during the same request (Next runs both per navigation)
 // — without this, every article view ran the identical lookup twice.
 export const getArticleMetaById = cache(async (id: string): Promise<ArticleMeta | null> => {
+  try {
+    return await queryArticleMeta(id);
+  } catch (err) {
+    const snap = snapshotArticle(id);
+    if (!snap) throw err;
+    console.error(`[articles] meta query failed for ${id}, serving outage snapshot:`, err);
+    return snap;
+  }
+});
+
+async function queryArticleMeta(id: string): Promise<ArticleMeta | null> {
   const [row] = await db
     .select({
       id: articles.id,
@@ -265,7 +315,7 @@ export const getArticleMetaById = cache(async (id: string): Promise<ArticleMeta 
     .where(eq(articles.id, id))
     .limit(1);
   return row ? { ...row, source: normalizeSource(row.source) } : null;
-});
+}
 
 // Matched on the DISPLAY name, not the raw column, so an author whose byline
 // carries markdown links resolves the same whether the incoming `name` is the

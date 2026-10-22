@@ -47,7 +47,22 @@ async function main() {
   process.exit(0);
 }
 
+// TEMPORARY (2026-10-22, approved by the site owner; revert once Neon is
+// reachable again): a database that refuses every connection, like the
+// Neon quota lock of that day, is not a migration failure, since nothing
+// can have half-applied. Failing the build there only kept the outage
+// snapshot in lib/data/articles.ts from ever reaching production.
+function isUnreachable(err: unknown): boolean {
+  const e = err as { code?: string; message?: string; cause?: unknown };
+  const text = `${e?.code ?? ''} ${e?.message ?? ''} ${String(e?.cause ?? '')}`;
+  return /quota|ENOTFOUND|ECONNREFUSED|ETIMEDOUT|endpoint is disabled/i.test(text);
+}
+
 main().catch(err => {
+  if (isUnreachable(err)) {
+    console.error('[predeploy-migrate] database unreachable, skipping migration (temporary outage bypass):', err);
+    process.exit(0);
+  }
   // Unlike a missing env var, a real migration failure (bad SQL, a
   // constraint violation against real data, a lock timeout) has to fail
   // the build loudly. Deploying new application code against a database
