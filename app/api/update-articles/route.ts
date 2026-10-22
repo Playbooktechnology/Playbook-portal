@@ -167,8 +167,25 @@ export async function POST(req: NextRequest) {
   const slug = (article.url || '').replace(/.*\/p\//, '').replace(/[^a-z0-9-]/g, '-');
   const dateObj = new Date(article.pubDate || Date.now());
   const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-  const dateFormatted = `${dateObj.getDate()} ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
-  const dateISO = dateObj.toISOString().slice(0, 10);
+  // Calendar date in the newsroom's own timezone, not the server's (Vercel
+  // functions default to UTC). A Substack edition sent in the evening in
+  // Mexico City is already past midnight UTC, which silently dated it a day
+  // ahead of when it actually went out -- confirmed 2026-09-22 when several
+  // editions sent on the 21st landed as "22 de septiembre".
+  const mxDateParts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Mexico_City',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+    .formatToParts(dateObj)
+    .reduce<Record<string, string>>((acc, part) => {
+      acc[part.type] = part.value;
+      return acc;
+    }, {});
+  const { year: yMX, month: mMX, day: dMX } = mxDateParts;
+  const dateFormatted = `${Number(dMX)} ${months[Number(mMX) - 1]} ${yMX}`;
+  const dateISO = `${yMX}-${mMX}-${dMX}`;
 
   // Neutral priority (3) when not supplied, same as legacy — avoids the old
   // "maxPriority + 1" bug that silently outgrew the 5-star hero signal.
