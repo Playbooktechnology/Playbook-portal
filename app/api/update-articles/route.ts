@@ -11,6 +11,9 @@ import { articles } from '@/lib/db/schema';
 import { ARTICLES_CACHE_TAG } from '@/lib/data/articles';
 import { SPORT_OPTIONS, validateTags, formatTagIssues } from '@/lib/taxonomy';
 import { checkRateLimit } from '@/lib/rate-limit';
+import { articleUrl } from '@/lib/article-url';
+import { submitToIndexNow } from '@/lib/indexnow';
+import { SITE_URL } from '@/lib/site-url';
 
 // Only counts against failed-secret attempts, never against legitimate
 // Make.com traffic (a real digest can legitimately post several items in
@@ -230,6 +233,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ status: 'duplicate', url: article.url });
       }
       revalidateTag(ARTICLES_CACHE_TAG);
+      await submitToIndexNow([articleUrl(SITE_URL, inserted.id)]);
       return NextResponse.json({
         status: 'ok',
         article: inserted.title,
