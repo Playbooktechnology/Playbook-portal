@@ -90,11 +90,23 @@ async function getOrCreateAnonReaderId(): Promise<string | null> {
 // worse off than one paying for two indexed queries per article view.
 // Editors and bots still never log, and the quota COUNT only runs when the
 // wall is actually on.
+//
+// 2026-10-22: with the wall off, those per-view queries were most of what
+// kept Neon awake (crawlers included: any UA not on the bot list paid
+// them) until the free plan's monthly quota ran out and every article
+// page went down. With the wall off the page now does no DB work here at
+// all; the read is logged from the reader's browser instead
+// (components/article/ReadBeacon.tsx → app/api/read → recordRead below),
+// once per browser per article per month. Same rows, same "Más leídas" —
+// minus the crawlers that never run JavaScript.
 export async function resolveEntitlement(articleId: string): Promise<Entitlement> {
   const session = await auth();
 
   if (session?.user?.role === 'editor') {
     return { kind: 'full', reason: 'editor' };
+  }
+  if (!METERING_ENABLED) {
+    return { kind: 'full', reason: session?.user?.role === 'reader' ? 'reader' : 'quota' };
   }
   if (session?.user?.role === 'reader') {
     await logRead({ readerId: session.user.id }, articleId);
@@ -118,15 +130,6 @@ export async function resolveEntitlement(articleId: string): Promise<Entitlement
   const alreadyReadThisArticle = await hasReadThisMonth(identity, articleId, monthKey);
   if (alreadyReadThisArticle) return { kind: 'full', reason: 'quota' };
 
-  // Wall off: record the read and grant access without counting the month's
-  // quota — that COUNT only decides walling, so with nobody to wall it is
-  // pure cost. 'quota' rather than a new reason: every existing caller
-  // already treats it as "full access, nothing owed".
-  if (!METERING_ENABLED) {
-    await logRead(identity, articleId);
-    return { kind: 'full', reason: 'quota' };
-  }
-
   const readsThisMonth = await countReadsThisMonth(identity, monthKey);
   if (readsThisMonth < FREE_ARTICLES_PER_MONTH) {
     await logRead(identity, articleId);
@@ -134,4 +137,24 @@ export async function resolveEntitlement(articleId: string): Promise<Entitlement
   }
 
   return { kind: 'walled', readsThisMonth, limit: FREE_ARTICLES_PER_MONTH };
+}
+
+// The read log's write path while the wall is off, called by app/api/read.
+// Same exemptions as resolveEntitlement (editors and listed bots never
+// log) and the same insert, which the table's unique indexes already make
+// a no-op on a repeat read within the month.
+export async function recordRead(articleId: string): Promise<void> {
+  const session = await auth();
+  if (session?.user?.role === 'editor') return;
+  if (session?.user?.role === 'reader') {
+    await logRead({ readerId: session.user.id }, articleId);
+    return;
+  }
+
+  const headersList = await headers();
+  if (isBotUserAgent(headersList.get('user-agent'))) return;
+
+  const anonId = await getOrCreateAnonReaderId();
+  if (!anonId) return;
+  await logRead({ anonId }, articleId);
 }

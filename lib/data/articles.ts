@@ -154,13 +154,43 @@ export const getPublicArticles = cache(async (): Promise<Article[]> => {
   return all.filter(a => !isInUnlistedHub(a));
 });
 
+// Shared across requests for 5 minutes (2026-10-22), same tag as the list
+// so an editor's save/publish invalidates it at once. Before this, every
+// article view — crawlers included — pulled the full body from Neon, which
+// kept the compute awake around the clock and exhausted the free plan's
+// monthly quota. A published piece almost never changes; edits made outside
+// the CMS (scripts/update-article.ts) show up within the window.
+const ARTICLE_REVALIDATE_SECONDS = 300;
+
+function queryArticleById(id: string): Promise<Article | null> {
+  return unstable_cache(
+    async () => {
+      const [row] = await db.select().from(articles).where(eq(articles.id, id)).limit(1);
+      return row ?? null;
+    },
+    ['article-by-id', id],
+    { revalidate: ARTICLE_REVALIDATE_SECONDS, tags: [ARTICLES_CACHE_TAG] },
+  )();
+}
+
+// The Data Cache stores JSON, so timestamps come back as strings.
+function reviveDates(row: Article): Article {
+  return {
+    ...row,
+    createdAt: new Date(row.createdAt),
+    updatedAt: new Date(row.updatedAt),
+    heroPinnedUntil: row.heroPinnedUntil ? new Date(row.heroPinnedUntil) : null,
+  };
+}
+
 // cache()-wrapped so a request that reads the full article (body included)
 // after already resolving it another way within the same render doesn't
 // issue the same by-id lookup twice.
 export const getArticleById = cache(async (id: string): Promise<Article | null> => {
-  let row: Article | undefined;
+  let row: Article | null;
   try {
-    [row] = await db.select().from(articles).where(eq(articles.id, id)).limit(1);
+    row = await queryArticleById(id);
+    if (row) row = reviveDates(row);
   } catch (err) {
     const snap = snapshotArticle(id);
     if (!snap) throw err;
@@ -279,7 +309,11 @@ export type ArticleMeta = {
 // — without this, every article view ran the identical lookup twice.
 export const getArticleMetaById = cache(async (id: string): Promise<ArticleMeta | null> => {
   try {
-    return await queryArticleMeta(id);
+    // Same shared cache and window as getArticleById, for the same reason.
+    return await unstable_cache(() => queryArticleMeta(id), ['article-meta-by-id', id], {
+      revalidate: ARTICLE_REVALIDATE_SECONDS,
+      tags: [ARTICLES_CACHE_TAG],
+    })();
   } catch (err) {
     const snap = snapshotArticle(id);
     if (!snap) throw err;

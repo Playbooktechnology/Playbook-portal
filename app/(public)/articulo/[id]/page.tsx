@@ -17,6 +17,7 @@ import { ShareRow } from '@/components/article/ShareRow';
 // homepage's plain list rows.
 import { EmailWall } from '@/components/article/EmailWall';
 import { ArticleAnalyticsBeacon } from '@/components/article/ArticleAnalyticsBeacon';
+import { ReadBeacon } from '@/components/article/ReadBeacon';
 import { ArticleEngagement } from '@/components/article/ArticleEngagement';
 import { EmailWallBeacon } from '@/components/article/EmailWallBeacon';
 import { productForSource } from '@/lib/analytics-events';
@@ -785,6 +786,8 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
   return (
     <>
       <ArticleAnalyticsBeacon articleId={article.id} />
+      {/* Read log while the wall is off (lib/metering.ts recordRead). */}
+      {!METERING_ENABLED && <ReadBeacon articleId={article.id} />}
       {/* Depth/completion, and the page-product registration the site-wide
           delegated listeners read (components/analytics/SiteEvents.tsx) --
           /articulo's product comes from the row, not the URL. Full-access
