@@ -1390,6 +1390,18 @@ sets the price in display type, this sets what changed hands.
 - Wears the asset's own palette, same registry as `Venta` and `Cadena`.
 - **Mutually exclusive with `Venta` AND `Jugada`.**
 
+**`Incluye` is part of what changed hands, never money that came with the
+deal** (editor, 2026-10-23, on the Valencia CF / Pitchwise piece). The page
+prints `Incluye` in display type under the label "Qué cambia de manos", so it
+reads as the asset itself. That piece declared `Incluye — €100 millones
+(US$112 millones) de capital nuevo para el club`, and on the live page the
+€100 millones read as what was sold, when what moved was the 42% and the
+money was fresh capital going into the club. The row was removed after
+publishing. Use `Incluye` only for rights, assets or stakes that move with
+the transfer (a league's commercial rights, a stadium, a women's team). New
+capital, earn-outs and side payments stay in the prose, and the `Control`
+line is complete without `Incluye`.
+
 ### `Alcance:` — what it covers and what it doesn't
 
 ```
