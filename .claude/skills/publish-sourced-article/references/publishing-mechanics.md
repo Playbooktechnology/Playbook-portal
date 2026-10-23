@@ -24,6 +24,19 @@ Never run Step 9 without an explicit yes in this session. No exceptions, no
    (title, excerpt, teaser, full `bodyMarkdown`, tags, priority, featured,
    image + credit, sourceUrl), **not a summary**. Bring `check-voice.mjs`'s
    output into the review with it.
+   **Shape of the presentation** (publisher, standing preference across the
+   October 2026 runs, so a new conversation doesn't have to restate it):
+   - **Always as a rendered preview artifact first**, never only as text in
+     the chat; then the summary in the reply with the link.
+   - **Three or four title options**, the recommended one first, following
+     `voice-and-style.md` §3 (searchable protagonist and event up front).
+   - **Two or three cover options** (`images.md`), each labeled in the
+     preview with what it shows and its credit. Check every label against the
+     rendered screenshot before sending: on the 2026-10-21 regulator run a
+     misread contact sheet put the "Etihad" label on a low-resolution image
+     and the publisher caught it live.
+   - The publisher answers with a title number, a cover letter and a "sí";
+     any of the three can come back as a revision request instead.
 2. **Then explicitly ask whether to publish**, per article if there is more
    than one (use `AskUserQuestion`, or ask directly if that fits the
    conversation better). **Don't default to "yes" on silence or an ambiguous
@@ -117,6 +130,11 @@ deliberately (fold its facts into prose, as with `Cronología` here) rather than
 leave it as a plain-text device declaration for a reader to see literally.
 
 ### Fixing a published body
+
+**A live article is never changed without its own explicit yes** (publisher,
+standing rule): propose the exact change (old text → new text, title, cover)
+and wait. This holds even when the fix looks trivial. The approval of the
+original publish does not carry over.
 
 Never hand-edit stored `body_html` — it is a cache of `body_json`. Run the
 corrected `bodyMarkdown` back through the same pipeline:
