@@ -73,6 +73,13 @@ Only for the articles approved in Step 8.
 4. Report back a short confirmation per article: title, id, and the live URL
    (`https://playbook-portal-phi.vercel.app/articulo?id=<id>`). If any came back
    `duplicate`, say so — that link was already published before.
+5. **Show the publisher how it turned out** (publisher, 2026-10-23: *"que me
+   des la vista previa de cada artículo para ver qué tal quedó"*): for every
+   published article, open the live page, take a screenshot of the top
+   (title, cover, credit) and of the devices, check them yourself first
+   (cover loads at full resolution, every device renders, no literal
+   `Cronología:` text), and send the screenshots with the link. A published
+   article is not reported done until the publisher has seen it as readers do.
 
 Report the overlap-check outcomes in the same breath (`overlap-check.md`), and
 say in one line anything you couldn't satisfy: no findable cover photo, no
