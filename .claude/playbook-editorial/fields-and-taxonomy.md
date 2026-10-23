@@ -16,7 +16,7 @@ imageUrl, imageCredit`.
 
 - **`title`** — Spanish headline. Full rules in `voice-and-style.md` §3
   (protagonist + movement + data/consequence, ~9 words, three families, no
-  teasing, SEO stays in metadata). When the story has a defining figure it
+  teasing, searchable names up front but never a query string). When the story has a defining figure it
   belongs here verbatim and symbol-prefixed — the hubs and the homepage scrape
   `title` + `excerpt` for it.
 - **`excerpt`** — 1–2 sentence hook for the feed card. Makes the reader want to

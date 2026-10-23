@@ -223,8 +223,18 @@ line being counted (see `format-tiers.md`), not a structural problem.
 ## 3. Titles
 
 **Protagonista + movimiento + dato o consecuencia.** On the portada, editorial
-clarity wins. **SEO lives in metadata only** — never bend a headline toward a
-query string.
+clarity wins. Never bend a headline into a query string or a listicle ("todo
+lo que debes saber…").
+
+**But name what people search** (publisher directive, 2026-10-22, repeated
+across the NFL–General Atlantic, Uber–Femenil, Ligue 1 and Super Bowl LXI
+runs: *"dame opciones de título más SEO"*). The protagonist and the event go
+by the name a reader would type, as early in the line as the sentence allows:
+"Super Bowl LXI con Star Wars: Disney transmitirá…", not "Disney transmitirá
+una versión animada…". That is still the same formula, with the searchable
+noun phrase leading. Avoid jargon a reader wouldn't search or say: the
+publisher rejected "licitar" for TV rights ("busca comprador para sus
+derechos de TV" instead).
 
 | Sí | No |
 |---|---|

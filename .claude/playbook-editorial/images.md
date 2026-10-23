@@ -30,6 +30,16 @@ body, per §2.
   the agency rule, genuinely doesn't fit (a generic stock photo unrelated to
   the actual story), or doesn't exist.
 
+### What the cover should show
+
+(Publisher, standing preference stated across the October 2026 runs.) The
+**protagonist** of the story whenever a usable photo of them exists: the
+person, the club, the event's own official art. Never an AI-generated image,
+and never a frame where a competitor's branding (another outlet's logo,
+watermark or on-screen graphic) is visible. When the story has no single
+protagonist, prefer a photo that shows what the piece is about (a stadium
+full of fans for a ticketing story) over a generic match frame.
+
 ### When the article body won't load, the image usually still will
 
 (2026-08-12, on the Lakers sale, where the ESPN primary returned an empty body
