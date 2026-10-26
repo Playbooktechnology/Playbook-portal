@@ -24,13 +24,38 @@ Never run Step 9 without an explicit yes in this session. No exceptions, no
    (title, excerpt, teaser, full `bodyMarkdown`, tags, priority, featured,
    image + credit, sourceUrl), **not a summary**. Bring `check-voice.mjs`'s
    output into the review with it.
-2. **Then explicitly ask whether to publish**, per article if there is more
+   **Shape of the presentation** (publisher, standing preference across the
+   October 2026 runs, so a new conversation doesn't have to restate it):
+   - **Always as a rendered preview artifact first**, never only as text in
+     the chat; then the summary in the reply with the link.
+   - **Three or four title options**, the recommended one first, following
+     `voice-and-style.md` §3 (searchable protagonist and event up front).
+   - **Two or three cover options** (`images.md`), each labeled in the
+     preview with what it shows and its credit. Check every label against the
+     rendered screenshot before sending: on the 2026-10-21 regulator run a
+     misread contact sheet put the "Etihad" label on a low-resolution image
+     and the publisher caught it live.
+   - The publisher answers with a title number, a cover letter and a "sí";
+     any of the three can come back as a revision request instead.
+2. **Show the device walk in the presentation, every time.** One short block
+   ("Gráficos") with the budget (`readingTime` + `priority`, per
+   `dynamic-element-library.md` §1), each device declared and the paragraph
+   it follows, and for every shape the story's numbers suggested but you did
+   not use, one line on why (fabrication, budget, mutual exclusion). "Sin
+   gráficos" is allowed only with that reasoning written out. (2026-10-23,
+   Bayern/Viessmann run: the draft shipped with zero devices and a budget of
+   two, although its own body carried a post-deal cap table and a 2014→2026
+   valuation — a `Reparto` and a `Salto` — and the boleta had already marked
+   it `chartable`. The editor caught it after publishing. The walk existed in
+   the library's §4 checklist; it was never visible to the human gate, so
+   skipping it was invisible too.)
+3. **Then explicitly ask whether to publish**, per article if there is more
    than one (use `AskUserQuestion`, or ask directly if that fits the
    conversation better). **Don't default to "yes" on silence or an ambiguous
    reply.**
-3. **If changes are requested, revise and re-present the full draft** before
+4. **If changes are requested, revise and re-present the full draft** before
    asking again. Repeat until each article is either approved or dropped.
-4. **Only articles that got an explicit approval move to Step 9.** Anything not
+5. **Only articles that got an explicit approval move to Step 9.** Anything not
    approved is simply not published, no need to explain why.
 
 A reviewer instruction overrides a default. When one does — the 2026-08-07
@@ -60,6 +85,13 @@ Only for the articles approved in Step 8.
 4. Report back a short confirmation per article: title, id, and the live URL
    (`https://playbook-portal-phi.vercel.app/articulo?id=<id>`). If any came back
    `duplicate`, say so — that link was already published before.
+5. **Show the publisher how it turned out** (publisher, 2026-10-23: *"que me
+   des la vista previa de cada artículo para ver qué tal quedó"*): for every
+   published article, open the live page, take a screenshot of the top
+   (title, cover, credit) and of the devices, check them yourself first
+   (cover loads at full resolution, every device renders, no literal
+   `Cronología:` text), and send the screenshots with the link. A published
+   article is not reported done until the publisher has seen it as readers do.
 
 Report the overlap-check outcomes in the same breath (`overlap-check.md`), and
 say in one line anything you couldn't satisfy: no findable cover photo, no
@@ -118,12 +150,21 @@ leave it as a plain-text device declaration for a reader to see literally.
 
 ### Fixing a published body
 
+**A live article is never changed without its own explicit yes** (publisher,
+standing rule): propose the exact change (old text → new text, title, cover)
+and wait. This holds even when the fix looks trivial. The approval of the
+original publish does not carry over.
+
 Never hand-edit stored `body_html` — it is a cache of `body_json`. Run the
 corrected `bodyMarkdown` back through the same pipeline:
 
 ```
 npx tsx --env-file=.env.local scripts/update-article.ts <fix.json> --dry-run
 ```
+
+A change to the article's facts also carries a dated update note placed just
+before the Opinión: see `format-tiers.md`, "The update note on a published
+article".
 
 This is also the tool for the overlap check's outcome B.
 

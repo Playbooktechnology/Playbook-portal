@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { auth } from '@/auth';
-import { getPublicArticles, getArticleById, getArticleMetaById, getArticlesBySource, type Article } from '@/lib/data/articles';
+import { getPublicArticles, getArticleById, getArticleMetaById, getArticlesBySource, isSnapshotArticle, type Article } from '@/lib/data/articles';
 import { getSiteContent } from '@/lib/data/site-content';
 import { relatedArticles, shouldShowAuthor } from '@/lib/related-articles';
 import { resolveEntitlement } from '@/lib/metering';
@@ -17,6 +17,7 @@ import { ShareRow } from '@/components/article/ShareRow';
 // homepage's plain list rows.
 import { EmailWall } from '@/components/article/EmailWall';
 import { ArticleAnalyticsBeacon } from '@/components/article/ArticleAnalyticsBeacon';
+import { ReadBeacon } from '@/components/article/ReadBeacon';
 import { ArticleEngagement } from '@/components/article/ArticleEngagement';
 import { EmailWallBeacon } from '@/components/article/EmailWallBeacon';
 import { productForSource } from '@/lib/analytics-events';
@@ -509,7 +510,13 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
     mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
   };
 
-  const entitlement = await resolveEntitlement(meta.id);
+  // Metering logs every read to the database; when the database is down
+  // (see the outage snapshot in lib/data/articles.ts) fail open to full
+  // access, same posture as resolveEntitlement's own missing-cookie case.
+  const entitlement = await resolveEntitlement(meta.id).catch(err => {
+    console.error('[articulo] entitlement check failed, failing open:', err);
+    return { kind: 'full', reason: 'quota' } as const;
+  });
 
   // Product hub for this article's source (null for non-product sources,
   // e.g. opinion): links the kicker chip to the product's own hub and
@@ -716,7 +723,11 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
   // which stays correct for every legacy/migrated article (bodyJson still
   // null for all of them).
   const hasNativeBody = !!article.bodyHtml;
-  const bodySource = article.teaser || article.excerpt || '';
+  // Outage snapshot rows carry no body, and their teaser is a one-line
+  // wall teaser rather than the legacy body, so render the excerpt under a
+  // notice instead of passing a fragment off as the whole piece.
+  const fromSnapshot = isSnapshotArticle(article);
+  const bodySource = fromSnapshot ? article.excerpt || '' : article.teaser || article.excerpt || '';
   const bodyIsHtml = !hasNativeBody && looksLikeHtml(bodySource);
   const paragraphs = hasNativeBody || bodyIsHtml ? [] : paragraphsFrom(bodySource);
   const related = relatedArticles(article, pool);
@@ -775,6 +786,8 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
   return (
     <>
       <ArticleAnalyticsBeacon articleId={article.id} />
+      {/* Read log while the wall is off (lib/metering.ts recordRead). */}
+      {!METERING_ENABLED && <ReadBeacon articleId={article.id} />}
       {/* Depth/completion, and the page-product registration the site-wide
           delegated listeners read (components/analytics/SiteEvents.tsx) --
           /articulo's product comes from the row, not the URL. Full-access
@@ -796,6 +809,11 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
 
         <article className={articleClass}>
           {header}
+          {fromSnapshot && (
+            <p className="article-degraded-note" role="note">
+              Por un problema técnico, por ahora solo mostramos el resumen de esta nota. El texto completo vuelve en cuanto se resuelva.
+            </p>
+          )}
           <div className="article-body">
             {htmlBody ? (
               splitHtml ? (

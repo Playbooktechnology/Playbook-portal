@@ -5,7 +5,7 @@
 export const SCOPE_OPTIONS = ['Nacional', 'Internacional'] as const;
 
 export const SPORT_OPTIONS = [
-  'Fútbol', 'Liga MX', 'NFL', 'NBA', 'Béisbol', 'Tenis', 'Golf', 'F1', 'Olímpico', 'Multi-deporte / Otros',
+  'Fútbol', 'Liga MX', 'NFL', 'NBA', 'WNBA', 'Béisbol', 'Tenis', 'Golf', 'F1', 'Olímpico', 'Multi-deporte / Otros',
 ] as const;
 
 export const VERTICAL_OPTIONS = [

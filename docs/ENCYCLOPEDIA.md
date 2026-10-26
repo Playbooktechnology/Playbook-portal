@@ -394,7 +394,7 @@ Fixed, closed three-tier tag system, shared by the CMS and every public
 filter/tag page:
 
 - **`scope`**: Nacional, Internacional.
-- **`sport`**: Fútbol, Liga MX, NFL, NBA, Béisbol, Tenis, Golf, F1,
+- **`sport`**: Fútbol, Liga MX, NFL, NBA, WNBA, Béisbol, Tenis, Golf, F1,
   Olímpico, Multi-deporte / Otros.
 - **`vertical`**: Gobernanza y Regulación, Derechos de TV y Streaming,
   Fusiones y Adquisiciones, Patrocinios, Infraestructura y Venues, Sedes y
@@ -425,6 +425,13 @@ Decision order (cheapest checks first):
 7. Otherwise → `{kind:'walled', ...}`, and
    `app/(public)/articulo/page.tsx` never even fetches the article body
    (see `getArticleMetaById` above).
+
+While the wall is off (`METERING_ENABLED` false), steps 2 and 4–6 are
+skipped on the page itself: it grants full access with no DB work, and the
+read is logged from the browser instead (`components/article/ReadBeacon.tsx`
+→ `app/api/read` → `recordRead`), once per browser per article per month.
+Same `article_reads` rows, without a database write on every crawl (the
+2026-10-22 Neon quota outage).
 
 Anonymous identity is a signed cookie (`pb_anon`), minted by
 `middleware.ts` using `lib/anon-cookie.ts` (Web Crypto HMAC-SHA256, so the

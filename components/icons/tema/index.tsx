@@ -131,8 +131,9 @@ const GLYPHS: Record<TemaIconName, Glyph> = {
 };
 
 // -------------------------------------------------- Chip label -> glyph
-// Twelve topics, eleven glyphs. Fútbol and Liga MX SHARE `futbol` on
-// purpose — do not invent a substitute for Liga MX.
+// Thirteen topics, eleven glyphs. Fútbol and Liga MX SHARE `futbol` on
+// purpose — do not invent a substitute for Liga MX. NBA and WNBA share
+// `basquetbol` the same way.
 //
 // F1 is deliberately absent. `f1.svg` carries the Formula 1 wordmark as a
 // knockout in the sidepod: a registered mark of Formula One Licensing BV,
@@ -147,6 +148,7 @@ export const TEMA_ICON_BY_TOPIC: Record<string, TemaIconName> = {
   'Liga MX': 'futbol',
   'NFL': 'futbol-americano',
   'NBA': 'basquetbol',
+  'WNBA': 'basquetbol',
   'Béisbol': 'beisbol',
   'Derechos de TV': 'derechos-tv',
   'Patrocinios': 'patrocinios',

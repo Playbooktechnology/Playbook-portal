@@ -1,5 +1,5 @@
 import { cache } from 'react';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
 import { db } from '../db/client';
 import { articles } from '../db/schema';
@@ -9,10 +9,35 @@ import { TOPIC_TIER_KEYS, articleInTopic, topicBySlug } from '../topics';
 import type { TaxonomyTier } from '../taxonomy';
 import { authorDisplayName } from '@/lib/author-name';
 import { HUBS } from '../hubs';
+import snapshotRows from './articles-snapshot.json';
 
 export type Article = typeof articles.$inferSelect;
 
 export const ARTICLES_CACHE_TAG = 'articles';
+
+// Outage fallback (2026-10-22). Neon's free plan locked the database on
+// quota and every article page 500'd while the homepage kept serving from
+// the cached list. articles-snapshot.json is that list (LIST_COLUMNS, no
+// body) captured from the live homepage payload the same day, so when the
+// database throws, listings and article pages degrade to title, image and
+// excerpt instead of an error. It is a stale copy by design: only reached
+// when a query fails, never when the database answers.
+const SNAPSHOT: Article[] = (snapshotRows as Record<string, unknown>[]).map(row => ({
+  ...row,
+  createdAt: new Date(row.createdAt as string),
+  updatedAt: new Date(row.updatedAt as string),
+  heroPinnedUntil: row.heroPinnedUntil ? new Date(row.heroPinnedUntil as string) : null,
+})) as unknown as Article[];
+const SNAPSHOT_IDS = new WeakSet<object>(SNAPSHOT);
+
+function snapshotArticle(id: string): Article | null {
+  return SNAPSHOT.find(a => a.id === id) ?? null;
+}
+
+/** True when `article` came from the outage snapshot rather than the database. */
+export function isSnapshotArticle(article: object): boolean {
+  return SNAPSHOT_IDS.has(article);
+}
 
 // Every column except bodyJson/bodyHtml (the two heavy ones — full TipTap
 // document + rendered HTML per article). Nothing that reads getAllArticles()
@@ -99,7 +124,13 @@ const queryPublishedArticles = unstable_cache(
 // React's cache() so multiple components (ticker, hero, list) don't each
 // issue their own query.
 export const getAllArticles = cache(async (): Promise<Article[]> => {
-  const rows = await queryPublishedArticles();
+  let rows: Article[];
+  try {
+    rows = await queryPublishedArticles();
+  } catch (err) {
+    console.error('[articles] list query failed, serving outage snapshot:', err);
+    rows = [...SNAPSHOT];
+  }
   return rows.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 });
 
@@ -123,13 +154,122 @@ export const getPublicArticles = cache(async (): Promise<Article[]> => {
   return all.filter(a => !isInUnlistedHub(a));
 });
 
+// Shared across requests for 5 minutes (2026-10-22), same tag as the list
+// so an editor's save/publish invalidates it at once. Before this, every
+// article view — crawlers included — pulled the full body from Neon, which
+// kept the compute awake around the clock and exhausted the free plan's
+// monthly quota. A published piece almost never changes; edits made outside
+// the CMS (scripts/update-article.ts) show up within the window.
+const ARTICLE_REVALIDATE_SECONDS = 300;
+
+function queryArticleById(id: string): Promise<Article | null> {
+  return unstable_cache(
+    async () => {
+      const [row] = await db.select().from(articles).where(eq(articles.id, id)).limit(1);
+      return row ?? null;
+    },
+    ['article-by-id', id],
+    { revalidate: ARTICLE_REVALIDATE_SECONDS, tags: [ARTICLES_CACHE_TAG] },
+  )();
+}
+
+// The Data Cache stores JSON, so timestamps come back as strings.
+function reviveDates(row: Article): Article {
+  return {
+    ...row,
+    createdAt: new Date(row.createdAt),
+    updatedAt: new Date(row.updatedAt),
+    heroPinnedUntil: row.heroPinnedUntil ? new Date(row.heroPinnedUntil) : null,
+  };
+}
+
 // cache()-wrapped so a request that reads the full article (body included)
 // after already resolving it another way within the same render doesn't
 // issue the same by-id lookup twice.
 export const getArticleById = cache(async (id: string): Promise<Article | null> => {
-  const [row] = await db.select().from(articles).where(eq(articles.id, id)).limit(1);
+  let row: Article | null;
+  try {
+    row = await queryArticleById(id);
+    if (row) row = reviveDates(row);
+  } catch (err) {
+    const snap = snapshotArticle(id);
+    if (!snap) throw err;
+    console.error(`[articles] by-id query failed for ${id}, serving outage snapshot:`, err);
+    return snap;
+  }
   return row ? { ...row, source: normalizeSource(row.source) } : null;
 });
+
+// ------------------------------------------------- Declared "Cifra clave"
+// Which published articles declare a pull-figure, and the fragment that
+// declares it — for the homepage's La cifra del día, which needs to know
+// BEFORE choosing a story whether that story carries an editor-declared
+// figure (components/home/HomeSidebar.tsx explains why that order matters).
+//
+// The body is the only place the declaration lives, and the body is exactly
+// what LIST_COLUMNS refuses to ship (see its comment: fetching bodies on
+// list queries is what burned Neon's monthly transfer allowance in five
+// days). So this neither widens that query nor fetches N bodies one by one:
+// one query, only the rows that contain the convention, and `substring`
+// trims each to the ~600 characters around the declaration. Dozens of rows
+// of a few hundred bytes, not a table of full bodies.
+//
+// It returns the FRAGMENT, not a parsed figure, on purpose: parsing stays
+// with extractCifraFromBody in lib/product-hubs.ts, which is also what the
+// article page itself runs. A second parser in SQL would be the same rule
+// in two dialects, drifting the first time the convention changes.
+const queryDeclaredCifras = unstable_cache(
+  async (): Promise<Record<string, string>> => {
+    const rows = await db
+      .select({
+        id: articles.id,
+        // Plain string functions rather than `substring(... from '<regex>')`:
+        // the parser's own matching is case-insensitive, and the regex form
+        // of that in Postgres is a leading `(?i)`, whose parentheses collide
+        // with the rule that a pattern "containing parentheses" returns its
+        // first subexpression instead of the whole match. position()+substr()
+        // has no such corner, and lower() makes the search case-insensitive
+        // the same way the WHERE's ilike does.
+        fragment: sql<string | null>`substr(
+          ${articles.bodyHtml},
+          position('cifra clave' in lower(${articles.bodyHtml})),
+          600
+        )`,
+      })
+      .from(articles)
+      .where(
+        and(
+          eq(articles.status, 'published'),
+          eq(articles.listed, true),
+          sql`${articles.bodyHtml} ilike '%Cifra clave%'`,
+        ),
+      );
+    const out: Record<string, string> = {};
+    for (const row of rows) {
+      // Re-wrapped in a <p> because the substring starts AT the convention,
+      // past the paragraph's opening tag; the parser matches on the
+      // paragraph shape. The closing </p> comes from the fragment itself,
+      // and a declaration too long to close inside 600 characters simply
+      // fails to parse — the same inert outcome as a malformed one.
+      if (row.fragment) out[row.id] = `<p>${row.fragment}`;
+    }
+    return out;
+  },
+  ['articles-declared-cifras'],
+  { revalidate: 60, tags: [ARTICLES_CACHE_TAG] },
+);
+
+/** Article id → the HTML fragment declaring its `Cifra clave`, if it has one. */
+export async function getDeclaredCifras(): Promise<Record<string, string>> {
+  try {
+    return await queryDeclaredCifras();
+  } catch (err) {
+    // The rail has a headline-figure fallback and must never be the reason
+    // the homepage 500s (the "Más leídas" incident, 2026-09-30).
+    console.error('[cifra] no se pudieron leer las cifras declaradas:', err);
+    return {};
+  }
+}
 
 export type ArticleMeta = {
   /** Coverage tier, so the kicker can badge by hub destination. */
@@ -168,6 +308,21 @@ export type ArticleMeta = {
 // with the same id during the same request (Next runs both per navigation)
 // — without this, every article view ran the identical lookup twice.
 export const getArticleMetaById = cache(async (id: string): Promise<ArticleMeta | null> => {
+  try {
+    // Same shared cache and window as getArticleById, for the same reason.
+    return await unstable_cache(() => queryArticleMeta(id), ['article-meta-by-id', id], {
+      revalidate: ARTICLE_REVALIDATE_SECONDS,
+      tags: [ARTICLES_CACHE_TAG],
+    })();
+  } catch (err) {
+    const snap = snapshotArticle(id);
+    if (!snap) throw err;
+    console.error(`[articles] meta query failed for ${id}, serving outage snapshot:`, err);
+    return snap;
+  }
+});
+
+async function queryArticleMeta(id: string): Promise<ArticleMeta | null> {
   const [row] = await db
     .select({
       id: articles.id,
@@ -194,7 +349,7 @@ export const getArticleMetaById = cache(async (id: string): Promise<ArticleMeta 
     .where(eq(articles.id, id))
     .limit(1);
   return row ? { ...row, source: normalizeSource(row.source) } : null;
-});
+}
 
 // Matched on the DISPLAY name, not the raw column, so an author whose byline
 // carries markdown links resolves the same whether the incoming `name` is the
