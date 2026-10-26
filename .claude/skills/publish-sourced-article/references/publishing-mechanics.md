@@ -37,25 +37,13 @@ Never run Step 9 without an explicit yes in this session. No exceptions, no
      and the publisher caught it live.
    - The publisher answers with a title number, a cover letter and a "sí";
      any of the three can come back as a revision request instead.
-2. **Show the device walk in the presentation, every time.** One short block
-   ("Gráficos") with the budget (`readingTime` + `priority`, per
-   `dynamic-element-library.md` §1), each device declared and the paragraph
-   it follows, and for every shape the story's numbers suggested but you did
-   not use, one line on why (fabrication, budget, mutual exclusion). "Sin
-   gráficos" is allowed only with that reasoning written out. (2026-10-23,
-   Bayern/Viessmann run: the draft shipped with zero devices and a budget of
-   two, although its own body carried a post-deal cap table and a 2014→2026
-   valuation — a `Reparto` and a `Salto` — and the boleta had already marked
-   it `chartable`. The editor caught it after publishing. The walk existed in
-   the library's §4 checklist; it was never visible to the human gate, so
-   skipping it was invisible too.)
-3. **Then explicitly ask whether to publish**, per article if there is more
+2. **Then explicitly ask whether to publish**, per article if there is more
    than one (use `AskUserQuestion`, or ask directly if that fits the
    conversation better). **Don't default to "yes" on silence or an ambiguous
    reply.**
-4. **If changes are requested, revise and re-present the full draft** before
+3. **If changes are requested, revise and re-present the full draft** before
    asking again. Repeat until each article is either approved or dropped.
-5. **Only articles that got an explicit approval move to Step 9.** Anything not
+4. **Only articles that got an explicit approval move to Step 9.** Anything not
    approved is simply not published, no need to explain why.
 
 A reviewer instruction overrides a default. When one does — the 2026-08-07
