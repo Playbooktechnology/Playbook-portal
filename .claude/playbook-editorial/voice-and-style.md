@@ -359,6 +359,16 @@ cambiara."*
 **The editing question:** does the reader understand, within the first three
 paragraphs, what changed and why it is worth continuing?
 
+**No calendar date in the lede when it is the article's own date** (editor,
+2026-10-26, twice in one day: the McDonald's/FIFA piece's "Adweek, que publicó
+la noticia el 23 de octubre" and the Charlyn Corral piece's "ganó el 26 de
+octubre en Londres", both cut before publishing). The page already prints the
+date under the headline, so repeating it in the first sentence spends words on
+something the reader just saw, and naming the day an outlet published reads as
+the newsroom narrating its sourcing. Say where and what ("ganó en Londres"),
+and keep a date in the opening only when it is not the day of the news: a
+deadline, a start date, a past event the story turns on.
+
 The cold open is one of the four kinds of paragraph that carries **no** bold
 lead-in (§5).
 
