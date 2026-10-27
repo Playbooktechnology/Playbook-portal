@@ -9,6 +9,7 @@ import { db } from '@/lib/db/client';
 import { articles, contentRevisions, siteContent } from '@/lib/db/schema';
 import { ARTICLES_CACHE_TAG, type Article } from '@/lib/data/articles';
 import { SITE_CONTENT_CACHE_TAG, type SiteContentData } from '@/lib/data/site-content';
+import { proposeDealDraftForArticle } from '@/lib/data/deal-drafts';
 import { TIPTAP_EXTENSIONS } from '@/lib/tiptap-extensions';
 import { slugify } from '@/lib/slugify';
 import { validateTags, formatTagIssues, REQUIRED_PROPERTY_BY_SOURCE } from '@/lib/taxonomy';
@@ -204,6 +205,9 @@ export async function saveArticle(
     snapshot: updated,
   });
 
+  // A re-tag into a deal vertical counts too; the helper skips articles
+  // that already have a deal or a draft (pending or dismissed).
+  await proposeDealDraftForArticle(db, updated);
   revalidateTag(ARTICLES_CACHE_TAG);
   return { conflict: false, article: updated };
 }
@@ -265,6 +269,7 @@ export async function createArticle(input: ArticleInput & { id?: string }): Prom
         snapshot: inserted,
       });
 
+      await proposeDealDraftForArticle(db, inserted);
       revalidateTag(ARTICLES_CACHE_TAG);
       return { article: inserted };
     } catch (err: unknown) {

@@ -9,6 +9,7 @@ import { revalidateTag } from 'next/cache';
 import { db } from '@/lib/db/client';
 import { articles } from '@/lib/db/schema';
 import { ARTICLES_CACHE_TAG } from '@/lib/data/articles';
+import { proposeDealDraftForArticle } from '@/lib/data/deal-drafts';
 import { SPORT_OPTIONS, validateTags, formatTagIssues } from '@/lib/taxonomy';
 import { checkRateLimit } from '@/lib/rate-limit';
 
@@ -229,6 +230,7 @@ export async function POST(req: NextRequest) {
       if (!inserted) {
         return NextResponse.json({ status: 'duplicate', url: article.url });
       }
+      await proposeDealDraftForArticle(db, inserted);
       revalidateTag(ARTICLES_CACHE_TAG);
       return NextResponse.json({
         status: 'ok',

@@ -365,6 +365,8 @@ textarea.input { min-height: 76px; resize: vertical; line-height: 1.5; }
 .deal-figures { border: none; margin: 0 0 14px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .deal-figure-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
 .deal-form-actions { display: flex; align-items: center; gap: 10px; }
+.deal-proposal-note { border-left: 3px solid var(--green); background: var(--paper-soft); padding: 8px 12px; margin: 0 0 14px; font-size: 14px; }
+.deal-proposal-note p { margin: 4px 0; }
 @media (max-width: 640px) { .deal-form-grid { grid-template-columns: 1fr; } }
 
 @media (max-width: 900px) {

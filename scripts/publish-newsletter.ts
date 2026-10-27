@@ -25,6 +25,7 @@ import { drizzle } from 'drizzle-orm/neon-http';
 import { generateHTML } from '@tiptap/html';
 import type { JSONContent } from '@tiptap/core';
 import { articles } from '../lib/db/schema';
+import { proposeDealDraftForArticle } from '../lib/data/deal-drafts';
 import { scoreFromBoleta, trackFor, type Boleta } from '../lib/rank';
 import { TIPTAP_EXTENSIONS } from '../lib/tiptap-extensions';
 import { slugify } from '../lib/slugify';
@@ -320,6 +321,9 @@ async function insertOne(input: ArticleInput, dryRun = false) {
       if (!inserted) {
         return { status: 'duplicate' as const, title: input.title, sourceUrl: input.sourceUrl };
       }
+      // Marcador review queue: a pending draft in /admin, never a deal.
+      const draft = await proposeDealDraftForArticle(db, inserted);
+      if (draft === 'created') console.log(`[publish] Marcador: borrador pendiente de aprobar para ${inserted.id}`);
       return { status: 'ok' as const, id: inserted.id, title: inserted.title };
     } catch (err: unknown) {
       if ((err as { code?: string })?.code === '23505' && attempt === 0) {
