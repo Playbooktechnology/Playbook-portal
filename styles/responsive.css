@@ -49,7 +49,10 @@
      container, so header.topbar's position:sticky keeps working — swapping
      in `hidden` here would silently break the sticky header. Scoped to the
      drawer breakpoint so genuine overflow at desktop widths still shows up
-     in testing instead of being quietly swallowed. */
+     in testing instead of being quietly swallowed.
+     One exception at every width, in ads.css: when AdSense Auto ads are on
+     the page (production only), html clips too — conditioned on the ads so
+     this testing guarantee still holds everywhere they aren't. */
   html{overflow-x:clip;}
   .nav-toggle{display:flex;}
   .nav-drawer-zone{display:block;}

@@ -24,6 +24,37 @@
    min-height rules below still hold for the load-in window itself, so a
    slot that DOES fill keeps its zero-CLS guarantee. */
 .ad-slot:has(>ins.adsbygoogle[data-ad-status="unfilled"]){display:none;}
+
+/* ——— Auto ads can't widen the page (2026-10-27) ———
+   AdSense Auto ads injects its own units (div.google-auto-placed) wherever
+   it judges there is room — five to seven on a production homepage load,
+   including inside the 271px news rail. Now and then the creative it serves
+   is wider than the spot it picked: measured on www.playbook.la at 1440px,
+   an aswift host 586px wide in the rail, right edge at 1571px, a 131px
+   sideways scrollbar on desktop (473px on another load). Intermittent —
+   eight clean loads in a row followed — because it depends on which ad is
+   served.
+
+   Clipped at the PAGE, not at the ad. Containing each unit in its column
+   (overflow:hidden on .google-auto-placed) would cut more than half off a
+   586px creative in a 271px rail — hiding part of a served ad, which is
+   what AdSense's implementation policies forbid. Clipping the page only
+   removes the part that was already past the edge of the screen; every
+   pixel of the ad the reader could see before, they still see.
+
+   Conditioned on the ads being there, not global. responsive.css scopes its
+   own html{overflow-x:clip} to the drawer breakpoint on purpose, "so
+   genuine overflow at desktop widths still shows up in testing" — a global
+   clip would quietly swallow the next real layout bug. Auto ads only exist
+   in production (a preview deployment has zero .google-auto-placed, checked
+   2026-10-27), so previews and local runs keep reporting real overflow and
+   production stops showing the ad-made scrollbar. Keyed on
+   .google-auto-placed and NOT ins.adsbygoogle: the site's own AdSlot renders
+   an <ins> in preview too, which would have switched the clip on there.
+
+   `clip`, not `hidden`, for the same reason as the drawer rule: hidden would
+   make <html> a scroll container and silently break the sticky header. */
+html:has(.google-auto-placed){overflow-x:clip;}
 .ad-slot--leaderboard-home{min-height:90px;max-width:970px;margin:34px auto;}
 .ad-slot--inline-feed{min-height:96px;margin-top:16px;}
 /* Rail como 300×250 (MPU) por defecto, no el half-page 300×600 del plan:
