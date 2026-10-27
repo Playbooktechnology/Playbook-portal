@@ -50,6 +50,7 @@ import { DEFAULT_OG_IMAGE, OG_DEFAULTS } from '@/lib/og-image';
 import { SITE_URL } from '@/lib/site-url';
 import { articlePath, articleUrl } from '@/lib/article-url';
 import { authorDisplayName } from '@/lib/author-name';
+import { publishedIso, publishedLabel } from '@/lib/dates';
 import { METERING_ENABLED } from '@/lib/constants';
 import { isValidPreviewToken, previewTokenFor } from '@/lib/preview-token';
 
@@ -446,8 +447,13 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
     // is explicit that the image should be relevant to the article rather
     // than a logo, and an article with no cover photo is common here.
     image: [meta.imageUrl || `${SITE_URL}${DEFAULT_OG_IMAGE.url}`],
-    datePublished: meta.date || undefined,
-    dateModified: meta.date || undefined,
+    // With the hour and the Mexico City offset when the publish time is known
+    // (lib/dates.ts). dateModified deliberately repeats it: updated_at moves on
+    // every save, typo fixes included, and Google reads a newer dateModified
+    // as a substantive update. A real "Actualizado" needs its own field — see
+    // docs/PROPUESTA_ACTUALIZADO.md.
+    datePublished: publishedIso(meta),
+    dateModified: publishedIso(meta),
     articleSection: meta.publication || undefined,
     inLanguage: 'es-MX',
     url: canonicalUrl,
@@ -633,7 +639,7 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
             {' '}·{' '}
           </>
         )}
-        {meta.dateFormatted} · {meta.readingTime || 1} min de lectura
+        <time dateTime={publishedIso(meta)}>Publicado {publishedLabel(meta)}</time> · {meta.readingTime || 1} min de lectura
       </div>
       {meta.imageUrl && (
         <figure className={`article-photo-wrap${lanaShell ? ' lect-exhibit' : ''}`}>

@@ -2,7 +2,8 @@ import { rankArticles } from '@/lib/rank';
 import { TICKER_COUNT } from '@/lib/constants';
 import type { Article } from '@/lib/data/articles';
 import { firstBlock, stillMattersPicks } from '@/lib/home-blocks';
-import { FRESHNESS, ageInDays } from '@/lib/freshness';
+import { FRESHNESS, ageInDays, mexicoDay } from '@/lib/freshness';
+import { headerDate } from '@/lib/dates';
 import { TickerScramble } from './TickerScramble';
 
 // Server component; the marquee scroll and hover-to-pause stay plain CSS
@@ -25,10 +26,27 @@ export function Ticker({ articles }: { articles: Article[] }) {
     articles.filter(a => !onHomepage.has(a.id) && ageInDays(a.date, now) < FRESHNESS.tickerMaxAgeDays),
     now,
   ).slice(0, TICKER_COUNT);
-  if (ranked.length < FRESHNESS.tickerMinItems) return null;
+  const showTicker = ranked.length >= FRESHNESS.tickerMinItems;
+
+  // The day's date leads the bar (A4): "Martes 27 de octubre de 2026" in
+  // Mexico City. It stays even on a day the ticker itself hides — the date is
+  // what tells a reader the site is today's. Short form on phones.
+  const date = (
+    <time className="ticker-date" dateTime={mexicoDay(now)}>
+      <span className="ticker-date-long">{headerDate(now)}</span>
+      <span className="ticker-date-short" aria-hidden="true">
+        {headerDate(now).replace(/ de \d{4}$/, '')}
+      </span>
+    </time>
+  );
+
+  if (!showTicker) {
+    return <div className="ticker ticker--date-only">{date}</div>;
+  }
 
   return (
     <div className="ticker">
+      {date}
       <div className="ticker-label">
         <span className="dot" aria-hidden="true"></span>
         <span className="ticker-label-text">Playbook hoy</span>
