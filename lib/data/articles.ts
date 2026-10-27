@@ -219,33 +219,8 @@ export const getArticleById = cache(async (id: string): Promise<Article | null> 
 // with extractCifraFromBody in lib/product-hubs.ts, which is also what the
 // article page itself runs. A second parser in SQL would be the same rule
 // in two dialects, drifting the first time the convention changes.
-//
-// Ecuación (2026-10-27): the same row also cuts out an `Ecuación:`
-// declaration, for stories with no Cifra clave and no number in the headline
-// (every La Lana expediente: their titles are questions). Unlike the Cifra
-// fragment it is PARSED here, server-side, because its parser lives in
-// lib/article-devices.ts, the device module, which client components must
-// not pull in through lib/product-hubs.ts. Still one parser: the same
-// parseEquation the article runs, behind equationFigure.
-//
-// The Ecuación is located with a regex, not position(): "ecuación" is an
-// ordinary word in prose ("la ecuación de la liga"), and the first hit would
-// often be a sentence, not the device. regexp_match takes the
-// case-insensitive flag as an ARGUMENT, so the (?i) parenthesis corner above
-// doesn't come up, and every group is non-capturing so it returns the whole
-// match. Bounded the same way: 600 characters past the label.
-const EQUATION_PARAGRAPH_PATTERN =
-  '<p[^>]*>\\s*(?:<strong>)?\\s*(?:la\\s+|el\\s+)?ecuaci[óo]n\\s*(?:</strong>)?\\s*:.{0,600}';
-
-export type DeclaredFigures = {
-  /** The HTML fragment declaring the story's `Cifra clave`, for storyFigure to parse. */
-  cifra?: string;
-  /** The story's labeled `Ecuación:` result, already parsed. */
-  equation?: { value: string; caption: string; source: string };
-};
-
 const queryDeclaredCifras = unstable_cache(
-  async (): Promise<Record<string, DeclaredFigures>> => {
+  async (): Promise<Record<string, string>> => {
     const rows = await db
       .select({
         id: articles.id,
@@ -256,53 +231,110 @@ const queryDeclaredCifras = unstable_cache(
         // first subexpression instead of the whole match. position()+substr()
         // has no such corner, and lower() makes the search case-insensitive
         // the same way the WHERE's ilike does.
-        fragment: sql<string | null>`case when position('cifra clave' in lower(${articles.bodyHtml})) > 0
-          then substr(
-            ${articles.bodyHtml},
-            position('cifra clave' in lower(${articles.bodyHtml})),
-            600
-          ) end`,
-        equation: sql<string | null>`(regexp_match(${articles.bodyHtml}, ${EQUATION_PARAGRAPH_PATTERN}, 'i'))[1]`,
+        fragment: sql<string | null>`substr(
+          ${articles.bodyHtml},
+          position('cifra clave' in lower(${articles.bodyHtml})),
+          600
+        )`,
       })
       .from(articles)
       .where(
         and(
           eq(articles.status, 'published'),
           eq(articles.listed, true),
-          sql`(${articles.bodyHtml} ilike '%Cifra clave%' or ${articles.bodyHtml} ~* 'ecuaci[óo]n')`,
+          sql`${articles.bodyHtml} ilike '%Cifra clave%'`,
         ),
       );
-    const out: Record<string, DeclaredFigures> = {};
+    const out: Record<string, string> = {};
     for (const row of rows) {
-      const declared: DeclaredFigures = {};
       // Re-wrapped in a <p> because the substring starts AT the convention,
       // past the paragraph's opening tag; the parser matches on the
       // paragraph shape. The closing </p> comes from the fragment itself,
       // and a declaration too long to close inside 600 characters simply
       // fails to parse — the same inert outcome as a malformed one.
-      if (row.fragment) declared.cifra = `<p>${row.fragment}`;
-      const equation = row.equation ? equationFigure(row.equation) : null;
-      if (equation) declared.equation = equation;
-      if (declared.cifra || declared.equation) out[row.id] = declared;
+      if (row.fragment) out[row.id] = `<p>${row.fragment}`;
     }
     return out;
   },
-  // New key with the new shape (2026-10-27): a cache entry left from the
-  // string-valued version must never be read as DeclaredFigures.
-  ['articles-declared-figures'],
+  ['articles-declared-cifras'],
   { revalidate: 60, tags: [ARTICLES_CACHE_TAG] },
 );
 
+// Ecuación (2026-10-27): the third source of a story's figure, for stories
+// with no Cifra clave and no number in the headline (every La Lana
+// expediente: their titles are questions). Same bounded shape as the query
+// above, a few hundred characters per row, never a body.
+//
+// Two differences, each with a reason:
+// - It is PARSED here, server-side, because its parser lives in
+//   lib/article-devices.ts, which client components must not pull in through
+//   lib/product-hubs.ts. Still one parser: the same parseEquation the article
+//   runs, behind equationFigure.
+// - It is located with a regex, not position(): "ecuación" is an ordinary
+//   word in prose ("la ecuación de la liga"), and the first hit would often
+//   be a sentence, not the device. regexp_match takes the case-insensitive
+//   flag as an ARGUMENT, so the (?i) corner above doesn't come up, and every
+//   group is non-capturing so element [1] is the whole match.
+//
+// The tail is `(?:.{0,200}){3}`, not `.{0,600}`: a Postgres bound tops out at
+// 255 (RE_DUP_MAX). The first preview of this change used `.{0,600}`, the
+// pattern failed to compile, and because the Ecuación then shared the Cifra
+// query, every declared Cifra clave vanished with it. Hence also the separate
+// query: a failure here costs the Ecuación tier only.
+const EQUATION_PARAGRAPH_PATTERN =
+  '<p[^>]*>\\s*(?:<strong>)?\\s*(?:la\\s+|el\\s+)?ecuaci[óo]n\\s*(?:</strong>)?\\s*:(?:.{0,200}){3}';
+
+type DeclaredEquation = { value: string; caption: string; source: string };
+
+const queryDeclaredEquations = unstable_cache(
+  async (): Promise<Record<string, DeclaredEquation>> => {
+    const rows = await db
+      .select({
+        id: articles.id,
+        paragraph: sql<string | null>`(regexp_match(${articles.bodyHtml}, ${EQUATION_PARAGRAPH_PATTERN}, 'i'))[1]`,
+      })
+      .from(articles)
+      .where(
+        and(
+          eq(articles.status, 'published'),
+          eq(articles.listed, true),
+          sql`${articles.bodyHtml} ~* 'ecuaci[óo]n'`,
+        ),
+      );
+    const out: Record<string, DeclaredEquation> = {};
+    for (const row of rows) {
+      const equation = row.paragraph ? equationFigure(row.paragraph) : null;
+      if (equation) out[row.id] = equation;
+    }
+    return out;
+  },
+  ['articles-declared-equations'],
+  { revalidate: 60, tags: [ARTICLES_CACHE_TAG] },
+);
+
+export type DeclaredFigures = {
+  /** The HTML fragment declaring the story's `Cifra clave`, for storyFigure to parse. */
+  cifra?: string;
+  /** The story's labeled `Ecuación:` result, already parsed. */
+  equation?: DeclaredEquation;
+};
+
 /** Article id → what the story declares about its own figure: a `Cifra clave` fragment and/or a labeled `Ecuación` result. */
 export async function getDeclaredCifras(): Promise<Record<string, DeclaredFigures>> {
-  try {
-    return await queryDeclaredCifras();
-  } catch (err) {
-    // The rail has a headline-figure fallback and must never be the reason
-    // the homepage 500s (the "Más leídas" incident, 2026-09-30).
-    console.error('[cifra] no se pudieron leer las cifras declaradas:', err);
-    return {};
+  // Settled independently: either source failing leaves the other standing,
+  // and the surfaces keep their headline-figure fallback. None of them may be
+  // the reason a page 500s (the "Más leídas" incident, 2026-09-30).
+  const [cifras, equations] = await Promise.allSettled([queryDeclaredCifras(), queryDeclaredEquations()]);
+  if (cifras.status === 'rejected') console.error('[cifra] no se pudieron leer las cifras declaradas:', cifras.reason);
+  if (equations.status === 'rejected') console.error('[cifra] no se pudieron leer las ecuaciones declaradas:', equations.reason);
+  const out: Record<string, DeclaredFigures> = {};
+  if (cifras.status === 'fulfilled') {
+    for (const [id, cifra] of Object.entries(cifras.value)) out[id] = { cifra };
   }
+  if (equations.status === 'fulfilled') {
+    for (const [id, equation] of Object.entries(equations.value)) out[id] = { ...out[id], equation };
+  }
+  return out;
 }
 
 export type ArticleMeta = {
