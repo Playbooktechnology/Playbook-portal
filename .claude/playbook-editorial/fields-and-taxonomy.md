@@ -288,6 +288,29 @@ loosely is what the 2026-08-20 calibration pass was fixing:
   — is `false`; its Lamour example — FIFA plus the US federation — is `true`).
 - **`habitualEntity`** (+1) names a brand or entity Playbook covers regularly.
 
+**A state actor cutting a property's distribution is `structural`, not
+`commercial-no-figure`** (editor, 2026-10-27, LaLiga/CCTV/Mbappé). The piece
+went out at 45 as a commercial move with no figure: three sponsors dropped
+Mbappé and CCTV suspended LaLiga. The editor called it the day's lead, and the
+answer that was wrong was `reports`. A state broadcaster switching off a league
+in a market, with the foreign ministry framing the offence as national, is a
+government-side decision about access to that market. That is the
+"regulatory, governance" half of `structural`, even with no money on the fact.
+Re-answered, it scored 75. Test: if the actor that moved is a state, a
+regulator or a body acting for one, and what moved is a property's access to a
+market (broadcast, licence, entry, venue), answer `structural`. Sponsors
+leaving a player on their own stay `commercial-no-figure`.
+
+**When the editor wants a story to lead, re-answer the boleta first, then pin.**
+Fix any answer that was actually wrong and let the score move; never fake one
+(`hardFigure` stays `false` with no money on the fact). If the honest score
+still does not clear the day's top story (here it tied the existing 75), set
+`heroPinnedUntil` with `scripts/update-article.ts`, which is the override
+built for "I want THIS to lead". Give it a stated, self-expiring window
+(this run: until 18:00 CDMX the next day) and tell the editor when it ends.
+`score` and `score_boleta` are written only through `scoreFromBoleta()` from
+the revised answers, with the reason recorded in `ambiguous`.
+
 Record genuinely arguable answers in `ambiguous` and say why in `notes`; the
 whole point of storing the boleta is that a disputed running order becomes an
 argument about one answer rather than about taste.
