@@ -136,6 +136,11 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: '/(.*)', headers: securityHeaders }];
   },
+  // Playmaker share images read their fonts from disk at request time
+  // (lib/playmaker/share-image.tsx); make sure the files ship with the routes.
+  outputFileTracingIncludes: {
+    '/playmaker/**': ['./lib/playmaker/fonts/**', './public/assets/playmaker/**'],
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },

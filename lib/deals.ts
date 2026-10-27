@@ -40,9 +40,11 @@ export type Deal = {
   playbookRead: string | null;
   keyFigures: KeyFigure[];
   createdAt: string;
+  /** Last edit (ISO). Feeds "Última actualización". */
+  updatedAt: string;
 };
 
-export type DealInput = Omit<Deal, 'id' | 'createdAt'>;
+export type DealInput = Omit<Deal, 'id' | 'createdAt' | 'updatedAt'>;
 
 // Single write-side gate for both the /admin tab and scripts/upsert-deals.ts:
 // trims text, checks the enum-like columns against their key lists, and
@@ -251,6 +253,52 @@ export function weekLabel(deals: Deal[], today: string): { week: number; short: 
     short: `Sem. ${w.week}`,
     long: hasDeals ? `Semana ${w.week} · ${shortDate(w.start)} al ${shortDate(w.end)}` : `Semana ${w.week}`,
   };
+}
+
+// ------------------------------------------------- Weekly cadence (A7)
+// El Marcador se actualiza cada viernes. Both surfaces print the same line
+// (components/marcador/MarcadorCadence.tsx): the week's count, when the table
+// last changed and the next scheduled Friday — computed from today's date on
+// every request, never stored.
+
+/** Day (YYYY-MM-DD, CDMX) of the most recent edit to the table, or null when empty. */
+export function lastUpdateDay(deals: Deal[]): string | null {
+  const latest = deals.reduce<string>((max, d) => {
+    const t = d.updatedAt > d.createdAt ? d.updatedAt : d.createdAt;
+    return t > max ? t : max;
+  }, '');
+  return latest ? todayInMexico(new Date(latest)) : null;
+}
+
+/**
+ * The next scheduled update: the first Friday after the last update that is
+ * not already in the past. A Friday whose update has happened points to the
+ * following one; a Friday still waiting for it points to itself.
+ */
+export function nextUpdateFriday(today: string, lastUpdate: string | null): string {
+  let d = lastUpdate && lastUpdate >= today ? addDays(lastUpdate, 1) : today;
+  while (toUtc(d).getUTCDay() !== 5) d = addDays(d, 1);
+  return d;
+}
+
+/** "viernes 30 oct" */
+export function fridayLabel(date: string): string {
+  const [, m, d] = date.split('-');
+  return `viernes ${Number(d)} ${MONTHS[Number(m) - 1]}`;
+}
+
+/** "3 acuerdos esta semana" / "Semana sin operaciones confirmadas" (+ reported, when any). */
+export function weekCountLabel(deals: Deal[], today: string): string {
+  const w = isoWeek(today);
+  const inWeek = deals.filter(d => inRange(d, w.start, w.end));
+  const confirmed = inWeek.filter(d => d.status === 'confirmado').length;
+  const reported = inWeek.length - confirmed;
+  if (!confirmed) {
+    return reported
+      ? `Semana sin operaciones confirmadas · ${reported} ${reported === 1 ? 'reportada' : 'reportadas'}`
+      : 'Semana sin operaciones confirmadas';
+  }
+  return `${inWeek.length} ${inWeek.length === 1 ? 'acuerdo' : 'acuerdos'} esta semana`;
 }
 
 // "También esta semana": the week's other deals, biggest first. A week with

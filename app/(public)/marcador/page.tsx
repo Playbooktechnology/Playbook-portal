@@ -21,6 +21,7 @@ import {
 import { SITE_URL } from '@/lib/site-url';
 import { DealsTable } from '@/components/marcador/DealsTable';
 import { DealLink } from '@/components/marcador/DealLink';
+import { MarcadorCadence } from '@/components/marcador/MarcadorCadence';
 import { NewsletterForm } from '@/components/shared/NewsletterForm';
 
 // /marcador — the full view behind the homepage rail's "El Marcador de
@@ -61,6 +62,7 @@ export default async function MarcadorPage() {
         <p className="mk-updated">
           {label.long}
         </p>
+        <MarcadorCadence deals={deals} today={today} className="mk-cadence" />
       </header>
 
       {deals.length === 0 ? (

@@ -15,6 +15,7 @@ import {
   yearTotal,
 } from '@/lib/deals';
 import { DealLink } from '@/components/marcador/DealLink';
+import { MarcadorCadence } from '@/components/marcador/MarcadorCadence';
 
 // ——— "El Marcador de Negocios" (sidebar module, replaced El tablero de la
 // FIFA 2026-09-23). Reads the `deals` table through lib/data/deals.ts, on the
@@ -45,6 +46,7 @@ export async function DealsBoard() {
         <h2 className="side-title" id="side-deals-title">El Marcador de Negocios</h2>
         <span className="side-deals-week">{label.short}</span>
       </div>
+      <MarcadorCadence deals={deals} today={today} className="side-deals-status" />
 
       <article className="side-deals-card">
         <p className="side-deals-kicker">
