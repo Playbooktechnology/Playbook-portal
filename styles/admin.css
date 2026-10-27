@@ -684,3 +684,14 @@ textarea.input { min-height: 76px; resize: vertical; line-height: 1.5; }
    pre-filled form carries (what is missing, what to verify). */
 .deal-candidates-help{display:block;margin:0 0 12px;max-width:80ch;}
 .deal-candidate-notes{margin:0 0 14px;padding:10px 14px 10px 28px;background:var(--paper-soft);border-left:3px solid var(--green);font-size:13px;line-height:1.5;}
+
+/* A10: /admin/mezcla */
+.mix-main{max-width:960px;margin:0 auto;padding:28px 24px 60px;}
+.mix-help{display:block;margin:0 0 18px;max-width:80ch;}
+.mix-table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:32px;}
+.mix-table th,.mix-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);}
+.mix-table th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-txt);}
+.mix-list{padding-left:22px;font-size:14px;line-height:1.5;}
+.mix-list li{margin-bottom:6px;}
+.mix-kind{display:inline-block;min-width:96px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-txt);}
+.mix-list li[data-kind="mexico"] .mix-kind,.mix-list li[data-kind="latam"] .mix-kind{color:var(--ink);}

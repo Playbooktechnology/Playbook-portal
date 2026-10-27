@@ -8,7 +8,8 @@ export function AdminTopbarNav() {
   const isAnalytics = pathname?.startsWith('/admin/analytics') ?? false;
   const isGuide = pathname?.startsWith('/admin/guia') ?? false;
   const isEstilo = pathname?.startsWith('/admin/estilo') ?? false;
-  const isCms = !isAnalytics && !isGuide && !isEstilo;
+  const isMix = pathname?.startsWith('/admin/mezcla') ?? false;
+  const isCms = !isAnalytics && !isGuide && !isEstilo && !isMix;
 
   return (
     <nav className="admin-topbar-nav" aria-label="Secciones del panel">
@@ -25,6 +26,13 @@ export function AdminTopbarNav() {
         aria-current={isAnalytics ? 'page' : undefined}
       >
         Analytics
+      </Link>
+      <Link
+        href="/admin/mezcla"
+        className={`admin-tab${isMix ? ' is-active' : ''}`}
+        aria-current={isMix ? 'page' : undefined}
+      >
+        Mezcla
       </Link>
       <Link
         href="/admin/guia"
