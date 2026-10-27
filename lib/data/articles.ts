@@ -9,6 +9,7 @@ import { TOPIC_TIER_KEYS, articleInTopic, topicBySlug } from '../topics';
 import type { TaxonomyTier } from '../taxonomy';
 import { authorDisplayName } from '@/lib/author-name';
 import { HUBS } from '../hubs';
+import { equationFigure } from '../article-devices';
 import snapshotRows from './articles-snapshot.json';
 
 export type Article = typeof articles.$inferSelect;
@@ -218,8 +219,33 @@ export const getArticleById = cache(async (id: string): Promise<Article | null> 
 // with extractCifraFromBody in lib/product-hubs.ts, which is also what the
 // article page itself runs. A second parser in SQL would be the same rule
 // in two dialects, drifting the first time the convention changes.
+//
+// Ecuación (2026-10-27): the same row also cuts out an `Ecuación:`
+// declaration, for stories with no Cifra clave and no number in the headline
+// (every La Lana expediente: their titles are questions). Unlike the Cifra
+// fragment it is PARSED here, server-side, because its parser lives in
+// lib/article-devices.ts, the device module, which client components must
+// not pull in through lib/product-hubs.ts. Still one parser: the same
+// parseEquation the article runs, behind equationFigure.
+//
+// The Ecuación is located with a regex, not position(): "ecuación" is an
+// ordinary word in prose ("la ecuación de la liga"), and the first hit would
+// often be a sentence, not the device. regexp_match takes the
+// case-insensitive flag as an ARGUMENT, so the (?i) parenthesis corner above
+// doesn't come up, and every group is non-capturing so it returns the whole
+// match. Bounded the same way: 600 characters past the label.
+const EQUATION_PARAGRAPH_PATTERN =
+  '<p[^>]*>\\s*(?:<strong>)?\\s*(?:la\\s+|el\\s+)?ecuaci[óo]n\\s*(?:</strong>)?\\s*:.{0,600}';
+
+export type DeclaredFigures = {
+  /** The HTML fragment declaring the story's `Cifra clave`, for storyFigure to parse. */
+  cifra?: string;
+  /** The story's labeled `Ecuación:` result, already parsed. */
+  equation?: { value: string; caption: string; source: string };
+};
+
 const queryDeclaredCifras = unstable_cache(
-  async (): Promise<Record<string, string>> => {
+  async (): Promise<Record<string, DeclaredFigures>> => {
     const rows = await db
       .select({
         id: articles.id,
@@ -230,37 +256,45 @@ const queryDeclaredCifras = unstable_cache(
         // first subexpression instead of the whole match. position()+substr()
         // has no such corner, and lower() makes the search case-insensitive
         // the same way the WHERE's ilike does.
-        fragment: sql<string | null>`substr(
-          ${articles.bodyHtml},
-          position('cifra clave' in lower(${articles.bodyHtml})),
-          600
-        )`,
+        fragment: sql<string | null>`case when position('cifra clave' in lower(${articles.bodyHtml})) > 0
+          then substr(
+            ${articles.bodyHtml},
+            position('cifra clave' in lower(${articles.bodyHtml})),
+            600
+          ) end`,
+        equation: sql<string | null>`(regexp_match(${articles.bodyHtml}, ${EQUATION_PARAGRAPH_PATTERN}, 'i'))[1]`,
       })
       .from(articles)
       .where(
         and(
           eq(articles.status, 'published'),
           eq(articles.listed, true),
-          sql`${articles.bodyHtml} ilike '%Cifra clave%'`,
+          sql`(${articles.bodyHtml} ilike '%Cifra clave%' or ${articles.bodyHtml} ~* 'ecuaci[óo]n')`,
         ),
       );
-    const out: Record<string, string> = {};
+    const out: Record<string, DeclaredFigures> = {};
     for (const row of rows) {
+      const declared: DeclaredFigures = {};
       // Re-wrapped in a <p> because the substring starts AT the convention,
       // past the paragraph's opening tag; the parser matches on the
       // paragraph shape. The closing </p> comes from the fragment itself,
       // and a declaration too long to close inside 600 characters simply
       // fails to parse — the same inert outcome as a malformed one.
-      if (row.fragment) out[row.id] = `<p>${row.fragment}`;
+      if (row.fragment) declared.cifra = `<p>${row.fragment}`;
+      const equation = row.equation ? equationFigure(row.equation) : null;
+      if (equation) declared.equation = equation;
+      if (declared.cifra || declared.equation) out[row.id] = declared;
     }
     return out;
   },
-  ['articles-declared-cifras'],
+  // New key with the new shape (2026-10-27): a cache entry left from the
+  // string-valued version must never be read as DeclaredFigures.
+  ['articles-declared-figures'],
   { revalidate: 60, tags: [ARTICLES_CACHE_TAG] },
 );
 
-/** Article id → the HTML fragment declaring its `Cifra clave`, if it has one. */
-export async function getDeclaredCifras(): Promise<Record<string, string>> {
+/** Article id → what the story declares about its own figure: a `Cifra clave` fragment and/or a labeled `Ecuación` result. */
+export async function getDeclaredCifras(): Promise<Record<string, DeclaredFigures>> {
   try {
     return await queryDeclaredCifras();
   } catch (err) {

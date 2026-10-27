@@ -127,7 +127,8 @@ export default async function LaLanaHubPage() {
                     title instead of saying "003" twice.
                     lib/product-hubs.ts's storyFigure decides which number:
                     the expediente's declared Cifra clave, else one in the
-                    headline — never the excerpt or teaser prose. On this
+                    headline, else a labeled Ecuación result (2026-10-27) —
+                    never the excerpt or teaser prose. On this
                     hub that matters more than anywhere: La Lana titles are
                     questions and carry no numbers (0 of 19, 2026-10-27), so
                     the declaration is the only honest source, and the old

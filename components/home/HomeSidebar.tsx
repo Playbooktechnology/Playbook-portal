@@ -77,15 +77,15 @@ export async function HomeSidebar() {
   // to declare it — which is what the publish skills now ask for
   // (.claude/playbook-editorial/dynamic-element-library.md, "Cifra clave").
   let cifra: { figure: string; caption?: string; id: string; title: string } | null = null;
-  let fromHeadline: { figure: string; id: string; title: string } | null = null;
-  const declaredFragments = await getDeclaredCifras();
+  let fallback: { figure: string; caption?: string; id: string; title: string } | null = null;
+  const declaredFigures = await getDeclaredCifras();
   for (const article of ranked) {
     if (article === hero) continue;
     // Per-story resolution is lib/product-hubs.ts's storyFigure — the same
     // rule every other figure surface uses. What stays HERE is the one thing
     // only this rail does: choosing ACROSS stories, where a declared figure
     // further down the ranking beats a headline figure higher up.
-    const found = storyFigure(article, declaredFragments[article.id]);
+    const found = storyFigure(article, declaredFigures[article.id]);
     if (found?.declared) {
       // The caption is what the figure MEANS, and the rail used to drop it:
       // "US$8,000 a US$20,000" over a headline about talent factories left the
@@ -102,12 +102,14 @@ export async function HomeSidebar() {
       break;
     }
     // Remembered, not taken: a declared figure further down the ranking still
-    // outranks it, so the walk continues.
-    if (!fromHeadline && found) {
-      fromHeadline = { figure: found.value, id: article.id, title: article.title };
+    // outranks it, so the walk continues. A headline figure, or a labeled
+    // Ecuación result for a story with neither (storyFigure's third tier),
+    // which keeps its label as the caption.
+    if (!fallback && found) {
+      fallback = { figure: found.value, caption: found.caption || undefined, id: article.id, title: article.title };
     }
   }
-  cifra = cifra ?? fromHeadline;
+  cifra = cifra ?? fallback;
 
   return (
     <div className="sidebar-sticky">

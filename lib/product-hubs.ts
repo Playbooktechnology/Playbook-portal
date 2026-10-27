@@ -314,6 +314,13 @@ export function extractCifraFromBody(bodyHtml: string | null, teaser: string | n
 //   2. A figure in the HEADLINE — no caption needed, because every one of
 //      these surfaces prints the headline right next to the number, and the
 //      headline IS the caption by construction.
+//   3. A labeled ECUACIÓN's result (2026-10-27) — "= €85M antes de reparto".
+//      Also a declaration, and the editor's label after the result is the
+//      caption; an unlabeled result is never promoted (see equationFigure in
+//      lib/article-devices.ts). Last, not second, so adding it changed no
+//      story that already showed a figure: it only fills the stories that
+//      had none, which is every La Lana expediente without a Cifra clave
+//      (their titles are questions, 0 numbers in 19).
 //
 // Never the excerpt, never the teaser's prose (publisher, 2026-10-21). That
 // is where a story keeps its context numbers, and nothing here can tell one
@@ -324,25 +331,29 @@ export function extractCifraFromBody(bodyHtml: string | null, teaser: string | n
 // range, set in 44px — and gave the Netflix expediente a US$3,000 millones
 // it doesn't claim instead of the "6 de 10" it declares.
 //
-// `declaredFragment` is the HTML fragment lib/data/articles.ts's
-// getDeclaredCifras() returns for this article id (the body itself is never
-// on a list query). The teaser is checked too, because a legacy article
+// `declared` is what lib/data/articles.ts's getDeclaredCifras() returns for
+// this article id: the Cifra clave's HTML fragment and the parsed Ecuación
+// (the body itself is never on a list query). The teaser is checked too, because a legacy article
 // with no native body keeps its declaration in the plain-text teaser — that
 // is still a DECLARATION, read by the same parser the article page uses,
 // not a scrape of its prose.
 export type StoryFigure = CifraFigure & {
-  /** true for an editor's Cifra clave (caption may be set); false for a headline figure (caption is ''). */
+  /** true for an editor's Cifra clave (caption may be set); false for a headline figure (caption '') or an Ecuación result (caption set). */
   declared: boolean;
 };
 
+/** Mirrors DeclaredFigures in lib/data/articles.ts, which this client-safe module must not import. */
+export type StoryDeclarations = { cifra?: string; equation?: CifraFigure };
+
 export function storyFigure(
   article: { title: string; teaser?: string | null },
-  declaredFragment?: string | null,
+  declared?: StoryDeclarations | null,
 ): StoryFigure | null {
-  const declared = extractCifraFromBody(declaredFragment ?? null, article.teaser ?? null);
-  if (declared) return { ...declared, declared: true };
+  const cifra = extractCifraFromBody(declared?.cifra ?? null, article.teaser ?? null);
+  if (cifra) return { ...cifra, declared: true };
   const value = extractPullFigure(article.title);
-  return value ? { value, caption: '', source: '', declared: false } : null;
+  if (value) return { value, caption: '', source: '', declared: false };
+  return declared?.equation ? { ...declared.equation, declared: false } : null;
 }
 
 // HTML bodies: string-level transform on already-sanitized editor HTML
