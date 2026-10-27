@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Article } from '@/lib/data/articles';
 import type { OpinionCard } from '@/lib/data/site-content';
 import { articlePath } from '@/lib/article-url';
-import { caseNumber, caseStatus, storyFigure } from '@/lib/product-hubs';
+import { caseNumber, caseStatus, storyFigure, type StoryDeclarations } from '@/lib/product-hubs';
 
 // "La Lana del Deporte · El Expediente" (2026-10-27), in the slot the
 // "Artículos de opinión" grid held. That grid had fallen back to its CMS
@@ -33,8 +33,8 @@ export function LanaExpedientesSection({
   /** Every la-lana article (any order): case numbers count the whole series. */
   articles: Article[];
   cmsCards?: OpinionCard[];
-  /** lib/data/articles.ts getDeclaredCifras(): article id → its Cifra clave fragment. */
-  declaredCifras?: Record<string, string>;
+  /** lib/data/articles.ts getDeclaredCifras(): article id → its declared Cifra clave / Ecuación. */
+  declaredCifras?: Record<string, StoryDeclarations>;
   now?: Date;
 }) {
   const files = articles
