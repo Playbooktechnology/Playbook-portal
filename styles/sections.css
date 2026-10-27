@@ -98,7 +98,14 @@
 .video-section .section-head h2{color:#fff;}
 .video-section .section-head .sub{color:rgba(255,255,255,.6);}
 .video-section .section-link{border-color:#fff;color:#fff;}
-.video-grid{display:grid;grid-template-columns:1fr;gap:30px;}
+/* minmax(0,1fr), not 1fr (2026-10-27): a bare `1fr` track is
+   minmax(auto,1fr), and its `auto` floor is the min-content width of the
+   widest child. The shorts rail scrolls sideways, so its min-content is
+   all six tiles in a row; on a 390px phone that floor was 481px, the band
+   grew past the screen and the browser widened the WHOLE page to 529px to
+   fit it — the site loading zoomed-out. Zero floor, and the rail scrolls
+   inside the width it is given, which is the point of a rail. */
+.video-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:30px;}
 .video-top{display:grid;grid-template-columns:1.1fr 1fr;gap:30px;align-items:center;}
 .video-feature-card{position:relative;overflow:hidden;background:#111;}
 .video-feature-card .frame{aspect-ratio:16/9;}
