@@ -5,22 +5,17 @@ import {
   dealAmountLabel,
   dealTitle,
   featuredFigures,
+  featuredKicker,
   formatUsdShort,
-  fridayLabel,
   isoWeek,
-  lastUpdateDay,
-  nextUpdateFriday,
-  pickFeatured,
   railDeals,
-  shortDate,
+  selectFeatured,
   todayInMexico,
-  weekCountLabel,
-  weekCounts,
   weekLabel,
   yearTotal,
 } from '@/lib/deals';
-import { FRESHNESS } from '@/lib/freshness';
 import { DealLink } from '@/components/marcador/DealLink';
+import { MarcadorCadence } from '@/components/marcador/MarcadorCadence';
 
 // ——— "El Marcador de Negocios" (sidebar module, replaced El tablero de la
 // FIFA 2026-09-23). Reads the `deals` table through lib/data/deals.ts, on the
@@ -28,17 +23,19 @@ import { DealLink } from '@/components/marcador/DealLink';
 // up here without a deploy.
 //
 // Never blank between weekly updates: with nothing flagged this week the card
-// shows the last flagged deal (and says it isn't this week's), and the list
+// shows the last flagged deal for up to two weeks, then the newest confirmed
+// deal (lib/deals.ts selectFeatured says which, and the kicker says so), and the list
 // below falls back to the latest deals. Renders nothing only when the table
 // is empty.
 export async function DealsBoard() {
   const deals = await getAllDeals();
   const today = todayInMexico();
   const week = isoWeek(today);
-  const pick = pickFeatured(deals, week, today, FRESHNESS.marcadorFeaturedMaxAgeDays);
+  const pick = selectFeatured(deals, today);
   if (!pick) return null;
+
   const featured = pick.deal;
-  const updated = lastUpdateDay(deals);
+  const label = weekLabel(deals, today);
   const rail = railDeals(deals, week, featured.id);
   const year = Number(today.slice(0, 4));
   const { total, count } = yearTotal(deals, year);
@@ -47,21 +44,13 @@ export async function DealsBoard() {
     <section className="side-module side-deals" aria-labelledby="side-deals-title">
       <div className="side-deals-head">
         <h2 className="side-title" id="side-deals-title">El Marcador de Negocios</h2>
+        <span className="side-deals-week">{label.short}</span>
       </div>
-      {/* Same week label, dates and count as /marcador (lib/deals.ts, A7). */}
-      <p className="side-deals-week">{weekLabel(week)}</p>
-      <p className="side-deals-status">
-        <span>{weekCountLabel(weekCounts(deals, week))}</span>
-        {updated && (
-          <span>
-            Última actualización: {shortDate(updated)} · Próxima: {fridayLabel(nextUpdateFriday(today, updated))}
-          </span>
-        )}
-      </p>
+      <MarcadorCadence deals={deals} today={today} className="side-deals-status" />
 
       <article className="side-deals-card">
         <p className="side-deals-kicker">
-          {pick.kicker}
+          {featuredKicker(pick)}
         </p>
         <h3 className="side-deals-name">{dealTitle(featured)}</h3>
         {featured.summary && <p className="side-deals-summary">{featured.summary}</p>}

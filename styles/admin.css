@@ -365,6 +365,8 @@ textarea.input { min-height: 76px; resize: vertical; line-height: 1.5; }
 .deal-figures { border: none; margin: 0 0 14px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .deal-figure-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
 .deal-form-actions { display: flex; align-items: center; gap: 10px; }
+.deal-proposal-note { border-left: 3px solid var(--green); background: var(--paper-soft); padding: 8px 12px; margin: 0 0 14px; font-size: 14px; }
+.deal-proposal-note p { margin: 4px 0; }
 @media (max-width: 640px) { .deal-form-grid { grid-template-columns: 1fr; } }
 
 @media (max-width: 900px) {
@@ -679,19 +681,5 @@ textarea.input { min-height: 76px; resize: vertical; line-height: 1.5; }
    .article-detail class is what scopes --lect-accent per product skin. */
 .estilo-canvas { max-width: 680px; }
 .estilo-canvas .article-body { font-size: 15px; line-height: 1.65; }
-
-/* A7: Marcador candidates — the explanation above the list and the notes the
-   pre-filled form carries (what is missing, what to verify). */
-.deal-candidates-help{display:block;margin:0 0 12px;max-width:80ch;}
-.deal-candidate-notes{margin:0 0 14px;padding:10px 14px 10px 28px;background:var(--paper-soft);border-left:3px solid var(--green);font-size:13px;line-height:1.5;}
-
-/* A10: /admin/mezcla */
-.mix-main{max-width:960px;margin:0 auto;padding:28px 24px 60px;}
-.mix-help{display:block;margin:0 0 18px;max-width:80ch;}
-.mix-table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:32px;}
-.mix-table th,.mix-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);}
-.mix-table th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-txt);}
-.mix-list{padding-left:22px;font-size:14px;line-height:1.5;}
-.mix-list li{margin-bottom:6px;}
-.mix-kind{display:inline-block;min-width:96px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-txt);}
-.mix-list li[data-kind="mexico"] .mix-kind,.mix-list li[data-kind="latam"] .mix-kind{color:var(--ink);}
+.images-scope { border: 1px solid var(--rule); border-radius: 12px; padding: 10px 16px; margin: 0 0 16px; }
+.images-report { margin-top: 18px; }

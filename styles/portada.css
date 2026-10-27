@@ -198,7 +198,6 @@
 .side-deals-week{
   font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
   font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-txt);
-  margin:-4px 0 0;
 }
 /* A7: this week's count and the update cadence, same text as /marcador. */
 .side-deals-status{display:flex;flex-direction:column;gap:2px;margin:0;font-size:12px;line-height:1.4;color:var(--gray-txt);}

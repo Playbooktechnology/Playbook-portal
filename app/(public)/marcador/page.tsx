@@ -8,25 +8,20 @@ import {
   dealAmountLabel,
   dealTitle,
   featuredFigures,
+  featuredKicker,
   formatUsdLong,
-  fridayLabel,
-  isoWeek,
-  lastUpdateDay,
-  nextUpdateFriday,
-  pickFeatured,
+  selectFeatured,
   shortDate,
   todayInMexico,
   topDeals,
-  weekCountLabel,
-  weekCounts,
   weekLabel,
   yearStats,
   type DealStatus,
 } from '@/lib/deals';
-import { FRESHNESS } from '@/lib/freshness';
 import { SITE_URL } from '@/lib/site-url';
 import { DealsTable } from '@/components/marcador/DealsTable';
 import { DealLink } from '@/components/marcador/DealLink';
+import { MarcadorCadence } from '@/components/marcador/MarcadorCadence';
 import { NewsletterForm } from '@/components/shared/NewsletterForm';
 
 // /marcador — the full view behind the homepage rail's "El Marcador de
@@ -46,12 +41,11 @@ export const metadata: Metadata = {
 export default async function MarcadorPage() {
   const deals = await getAllDeals();
   const today = todayInMexico();
-  const week = isoWeek(today);
+  const label = weekLabel(deals, today);
   const year = Number(today.slice(0, 4));
   const stats = yearStats(deals, year);
-  const pick = pickFeatured(deals, week, today, FRESHNESS.marcadorFeaturedMaxAgeDays);
+  const pick = selectFeatured(deals, today);
   const featured = pick?.deal ?? null;
-  const updated = lastUpdateDay(deals);
   const top = topDeals(deals, year);
   const byType = countByType(deals, year);
   const maxType = Math.max(1, ...byType.map(t => t.count));
@@ -65,16 +59,10 @@ export default async function MarcadorPage() {
           Los acuerdos comerciales que mueven el negocio del deporte, registrados semana a semana:
           patrocinios, derechos de transmisión, retail, inversión y estadios.
         </p>
-        {/* Same label, dates and count as the homepage rail (lib/deals.ts, A7). */}
-        <p className="mk-updated">{weekLabel(week)}</p>
-        <p className="mk-cadence">
-          <span>{weekCountLabel(weekCounts(deals, week))}</span>
-          {updated && (
-            <span>
-              Última actualización: {shortDate(updated)} · Próxima: {fridayLabel(nextUpdateFriday(today, updated))}
-            </span>
-          )}
+        <p className="mk-updated">
+          {label.long}
         </p>
+        <MarcadorCadence deals={deals} today={today} className="mk-cadence" />
       </header>
 
       {deals.length === 0 ? (
@@ -108,7 +96,7 @@ export default async function MarcadorPage() {
             <section className="mk-featured" aria-labelledby="mk-featured-title">
               <div className="mk-featured-main">
                 <p className="side-deals-kicker">
-                  {pick?.kicker}
+                  {pick && featuredKicker(pick)}
                 </p>
                 <h2 id="mk-featured-title" className="mk-featured-name">
                   {dealTitle(featured)}

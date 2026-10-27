@@ -118,6 +118,9 @@ export type PlaybookEvent =
   | 'hp_click_cifra'
   | 'hp_click_marcador'
   | 'hp_click_temas'
+  | 'hp_click_expediente'
+  | 'hp_click_video'
+  | 'hp_click_infinitas'
   | 'hp_newsletter_submit'
   // ---- Daily-site measurement block (2026-10-27, A1). Site-wide, unlike the
   // hp_ family: each one names an ACT, wherever on the site it happens.
@@ -175,6 +178,9 @@ const HOMEPAGE_EVENTS = new Set<string>([
   'hp_click_cifra',
   'hp_click_marcador',
   'hp_click_temas',
+  'hp_click_expediente',
+  'hp_click_video',
+  'hp_click_infinitas',
 ]);
 
 // Site-wide events an element may declare with `data-analytics` too. Kept
