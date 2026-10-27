@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import type { SiteContentData } from '@/lib/data/site-content';
 import { NewsGrid } from '@/components/home/NewsGrid';
-import { OpinionSection } from '@/components/sections/OpinionSection';
+import { LanaExpedientesSection } from '@/components/sections/LanaExpedientesSection';
 import { ProductsSection } from '@/components/sections/ProductsSection';
 import { MidCta } from '@/components/sections/MidCta';
 import { VideoSection } from '@/components/sections/VideoSection';
@@ -134,13 +134,13 @@ export function LivePreview({ content, contentBaseline, articleEntries }: Props)
         </main>
       </PreviewSection>
 
-      {/* Same `previewArticles` the NewsGrid preview above uses: the
-          opinion section is derived from the source='opinion' articles now
-          (see components/sections/OpinionSection.tsx), so the preview has
-          to feed it the draft article list or it would show the CMS-card
-          fallback while the real homepage shows the live ones. */}
+      {/* The homepage's El Expediente module (it took the opinion slot on
+          2026-10-27) — fed the same draft article list as the NewsGrid
+          above, so an edited la-lana file previews as it will render. Kept
+          under the opinionSection key: the Opinión tab still owns the TFBR
+          card copy it reads. */}
       <PreviewSection dataKey="opinionSection" changed={changed('opinionSection')}>
-        <OpinionSection data={content.opinionSection} articles={previewArticles} />
+        <LanaExpedientesSection articles={previewArticles} cmsCards={content.opinionSection.cards} />
       </PreviewSection>
 
       <PreviewSection dataKey="productsSection" changed={changed('productsSection')}>
