@@ -344,6 +344,21 @@ out every image from that site: take a cross-referenced outlet's hero instead
 has a path to `main` (above). After publishing, confirm the cover on the live
 page in a real browser (the `<img>` reports `naturalWidth > 0`), not with curl.
 
+**Send playbook.la as the Referer too** (editor, 2026-10-27, the Barça
+international-stores piece). Hotlink protection is the second way a `200`
+lies. The elgoldigital.com cover returned `200` to a plain GET and carried no
+CORP header, yet went live as a beige box: its Cloudflare rule answers `403`
+to any request whose Referer is another site. Run the check a second time as
+the page will make it:
+
+```
+curl -sS -A "<a normal browser UA>" -H "Referer: https://www.playbook.la/" -o /dev/null -w "%{http_code}\n" "<imageUrl>"
+```
+
+Anything but `200` means the cover will not render. Take the photo from the
+subject's own site instead (here, fcbarcelona.com's own Barça Store photo,
+which also fixed a credit that said "FC Barcelona" over a third-party host).
+
 Set `imageCredit` to identify the real source, whatever it is — `"Foto:
 [Fotógrafo] / Unsplash"`, `"Foto: [Agencia]"`, `"Foto: [Club/Liga/
 Organización]"` — matched to whatever the photo's own page attributes it to. It
