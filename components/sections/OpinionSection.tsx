@@ -6,6 +6,7 @@ import { rankArticles } from '@/lib/rank';
 import { articlePath } from '@/lib/article-url';
 import { FRESHNESS, ageInDays } from '@/lib/freshness';
 import { hubForSource } from '@/lib/product-hubs';
+import { internalize } from '@/lib/internal-links';
 
 // Fase 7 UX: restyled to the v24 prototype's analysis-grid/analysis-card
 // pattern (docs/playbook-portal-v24-medio-consulta(1).html) — cards share
@@ -140,14 +141,11 @@ export function OpinionSection({
               {data.archiveLinkLabel}
             </Link>
           ) : (
-            <a
-              className="section-link"
-              href={safeUrl(data.archiveLinkUrl)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            // A8: the CMS archive link pointed to Substack; it lands on the
+            // site's own archive whenever it is a Substack URL.
+            <Link className="section-link" href={internalize(safeUrl(data.archiveLinkUrl), articles)}>
               {data.archiveLinkLabel}
-            </a>
+            </Link>
           )}
         </div>
         <div className="analysis-grid">
@@ -162,17 +160,21 @@ export function OpinionSection({
               featured={i === 0}
             />
           ))}
-          {fallback.map((card, i) => (
-            <AnalysisCard
-              key={`cms-${i}`}
-              masthead={card.masthead}
-              title={card.title}
-              excerpt={card.excerpt}
-              href={safeUrl(card.url)}
-              external
-              featured={i === 0}
-            />
-          ))}
+          {fallback.map((card, i) => {
+            // A8: a Substack URL becomes the same piece on playbook.la.
+            const href = internalize(safeUrl(card.url), articles, { hint: `${card.masthead} ${card.title}` });
+            return (
+              <AnalysisCard
+                key={`cms-${i}`}
+                masthead={card.masthead}
+                title={card.title}
+                excerpt={card.excerpt}
+                href={href}
+                external={/^https?:/i.test(href)}
+                featured={i === 0}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

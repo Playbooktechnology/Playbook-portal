@@ -1,6 +1,7 @@
 import type { InfinitasCard, SiteContentData } from '@/lib/data/site-content';
 import { safeUrl } from '@/lib/safe-url';
 import { AdSlot } from '@/components/ads/AdSlot';
+import { INFINITAS_PATH, internalize, linkTarget } from '@/lib/internal-links';
 
 // "El Marcador en portada" (2026-08-14 redesign, user directive: the old
 // three-column dark-overlay photo grid read flatter than the rest of the
@@ -15,9 +16,15 @@ import { AdSlot } from '@/components/ads/AdSlot';
 // Classes are infsec-* — the old inf-* block in sections.css is gone, but
 // the prefix stays distinct from the hub's infhub-* on purpose (the
 // 2026-08-05 collision lesson).
+// A8: a card pasted with a Substack URL lands on the site, never on Substack;
+// internal links open in the same tab.
+function cardHref(card: InfinitasCard): string {
+  return internalize(safeUrl(card.url), [], { fallback: INFINITAS_PATH });
+}
+
 function InfinitasSideRow({ card, index }: { card: InfinitasCard; index: number }) {
   return (
-    <a className="infsec-row reveal" href={safeUrl(card.url)} target="_blank" rel="noopener noreferrer">
+    <a className="infsec-row reveal" href={cardHref(card)} {...linkTarget(cardHref(card))}>
       <span className="infsec-num" aria-hidden="true">
         {String(index + 1).padStart(2, '0')}
       </span>
@@ -53,14 +60,15 @@ export function InfinitasSection({ data }: { data: SiteContentData['infinitasSec
             <h2 className={headingIsBrand ? 'infsec-heading-brand' : undefined}>{data.heading}</h2>
             <p className="sub">{data.sub}</p>
           </div>
-          <a className="section-link" href={safeUrl(data.linkUrl)} target="_blank" rel="noopener noreferrer">
+          {/* Always the hub (A8): the CMS link pointed to Substack. */}
+          <a className="section-link" href={INFINITAS_PATH}>
             {data.linkLabel}
           </a>
         </div>
       </div>
 
       <div className="infsec-grid">
-        <a className="infsec-lead reveal" href={safeUrl(data.featured.url)} target="_blank" rel="noopener noreferrer">
+        <a className="infsec-lead reveal" href={cardHref(data.featured)} {...linkTarget(cardHref(data.featured))}>
           {data.featured.image && (
             <span className="infsec-photo">
               {/* eslint-disable-next-line @next/next/no-img-element */}
