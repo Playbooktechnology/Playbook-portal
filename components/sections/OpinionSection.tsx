@@ -4,6 +4,8 @@ import type { Article } from '@/lib/data/articles';
 import { safeUrl } from '@/lib/safe-url';
 import { rankArticles } from '@/lib/rank';
 import { articlePath } from '@/lib/article-url';
+import { FRESHNESS, ageInDays } from '@/lib/freshness';
+import { hubForSource } from '@/lib/product-hubs';
 
 // Fase 7 UX: restyled to the v24 prototype's analysis-grid/analysis-card
 // pattern (docs/playbook-portal-v24-medio-consulta(1).html) — cards share
@@ -82,19 +84,43 @@ function AnalysisCard({
   );
 }
 
+// What the section draws from (2026-10-27): opinion pieces plus the two
+// analysis products, La Lana del Deporte (El Expediente) and TFBR. Until then
+// it read `source === 'opinion'` alone — a source no published row carried —
+// so the homepage showed the CMS's hand-pasted Substack cards from the summer.
+const ANALYSIS_SOURCES = new Set(['opinion', 'la-lana', 'futbol-business-review']);
+
 export function OpinionSection({
   data,
   articles,
+  whenStale,
 }: {
   data: SiteContentData['opinionSection'];
   articles: Article[];
+  /**
+   * What the homepage shows instead when no piece is younger than
+   * FRESHNESS.opinionMaxAgeDays ("Más leídas"). The admin's live preview
+   * passes nothing and keeps the CMS cards, so editors still see what they edit.
+   */
+  whenStale?: React.ReactNode;
 }) {
   // Roadmap Agosto 2026, Fase 4: rotate by the same recency+priority
   // formula that decides the 5+1's order (lib/rank.ts), instead of
   // whatever order the caller's query happened to return articles in --
   // one ranking formula sitewide, not a second one reinvented here.
-  const live = rankArticles(articles.filter(a => a.source === 'opinion')).slice(0, MAX_CARDS);
+  // Only pieces younger than the maximum age (lib/freshness.ts).
+  const now = new Date();
+  const live = rankArticles(
+    articles.filter(a => ANALYSIS_SOURCES.has(a.source) && ageInDays(a.date, now) < FRESHNESS.opinionMaxAgeDays),
+    now,
+  ).slice(0, MAX_CARDS);
+  if (!live.length && whenStale !== undefined) return <>{whenStale}</>;
   const fallback: OpinionCard[] = live.length ? [] : data.cards;
+  // "Ver archivo" goes to the products' own pages: the hub when every card is
+  // from one product, the filtered archive otherwise.
+  const liveSources = new Set(live.map(a => a.source));
+  const onlySource = liveSources.size === 1 ? [...liveSources][0] : null;
+  const archiveHref = (onlySource && hubForSource(onlySource)?.path) || '/archivo?source=opinion';
 
   return (
     <section className="analysis-section" id="analisis">
@@ -110,7 +136,7 @@ export function OpinionSection({
               editor-configured destination isn't silently overridden for
               content that only exists on Substack. */}
           {live.length ? (
-            <Link className="section-link" href="/archivo?source=opinion">
+            <Link className="section-link" href={archiveHref}>
               {data.archiveLinkLabel}
             </Link>
           ) : (

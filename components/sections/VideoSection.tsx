@@ -2,6 +2,7 @@ import type { SiteContentData } from '@/lib/data/site-content';
 import { safeUrl } from '@/lib/safe-url';
 import { LazyEmbed } from '@/components/LazyEmbed';
 import { videoDate, type ChannelFeed, type ChannelVideo } from '@/lib/youtube-feed';
+import { FRESHNESS, ageInDays } from '@/lib/freshness';
 
 // Video Playbook, the dark band on the homepage.
 //
@@ -34,6 +35,12 @@ export function VideoSection({
   data: SiteContentData['videoSection'];
   feed?: ChannelFeed | null;
 }) {
+  // Caducidad (lib/freshness.ts): a channel that has not published a long
+  // video in two weeks hides the band instead of presenting an old video as
+  // the latest. Shorts don't keep it alive — they are not what the band leads with.
+  const newest = feed?.longVideos[0];
+  if (feed && (!newest || ageInDays(newest.published) > FRESHNESS.videoMaxAgeDays)) return null;
+
   return (
     <section className="video-section" id="video">
       <div className="container" style={{ padding: '0 24px 46px' }}>

@@ -91,7 +91,11 @@ export default async function HomePage() {
           news package above already uses — the opinion section derives its
           cards from the source='opinion' subset (see that component), so
           no extra query. */}
-      <OpinionSection data={content.opinionSection} articles={articles} />
+      <OpinionSection
+        data={content.opinionSection}
+        articles={articles}
+        whenStale={<MostReadSection days={30} excludeWeekly anchorId="mas-leidas-mes" standalone />}
+      />
       <MidCta data={content.midCta} />
       <TopicDirectory />
       <ProductsSection data={content.productsSection} />
