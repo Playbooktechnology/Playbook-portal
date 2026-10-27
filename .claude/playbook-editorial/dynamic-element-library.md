@@ -197,14 +197,16 @@ by the homepage's "La cifra del día", the "Sigue leyendo" cards at an
 article's foot, the Noticias hub's river features, and the La Lana hub's lead
 expediente and archive cabinet (since 2026-10-27): the declared `Cifra clave`
 wins, with its caption printed beside it; failing that, a figure in the
-HEADLINE; never the excerpt or the teaser's prose. The homepage rail also
+HEADLINE; failing both, a **labeled** `Ecuación:` result (since 2026-10-27,
+see that device below); never the excerpt or the teaser's prose. The homepage rail also
 chooses across stories — it takes the first declared beat it finds, ahead of a
 higher-ranked story that only has a headline figure, because a declared beat
 was vouched for by a human and carries its own caption.
 
 On La Lana this is the whole game: its titles are questions and carry no
 numbers (0 of 19 expedientes on the hub, 2026-10-27), so **an expediente shows
-a figure on the hub only if it declares a `Cifra clave`.** The archive cabinet
+a figure on the hub only if it declares a `Cifra clave` or a labeled
+`Ecuación`.** The archive cabinet
 cuts the caption to a single line to keep its folders a fixed height — one
 more reason the six-word test below is not a style preference.
 
@@ -364,6 +366,19 @@ For "the math behind the deal", with counting operands.
   evaluated left to right and a result off by more than 3% rejects the device
   to plain text. Terms carrying `%` skip the check (a percentage's face value
   isn't its factor).
+
+**Label the result if the equation should reach the hubs** (2026-10-27).
+When a story has no `Cifra clave` and no number in its headline, every
+surface that lifts a story's figure (homepage rail, "Sigue leyendo", Noticias,
+the La Lana lead and cabinet) falls back to the Ecuación's result, and the
+words after it become the caption: `€150M ingresos − €65M producción = €85M
+antes de reparto` shows **€85M · antes de reparto**. An unlabeled result
+(`= €85M`) is never promoted, because nothing would say what it measures. The
+Ligue 1 expediente is the case: its equation carried no labels, and the same
+story mentions a different €85 millones (DAZN's payout) a few paragraphs
+later. Labels top out at 30 characters (longer ones fail the device), and the
+cabinet cuts the caption to one line, so the six-word test from `Cifra clave`
+applies. A declared `Cifra clave` still wins over the equation.
 
 Note this device is where the "no arithmetic showmanship" rule
 (`voice-and-style.md` §7) bites: reach for it when the math reveals the

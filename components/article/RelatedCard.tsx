@@ -1,5 +1,5 @@
 import type { Article } from '@/lib/data/articles';
-import { hubForSource, storyFigure } from '@/lib/product-hubs';
+import { hubForSource, storyFigure, type StoryDeclarations } from '@/lib/product-hubs';
 import { articlePath } from '@/lib/article-url';
 
 // La Lectura's "Sigue leyendo" card (article redesign, 2026-08-05) —
@@ -13,11 +13,11 @@ import { articlePath } from '@/lib/article-url';
 // The figure follows lib/product-hubs.ts's storyFigure — a declared Cifra
 // clave, else a figure in the headline, never the excerpt — the same rule as
 // the homepage rail, so a story can't show one number on the homepage and
-// another at the foot of the article you just read. `declaredFragment` comes
+// another at the foot of the article you just read. `declared` comes
 // from the page (one getDeclaredCifras() for the whole row, not one per card).
-export function RelatedCard({ article, declaredFragment }: { article: Article; declaredFragment?: string }) {
+export function RelatedCard({ article, declared }: { article: Article; declared?: StoryDeclarations }) {
   const hub = hubForSource(article.source);
-  const figure = storyFigure(article, declaredFragment);
+  const figure = storyFigure(article, declared);
   return (
     <a
       className="lect-related-card reveal"
@@ -28,9 +28,10 @@ export function RelatedCard({ article, declaredFragment }: { article: Article; d
         {hub ? `${hub.concept} · ${article.publication}` : article.publication}
       </span>
       {figure && <span className="lect-related-figure">{figure.value}</span>}
-      {/* A declared figure may come from anywhere in the story, so the line
-          saying what it measures has to travel with it. A headline figure
-          needs none: the headline is printed right below. */}
+      {/* A declared figure (Cifra clave or Ecuación) may come from anywhere
+          in the story, so the line saying what it measures has to travel
+          with it. A headline figure needs none: the headline is printed
+          right below. */}
       {figure?.caption && <span className="lect-related-figure-caption">{figure.caption}</span>}
       <h3>{article.title}</h3>
       <span className="lect-related-meta">
