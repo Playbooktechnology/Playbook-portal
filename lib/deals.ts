@@ -38,9 +38,11 @@ export type Deal = {
   playbookRead: string | null;
   keyFigures: KeyFigure[];
   createdAt: string;
+  /** Last edit (ISO). Feeds "Última actualización" (A7). */
+  updatedAt: string;
 };
 
-export type DealInput = Omit<Deal, 'id' | 'createdAt'>;
+export type DealInput = Omit<Deal, 'id' | 'createdAt' | 'updatedAt'>;
 
 // Single write-side gate for both the /admin tab and scripts/upsert-deals.ts:
 // trims text, checks the enum-like columns against their key lists, and
@@ -190,14 +192,89 @@ export function inRange(deal: Deal, start: string, end: string): boolean {
   return deal.date >= start && deal.date <= end;
 }
 
-// The featured card: this week's flagged deal if there is one; otherwise the
-// most recent flagged deal of any week, so the rail never goes blank between
-// weekly updates. With nothing flagged at all it falls back to the newest deal.
-export function selectFeatured(deals: Deal[], week: { start: string; end: string }): Deal | null {
+// ----------------------------------------------------- Weekly cadence (A7)
+// El Marcador se actualiza cada viernes. The label, the dates and the
+// featured pick below are computed from the current date on every request, so
+// the homepage rail and /marcador always say the same thing about the same
+// week — neither stores a week number anywhere.
+
+/** "Semana 44 · 26 oct al 1 nov 2026" — the one label both surfaces print. */
+export function weekLabel(week: { week: number; start: string; end: string }): string {
+  const [, , d1] = week.start.split('-');
+  const sameYear = week.start.slice(0, 4) === week.end.slice(0, 4);
+  const start = sameYear ? `${Number(d1)} ${MONTHS[Number(week.start.slice(5, 7)) - 1]}` : shortDate(week.start);
+  return `Semana ${week.week} · ${start} al ${shortDate(week.end)}`;
+}
+
+/** Day (YYYY-MM-DD, CDMX) of the most recent edit to the table, or null when empty. */
+export function lastUpdateDay(deals: Deal[]): string | null {
+  const latest = deals.reduce<string>((max, d) => {
+    const t = d.updatedAt > d.createdAt ? d.updatedAt : d.createdAt;
+    return t > max ? t : max;
+  }, '');
+  return latest ? todayInMexico(new Date(latest)) : null;
+}
+
+/**
+ * The next scheduled update: the first Friday after the last update that is
+ * not already in the past. A Friday whose update has happened points to the
+ * following one; a Friday still waiting for it points to itself.
+ */
+export function nextUpdateFriday(today: string, lastUpdate: string | null): string {
+  let d = lastUpdate && lastUpdate >= today ? addDays(lastUpdate, 1) : today;
+  while (toUtc(d).getUTCDay() !== 5) d = addDays(d, 1);
+  return d;
+}
+
+/** "viernes 30 oct" */
+export function fridayLabel(date: string): string {
+  const [, m, d] = date.split('-');
+  return `viernes ${Number(d)} ${MONTHS[Number(m) - 1]}`;
+}
+
+/** The week's deals, split by status. */
+export function weekCounts(deals: Deal[], week: { start: string; end: string }) {
+  const inWeek = deals.filter(d => inRange(d, week.start, week.end));
+  const confirmed = inWeek.filter(d => d.status === 'confirmado').length;
+  return { total: inWeek.length, confirmed, reported: inWeek.length - confirmed };
+}
+
+/** "3 acuerdos esta semana" / "Semana sin operaciones confirmadas" (+ reported, when any). */
+export function weekCountLabel(counts: { total: number; confirmed: number; reported: number }): string {
+  if (!counts.confirmed) {
+    return counts.reported
+      ? `Semana sin operaciones confirmadas · ${counts.reported} ${counts.reported === 1 ? 'reportada' : 'reportadas'}`
+      : 'Semana sin operaciones confirmadas';
+  }
+  return `${counts.total} ${counts.total === 1 ? 'acuerdo' : 'acuerdos'} esta semana`;
+}
+
+/**
+ * The featured card and the line above it.
+ *   1. this week's flagged deal                    "El acuerdo de la semana"
+ *   2. the latest flagged deal, if it is fresh     "Último destacado · 23 oct 2026"
+ *   3. otherwise the latest CONFIRMED deal         "Último acuerdo confirmado · …"
+ * A featured deal older than `maxAgeDays` (lib/freshness.ts) stops leading:
+ * a stale headline deal made the whole module look abandoned. With no
+ * confirmed deal at all, the newest deal of any status.
+ */
+export function pickFeatured(
+  deals: Deal[],
+  week: { start: string; end: string },
+  today: string,
+  maxAgeDays: number,
+): { deal: Deal; kicker: string } | null {
   const flagged = deals.filter(d => d.featured).sort(byDateDesc);
-  return (
-    flagged.find(d => inRange(d, week.start, week.end)) ?? flagged[0] ?? [...deals].sort(byDateDesc)[0] ?? null
-  );
+  const thisWeek = flagged.find(d => inRange(d, week.start, week.end));
+  if (thisWeek) return { deal: thisWeek, kicker: 'El acuerdo de la semana' };
+  const ageDays = (d: Deal) => (toUtc(today).getTime() - toUtc(d.date).getTime()) / 86400000;
+  if (flagged[0] && ageDays(flagged[0]) <= maxAgeDays) {
+    return { deal: flagged[0], kicker: `Último destacado · ${shortDate(flagged[0].date)}` };
+  }
+  const confirmed = deals.filter(d => d.status === 'confirmado').sort(byDateDesc)[0];
+  if (confirmed) return { deal: confirmed, kicker: `Último acuerdo confirmado · ${shortDate(confirmed.date)}` };
+  const newest = [...deals].sort(byDateDesc)[0];
+  return newest ? { deal: newest, kicker: `Último registrado · ${shortDate(newest.date)}` } : null;
 }
 
 // "También esta semana": the week's other deals, biggest first. A week with

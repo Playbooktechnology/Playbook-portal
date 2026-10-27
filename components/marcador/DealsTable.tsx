@@ -80,7 +80,13 @@ export function DealsTable({ deals, today }: { deals: Deal[]; today: string }) {
       </p>
 
       {rows.length === 0 ? (
-        <p className="mk-empty">Ningún acuerdo coincide con estos filtros.</p>
+        <p className="mk-empty">
+          {/* "Esta semana" with nothing else filtered is the weekly view: an
+              empty one is news in itself, not a filter mismatch (A7). */}
+          {filters.period === 'semana' && !filters.type && !filters.country && !filters.sport && !filters.query
+            ? 'Semana sin operaciones confirmadas.'
+            : 'Ningún acuerdo coincide con estos filtros.'}
+        </p>
       ) : (
         <table className="mk-table">
           <thead>

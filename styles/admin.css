@@ -679,3 +679,8 @@ textarea.input { min-height: 76px; resize: vertical; line-height: 1.5; }
    .article-detail class is what scopes --lect-accent per product skin. */
 .estilo-canvas { max-width: 680px; }
 .estilo-canvas .article-body { font-size: 15px; line-height: 1.65; }
+
+/* A7: Marcador candidates — the explanation above the list and the notes the
+   pre-filled form carries (what is missing, what to verify). */
+.deal-candidates-help{display:block;margin:0 0 12px;max-width:80ch;}
+.deal-candidate-notes{margin:0 0 14px;padding:10px 14px 10px 28px;background:var(--paper-soft);border-left:3px solid var(--green);font-size:13px;line-height:1.5;}

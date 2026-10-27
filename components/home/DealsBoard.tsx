@@ -6,13 +6,20 @@ import {
   dealTitle,
   featuredFigures,
   formatUsdShort,
+  fridayLabel,
   isoWeek,
+  lastUpdateDay,
+  nextUpdateFriday,
+  pickFeatured,
   railDeals,
-  selectFeatured,
   shortDate,
   todayInMexico,
+  weekCountLabel,
+  weekCounts,
+  weekLabel,
   yearTotal,
 } from '@/lib/deals';
+import { FRESHNESS } from '@/lib/freshness';
 import { DealLink } from '@/components/marcador/DealLink';
 
 // ——— "El Marcador de Negocios" (sidebar module, replaced El tablero de la
@@ -28,10 +35,10 @@ export async function DealsBoard() {
   const deals = await getAllDeals();
   const today = todayInMexico();
   const week = isoWeek(today);
-  const featured = selectFeatured(deals, week);
-  if (!featured) return null;
-
-  const featuredThisWeek = featured.date >= week.start && featured.date <= week.end;
+  const pick = pickFeatured(deals, week, today, FRESHNESS.marcadorFeaturedMaxAgeDays);
+  if (!pick) return null;
+  const featured = pick.deal;
+  const updated = lastUpdateDay(deals);
   const rail = railDeals(deals, week, featured.id);
   const year = Number(today.slice(0, 4));
   const { total, count } = yearTotal(deals, year);
@@ -40,12 +47,21 @@ export async function DealsBoard() {
     <section className="side-module side-deals" aria-labelledby="side-deals-title">
       <div className="side-deals-head">
         <h2 className="side-title" id="side-deals-title">El Marcador de Negocios</h2>
-        <span className="side-deals-week">Sem. {week.week}</span>
       </div>
+      {/* Same week label, dates and count as /marcador (lib/deals.ts, A7). */}
+      <p className="side-deals-week">{weekLabel(week)}</p>
+      <p className="side-deals-status">
+        <span>{weekCountLabel(weekCounts(deals, week))}</span>
+        {updated && (
+          <span>
+            Última actualización: {shortDate(updated)} · Próxima: {fridayLabel(nextUpdateFriday(today, updated))}
+          </span>
+        )}
+      </p>
 
       <article className="side-deals-card">
         <p className="side-deals-kicker">
-          {featuredThisWeek ? 'El acuerdo de la semana' : `Último destacado · ${shortDate(featured.date)}`}
+          {pick.kicker}
         </p>
         <h3 className="side-deals-name">{dealTitle(featured)}</h3>
         {featured.summary && <p className="side-deals-summary">{featured.summary}</p>}

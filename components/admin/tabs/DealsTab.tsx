@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { deleteDeal, listDeals, saveDeal } from '@/lib/actions/deals';
+import { deleteDeal, listDealCandidates, listDeals, saveDeal } from '@/lib/actions/deals';
+import type { CandidateField, DealCandidate } from '@/lib/deal-candidates';
 import {
   DEAL_STATUS_LABEL,
   DEAL_TYPES,
@@ -48,6 +49,16 @@ function emptyDraft(): Draft {
   };
 }
 
+const CANDIDATE_FIELD_LABEL: Record<CandidateField, string> = {
+  brand: 'marca',
+  counterparty: 'contraparte',
+  type: 'tipo',
+  country: 'país',
+  sport: 'deporte',
+  duration: 'duración',
+  amount: 'monto',
+};
+
 function toDraft(d: Deal): Draft {
   return {
     date: d.date,
@@ -84,9 +95,16 @@ export function DealsTab({ onToast }: Props) {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [saving, setSaving] = useState(false);
 
+  // A7: candidates are read alongside the deals and recomputed after every
+  // save, so an approved one drops off the list on its own.
+  const [candidates, setCandidates] = useState<DealCandidate[]>([]);
+  const [candidateNotes, setCandidateNotes] = useState<string[]>([]);
+
   const refresh = useCallback(async () => {
     try {
-      setDeals(await listDeals());
+      const [list, cands] = await Promise.all([listDeals(), listDealCandidates().catch(() => [])]);
+      setDeals(list);
+      setCandidates(cands);
       setLoadError('');
     } catch (err) {
       setLoadError(`No se pudieron cargar los acuerdos: ${(err as Error).message}`);
@@ -114,6 +132,20 @@ export function DealsTab({ onToast }: Props) {
   function close() {
     setEditingId(null);
     setDraft(null);
+    setCandidateNotes([]);
+  }
+
+  // "Revisar y aprobar": the new-deal form, pre-filled with what the story's
+  // text gave us. Nothing is saved until the editor completes it and presses
+  // Guardar — that save IS the approval.
+  function openCandidate(c: DealCandidate) {
+    setEditingId(null);
+    setDraft({ ...emptyDraft(), ...c.proposed, amountText: c.proposed.amountText ?? '', playbookRead: '', keyFigures: [] });
+    setCandidateNotes([
+      ...c.missing.map(f => `Falta: ${CANDIDATE_FIELD_LABEL[f]}.`),
+      ...c.notes,
+    ]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -173,6 +205,13 @@ export function DealsTab({ onToast }: Props) {
       {draft && (
         <form className="deal-form" onSubmit={handleSave}>
           <h3 className="admin-section-title">{editingId ? 'Editar acuerdo' : 'Nuevo acuerdo'}</h3>
+          {candidateNotes.length > 0 && (
+            <ul className="deal-candidate-notes">
+              {candidateNotes.map(n => (
+                <li key={n}>{n}</li>
+              ))}
+            </ul>
+          )}
           <div className="deal-form-grid">
             <label className="field">
               <span className="field-label">Fecha</span>
@@ -276,6 +315,40 @@ export function DealsTab({ onToast }: Props) {
             </button>
           </div>
         </form>
+      )}
+
+      <h3 className="admin-section-title">Candidatos desde notas publicadas ({candidates.length})</h3>
+      <p className="field-help deal-candidates-help">
+        Notas desde el 21 sep con industria Patrocinios, Inversión, Derechos de TV o Venues que todavía no están en
+        el Marcador. Nada se publica desde aquí: «Revisar y aprobar» abre el formulario con los campos propuestos;
+        completa lo marcado como faltante, decide Confirmado/Reportado y revelado/estimado, y pulsa Guardar. Las
+        notas que no son un acuerdo simplemente se dejan en la lista.
+      </p>
+      {candidates.length > 0 && (
+        <ul className="team-list">
+          {candidates.map(c => (
+            <li key={c.articleId} className="team-row deal-row">
+              <div className="team-row-main">
+                <b>
+                  {c.signal && <span title="El titular parece un acuerdo">● </span>}
+                  {c.title}
+                </b>
+                <span className="team-row-meta">
+                  {shortDate(c.date)} · {c.vertical}
+                  {c.proposed.brand && ` · ${c.proposed.brand}`}
+                  {c.proposed.counterparty && ` → ${c.proposed.counterparty}`}
+                  {c.missing.length > 0 && ` · Falta: ${c.missing.map(f => CANDIDATE_FIELD_LABEL[f]).join(', ')}`}
+                </span>
+              </div>
+              <a className="btn-mini" href={c.proposed.articleUrl} target="_blank" rel="noopener noreferrer">
+                Ver nota
+              </a>
+              <button type="button" className="btn-mini" onClick={() => openCandidate(c)}>
+                Revisar y aprobar
+              </button>
+            </li>
+          ))}
+        </ul>
       )}
 
       <h3 className="admin-section-title">Acuerdos registrados ({deals.length})</h3>

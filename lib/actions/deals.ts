@@ -7,6 +7,8 @@ import { db } from '@/lib/db/client';
 import { deals } from '@/lib/db/schema';
 import { DEALS_CACHE_TAG, toDeal } from '@/lib/data/deals';
 import { normalizeDealInput, type Deal, type DealInput } from '@/lib/deals';
+import { getPublicArticles } from '@/lib/data/articles';
+import { dealCandidates, type DealCandidate } from '@/lib/deal-candidates';
 
 // Same guard as lib/actions/admin.ts's requireEditor — redefined because a
 // 'use server' module can only export async actions (see lib/actions/team.ts).
@@ -41,4 +43,12 @@ export async function deleteDeal(id: string): Promise<void> {
   await requireEditor();
   await db.delete(deals).where(eq(deals.id, id));
   revalidateTag(DEALS_CACHE_TAG);
+}
+
+// A7: published stories that look like Marcador material and are not in it
+// yet. Read-only — approving one is saving it through saveDeal() above.
+export async function listDealCandidates(): Promise<DealCandidate[]> {
+  await requireEditor();
+  const [articles, rows] = await Promise.all([getPublicArticles(), db.select({ articleUrl: deals.articleUrl }).from(deals)]);
+  return dealCandidates(articles, rows);
 }
