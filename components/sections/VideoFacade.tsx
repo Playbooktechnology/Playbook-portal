@@ -42,6 +42,10 @@ export function VideoFacade({
       aria-label={`Reproducir: ${title}`}
       onClick={() => {
         trackEvent('video_click', { item_id: id, position, link_text: title.slice(0, 100), placement: 'portada' });
+        // The homepage-module twin of video_click (hp_ family, see
+        // lib/analytics-events.ts): "which homepage module earns its space"
+        // reads hp_click_video; the site-wide act stays video_click.
+        trackEvent('hp_click_video', { item_id: id, position, link_text: title.slice(0, 100), product: 'unknown' });
         setPlaying(true);
       }}
     >

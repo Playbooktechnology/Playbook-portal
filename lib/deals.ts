@@ -1,3 +1,5 @@
+import { FRESHNESS } from './freshness';
+
 // Pure logic for El Marcador de Negocios (homepage rail module + /marcador).
 // No database access here, so the client-side table on /marcador can import
 // the same labels, filters and formatting the server components use.
@@ -190,14 +192,65 @@ export function inRange(deal: Deal, start: string, end: string): boolean {
   return deal.date >= start && deal.date <= end;
 }
 
-// The featured card: this week's flagged deal if there is one; otherwise the
-// most recent flagged deal of any week, so the rail never goes blank between
-// weekly updates. With nothing flagged at all it falls back to the newest deal.
-export function selectFeatured(deals: Deal[], week: { start: string; end: string }): Deal | null {
+// A flagged deal older than this stops leading the card on its own: past
+// two weeks the rail shows the newest confirmed deal instead, so the
+// module never sits on a stale pick between editorial updates.
+// The number lives with the other homepage age limits in lib/freshness.ts.
+export const FEATURED_MAX_AGE_DAYS = FRESHNESS.marcadorFeaturedMaxAgeDays;
+
+export type FeaturedMode = 'semana' | 'destacado' | 'reciente';
+
+function daysBetween(from: string, to: string): number {
+  return Math.round((toUtc(to).getTime() - toUtc(from).getTime()) / 86400000);
+}
+
+// The featured card, in three steps:
+//   1. this week's flagged deal ("El acuerdo de la semana");
+//   2. otherwise the latest flagged deal, while it is at most
+//      FEATURED_MAX_AGE_DAYS old ("Último destacado · fecha");
+//   3. otherwise the most recent CONFIRMED deal ("Más reciente · fecha"),
+//      falling back to the newest deal of any status only when nothing is
+//      confirmed. Never null unless the table is empty.
+// Both surfaces (rail and /marcador) call this, so their card can't differ.
+export function selectFeatured(
+  deals: Deal[],
+  today: string,
+): { deal: Deal; mode: FeaturedMode } | null {
+  const week = isoWeek(today);
   const flagged = deals.filter(d => d.featured).sort(byDateDesc);
-  return (
-    flagged.find(d => inRange(d, week.start, week.end)) ?? flagged[0] ?? [...deals].sort(byDateDesc)[0] ?? null
-  );
+  const thisWeek = flagged.find(d => inRange(d, week.start, week.end));
+  if (thisWeek) return { deal: thisWeek, mode: 'semana' };
+  if (flagged[0] && daysBetween(flagged[0].date, today) <= FEATURED_MAX_AGE_DAYS) {
+    return { deal: flagged[0], mode: 'destacado' };
+  }
+  const byDate = [...deals].sort(byDateDesc);
+  const latest = byDate.find(d => d.status === 'confirmado') ?? byDate[0];
+  return latest ? { deal: latest, mode: 'reciente' } : null;
+}
+
+export function featuredKicker(featured: { deal: Deal; mode: FeaturedMode }): string {
+  switch (featured.mode) {
+    case 'semana':
+      return 'El acuerdo de la semana';
+    case 'destacado':
+      return `Último destacado · ${shortDate(featured.deal.date)}`;
+    default:
+      return `Más reciente · ${shortDate(featured.deal.date)}`;
+  }
+}
+
+// The week label both surfaces print, from one place: the rail's compact
+// "Sem. 44" and /marcador's "Semana 44 · 26 oct 2026 al 1 nov 2026". The
+// date range only shows when the week actually has deals — a range over an
+// empty week reads as if something were listed there.
+export function weekLabel(deals: Deal[], today: string): { week: number; short: string; long: string } {
+  const w = isoWeek(today);
+  const hasDeals = deals.some(d => inRange(d, w.start, w.end));
+  return {
+    week: w.week,
+    short: `Sem. ${w.week}`,
+    long: hasDeals ? `Semana ${w.week} · ${shortDate(w.start)} al ${shortDate(w.end)}` : `Semana ${w.week}`,
+  };
 }
 
 // "También esta semana": the week's other deals, biggest first. A week with

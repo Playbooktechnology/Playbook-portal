@@ -327,3 +327,51 @@ export const deals = pgTable('deals', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
+
+// ---------------------------------------------------------------- Deal drafts (Marcador review queue)
+// A pre-filled Marcador entry proposed automatically when an article in a
+// deal vertical is published (lib/deal-draft.ts extracts the fields). It
+// lives in its OWN table on purpose: nothing public reads this table, so a
+// draft can't reach the rail, /marcador or the year total by any code path.
+// The only way into `deals` is an editor pressing "Aprobar" in /admin
+// (lib/actions/deals.ts approveDealDraft), which inserts the row there and
+// deletes the draft. "Descartar" keeps the row with dismissed_at set, so
+// re-saving the article doesn't propose the same deal again.
+
+export const dealDrafts = pgTable('deal_drafts', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  articleId: text('article_id').notNull().unique(),
+  // Same field names and shape as DealInput (lib/deals.ts); every field may
+  // be empty, which is the point of `missing`.
+  fields: jsonb('fields').$type<Record<string, unknown>>().notNull().default({}),
+  // Field keys the extractor could not find in the article text.
+  missing: text('missing').array().notNull().default([]),
+  dismissedAt: timestamp('dismissed_at', { withTimezone: true }),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+// ---------------------------------------------------------------- Image rewrites (own storage)
+// One row per image URL moved to Playbook's own storage (lib/images/
+// localize.ts): the external original, the URL that replaced it, and where
+// it was (an article's cover or body, or a site_content path). It is the
+// undo log: reverting a batch puts every old_url back exactly where it was.
+// The migration refuses to rewrite anything it can't log here first.
+
+export const imageRewrites = pgTable(
+  'image_rewrites',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    batchId: text('batch_id').notNull(),
+    // Null for site_content images.
+    articleId: text('article_id'),
+    // 'cover' | 'body' | 'site_content:<json path>'
+    location: text('location').notNull(),
+    oldUrl: text('old_url').notNull(),
+    newUrl: text('new_url').notNull(),
+    revertedAt: timestamp('reverted_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  table => ({
+    batchIdx: index('image_rewrites_batch_idx').on(table.batchId),
+  }),
+);

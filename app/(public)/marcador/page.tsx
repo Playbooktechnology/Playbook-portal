@@ -8,12 +8,13 @@ import {
   dealAmountLabel,
   dealTitle,
   featuredFigures,
+  featuredKicker,
   formatUsdLong,
-  isoWeek,
   selectFeatured,
   shortDate,
   todayInMexico,
   topDeals,
+  weekLabel,
   yearStats,
   type DealStatus,
 } from '@/lib/deals';
@@ -39,11 +40,11 @@ export const metadata: Metadata = {
 export default async function MarcadorPage() {
   const deals = await getAllDeals();
   const today = todayInMexico();
-  const week = isoWeek(today);
+  const label = weekLabel(deals, today);
   const year = Number(today.slice(0, 4));
   const stats = yearStats(deals, year);
-  const featured = selectFeatured(deals, week);
-  const featuredThisWeek = !!featured && featured.date >= week.start && featured.date <= week.end;
+  const pick = selectFeatured(deals, today);
+  const featured = pick?.deal ?? null;
   const top = topDeals(deals, year);
   const byType = countByType(deals, year);
   const maxType = Math.max(1, ...byType.map(t => t.count));
@@ -58,7 +59,7 @@ export default async function MarcadorPage() {
           patrocinios, derechos de transmisión, retail, inversión y estadios.
         </p>
         <p className="mk-updated">
-          Semana {week.week} · {shortDate(week.start)} al {shortDate(week.end)}
+          {label.long}
         </p>
       </header>
 
@@ -93,7 +94,7 @@ export default async function MarcadorPage() {
             <section className="mk-featured" aria-labelledby="mk-featured-title">
               <div className="mk-featured-main">
                 <p className="side-deals-kicker">
-                  {featuredThisWeek ? 'El acuerdo de la semana' : `Último destacado · ${shortDate(featured.date)}`}
+                  {pick && featuredKicker(pick)}
                 </p>
                 <h2 id="mk-featured-title" className="mk-featured-name">
                   {dealTitle(featured)}

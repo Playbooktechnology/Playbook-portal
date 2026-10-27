@@ -397,8 +397,18 @@ ratio:
 
 A self-cropped image needs the same hosting path as any other custom asset:
 commit it to `public/assets/img/`, push, and use the resulting
-`https://playbook-portal-phi.vercel.app/assets/img/...` URL — Wikimedia and
-Unsplash only serve their own original crops.
+`https://www.playbook.la/assets/img/...` URL — Wikimedia and Unsplash only
+serve their own original crops. Never the `playbook-portal-phi.vercel.app`
+deployment host (2026-10-27): it serves the same file, but it is a domain
+that isn't playbook.la, and 93 covers had to be rewritten for it.
+
+**External cover and body images are copied to Playbook's own storage
+automatically** (2026-10-27, `lib/images/localize.ts`): right after an
+admin save or a Make.com insert, and in a daily sweep of the last three
+days for anything published by `scripts/publish-newsletter.ts`. Pick the
+photo exactly as before (source, credit, ratio): the copy changes the URL,
+never the credit line. An image whose host refuses the download keeps its
+original URL and shows up in /admin → Imágenes.
 
 **Never publish a cover photo without doing this ratio check first**, regardless
 of how good the photo looks in isolation. A source article's own hero image is

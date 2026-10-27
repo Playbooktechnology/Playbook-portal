@@ -4,11 +4,14 @@ import { and, eq, sql } from 'drizzle-orm';
 import { generateHTML } from '@tiptap/html';
 import type { JSONContent } from '@tiptap/core';
 import { revalidateTag } from 'next/cache';
+import { after } from 'next/server';
 import { auth } from '@/auth';
 import { db } from '@/lib/db/client';
 import { articles, contentRevisions, siteContent } from '@/lib/db/schema';
 import { ARTICLES_CACHE_TAG, type Article } from '@/lib/data/articles';
 import { SITE_CONTENT_CACHE_TAG, type SiteContentData } from '@/lib/data/site-content';
+import { proposeDealDraftForArticle } from '@/lib/data/deal-drafts';
+import { localizeArticleImages } from '@/lib/images/localize';
 import { TIPTAP_EXTENSIONS } from '@/lib/tiptap-extensions';
 import { slugify } from '@/lib/slugify';
 import { validateTags, formatTagIssues, REQUIRED_PROPERTY_BY_SOURCE } from '@/lib/taxonomy';
@@ -204,6 +207,12 @@ export async function saveArticle(
     snapshot: updated,
   });
 
+  // A re-tag into a deal vertical counts too; the helper skips articles
+  // that already have a deal or a draft (pending or dismissed).
+  await proposeDealDraftForArticle(db, updated);
+  // External cover/body images are copied to Vercel Blob after the
+  // response is sent (lib/images/localize.ts); the editor isn't kept waiting.
+  after(() => localizeArticleImages(db, updated.id));
   revalidateTag(ARTICLES_CACHE_TAG);
   return { conflict: false, article: updated };
 }
@@ -265,6 +274,8 @@ export async function createArticle(input: ArticleInput & { id?: string }): Prom
         snapshot: inserted,
       });
 
+      await proposeDealDraftForArticle(db, inserted);
+      after(() => localizeArticleImages(db, inserted.id));
       revalidateTag(ARTICLES_CACHE_TAG);
       return { article: inserted };
     } catch (err: unknown) {
