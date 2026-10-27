@@ -349,3 +349,29 @@ export const dealDrafts = pgTable('deal_drafts', {
   dismissedAt: timestamp('dismissed_at', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
+
+// ---------------------------------------------------------------- Image rewrites (own storage)
+// One row per image URL moved to Playbook's own storage (lib/images/
+// localize.ts): the external original, the URL that replaced it, and where
+// it was (an article's cover or body, or a site_content path). It is the
+// undo log: reverting a batch puts every old_url back exactly where it was.
+// The migration refuses to rewrite anything it can't log here first.
+
+export const imageRewrites = pgTable(
+  'image_rewrites',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    batchId: text('batch_id').notNull(),
+    // Null for site_content images.
+    articleId: text('article_id'),
+    // 'cover' | 'body' | 'site_content:<json path>'
+    location: text('location').notNull(),
+    oldUrl: text('old_url').notNull(),
+    newUrl: text('new_url').notNull(),
+    revertedAt: timestamp('reverted_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  table => ({
+    batchIdx: index('image_rewrites_batch_idx').on(table.batchId),
+  }),
+);

@@ -4,12 +4,13 @@
 // (see lib/db/schema.ts's comment on articles.sourceUrl for why).
 
 import { timingSafeEqual } from 'crypto';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
 import { revalidateTag } from 'next/cache';
 import { db } from '@/lib/db/client';
 import { articles } from '@/lib/db/schema';
 import { ARTICLES_CACHE_TAG } from '@/lib/data/articles';
 import { proposeDealDraftForArticle } from '@/lib/data/deal-drafts';
+import { localizeArticleImages } from '@/lib/images/localize';
 import { SPORT_OPTIONS, validateTags, formatTagIssues } from '@/lib/taxonomy';
 import { checkRateLimit } from '@/lib/rate-limit';
 
@@ -231,6 +232,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ status: 'duplicate', url: article.url });
       }
       await proposeDealDraftForArticle(db, inserted);
+      // External images → Vercel Blob once the response is out.
+      after(() => localizeArticleImages(db, inserted.id));
       revalidateTag(ARTICLES_CACHE_TAG);
       return NextResponse.json({
         status: 'ok',

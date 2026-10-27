@@ -681,3 +681,5 @@ textarea.input { min-height: 76px; resize: vertical; line-height: 1.5; }
    .article-detail class is what scopes --lect-accent per product skin. */
 .estilo-canvas { max-width: 680px; }
 .estilo-canvas .article-body { font-size: 15px; line-height: 1.65; }
+.images-scope { border: 1px solid var(--rule); border-radius: 12px; padding: 10px 16px; margin: 0 0 16px; }
+.images-report { margin-top: 18px; }

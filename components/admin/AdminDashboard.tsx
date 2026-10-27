@@ -31,6 +31,7 @@ import { SettingsTab } from './tabs/SettingsTab';
 import { TeamTab } from './tabs/TeamTab';
 import { ReadersTab } from './tabs/ReadersTab';
 import { DealsTab } from './tabs/DealsTab';
+import { ImagesTab } from './tabs/ImagesTab';
 import { LivePreview } from './LivePreview';
 
 // `group` drives the section headers rendered above the tab rail
@@ -55,6 +56,7 @@ const TAB_DEFS = [
   { key: 'nav', label: 'Navegación', group: 'Sitio' },
   { key: 'footer', label: 'Footer', group: 'Sitio' },
   { key: 'settings', label: 'Ajustes', group: 'Sitio' },
+  { key: 'images', label: 'Imágenes', group: 'Sitio' },
   { key: 'team', label: 'Equipo', group: 'Equipo' },
   { key: 'readers', label: 'Lectores', group: 'Equipo' },
 ] as const;
@@ -70,7 +72,7 @@ function toPlain<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
 }
 
-const SAVELESS_TABS: ReadonlySet<string> = new Set(['team', 'readers', 'deals']);
+const SAVELESS_TABS: ReadonlySet<string> = new Set(['team', 'readers', 'deals', 'images']);
 
 type TabKey = (typeof TAB_DEFS)[number]['key'];
 const DEFAULT_ORDER: TabKey[] = TAB_DEFS.map(t => t.key);
@@ -378,6 +380,7 @@ export function AdminDashboard({ initialContent, initialContentVersion, initialA
             {activeTab === 'team' && <TeamTab onToast={pushToast} />}
             {activeTab === 'readers' && <ReadersTab />}
             {activeTab === 'deals' && <DealsTab onToast={pushToast} />}
+            {activeTab === 'images' && <ImagesTab onToast={pushToast} />}
           </section>
 
           <aside className="admin-preview-pane" aria-label="Vista previa en vivo">
