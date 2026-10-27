@@ -67,6 +67,20 @@ running story before, and a reader would finish the brief still not knowing how
 the thing works — that is the story asking for C. Route it deliberately at this
 step; C is not a length the draft grows into, it has its own architecture (§3b).
 
+**Second worked example: the cost lands on someone other than the actor**
+(editor, 2026-10-27, LaLiga/CCTV/Mbappé). The draft shipped as a 484-word B
+because the news read as "a player loses sponsors and a broadcaster suspends a
+league". The editor sent it back the same day: *"se está subestimando la
+relevancia… habla de la importancia que tienen las acciones de un activo como
+Mbappé de una propiedad como LaLiga a sus intereses económicos con un socio
+comercial"*. Rebuilt as a C, it carried the league's own statement and Tebas's,
+the league's rights history in China (a private buyer that defaulted, then
+state buyers), its international rights income, and the NBA precedent. **The
+tell:** when the party paying the cost is not the party that acted (a league
+paying for a player, a federation for a club, a brand for an ambassador), the
+story is about the structure that connects them. That is a mechanism question,
+and it routes to C at Step 3, not after publishing.
+
 Two notes on how these meet what the portal already publishes:
 
 - **B's operating range on the portal has been 300–500 words.** The guide's
