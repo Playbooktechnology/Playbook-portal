@@ -54,6 +54,8 @@ import { publishedIso, publishedLabel } from '@/lib/dates';
 import { NEWSROOM_BYLINE, authorPath } from '@/lib/authors';
 import { METERING_ENABLED } from '@/lib/constants';
 import { isValidPreviewToken, previewTokenFor } from '@/lib/preview-token';
+import { getMostReadArticles } from '@/lib/most-read';
+import { todayInMexico } from '@/lib/deals';
 
 // The slug arrives as a path segment now, not as `?id=`. Next has already
 // percent-decoded it by the time it reaches us, so ids with accents or
@@ -727,10 +729,12 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
   // getDeclaredCifras: one cached query for the whole "Sigue leyendo" row, so
   // each RelatedCard can apply the declared-or-headline figure rule without a
   // body fetch per card (see lib/data/articles.ts on why bodies stay off lists).
-  const [article, pool, declaredCifras] = await Promise.all([
+  const [article, pool, declaredCifras, readNow] = await Promise.all([
     getArticleById(meta.id),
     getPublicArticles(),
     getDeclaredCifras(),
+    // "Sigue leyendo"'s third tier (A9): the last 48 hours' most read.
+    getMostReadArticles({ days: 2, limit: 10 }),
   ]);
   if (!article) notFound();
 
@@ -748,7 +752,7 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
   const bodySource = fromSnapshot ? article.excerpt || '' : article.teaser || article.excerpt || '';
   const bodyIsHtml = !hasNativeBody && looksLikeHtml(bodySource);
   const paragraphs = hasNativeBody || bodyIsHtml ? [] : paragraphsFrom(bodySource);
-  const related = relatedArticles(article, pool);
+  const related = relatedArticles(article, pool, readNow?.map(r => r.article) ?? [], todayInMexico());
 
   // Fase 7: inline-article ad slot after the third paragraph, for both
   // body shapes. HTML bodies split at a safe top-level boundary (or not at
