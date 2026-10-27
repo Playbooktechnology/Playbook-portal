@@ -1,8 +1,10 @@
 # Propuesta: "Actualizado" solo por cambio de fondo (A4, pendiente de aprobar)
 
-**Estado:** no implementado. Requiere un cambio de esquema en Postgres y, por
-la regla de `CLAUDE.md` ("cualquier cambio de esquema necesita revisión
-aparte"), no viaja en la rama de A1–A10.
+**Estado:** aprobado el 27 oct 2026 e implementado en su propia rama
+(`claude/articulo-actualizado`), con la migración `0015`. Diferencia con lo
+propuesto abajo: no hay casilla aparte. Escribir un texto nuevo o distinto en
+"Actualización de fondo" es la marca, y la hora se registra en ese guardado;
+vaciarlo quita "Actualizado". El SQL real usa `ADD COLUMN IF NOT EXISTS`.
 
 ## Por qué hace falta un campo
 

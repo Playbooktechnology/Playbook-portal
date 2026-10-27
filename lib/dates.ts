@@ -67,3 +67,29 @@ export function relativeLabel(a: Dated & { dateFormatted: string }, now: Date = 
   if (minutes < 60) return `hace ${minutes} min`;
   return `hace ${Math.floor(minutes / 60)} h`;
 }
+
+const DATE_TIME = new Intl.DateTimeFormat('es-MX', {
+  timeZone: TZ,
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+});
+
+/** "28 oct 2026, 14:05" — for "Actualizado". Accepts Date or ISO (unstable_cache serializes dates). */
+export function dateTimeLabel(at: Date | string): string {
+  const d = new Date(at);
+  if (Number.isNaN(d.getTime())) return '';
+  const parts = Object.fromEntries(DATE_TIME.formatToParts(d).map(p => [p.type, p.value]));
+  return `${parts.day} ${String(parts.month).replace('.', '')} ${parts.year}, ${parts.hour}:${parts.minute}`;
+}
+
+/** ISO 8601 with the Mexico City offset, for dateModified. */
+export function isoMexico(at: Date | string): string | undefined {
+  const d = new Date(at);
+  if (Number.isNaN(d.getTime())) return undefined;
+  const [hh, mm] = TIME.format(d).split(':');
+  return `${mexicoDay(d)}T${hh}:${mm}:00${MX_OFFSET}`;
+}

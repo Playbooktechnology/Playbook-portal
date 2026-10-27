@@ -110,7 +110,17 @@ const queryPublishedArticles = unstable_cache(
     // LIST_COLUMNS (see above): the audit payload is only ever opened for one
     // article at a time in the CMS, so shipping it on every list query would
     // reintroduce exactly the per-row weight this query exists to remove.
-    return rows.map(row => ({ ...row, source: normalizeSource(row.source), bodyJson: null, bodyHtml: null, scoreBoleta: null }));
+    // "Actualizado" is read only by the article page (getArticleMetaById), so
+    // list rows carry it as null, like the bodies.
+    return rows.map(row => ({
+      ...row,
+      source: normalizeSource(row.source),
+      bodyJson: null,
+      bodyHtml: null,
+      scoreBoleta: null,
+      substantiveUpdateAt: null,
+      substantiveUpdateNote: null,
+    }));
   },
   ['articles-published-list'],
   { revalidate: 60, tags: [ARTICLES_CACHE_TAG] },
@@ -361,6 +371,9 @@ export type ArticleMeta = {
   substackUrl: string;
   /** Row creation time: the real publish hour when it falls on `date` (lib/dates.ts). */
   createdAt: Date;
+  /** "Actualizado": set only by a change of substance (schema.ts). */
+  substantiveUpdateAt: Date | null;
+  substantiveUpdateNote: string | null;
 };
 
 // Selects only the columns safe to expose to a reader who hasn't been
@@ -413,6 +426,8 @@ async function queryArticleMeta(id: string): Promise<ArticleMeta | null> {
       tagsProperty: articles.tagsProperty,
       substackUrl: articles.substackUrl,
       createdAt: articles.createdAt,
+      substantiveUpdateAt: articles.substantiveUpdateAt,
+      substantiveUpdateNote: articles.substantiveUpdateNote,
     })
     .from(articles)
     .where(eq(articles.id, id))
