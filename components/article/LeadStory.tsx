@@ -2,6 +2,7 @@ import type { Article } from '@/lib/data/articles';
 import { TagPillRow } from './TagPillRow';
 import { SplitHeadline } from '@/components/home/SplitHeadline';
 import { articlePath } from '@/lib/article-url';
+import { StoryByline } from './StoryByline';
 
 // Ported from legacy/js/articles.js's leadTemplate(). `.lead-story` is a
 // <div>, NOT an <a> — `.card-link` wraps just the navigable content and is
@@ -24,8 +25,14 @@ import { articlePath } from '@/lib/article-url';
 export function LeadStory({
   article,
   analyticsEvent,
+  relativeTime = false,
+  showAuthorsGlobal = false,
 }: {
   article: Article;
+  /** "hace X min" the same day — "Último en Playbook" only. */
+  relativeTime?: boolean;
+  /** siteSettings.mostrarAutorGlobal, for the byline. */
+  showAuthorsGlobal?: boolean;
   /** Set only by the homepage (see components/analytics/SiteEvents.tsx). */
   analyticsEvent?: string;
 }) {
@@ -57,9 +64,7 @@ export function LeadStory({
         <span className="tag">{article.publication}</span>
         {article.imageUrl && <SplitHeadline text={article.title} />}
         <p className="desc">{article.excerpt}</p>
-        <div className="byline">
-          {article.dateFormatted} · {article.readingTime || 1} min
-        </div>
+        <StoryByline article={article} relative={relativeTime} showAuthorsGlobal={showAuthorsGlobal} />
       </a>
       <TagPillRow article={article} />
     </div>

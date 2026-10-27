@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getTeamMembers, getTeamPageStats } from '@/lib/data/team';
 import { jsonLdScript } from '@/lib/json-ld';
 import { SITE_URL } from '@/lib/site-url';
+import { authorPath } from '@/lib/authors';
 
 export const metadata: Metadata = {
   title: 'Equipo',
@@ -38,7 +39,7 @@ export default async function EquipoPage() {
       '@context': 'https://schema.org',
       '@type': 'Person',
       name: m.name,
-      url: `${SITE_URL}/autor?nombre=${encodeURIComponent(m.name)}`,
+      url: `${SITE_URL}${authorPath(m.name)}`,
       ...(m.profile?.role ? { jobTitle: m.profile.role } : {}),
       worksFor: { '@id': `${SITE_URL}#organization` },
     })),
@@ -102,7 +103,7 @@ export default async function EquipoPage() {
               {m.profile?.role && <p className="team-card-role">{m.profile.role}</p>}
               {m.profile?.beat && <p className="team-card-beat">{m.profile.beat}</p>}
               {m.profile?.bio && <p className="team-card-bio">{m.profile.bio}</p>}
-              <Link className="team-card-link" href={`/autor?nombre=${encodeURIComponent(m.name)}`}>
+              <Link className="team-card-link" href={authorPath(m.name)}>
                 {m.articleCount === 1 ? '1 artículo publicado' : `${m.articleCount} artículos publicados`} →
               </Link>
             </article>

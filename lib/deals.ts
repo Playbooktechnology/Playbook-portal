@@ -1,3 +1,5 @@
+import { FRESHNESS } from './freshness';
+
 // Pure logic for El Marcador de Negocios (homepage rail module + /marcador).
 // No database access here, so the client-side table on /marcador can import
 // the same labels, filters and formatting the server components use.
@@ -193,7 +195,8 @@ export function inRange(deal: Deal, start: string, end: string): boolean {
 // A flagged deal older than this stops leading the card on its own: past
 // two weeks the rail shows the newest confirmed deal instead, so the
 // module never sits on a stale pick between editorial updates.
-export const FEATURED_MAX_AGE_DAYS = 14;
+// The number lives with the other homepage age limits in lib/freshness.ts.
+export const FEATURED_MAX_AGE_DAYS = FRESHNESS.marcadorFeaturedMaxAgeDays;
 
 export type FeaturedMode = 'semana' | 'destacado' | 'reciente';
 

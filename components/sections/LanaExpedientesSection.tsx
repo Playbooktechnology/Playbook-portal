@@ -3,6 +3,7 @@ import type { Article } from '@/lib/data/articles';
 import type { OpinionCard } from '@/lib/data/site-content';
 import { articlePath } from '@/lib/article-url';
 import { caseNumber, caseStatus, storyFigure, type StoryDeclarations } from '@/lib/product-hubs';
+import { FRESHNESS, ageInDays } from '@/lib/freshness';
 
 // "La Lana del Deporte · El Expediente" (2026-10-27), in the slot the
 // "Artículos de opinión" grid held. That grid had fallen back to its CMS
@@ -28,6 +29,7 @@ export function LanaExpedientesSection({
   articles,
   cmsCards = [],
   declaredCifras = {},
+  whenStale,
   now = new Date(),
 }: {
   /** Every la-lana article (any order): case numbers count the whole series. */
@@ -35,13 +37,24 @@ export function LanaExpedientesSection({
   cmsCards?: OpinionCard[];
   /** lib/data/articles.ts getDeclaredCifras(): article id → its declared Cifra clave / Ecuación. */
   declaredCifras?: Record<string, StoryDeclarations>;
+  /**
+   * What the homepage shows instead when no expediente is younger than
+   * FRESHNESS.opinionMaxAgeDays (lib/freshness.ts): "Más leídas" of the
+   * month. The admin's live preview passes nothing and always shows the files.
+   */
+  whenStale?: React.ReactNode;
   now?: Date;
 }) {
   const files = articles
     .filter(a => a.source === 'la-lana')
     .sort((a, b) => (b.date || '').localeCompare(a.date || '') || b.id.localeCompare(a.id));
   if (files.length === 0) return null;
-  const latest = files.slice(0, MAX_FILES);
+  // Caducidad (lib/freshness.ts, the homepage's one table of age limits): the
+  // module shows only files younger than opinionMaxAgeDays, and gives its slot
+  // to whenStale when none is.
+  const fresh = whenStale === undefined ? files : files.filter(a => ageInDays(a.date, now) < FRESHNESS.opinionMaxAgeDays);
+  if (!fresh.length) return whenStale === undefined ? null : <>{whenStale}</>;
+  const latest = fresh.slice(0, MAX_FILES);
   const tfbr = cmsCards.find(c => /futbol business review/i.test(`${c.masthead} ${c.title}`));
 
   return (

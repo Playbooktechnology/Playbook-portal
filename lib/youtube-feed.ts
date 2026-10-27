@@ -21,6 +21,42 @@ export const PLAYBOOK_CHANNEL_ID = 'UCFG7QAM8_aFM0MaX6g1SfTw';
 
 export const PLAYBOOK_CHANNEL_FEED = `https://www.youtube.com/feeds/videos.xml?channel_id=${PLAYBOOK_CHANNEL_ID}`;
 
+/**
+ * One playlist per program, read from the same public feed (playlist_id=…).
+ * They label a video with its program even when its title carries no
+ * " | Serie" suffix, and keep a program's episodes reachable after they leave
+ * the channel feed's 15-upload window. The "Shorts" playlist is left out on
+ * purpose. Checked against /@AldoSalesPlaybook/playlists on 2026-10-27; a new
+ * program means a new line here.
+ */
+export const PROGRAM_PLAYLISTS: ReadonlyArray<{ id: string; series: string }> = [
+  { id: 'PLXtJu4z3ALXdljWKZo-nwuJu0x_4RtGJ7', series: 'Al Banquillo' },
+  { id: 'PLXtJu4z3ALXf8j0AfuW1srw7CrVnkranc', series: 'Players' },
+  { id: 'PLXtJu4z3ALXe215D0rckoXp-0AuKIXPmx', series: 'Endeavor Day 2026' },
+];
+
+export function playlistFeedUrl(id: string): string {
+  return `https://www.youtube.com/feeds/videos.xml?playlist_id=${id}`;
+}
+
+/**
+ * A YouTube link tagged with where on playbook.la the click came from. YouTube
+ * keeps the query string, so the visit is attributable in the channel's own
+ * traffic-source report and in any shortener that reads UTMs.
+ */
+export function withUtm(url: string, content: string): string {
+  try {
+    const u = new URL(url);
+    u.searchParams.set('utm_source', 'playbook.la');
+    u.searchParams.set('utm_medium', 'referral');
+    u.searchParams.set('utm_campaign', 'lo_ultimo_en_video');
+    u.searchParams.set('utm_content', content);
+    return u.toString();
+  } catch {
+    return url;
+  }
+}
+
 export type ChannelVideo = {
   id: string;
   /** Display title: hashtags and leading emoji removed, series suffix split off. */
@@ -119,6 +155,32 @@ export function parseChannelFeed(xml: string): ChannelFeed {
 
   const newestFirst = (a: ChannelVideo, b: ChannelVideo) => b.published.localeCompare(a.published);
   return { longVideos: longVideos.sort(newestFirst), shorts: shorts.sort(newestFirst) };
+}
+
+/**
+ * Channel feed + program playlists → one feed. The channel feed wins on
+ * everything it knows (it is the only one that marks shorts); a playlist adds
+ * its program name to a video that has none, and adds episodes the channel
+ * window has already dropped. Playlist-only entries are always treated as
+ * long videos: their feed has no /shorts/ link to tell, and the program
+ * playlists listed above hold long-form episodes only.
+ */
+export function mergeProgramFeeds(channel: ChannelFeed, programs: { series: string; feed: ChannelFeed }[]): ChannelFeed {
+  const shortIds = new Set(channel.shorts.map(v => v.id));
+  const byId = new Map(channel.longVideos.map(v => [v.id, v]));
+  for (const { series, feed } of programs) {
+    for (const v of [...feed.longVideos, ...feed.shorts]) {
+      if (shortIds.has(v.id)) continue;
+      const known = byId.get(v.id);
+      if (known) {
+        if (!known.series) byId.set(v.id, { ...known, series });
+      } else {
+        byId.set(v.id, { ...v, isShort: false, series: v.series ?? series, url: `https://www.youtube.com/watch?v=${v.id}` });
+      }
+    }
+  }
+  const longVideos = [...byId.values()].sort((a, b) => b.published.localeCompare(a.published));
+  return { longVideos, shorts: channel.shorts };
 }
 
 /** "27 oct" — the publish day in Mexico City, the audience's clock. */

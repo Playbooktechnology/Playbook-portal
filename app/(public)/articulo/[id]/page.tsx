@@ -50,6 +50,8 @@ import { DEFAULT_OG_IMAGE, OG_DEFAULTS } from '@/lib/og-image';
 import { SITE_URL } from '@/lib/site-url';
 import { articlePath, articleUrl } from '@/lib/article-url';
 import { authorDisplayName } from '@/lib/author-name';
+import { publishedIso, publishedLabel } from '@/lib/dates';
+import { NEWSROOM_BYLINE, authorPath } from '@/lib/authors';
 import { METERING_ENABLED } from '@/lib/constants';
 import { isValidPreviewToken, previewTokenFor } from '@/lib/preview-token';
 
@@ -80,7 +82,7 @@ function pathFor(id: string) {
 const PLAYBOOK_ORG_REF = { '@id': `${SITE_URL}#organization` };
 
 // The byline's default behavior wraps the whole author string in one
-// internal `/autor?nombre=` link (a house-staff author archive page).
+// internal /autor/<slug> link (a house-staff author archive page).
 // Guest collaborations (2026-08-08, e.g. "Rodrigo Dosal, fundador de DOME
 // Sport") instead need per-name external links (the author's own
 // Instagram, their org's site), which a single internal link can't
@@ -96,7 +98,7 @@ function renderAuthorByline(author: string) {
     // The clean name in the URL, the raw string as the visible text — they
     // are identical for a plain byline, and for anything else the URL must
     // match what /autor canonicalises to and what the sitemap publishes.
-    return <Link href={`/autor?nombre=${encodeURIComponent(authorDisplayName(author))}`}>{author}</Link>;
+    return <Link href={authorPath(author)}>{author}</Link>;
   }
   linkPattern.lastIndex = 0;
   const nodes: React.ReactNode[] = [];
@@ -446,8 +448,13 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
     // is explicit that the image should be relevant to the article rather
     // than a logo, and an article with no cover photo is common here.
     image: [meta.imageUrl || `${SITE_URL}${DEFAULT_OG_IMAGE.url}`],
-    datePublished: meta.date || undefined,
-    dateModified: meta.date || undefined,
+    // With the hour and the Mexico City offset when the publish time is known
+    // (lib/dates.ts). dateModified deliberately repeats it: updated_at moves on
+    // every save, typo fixes included, and Google reads a newer dateModified
+    // as a substantive update. A real "Actualizado" needs its own field — see
+    // docs/PROPUESTA_ACTUALIZADO.md.
+    datePublished: publishedIso(meta),
+    dateModified: publishedIso(meta),
     articleSection: meta.publication || undefined,
     inLanguage: 'es-MX',
     url: canonicalUrl,
@@ -485,7 +492,7 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
             // when the author has articles, and /equipo already builds this
             // exact URL for its Person nodes — the article was the one
             // surface that named an author without ever linking to them.
-            url: `${SITE_URL}/autor?nombre=${encodeURIComponent(authorDisplayName(meta.author))}`,
+            url: `${SITE_URL}${authorPath(meta.author)}`,
             worksFor: PLAYBOOK_ORG_REF,
           }
         // No byline shown: Playbook itself is the author. This used to emit
@@ -627,13 +634,17 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
       {shotStrip}
       <ArticleHeadline title={meta.title} />
       <div className="byline article-byline">
-        {showAuthor && meta.author && (
-          <>
-            <span className="byline-author">Por {renderAuthorByline(meta.author)}</span>
-            {' '}·{' '}
-          </>
+        {/* Every story is signed (A5): the author when shown, otherwise the
+            newsroom, linked to how it works. */}
+        {showAuthor && meta.author ? (
+          <span className="byline-author">Por {renderAuthorByline(meta.author)}</span>
+        ) : (
+          <span className="byline-author">
+            Por <Link href="/como-trabajamos">{NEWSROOM_BYLINE}</Link>
+          </span>
         )}
-        {meta.dateFormatted} · {meta.readingTime || 1} min de lectura
+        {' '}·{' '}
+        <time dateTime={publishedIso(meta)}>Publicado {publishedLabel(meta)}</time> · {meta.readingTime || 1} min de lectura
       </div>
       {meta.imageUrl && (
         <figure className={`article-photo-wrap${lanaShell ? ' lect-exhibit' : ''}`}>
@@ -905,6 +916,8 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
             <Link
               className="lect-next-link reveal"
               href={articlePath(lanaShell.next.article.id)}
+              data-analytics="related_click"
+              data-item-id={lanaShell.next.article.id}
             >
               <span className="lect-next-tab">
                 <span className="lect-next-kicker">Siguiente expediente</span>
@@ -922,8 +935,14 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
           <section className="article-related lect-related">
             <h2>Sigue leyendo</h2>
             <div className="lect-related-grid">
-              {relatedShown.map(a => (
-                <RelatedCard key={a.id} article={a} declared={declaredCifras[a.id]} />
+              {relatedShown.map((a, i) => (
+                <RelatedCard
+                  key={a.id}
+                  article={a}
+                  declared={declaredCifras[a.id]}
+                  position={i + 1}
+                  showAuthorsGlobal={content.siteSettings.mostrarAutorGlobal}
+                />
               ))}
             </div>
           </section>

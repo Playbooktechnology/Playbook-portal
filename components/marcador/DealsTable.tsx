@@ -15,6 +15,7 @@ import {
   type DealStatus,
 } from '@/lib/deals';
 import { safeUrl } from '@/lib/safe-url';
+import { trackEvent } from '@/lib/analytics-events';
 
 // `today` comes from the server (CDMX date) so the period filter and the
 // first client render agree with what the server rendered.
@@ -25,7 +26,13 @@ export function DealsTable({ deals, today }: { deals: Deal[]; today: string }) {
   const sports = useMemo(() => [...new Set(deals.map(d => d.sport).filter(Boolean))].sort(), [deals]);
   const rows = useMemo(() => filterDeals(deals, filters, today), [deals, filters, today]);
 
-  const set = <K extends keyof DealFilters>(key: K) => (value: DealFilters[K]) => setFilters(f => ({ ...f, [key]: value }));
+  // marcador_filter: one event per deliberate choice. The dropdowns report on
+  // change; the search box reports once, on blur, so typing "Nike" is one
+  // event and not four.
+  const set = <K extends keyof DealFilters>(key: K) => (value: DealFilters[K]) => {
+    setFilters(f => ({ ...f, [key]: value }));
+    if (key !== 'query') trackEvent('marcador_filter', { filter: key, value: String(value) || 'todos' });
+  };
   const hasFilters = filters.type || filters.country || filters.sport || filters.query || filters.period !== 'anio';
 
   return (
@@ -38,6 +45,10 @@ export function DealsTable({ deals, today }: { deals: Deal[]; today: string }) {
             placeholder="Buscar marca, club, liga…"
             value={filters.query}
             onChange={e => set('query')(e.target.value)}
+            onBlur={e => {
+              const q = e.target.value.trim();
+              if (q) trackEvent('marcador_filter', { filter: 'query', value: q.slice(0, 100) });
+            }}
           />
         </label>
         <FilterSelect label="Tipo" value={filters.type} onChange={set('type')} options={DEAL_TYPES.map(t => [t.key, t.label])} />
@@ -54,7 +65,10 @@ export function DealsTable({ deals, today }: { deals: Deal[]; today: string }) {
           <button
             type="button"
             className="mk-clear"
-            onClick={() => setFilters({ type: '', country: '', sport: '', period: 'anio', query: '' })}
+            onClick={() => {
+              setFilters({ type: '', country: '', sport: '', period: 'anio', query: '' });
+              trackEvent('marcador_filter', { filter: 'limpiar', value: 'todos' });
+            }}
           >
             Limpiar
           </button>

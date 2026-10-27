@@ -84,6 +84,10 @@ export function SiteEvents() {
             link_url: declared.getAttribute('href')?.slice(0, 100),
             link_text: (heading || declared.textContent?.trim())?.slice(0, 100) || undefined,
             product: source ? productForSource(source) : resolvePageProduct(pathname),
+            // Optional extras an element can declare: the slot it sits in
+            // (1-based) and an id (a YouTube video id for video_click).
+            position: Number(declared.getAttribute('data-position')) || undefined,
+            item_id: declared.getAttribute('data-item-id')?.slice(0, 100) || undefined,
           });
         }
       }
@@ -102,6 +106,18 @@ export function SiteEvents() {
         is_substack: anchor.hostname.endsWith('substack.com'),
         product: resolvePageProduct(pathname),
       });
+
+      // Its own event as well (2026-10-27): "how many readers do we still send
+      // to Substack" is the number the cleanup of Substack links is judged by,
+      // and a dedicated event can be marked as a key event in GA4, where a
+      // parameter filter cannot.
+      if (anchor.hostname === 'substack.com' || anchor.hostname.endsWith('.substack.com')) {
+        trackEvent('outbound_substack', {
+          link_url: anchor.href.slice(0, 100),
+          link_host: anchor.hostname,
+          product: resolvePageProduct(pathname),
+        });
+      }
     }
 
     // Capture phase: a click on a chip inside an element that stops
