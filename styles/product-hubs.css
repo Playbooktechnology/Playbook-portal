@@ -377,17 +377,28 @@ a.lana-board-row:hover .lana-board-conexion{color:#fff;}
 .lana-cabinet.is-cabinet .lana-cab-excerpt{
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
-/* Cifra declarada en el cajón (2026-10-27). La cifra y su caption son UN solo
-   hijo del flex (.lana-cab-figure, sin gap interno), así que el caption no
-   suma un gap; y cuando hay caption el dek baja de dos líneas a una. El
-   caption usa exactamente las métricas del dek (13.5px / 1.55), así que la
-   línea que entra mide lo mismo que la que sale: el cuerpo abierto sigue en
-   sus 200px fijos y "Abrir" no se esconde. Una línea con elipsis: los
-   captions declarados antes de la regla de seis palabras miden hasta 25
-   palabras, y el completo vive en la página del expediente. */
-.lana-cabinet .lana-cab-figure{display:flex;flex-direction:column;align-items:flex-start;min-width:0;max-width:100%;flex:none;}
-.lana-cabinet .lana-cab-figure-caption{display:block;max-width:100%;font-size:13.5px;line-height:1.55;color:var(--pb-gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.lana-cabinet.is-cabinet .lana-folder-body:has(.lana-cab-figure-caption) .lana-cab-excerpt{-webkit-line-clamp:1;}
+/* Cifra declarada en el cajón (2026-10-27): el caption va AL LADO de la
+   cifra, centrado verticalmente, no debajo. Centrado y no en línea base: con
+   align-items:center la fila mide lo que el más alto de los dos (44px de
+   cifra contra ~18px de caption), así que no puede crecer, por geometría.
+   Alineado por línea base, el texto de 13.5px se colgaba bajo la base de la
+   cifra de 44px y la fila crecía ~3px: medido, escondía "Abrir" 2.4-2.6px en
+   cuatro carpetas. Centrado: 0 de 18, con la misma holgura que producción.
+
+   Debajo no cabe, medido. El cuerpo abierto son 200px fijos y una carpeta
+   con cifra y título de dos líneas ya llega con ~2px de sobra a "Abrir" (el
+   dek ni siquiera aparece: el flex lo encoge a cero desde antes de este
+   cambio). Un caption debajo escondía "Abrir" ~20px. Medir esto engaña: la
+   carpeta abierta va a translateZ(130px) bajo perspectiva de 1200px y
+   scale(1.05), así que getBoundingClientRect la agranda ~18% y clientHeight
+   no; hay que comparar las dos cosas en el mismo espacio.
+
+   Una línea con elipsis: los captions declarados antes de la regla de seis
+   palabras miden 9 a 25 palabras, y el completo vive en la página del
+   expediente. */
+.lana-cabinet .lana-cab-figure{display:flex;align-items:center;gap:12px;min-width:0;max-width:100%;flex:none;}
+.lana-cabinet .lana-cab-figure .lana-pull-figure{flex:none;}
+.lana-cabinet .lana-cab-figure-caption{flex:1;min-width:0;font-size:13.5px;line-height:1.3;color:var(--pb-gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .lana-cabinet.is-cabinet .lana-cab-folder .lana-folder-open{opacity:1;transform:none;}
 
 /* Placa de progreso: reusa los valores que ya tenía. */

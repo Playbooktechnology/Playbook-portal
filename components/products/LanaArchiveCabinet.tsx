@@ -317,12 +317,11 @@ export function LanaArchiveCabinet({ folders }: { folders: CabinetFolder[] }) {
                     <span className="lana-case-date">{folder.dateFormatted}</span>
                   </span>
                   <span className="lana-folder-body">
-                    {/* Figure and caption are ONE flex child, so the caption
-                        adds no gap; and with a caption the dek clamps to one
-                        line instead of two (product-hubs.css). One line in,
-                        one line out: the open body keeps its fixed 200px and
-                        the foot with "Abrir" stays inside it — see the height
-                        note at the top of this file. */}
+                    {/* The caption sits BESIDE the figure, centred, not under
+                        it: the row stays the figure's 44px, so the open
+                        body keeps its fixed 200px and "Abrir" stays inside it
+                        (see the height note at the top of this file, and
+                        product-hubs.css for why a caption below did not fit). */}
                     {folder.figure && (
                       <span className="lana-cab-figure lana-cab-extra" aria-hidden="true">
                         <span className="lana-pull-figure">{folder.figure}</span>
