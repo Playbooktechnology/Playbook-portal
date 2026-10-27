@@ -467,6 +467,17 @@ just before `Fuentes:`). Placed after the Opinión, it pushes the Opinión out o
 its callout: `check-voice.mjs` flags that as a RENDER BUG. A second update gets
 its own paragraph after the first.
 
+**A link inside the note goes outside the asterisks** (2026-10-27, the
+FIFA 2030 rights follow-up correcting the 2026-08-08 piece). `parseInlineMarks`
+in `scripts/publish-newsletter.ts` does not parse a `[link](url)` nested inside
+`*…*`: the whole span comes out italic with the brackets and URL printed as
+literal text. Close the italics around the link instead:
+`*Actualizado el 27 de octubre de 2026: FIFA* [abrió la licitación](/articulo?id=…) *y dijo que…*`.
+Check the regenerated paragraph before running `update-article.ts` for real.
+When the row was published without markdown on hand, rebuild `bodyMarkdown`
+from the stored `body_json` and confirm it round-trips through
+`markdownToTipTap` to the same content before adding the note.
+
 **No note** for typos, style, a cover or credit swap, or tag and date changes
 made in the CMS. The note counts toward the word total; a marginal overshoot
 of the tier caused by the note alone is acceptable, and the Opinión is never
