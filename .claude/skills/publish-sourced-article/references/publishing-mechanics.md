@@ -28,6 +28,11 @@ Never run Step 9 without an explicit yes in this session. No exceptions, no
    October 2026 runs, so a new conversation doesn't have to restate it):
    - **Always as a rendered preview artifact first**, never only as text in
      the chat; then the summary in the reply with the link.
+     **Publish the preview with the `Artifact` tool and give the claude.ai
+     link** (publisher, 2026-10-27, Globoplay run: *"no me deja ver la
+     previa"*). An HTML file sent with `SendUserFile` did not open for the
+     publisher in the app; the same file published as an Artifact did.
+     Republish the same file path for each revision so the link stays put.
    - **Three or four title options**, the recommended one first, following
      `voice-and-style.md` §3 (searchable protagonist and event up front).
    - **Two or three cover options** (`images.md`), each labeled in the
@@ -78,7 +83,12 @@ Only for the articles approved in Step 8.
    published article, open the live page, take a screenshot of the top
    (title, cover, credit) and of the devices, check them yourself first
    (cover loads at full resolution, every device renders, no literal
-   `Cronología:` text), and send the screenshots with the link. A published
+   `Cronología:` text), and send the screenshots with the link.
+   **Wait out the count-up before shooting a device** (2026-10-27, Globoplay
+   `Duelo:`): the figures animate up from zero when scrolled into view, and a
+   screenshot 800 ms after scrolling showed R$16.50 for R$16.90, every value
+   at about 97.6% of its real number. Wait about 4 seconds after scrolling,
+   and compare every figure in the shot against the draft before sending. A published
    article is not reported done until the publisher has seen it as readers do.
 
 Report the overlap-check outcomes in the same breath (`overlap-check.md`), and

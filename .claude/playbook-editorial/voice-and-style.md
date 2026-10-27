@@ -325,6 +325,19 @@ party hoping to benefit from it. This is the same discipline §8's evidence
 levels ask for — don't blend "this happened" with "this was decided" — applied
 to the one line most readers see and nothing past.
 
+**A mechanism that is itself a checkable fact can lead the title** (editor,
+2026-10-27, Globoplay). The editor asked for titles "atractivos para el reader
+persona" and picked *"Globoplay usa Sportv para subir 18% el precio de su plan
+básico"* over the plain *"Globoplay mete Sportv en su plan más barato y le sube
+el precio"*. That does not conflict with the rule above, because both halves are
+on the record: Sportv moved into the plan, and the same plan went from R$16.90
+to R$19.90. The title connects two published facts with a figure; it does not
+hand down a verdict. The test: if every word of the title can be checked
+against a price sheet, a filing or a release, the mechanism can lead it. If it
+needs the Opinión to stand up ("apuesta", "se arriesga", "pierde"), it stays in
+the body. When the editor asks for titles aimed at the reader persona, offer
+this shape: protagonist, verb of mechanism, hard figure, the asset that moved.
+
 **It is not just the title.** The same run's second paragraph originally
 buried the "this is not a ruling" caveat inside the closing Opinión, after four
 sections that read as build-up to a win. Moved to the second paragraph, right
