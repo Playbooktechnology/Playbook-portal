@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getPublicArticles } from '@/lib/data/articles';
 import { getSiteContent } from '@/lib/data/site-content';
+import { getChannelFeed } from '@/lib/data/youtube';
 import { NewsGrid } from '@/components/home/NewsGrid';
 import { HomeChoreography } from '@/components/home/HomeChoreography';
 import { SiteMotion } from '@/components/SiteMotion';
@@ -36,8 +37,9 @@ import { DEFAULT_OG_IMAGE, OG_DEFAULTS } from '@/lib/og-image';
 //   4. Topic directory (archive entry point)
 //   5. Productos editoriales
 //   — inline-mid-editorial ad between Productos and Video —
-//   6. Video Playbook (two-video block + channel CTA; the Instagram
-//      grid was scrapped — user feedback)
+//   6. Video Playbook — reads the YouTube channel's feed since 2026-10-27:
+//      newest long video, the next ones as a list, a rail of the latest
+//      shorts, channel CTA. CMS videos are the fallback (see VideoSection)
 //   7. Infinitas three-column grid (vertical-sponsor ad inside the section)
 //   8. Playbook en números + testimonios, compressed into one proof band
 //   9. Acerca de Playbook
@@ -56,7 +58,15 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [articles, content] = await Promise.all([getPublicArticles(), getSiteContent()]);
+  // The channel feed is fetched alongside the rest, not after it: it is cached
+  // for 30 minutes and never throws (null falls back to the CMS videos), so it
+  // costs the homepage nothing on a warm cache and at most its 4s timeout on a
+  // cold one with YouTube down.
+  const [articles, content, channelFeed] = await Promise.all([
+    getPublicArticles(),
+    getSiteContent(),
+    getChannelFeed(),
+  ]);
 
   return (
     <>
@@ -86,7 +96,7 @@ export default async function HomePage() {
       <TopicDirectory />
       <ProductsSection data={content.productsSection} />
       <AdSlot slot="inline-mid-editorial" />
-      <VideoSection data={content.videoSection} />
+      <VideoSection data={content.videoSection} feed={channelFeed} />
       <InfinitasSection data={content.infinitasSection} />
       <div className="proof-band">
         <StatsSection data={content.statsSection} />
