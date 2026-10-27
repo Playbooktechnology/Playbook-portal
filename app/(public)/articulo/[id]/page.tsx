@@ -923,7 +923,7 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
             <h2>Sigue leyendo</h2>
             <div className="lect-related-grid">
               {relatedShown.map(a => (
-                <RelatedCard key={a.id} article={a} declaredFragment={declaredCifras[a.id]} />
+                <RelatedCard key={a.id} article={a} declared={declaredCifras[a.id]} />
               ))}
             </div>
           </section>

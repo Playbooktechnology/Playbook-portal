@@ -167,11 +167,14 @@ en Estados Unidos` survives all of them, though the cabinet will cut it to one
 line — keep it to six words where you can (`dynamic-element-library.md`,
 "Cifra clave").
 
-**Without a declared `Cifra clave`, the expediente has no figure on the hub.**
-La Lana titles are questions and carry no numbers, and since 2026-10-27 no
-surface lifts a figure from the excerpt or teaser prose (it set half a range —
-"US$20,000" out of "US$8,000 a US$20,000" — in 72px). The declaration is the
-only source.
+**Without a declared `Cifra clave` or a labeled `Ecuación`, the expediente has
+no figure on the hub.** La Lana titles are questions and carry no numbers, and
+since 2026-10-27 no surface lifts a figure from the excerpt or teaser prose (it
+set half a range, "US$20,000" out of "US$8,000 a US$20,000", in 72px). A
+declaration is the only source. The `Cifra clave` comes first; an expediente
+without one shows its `Ecuación` result, but only when the result carries a
+label (`= €85M antes de reparto`), which becomes the caption
+(`dynamic-element-library.md`, "Ecuación").
 
 ---
 
