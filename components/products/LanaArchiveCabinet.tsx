@@ -64,6 +64,9 @@ export type CabinetFolder = {
   dateFormatted: string;
   status: 'abierto' | 'archivado';
   figure: string | null;
+  /** What a declared figure measures. Null for a headline figure (the title
+   *  right below is its caption) and when there is no figure. */
+  figureCaption: string | null;
   excerpt: string;
   readingTime: number;
 };
@@ -314,9 +317,15 @@ export function LanaArchiveCabinet({ folders }: { folders: CabinetFolder[] }) {
                     <span className="lana-case-date">{folder.dateFormatted}</span>
                   </span>
                   <span className="lana-folder-body">
+                    {/* The caption sits BESIDE the figure, centred, not under
+                        it: the row stays the figure's 44px, so the open
+                        body keeps its fixed 200px and "Abrir" stays inside it
+                        (see the height note at the top of this file, and
+                        product-hubs.css for why a caption below did not fit). */}
                     {folder.figure && (
-                      <span className="lana-pull-figure lana-cab-extra" aria-hidden="true">
-                        {folder.figure}
+                      <span className="lana-cab-figure lana-cab-extra" aria-hidden="true">
+                        <span className="lana-pull-figure">{folder.figure}</span>
+                        {folder.figureCaption && <span className="lana-cab-figure-caption">{folder.figureCaption}</span>}
                       </span>
                     )}
                     <h3>{folder.title}</h3>

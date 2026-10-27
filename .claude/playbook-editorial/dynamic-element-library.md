@@ -190,12 +190,23 @@ numbers it visualizes) still holds everywhere else; this is the one shape where
 the device leads and the paragraph follows, because the arithmetic is what the
 beat is being used to set up.
 
-**The homepage reads this beat, and since 2026-10-21 it is the only way a
-mid-body figure can reach it.** "La cifra del día" (sidebar) walks the ranked
-stories and takes the first declared `Cifra clave` it finds — ahead of any
-higher-ranked story, because a declared beat was vouched for by a human and
-carries its own caption. With none declared anywhere, it falls back to a figure
-in a HEADLINE, and it no longer reads the excerpt at all.
+**Every surface that lifts a figure out of a story reads this beat, and it is
+the only way a mid-body figure can reach any of them.** One rule since
+2026-10-21, in one function (`storyFigure` in `lib/product-hubs.ts`), shared
+by the homepage's "La cifra del día", the "Sigue leyendo" cards at an
+article's foot, the Noticias hub's river features, and the La Lana hub's lead
+expediente and archive cabinet (since 2026-10-27): the declared `Cifra clave`
+wins, with its caption printed beside it; failing that, a figure in the
+HEADLINE; never the excerpt or the teaser's prose. The homepage rail also
+chooses across stories — it takes the first declared beat it finds, ahead of a
+higher-ranked story that only has a headline figure, because a declared beat
+was vouched for by a human and carries its own caption.
+
+On La Lana this is the whole game: its titles are questions and carry no
+numbers (0 of 19 expedientes on the hub, 2026-10-27), so **an expediente shows
+a figure on the hub only if it declares a `Cifra clave`.** The archive cabinet
+cuts the caption to a single line to keep its folders a fixed height — one
+more reason the six-word test below is not a style preference.
 
 That last part is why declaring matters more than it used to. The excerpt was
 dropped as a source because it is where a story keeps its context numbers: the

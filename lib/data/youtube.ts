@@ -1,37 +1,48 @@
 import { unstable_cache } from 'next/cache';
-import { parseChannelFeed, type ChannelVideo } from '../youtube-feed';
+import { PLAYBOOK_CHANNEL_FEED, parseChannelFeed, type ChannelFeed } from '../youtube-feed';
 
-// Aldo Sales de Playbook (youtube.com/@AldoSalesPlaybook). The handle page
-// resolves to this channel id; the feed only takes the id.
-export const PLAYBOOK_CHANNEL_ID = 'UCFG7QAM8_aFM0MaX6g1SfTw';
-const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${PLAYBOOK_CHANNEL_ID}`;
+// The channel's latest uploads for the homepage's Video Playbook band.
+//
+// Thirty minutes: the channel publishes about once a day, so a new upload
+// shows up on the site within half an hour of going live on YouTube, and the
+// homepage — force-dynamic, see app/(public)/layout.tsx — does not call
+// YouTube on every visit.
+const REVALIDATE_SECONDS = 1800;
 
-// Revalidated hourly. The fetch THROWS on any failure (network, non-200,
-// a feed with no long-form video), and unstable_cache never stores a
-// thrown result: when an hourly refresh fails, the last good list keeps
-// being served. Only a cold start with the feed down reaches the caller's
-// fallback (the CMS videos) — the page never breaks over it.
-const cachedFeed = unstable_cache(
-  async (): Promise<ChannelVideo[]> => {
-    const res = await fetch(FEED_URL, { cache: 'no-store', signal: AbortSignal.timeout(5000) });
-    if (!res.ok) throw new Error(`YouTube feed HTTP ${res.status}`);
-    const videos = parseChannelFeed(await res.text());
-    if (!videos.length) throw new Error('YouTube feed: no long-form videos');
-    return videos;
+// A feed that answers slowly must not hold the homepage hostage.
+const TIMEOUT_MS = 4000;
+
+const queryChannelFeed = unstable_cache(
+  async (): Promise<ChannelFeed> => {
+    const res = await fetch(PLAYBOOK_CHANNEL_FEED, {
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+      headers: { accept: 'application/atom+xml, application/xml;q=0.9' },
+    });
+    if (!res.ok) throw new Error(`feed de YouTube respondió ${res.status}`);
+    const feed = parseChannelFeed(await res.text());
+    // An empty parse is a failure, not "the channel has no videos": a format
+    // change on YouTube's side would look exactly like this, and caching it
+    // would blank the section for half an hour. Throwing keeps the last good
+    // value out of the cache and lets the caller fall back to the CMS.
+    if (!feed.longVideos.length && !feed.shorts.length) {
+      throw new Error('feed de YouTube sin entradas legibles');
+    }
+    return feed;
   },
-  ['youtube-feed', PLAYBOOK_CHANNEL_ID],
-  { revalidate: 3600 },
+  ['youtube-channel-feed'],
+  { revalidate: REVALIDATE_SECONDS, tags: ['youtube-feed'] },
 );
 
-/** The latest `limit` long-form videos, topped up with `fallback` (deduped)
-    when the feed is down or holds fewer than `limit` non-Shorts. */
-export async function getChannelVideos(fallback: ChannelVideo[], limit = 3): Promise<ChannelVideo[]> {
-  let feed: ChannelVideo[] = [];
+/**
+ * The parsed feed, or null when YouTube is unreachable or unreadable.
+ * Never throws: null means "render the CMS-curated videos", which is what
+ * the section showed before it read the feed at all.
+ */
+export async function getChannelFeed(): Promise<ChannelFeed | null> {
   try {
-    feed = await cachedFeed();
+    return await queryChannelFeed();
   } catch (err) {
-    console.error('[youtube] feed unavailable, using fallback videos:', err);
+    console.error('[video] no se pudo leer el feed de YouTube, se usa el CMS:', err);
+    return null;
   }
-  const seen = new Set<string>();
-  return [...feed, ...fallback].filter(v => v.id && !seen.has(v.id) && seen.add(v.id)).slice(0, limit);
 }

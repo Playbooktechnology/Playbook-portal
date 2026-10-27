@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getArticlesBySource, type Article } from '@/lib/data/articles';
+import { getArticlesBySource, getDeclaredCifras, type Article } from '@/lib/data/articles';
 import { getSiteContent } from '@/lib/data/site-content';
 import { productHubsContent } from '@/lib/product-hubs-content';
-import { shotsFor, shotLabel, weekdayFor, extractPullFigure, MINUTES_PER_SHOT } from '@/lib/product-hubs';
+import { shotsFor, shotLabel, weekdayFor, storyFigure, MINUTES_PER_SHOT } from '@/lib/product-hubs';
 import { SITE_URL } from '@/lib/site-url';
 import { SiteMotion } from '@/components/SiteMotion';
 import { VisitBeacon } from '@/components/analytics/VisitBeacon';
@@ -95,9 +95,10 @@ function articleHref(article: Article) {
 }
 
 export default async function NoticiasHubPage() {
-  const [articles, content] = await Promise.all([
+  const [articles, content, declaredCifras] = await Promise.all([
     getArticlesBySource('noticias'),
     getSiteContent(),
+    getDeclaredCifras(),
   ]);
   const hubs = productHubsContent(content.productHubs);
   const [lead, ...rest] = articles;
@@ -139,12 +140,16 @@ export default async function NoticiasHubPage() {
             {river.map(block => {
               if (block.kind === 'feature') {
                 const a = block.article;
-                const figure = extractPullFigure(a.title, a.excerpt);
+                // Declared Cifra clave, else a headline figure — never the
+                // excerpt printed right below it (lib/product-hubs.ts's
+                // storyFigure, the rule every figure surface shares).
+                const figure = storyFigure(a, declaredCifras[a.id]);
                 return (
                   <Link className="shots-feature reveal" href={articleHref(a)} key={a.id}>
                     <span className="shots-feature-copy">
                       <When article={a} />
-                      {figure && <span className="shots-figure-chip">{figure}</span>}
+                      {figure && <span className="shots-figure-chip">{figure.value}</span>}
+                      {figure?.caption && <span className="shots-figure-caption">{figure.caption}</span>}
                       <h3>{a.title}</h3>
                       {a.excerpt && <p>{a.excerpt}</p>}
                       <Measure article={a} glyphs={shotsFor(a.readingTime)} />

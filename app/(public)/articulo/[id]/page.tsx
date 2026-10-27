@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { auth } from '@/auth';
-import { getPublicArticles, getArticleById, getArticleMetaById, getArticlesBySource, isSnapshotArticle, type Article } from '@/lib/data/articles';
+import { getPublicArticles, getArticleById, getArticleMetaById, getArticlesBySource, getDeclaredCifras, isSnapshotArticle, type Article } from '@/lib/data/articles';
 import { getSiteContent } from '@/lib/data/site-content';
 import { relatedArticles, shouldShowAuthor } from '@/lib/related-articles';
 import { resolveEntitlement } from '@/lib/metering';
@@ -713,7 +713,14 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
   // confirmed this reader is allowed to see it. Reuses `header`/`showAuthor`
   // computed above from `meta` — `article` is a superset of the same row,
   // so there's nothing to recompute for those fields.
-  const [article, pool] = await Promise.all([getArticleById(meta.id), getPublicArticles()]);
+  // getDeclaredCifras: one cached query for the whole "Sigue leyendo" row, so
+  // each RelatedCard can apply the declared-or-headline figure rule without a
+  // body fetch per card (see lib/data/articles.ts on why bodies stay off lists).
+  const [article, pool, declaredCifras] = await Promise.all([
+    getArticleById(meta.id),
+    getPublicArticles(),
+    getDeclaredCifras(),
+  ]);
   if (!article) notFound();
 
   // Fase 4's TipTap editor starts populating bodyJson/bodyHtml for
@@ -916,7 +923,7 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
             <h2>Sigue leyendo</h2>
             <div className="lect-related-grid">
               {relatedShown.map(a => (
-                <RelatedCard key={a.id} article={a} />
+                <RelatedCard key={a.id} article={a} declaredFragment={declaredCifras[a.id]} />
               ))}
             </div>
           </section>

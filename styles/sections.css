@@ -35,7 +35,9 @@
 .hp-lana-card .lana-folder-tab{align-self:flex-start;}
 .hp-lana-cover{display:block;margin:-4px -4px 2px;background:#fff;border:1px solid var(--pb-rule);padding:6px;}
 .hp-lana-cover img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;}
+.hp-lana-figure-block{display:flex;flex-direction:column;gap:6px;align-self:flex-start;}
 .hp-lana-card .lana-pull-figure{font-size:clamp(28px,2.6vw,38px);margin:0;align-self:flex-start;}
+.hp-lana-figure-caption{font-size:12.5px;line-height:1.45;color:var(--pb-gray);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .hp-lana-card h3{font-size:19px;color:var(--pb-ink);}
 .hp-lana-time{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--pb-gray);}
 .hp-lana-tfbr{display:flex;align-items:baseline;gap:18px;margin-top:26px;padding:14px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);color:inherit;}
@@ -125,7 +127,14 @@
 .video-section .section-head h2{color:#fff;}
 .video-section .section-head .sub{color:rgba(255,255,255,.6);}
 .video-section .section-link{border-color:#fff;color:#fff;}
-.video-grid{display:grid;grid-template-columns:1fr;gap:30px;}
+/* minmax(0,1fr), not 1fr (2026-10-27): a bare `1fr` track is
+   minmax(auto,1fr), and its `auto` floor is the min-content width of the
+   widest child. The shorts rail scrolls sideways, so its min-content is
+   all six tiles in a row; on a 390px phone that floor was 481px, the band
+   grew past the screen and the browser widened the WHOLE page to 529px to
+   fit it — the site loading zoomed-out. Zero floor, and the rail scrolls
+   inside the width it is given, which is the point of a rail. */
+.video-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:30px;}
 .video-top{display:grid;grid-template-columns:1.1fr 1fr;gap:30px;align-items:center;}
 .video-feature-card{position:relative;overflow:hidden;background:#111;}
 .video-feature-card .frame{aspect-ratio:16/9;}
@@ -133,11 +142,9 @@
 .video-card-title{font-family:var(--serif-display);font-weight:400;font-size:20px;margin:12px 0 0;text-transform:none;color:#fff;}
 .video-feature-copy .frame{aspect-ratio:16/9;margin-bottom:0;}
 .video-feature-copy iframe{width:100%;height:100%;border:0;}
-/* Feed-driven cards (2026-10-27, components/sections/YouTubeFacade.tsx):
-   lead video left, the next two stacked right; thumbnails until clicked. */
-.yt-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:30px;align-items:start;}
-.yt-side{display:grid;gap:22px;}
-.yt-frame{position:relative;aspect-ratio:16/9;background:#111;overflow:hidden;}
+/* Click-to-play facade (components/sections/YouTubeFacade.tsx): fills the
+   band's 16:9 .frame with the thumbnail; the iframe replaces it on click. */
+.yt-frame{position:relative;width:100%;height:100%;background:#111;overflow:hidden;}
 .yt-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
 .yt-thumb{position:absolute;inset:0;display:block;}
 .yt-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform var(--duration-base) var(--ease-out),opacity var(--duration-base) var(--ease-out);opacity:.92;}
@@ -146,15 +153,6 @@
 .yt-play::after{content:"";position:absolute;left:26px;top:20px;border-style:solid;border-width:12px 0 12px 19px;border-color:transparent transparent transparent #fff;}
 .yt-thumb:hover .yt-play,.yt-thumb:focus-visible .yt-play{background:var(--green);}
 .yt-thumb:hover .yt-play::after,.yt-thumb:focus-visible .yt-play::after{border-left-color:var(--ink-fixed);}
-.yt-card .video-card-title{font-size:17px;line-height:1.25;}
-.yt-card-featured .video-card-title{font-size:22px;}
-.yt-side .yt-card{display:grid;grid-template-columns:minmax(0,44%) 1fr;gap:16px;align-items:start;}
-.yt-side .video-card-title{margin:0;}
-@media(max-width:900px){
-  .yt-grid{grid-template-columns:1fr;}
-  .yt-side .yt-card{grid-template-columns:minmax(0,40%) 1fr;gap:12px;}
-  .yt-side .video-card-title{font-size:15px;}
-}
 .more-eps{margin-top:16px;border-top:1px solid rgba(255,255,255,.16);}
 .more-eps a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.14);font-size:13px;color:rgba(255,255,255,.85);transition:color var(--duration-fast) ease;}
 .more-eps a:hover{color:var(--green);}
@@ -166,6 +164,52 @@
    que ya edita el CMS. */
 .video-cta{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.16);padding-top:22px;}
 .video-cta p{font-size:13.5px;color:rgba(255,255,255,.65);margin:0;}
+
+/* ——— Video Playbook desde el feed del canal (2026-10-27) ———
+   La banda dejó de depender de IDs pegados a mano en el CMS: lee el feed de
+   YouTube (components/sections/VideoSection.tsx). Tres piezas nuevas: los
+   metadatos del video principal, la lista "Más videos" con miniatura, y el
+   carril de shorts. Mismo lenguaje que el resto de la banda oscura — reglas
+   blancas al 14-16%, texto secundario al 60%, el verde sólo en hover. */
+.video-top{align-items:start;}
+.video-top.is-single{grid-template-columns:1fr;max-width:860px;}
+.video-lead-meta{display:flex;flex-direction:column;gap:4px;}
+.video-series{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);}
+.video-lead-meta .video-series{margin-top:14px;}
+.video-lead-meta .video-card-title{margin-top:2px;}
+.video-date{font-size:12px;color:rgba(255,255,255,.5);}
+
+.video-latest-head{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:0 0 4px;}
+.video-latest-list{list-style:none;margin:0;padding:0;border-top:1px solid rgba(255,255,255,.16);}
+.video-latest-list li{border-bottom:1px solid rgba(255,255,255,.14);}
+.video-row{display:grid;grid-template-columns:132px 1fr;gap:14px;align-items:center;padding:14px 0;color:#fff;}
+.video-row-thumb{display:block;aspect-ratio:16/9;overflow:hidden;background:#111;}
+.video-row-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform var(--duration-base) ease;}
+.video-row-copy{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.video-row-title{font-size:14.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;transition:color var(--duration-fast) ease;}
+.video-row:hover .video-row-title,.video-row:focus-visible .video-row-title{color:var(--green);}
+.video-row:hover .video-row-thumb img{transform:scale(1.04);}
+
+.video-shorts{border-top:1px solid rgba(255,255,255,.16);padding-top:22px;}
+.video-shorts-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:16px;}
+.video-shorts-head h3{font-family:var(--serif-display);font-weight:400;font-size:22px;margin:0;color:#fff;text-transform:none;}
+.video-shorts-head a{font-size:13px;color:rgba(255,255,255,.75);transition:color var(--duration-fast) ease;}
+.video-shorts-head a:hover{color:var(--green);}
+.video-shorts-rail{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;}
+.video-short{display:flex;flex-direction:column;gap:10px;color:#fff;}
+/* 9:16 sobre una miniatura 4:3: hqdefault trae el cuadro vertical del short
+   al centro con relleno difuminado a los lados, así que object-fit:cover
+   recorta justo el short. Diez veces más ligera que la variante vertical
+   original de 1080×1920. */
+.video-short-frame{display:block;aspect-ratio:9/16;overflow:hidden;background:#111;border-radius:6px;}
+.video-short-frame img{width:100%;height:100%;object-fit:cover;display:block;transition:transform var(--duration-base) ease;}
+.video-short:hover .video-short-frame img{transform:scale(1.04);}
+.video-short-title{font-size:13px;line-height:1.35;color:rgba(255,255,255,.85);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;transition:color var(--duration-fast) ease;}
+.video-short:hover .video-short-title,.video-short:focus-visible .video-short-title{color:var(--green);}
+@media(prefers-reduced-motion:reduce){
+  .video-row-thumb img,.video-short-frame img{transition:none;}
+  .video-row:hover .video-row-thumb img,.video-short:hover .video-short-frame img{transform:none;}
+}
 
 /* ——— Infinitas — "El Marcador en portada" (2026-08-14 redesign) ———
    Reemplaza la grilla de tarjetas con overlay negro (leía plana contra el

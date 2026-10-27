@@ -156,13 +156,22 @@ Also: bold the single most important figure in the prose (`**70%**`), because
 a bold span that is purely a figure counts up on the page. Plain ones get the
 inline highlight automatically.
 
-**Write the `Cifra clave` caption so it works in two places.** The article page
-prints it under the pull-figure, and the homepage's "La cifra del día" rail
-prints the same line under the chip — where it is the *only* thing telling a
+**Write the `Cifra clave` caption so it works away from the article.** The
+article page prints it under the pull-figure; the homepage's "La cifra del día"
+rail, the "Sigue leyendo" cards and the La Lana hub (lead and archive cabinet)
+print the same line next to the number — where it is the *only* thing telling a
 reader what the number measures. A caption that reads fine beside the
-paragraph it came from ("lo que cuesta") is useless in the rail; name the
+paragraph it came from ("lo que cuesta") is useless anywhere else; name the
 thing. `US$8,000 a US$20,000 — el costo anual del futbol juvenil de alto nivel
-en Estados Unidos` survives both.
+en Estados Unidos` survives all of them, though the cabinet will cut it to one
+line — keep it to six words where you can (`dynamic-element-library.md`,
+"Cifra clave").
+
+**Without a declared `Cifra clave`, the expediente has no figure on the hub.**
+La Lana titles are questions and carry no numbers, and since 2026-10-27 no
+surface lifts a figure from the excerpt or teaser prose (it set half a range —
+"US$20,000" out of "US$8,000 a US$20,000" — in 72px). The declaration is the
+only source.
 
 ---
 

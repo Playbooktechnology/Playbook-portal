@@ -4,7 +4,7 @@ import { DealsBoard } from './DealsBoard';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { getPublicArticles, getDeclaredCifras } from '@/lib/data/articles';
 import { rankArticles, selectHero } from '@/lib/rank';
-import { extractPullFigure, extractCifraFromBody } from '@/lib/product-hubs';
+import { storyFigure } from '@/lib/product-hubs';
 import { articlePath } from '@/lib/article-url';
 
 // Right rail of the homepage news package (Fase 7 UX). Server component:
@@ -81,9 +81,12 @@ export async function HomeSidebar() {
   const declaredFragments = await getDeclaredCifras();
   for (const article of ranked) {
     if (article === hero) continue;
-    const fragment = declaredFragments[article.id];
-    const declared = fragment ? extractCifraFromBody(fragment, null) : null;
-    if (declared) {
+    // Per-story resolution is lib/product-hubs.ts's storyFigure — the same
+    // rule every other figure surface uses. What stays HERE is the one thing
+    // only this rail does: choosing ACROSS stories, where a declared figure
+    // further down the ranking beats a headline figure higher up.
+    const found = storyFigure(article, declaredFragments[article.id]);
+    if (found?.declared) {
       // The caption is what the figure MEANS, and the rail used to drop it:
       // "US$8,000 a US$20,000" over a headline about talent factories left the
       // reader with a number and no unit (user feedback, 2026-08-07). The
@@ -91,8 +94,8 @@ export async function HomeSidebar() {
       // same line here keeps the two surfaces explaining the number
       // identically.
       cifra = {
-        figure: declared.value,
-        caption: declared.caption || undefined,
+        figure: found.value,
+        caption: found.caption || undefined,
         id: article.id,
         title: article.title,
       };
@@ -100,9 +103,8 @@ export async function HomeSidebar() {
     }
     // Remembered, not taken: a declared figure further down the ranking still
     // outranks it, so the walk continues.
-    if (!fromHeadline) {
-      const figure = extractPullFigure(article.title);
-      if (figure) fromHeadline = { figure, id: article.id, title: article.title };
+    if (!fromHeadline && found) {
+      fromHeadline = { figure: found.value, id: article.id, title: article.title };
     }
   }
   cifra = cifra ?? fromHeadline;
