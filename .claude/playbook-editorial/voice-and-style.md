@@ -338,6 +338,19 @@ needs the Opinión to stand up ("apuesta", "se arriesga", "pierde"), it stays in
 the body. When the editor asks for titles aimed at the reader persona, offer
 this shape: protagonist, verb of mechanism, hard figure, the asset that moved.
 
+**"Llamativo" means a concrete verb that literally describes the act**
+(editor, 2026-10-27, LaLiga/CCTV). After two rounds of combinations, the editor
+asked for something "muy llamativo" and picked *"China le corta la señal a
+LaLiga por un meme de Mbappé"* (54 characters) over *"La televisión estatal
+china suspende LaLiga por un meme de Mbappé"*. "Le corta la señal" is
+physical and vivid, and it is still exact for a suspension with no end date,
+where "saca" or "queda fuera" would claim a permanence the story does not
+have. When the editor asks for punch, look for the physical verb of what the
+actor actually did (apaga, corta, congela, cierra la llave) before reaching for
+an adjective, and check that it fits the evidence level: a pause gets a pause
+verb. Dropping a qualifier the excerpt carries ("televisión estatal") to make
+room for it is fine.
+
 **It is not just the title.** The same run's second paragraph originally
 buried the "this is not a ruling" caveat inside the closing Opinión, after four
 sections that read as build-up to a win. Moved to the second paragraph, right
