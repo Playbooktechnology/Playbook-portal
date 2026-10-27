@@ -26,10 +26,13 @@ export function LeadStory({
   article,
   analyticsEvent,
   relativeTime = false,
+  showAuthorsGlobal = false,
 }: {
   article: Article;
   /** "hace X min" the same day — "Último en Playbook" only. */
   relativeTime?: boolean;
+  /** siteSettings.mostrarAutorGlobal, for the byline. */
+  showAuthorsGlobal?: boolean;
   /** Set only by the homepage (see components/analytics/SiteEvents.tsx). */
   analyticsEvent?: string;
 }) {
@@ -61,7 +64,7 @@ export function LeadStory({
         <span className="tag">{article.publication}</span>
         {article.imageUrl && <SplitHeadline text={article.title} />}
         <p className="desc">{article.excerpt}</p>
-        <StoryByline article={article} relative={relativeTime} />
+        <StoryByline article={article} relative={relativeTime} showAuthorsGlobal={showAuthorsGlobal} />
       </a>
       <TagPillRow article={article} />
     </div>

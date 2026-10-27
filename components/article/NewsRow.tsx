@@ -39,12 +39,15 @@ export function NewsRow({
   withTagPills = false,
   analyticsEvent,
   relativeTime = false,
+  showAuthorsGlobal = false,
 }: {
   article: Article;
   heading?: Heading;
   withTagPills?: boolean;
   /** "hace X min" the same day — "Último en Playbook" only. */
   relativeTime?: boolean;
+  /** siteSettings.mostrarAutorGlobal, for the byline. */
+  showAuthorsGlobal?: boolean;
   /** Set only by the homepage; every other call site sends nothing. */
   analyticsEvent?: string;
 }) {
@@ -59,7 +62,7 @@ export function NewsRow({
         {hubForArticle(article.tagsProperty)?.name ?? rowBadge(article)}
       </span>
       <Heading>{article.title}</Heading>
-      <StoryByline article={article} relative={relativeTime} />
+      <StoryByline article={article} relative={relativeTime} showAuthorsGlobal={showAuthorsGlobal} />
     </>
   );
 

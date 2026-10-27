@@ -87,3 +87,21 @@
    layout flow while being invisible and untabbable (tabIndex=-1 on the
    input handles the tab-order half). */
 .contact-hp{ position:absolute; width:1px; height:1px; overflow:hidden; left:-9999px; }
+
+/* ——— /autor/<slug> (A5, 2026-10-27) ——— foto, cargo, "Qué cubro",
+   "Trayectoria" y sus notas. Mismo lenguaje que /equipo. */
+.author-hero{display:flex;align-items:center;gap:24px;padding:40px 0 28px;border-bottom:1px solid var(--rule);}
+.author-photo{width:120px;height:120px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--paper);}
+.author-hero-copy h1{font-family:var(--serif-display);font-weight:400;font-size:clamp(32px,4vw,46px);line-height:1.05;margin:6px 0 8px;}
+.author-role{font-size:13px;font-weight:600;color:var(--gray-txt);margin:0 0 8px;text-transform:uppercase;letter-spacing:.04em;}
+.author-linkedin{font-size:13.5px;font-weight:600;border-bottom:1px solid currentColor;}
+.author-about{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;padding:28px 0;border-bottom:1px solid var(--rule);}
+.author-about h2{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-txt);margin:0 0 10px;}
+.author-about p{font-size:16px;line-height:1.6;margin:0 0 12px;max-width:62ch;}
+.author-notes{padding-top:12px;}
+.author-more{margin-top:24px;font-size:14px;font-weight:600;}
+@media(max-width:640px){
+  .author-hero{flex-direction:column;align-items:flex-start;gap:16px;padding-top:28px;}
+  .author-photo{width:96px;height:96px;}
+  .author-about{grid-template-columns:minmax(0,1fr);gap:8px;}
+}

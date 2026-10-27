@@ -82,6 +82,7 @@ export default async function HomePage() {
           sidebar={<HomeSidebar />}
           stillMatters={<StillMattersSection articles={articles} />}
           topicsBar={<TopicsBar />}
+          showAuthorsGlobal={content.siteSettings.mostrarAutorGlobal}
         />
         <MostReadSection />
       </main>

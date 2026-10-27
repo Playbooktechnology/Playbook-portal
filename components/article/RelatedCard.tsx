@@ -1,6 +1,7 @@
 import type { Article } from '@/lib/data/articles';
 import { hubForSource, storyFigure, type StoryDeclarations } from '@/lib/product-hubs';
 import { articlePath } from '@/lib/article-url';
+import { bylineName } from '@/lib/authors';
 
 // La Lectura's "Sigue leyendo" card (article redesign, 2026-08-05) —
 // replaces the plain NewsRow list at the article foot. Each card previews
@@ -19,12 +20,16 @@ export function RelatedCard({
   article,
   declared,
   position,
+  showAuthorsGlobal = false,
 }: {
   article: Article;
   declared?: StoryDeclarations;
   /** 1-based slot in the row, sent with related_click. */
   position?: number;
+  /** siteSettings.mostrarAutorGlobal, for the byline. */
+  showAuthorsGlobal?: boolean;
 }) {
+  const firma = bylineName(article, showAuthorsGlobal);
   const hub = hubForSource(article.source);
   const figure = storyFigure(article, declared);
   return (
@@ -47,7 +52,7 @@ export function RelatedCard({
       {figure?.caption && <span className="lect-related-figure-caption">{figure.caption}</span>}
       <h3>{article.title}</h3>
       <span className="lect-related-meta">
-        {article.dateFormatted} · {article.readingTime || 1} min
+        {firma.name} · {article.dateFormatted} · {article.readingTime || 1} min
         <span className="lect-related-arrow" aria-hidden="true">
           →
         </span>

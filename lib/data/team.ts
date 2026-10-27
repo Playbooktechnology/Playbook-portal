@@ -16,6 +16,7 @@ import { db } from '../db/client';
 import { users } from '../db/schema';
 import { sql } from 'drizzle-orm';
 import { getReachLast30Days } from '../analytics-data';
+import { AUTHOR_PROFILES } from '../authors';
 
 export type TeamProfile = {
   role: string;
@@ -27,7 +28,16 @@ export type TeamProfile = {
 
 // Fill in as bios/photos arrive. Keyed by the EXACT string in `articles.author`
 // (case-sensitive — that's the join key, there is no separate id).
-export const TEAM_PROFILES: Record<string, TeamProfile> = {};
+// Derived from lib/authors.ts since 2026-10-27 (A5): one place holds a
+// person's role, beat and photo, and both /equipo and /autor/<slug> read it.
+export const TEAM_PROFILES: Record<string, TeamProfile> = Object.fromEntries(
+  AUTHOR_PROFILES.flatMap(p =>
+    [p.name, ...(p.aliases ?? [])].map(name => [
+      name,
+      { role: p.role, beat: p.covers, bio: p.career[0] ?? '', photo: p.photo },
+    ]),
+  ),
+);
 
 export type TeamMember = {
   name: string;
