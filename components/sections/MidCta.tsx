@@ -14,7 +14,7 @@ export function MidCta({ data }: { data: SiteContentData['midCta'] }) {
             <p>{data.body}</p>
           </div>
           <NewsletterForm
-          placement="mid-cta"
+          placement="franja"
             formClassName="mid-cta-form"
             action={safeUrl(data.formUrl)}
             emailId="nl-email-2"

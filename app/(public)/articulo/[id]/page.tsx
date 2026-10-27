@@ -905,6 +905,8 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
             <Link
               className="lect-next-link reveal"
               href={articlePath(lanaShell.next.article.id)}
+              data-analytics="related_click"
+              data-item-id={lanaShell.next.article.id}
             >
               <span className="lect-next-tab">
                 <span className="lect-next-kicker">Siguiente expediente</span>
@@ -922,8 +924,8 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
           <section className="article-related lect-related">
             <h2>Sigue leyendo</h2>
             <div className="lect-related-grid">
-              {relatedShown.map(a => (
-                <RelatedCard key={a.id} article={a} declared={declaredCifras[a.id]} />
+              {relatedShown.map((a, i) => (
+                <RelatedCard key={a.id} article={a} declared={declaredCifras[a.id]} position={i + 1} />
               ))}
             </div>
           </section>

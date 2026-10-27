@@ -15,7 +15,16 @@ import { articlePath } from '@/lib/article-url';
 // the homepage rail, so a story can't show one number on the homepage and
 // another at the foot of the article you just read. `declared` comes
 // from the page (one getDeclaredCifras() for the whole row, not one per card).
-export function RelatedCard({ article, declared }: { article: Article; declared?: StoryDeclarations }) {
+export function RelatedCard({
+  article,
+  declared,
+  position,
+}: {
+  article: Article;
+  declared?: StoryDeclarations;
+  /** 1-based slot in the row, sent with related_click. */
+  position?: number;
+}) {
   const hub = hubForSource(article.source);
   const figure = storyFigure(article, declared);
   return (
@@ -23,6 +32,9 @@ export function RelatedCard({ article, declared }: { article: Article; declared?
       className="lect-related-card reveal"
       data-source={article.source}
       href={articlePath(article.id)}
+      data-analytics="related_click"
+      data-position={position}
+      data-item-id={article.id}
     >
       <span className="lect-related-eyebrow">
         {hub ? `${hub.concept} · ${article.publication}` : article.publication}

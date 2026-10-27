@@ -13,6 +13,18 @@ import { HUBS, UPCOMING_HUBS, hubPath } from '@/lib/hubs';
 import { LFA_HUB } from '@/lib/hubs/lfa';
 import { NOSOTROS_LINKS } from '@/lib/data/leadership';
 import { gsap } from '@/lib/gsap';
+import { resolvePageProduct, trackEvent } from '@/lib/analytics-events';
+
+// The header button opens Substack's own signup page in a new tab — there is
+// no email field here, so the click IS the hand-off, the same act the inline
+// forms report on a valid submit. Counted as `newsletter_signup` with
+// placement 'header' so every entry point sits in one report.
+function trackHeaderSignup() {
+  trackEvent('newsletter_signup', {
+    placement: 'header',
+    product: resolvePageProduct(window.location.pathname),
+  });
+}
 
 // ---------------------------------------------------------------- Zones
 // THREE ZONES, three KINDS of thing (brief §2). They are differentiated
@@ -339,7 +351,10 @@ export function HeaderNav({
               href={ctaUrl}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={close}
+              onClick={() => {
+                trackHeaderSignup();
+                close();
+              }}
             >
               {ctaLabel}
             </a>
@@ -415,7 +430,7 @@ export function HeaderNav({
         <ThemeToggle variant="desktop" />
         {/* Zone 3. A filled button, not a nav link — the one conversion
             entry point in the header. */}
-        <a className="btn" id="nav-cta" href={ctaUrl} target="_blank" rel="noopener noreferrer">
+        <a className="btn" id="nav-cta" href={ctaUrl} target="_blank" rel="noopener noreferrer" onClick={trackHeaderSignup}>
           {ctaLabel}
         </a>
         <button

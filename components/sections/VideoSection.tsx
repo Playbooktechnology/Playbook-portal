@@ -124,7 +124,7 @@ function FromFeed({ data, feed }: { data: SiteContentData['videoSection']; feed:
           <ul className="video-shorts-rail">
             {shorts.map(v => (
               <li key={v.id}>
-                <a className="video-short" href={v.url} target="_blank" rel="noopener noreferrer">
+                <a className="video-short" href={v.url} target="_blank" rel="noopener noreferrer" data-analytics="video_click" data-item-id={v.id}>
                   <span className="video-short-frame">
                     {/* Plain <img>: an i.ytimg.com thumbnail, decorative next
                         to its own title (alt=""), same reasoning as every
@@ -145,7 +145,7 @@ function FromFeed({ data, feed }: { data: SiteContentData['videoSection']; feed:
 
 function VideoRow({ video }: { video: ChannelVideo }) {
   return (
-    <a className="video-row" href={video.url} target="_blank" rel="noopener noreferrer">
+    <a className="video-row" href={video.url} target="_blank" rel="noopener noreferrer" data-analytics="video_click" data-item-id={video.id}>
       <span className="video-row-thumb">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={video.thumbnail} alt="" width={480} height={360} loading="lazy" decoding="async" />
