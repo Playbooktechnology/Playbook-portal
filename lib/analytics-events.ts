@@ -119,6 +119,7 @@ export type PlaybookEvent =
   | 'hp_click_marcador'
   | 'hp_click_temas'
   | 'hp_click_expediente'
+  | 'hp_click_video'
   | 'hp_newsletter_submit';
 
 // The homepage events, as a runtime set: SiteEvents reads an event name out of
@@ -134,6 +135,7 @@ const HOMEPAGE_EVENTS = new Set<string>([
   'hp_click_marcador',
   'hp_click_temas',
   'hp_click_expediente',
+  'hp_click_video',
 ]);
 
 /** The declared event name, if it is one we actually publish. */

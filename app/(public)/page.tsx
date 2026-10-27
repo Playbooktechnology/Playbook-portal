@@ -12,7 +12,8 @@ import { TopicsBar } from '@/components/home/TopicsBar';
 import { LanaExpedientesSection } from '@/components/sections/LanaExpedientesSection';
 import { ProductsSection } from '@/components/sections/ProductsSection';
 import { MidCta } from '@/components/sections/MidCta';
-import { VideoSection } from '@/components/sections/VideoSection';
+import { VideoSection, cmsVideos } from '@/components/sections/VideoSection';
+import { getChannelVideos } from '@/lib/data/youtube';
 import { InfinitasSection } from '@/components/sections/InfinitasSection';
 import { StatsSection } from '@/components/sections/StatsSection';
 import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
@@ -36,8 +37,8 @@ import { DEFAULT_OG_IMAGE, OG_DEFAULTS } from '@/lib/og-image';
 //   4. Topic directory (archive entry point)
 //   5. Productos editoriales
 //   — inline-mid-editorial ad between Productos and Video —
-//   6. Video Playbook (two-video block + channel CTA; the Instagram
-//      grid was scrapped — user feedback)
+//   6. Video Playbook (three latest channel videos from the YouTube feed
+//      + channel CTA; the Instagram grid was scrapped — user feedback)
 //   7. Infinitas three-column grid (vertical-sponsor ad inside the section)
 //   8. Playbook en números + testimonios, compressed into one proof band
 //   9. Acerca de Playbook
@@ -61,6 +62,9 @@ export default async function HomePage() {
     getSiteContent(),
     getArticlesBySource('la-lana'),
   ]);
+  // Latest three long-form videos from the channel feed (hourly), topped up
+  // with the CMS Video tab's two embeds if the feed is down or short.
+  const videos = await getChannelVideos(cmsVideos(content.videoSection));
 
   return (
     <>
@@ -91,7 +95,7 @@ export default async function HomePage() {
       <TopicDirectory />
       <ProductsSection data={content.productsSection} />
       <AdSlot slot="inline-mid-editorial" />
-      <VideoSection data={content.videoSection} />
+      <VideoSection data={content.videoSection} videos={videos} />
       <InfinitasSection data={content.infinitasSection} />
       <div className="proof-band">
         <StatsSection data={content.statsSection} />
