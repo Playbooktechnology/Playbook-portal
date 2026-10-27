@@ -96,7 +96,7 @@ export default async function HomePage() {
       <ProductsSection data={content.productsSection} />
       <AdSlot slot="inline-mid-editorial" />
       <VideoSection data={content.videoSection} videos={videos} />
-      <InfinitasSection data={content.infinitasSection} />
+      <InfinitasSection data={content.infinitasSection} articles={articles} />
       <div className="proof-band">
         <StatsSection data={content.statsSection} />
         <TestimonialsSection data={content.testimonialsSection} />

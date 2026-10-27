@@ -156,7 +156,7 @@ export function LivePreview({ content, contentBaseline, articleEntries }: Props)
       </PreviewSection>
 
       <PreviewSection dataKey="infinitasSection" changed={changed('infinitasSection')}>
-        <InfinitasSection data={content.infinitasSection} />
+        <InfinitasSection data={content.infinitasSection} articles={previewArticles} />
       </PreviewSection>
 
       <PreviewSection dataKey="statsSection" changed={changed('statsSection')}>
