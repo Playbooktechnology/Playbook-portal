@@ -64,6 +64,9 @@ export type CabinetFolder = {
   dateFormatted: string;
   status: 'abierto' | 'archivado';
   figure: string | null;
+  /** What a declared figure measures. Null for a headline figure (the title
+   *  right below is its caption) and when there is no figure. */
+  figureCaption: string | null;
   excerpt: string;
   readingTime: number;
 };
@@ -314,9 +317,16 @@ export function LanaArchiveCabinet({ folders }: { folders: CabinetFolder[] }) {
                     <span className="lana-case-date">{folder.dateFormatted}</span>
                   </span>
                   <span className="lana-folder-body">
+                    {/* Figure and caption are ONE flex child, so the caption
+                        adds no gap; and with a caption the dek clamps to one
+                        line instead of two (product-hubs.css). One line in,
+                        one line out: the open body keeps its fixed 200px and
+                        the foot with "Abrir" stays inside it — see the height
+                        note at the top of this file. */}
                     {folder.figure && (
-                      <span className="lana-pull-figure lana-cab-extra" aria-hidden="true">
-                        {folder.figure}
+                      <span className="lana-cab-figure lana-cab-extra" aria-hidden="true">
+                        <span className="lana-pull-figure">{folder.figure}</span>
+                        {folder.figureCaption && <span className="lana-cab-figure-caption">{folder.figureCaption}</span>}
                       </span>
                     )}
                     <h3>{folder.title}</h3>

@@ -242,6 +242,9 @@ a.lana-board-row:hover .lana-board-conexion{color:#fff;}
   line-height:1;letter-spacing:.01em;color:var(--pb-ink);margin:0 0 16px;padding:0 6px;
   box-shadow:inset 0 -0.24em 0 0 var(--pb-green);
 }
+/* La línea de qué mide una cifra DECLARADA (storyFigure). Pegada a la cifra:
+   el margen inferior de .lana-pull-figure se lo queda el caption. */
+.lana-pull-figure + .lana-pull-figure-caption{margin:-6px 0 16px;max-width:44ch;font-size:14px;line-height:1.45;color:var(--pb-gray);}
 .lana-folder-copy h2{
   font-family:var(--serif-display);font-weight:400;font-size:clamp(24px,3vw,34px);
   line-height:1.12;text-transform:uppercase;margin:0 0 14px;
@@ -374,6 +377,17 @@ a.lana-board-row:hover .lana-board-conexion{color:#fff;}
 .lana-cabinet.is-cabinet .lana-cab-excerpt{
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
+/* Cifra declarada en el cajón (2026-10-27). La cifra y su caption son UN solo
+   hijo del flex (.lana-cab-figure, sin gap interno), así que el caption no
+   suma un gap; y cuando hay caption el dek baja de dos líneas a una. El
+   caption usa exactamente las métricas del dek (13.5px / 1.55), así que la
+   línea que entra mide lo mismo que la que sale: el cuerpo abierto sigue en
+   sus 200px fijos y "Abrir" no se esconde. Una línea con elipsis: los
+   captions declarados antes de la regla de seis palabras miden hasta 25
+   palabras, y el completo vive en la página del expediente. */
+.lana-cabinet .lana-cab-figure{display:flex;flex-direction:column;align-items:flex-start;min-width:0;max-width:100%;flex:none;}
+.lana-cabinet .lana-cab-figure-caption{display:block;max-width:100%;font-size:13.5px;line-height:1.55;color:var(--pb-gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lana-cabinet.is-cabinet .lana-folder-body:has(.lana-cab-figure-caption) .lana-cab-excerpt{-webkit-line-clamp:1;}
 .lana-cabinet.is-cabinet .lana-cab-folder .lana-folder-open{opacity:1;transform:none;}
 
 /* Placa de progreso: reusa los valores que ya tenía. */
@@ -536,6 +550,7 @@ a.lana-board-row:hover .lana-board-conexion{color:#fff;}
   transform:rotate(-1.2deg);
 }
 .shots-feature-copy{display:flex;flex-direction:column;align-items:flex-start;}
+.shots-figure-caption{margin-top:8px;max-width:46ch;font-size:13px;line-height:1.4;color:var(--pb-gray);}
 .shots-feature-copy h3{
   font-family:var(--serif-display);font-weight:400;font-size:clamp(22px,2.8vw,32px);
   line-height:1.1;text-transform:uppercase;letter-spacing:.01em;margin:10px 0;

@@ -298,6 +298,53 @@ export function extractCifraFromBody(bodyHtml: string | null, teaser: string | n
   return null;
 }
 
+// ----------------------------------------- THE rule for a story's figure
+// Every surface that lifts one number out of a story and sets it large —
+// the homepage's La cifra del día, the "Sigue leyendo" cards at an article's
+// foot, the Noticias river features, the La Lana lead and its archive
+// cabinet — answers to this one function, so a reader can never meet the
+// same story with two different numbers depending on where they found it.
+//
+// ONE RULE: the number only goes up if something says what it measures.
+//
+//   1. A DECLARED "Cifra clave:" — the editor chose the number AND wrote the
+//      line saying what it is. Wins outright. It is the only way a figure
+//      from the middle of a story (a deal's value, a study's result) can be
+//      lifted, and it comes with the caption that keeps it honest.
+//   2. A figure in the HEADLINE — no caption needed, because every one of
+//      these surfaces prints the headline right next to the number, and the
+//      headline IS the caption by construction.
+//
+// Never the excerpt, never the teaser's prose (publisher, 2026-10-21). That
+// is where a story keeps its context numbers, and nothing here can tell one
+// from the news: the Siroko × Chicago Bulls excerpt closed on the brand's
+// €42 millones of 2024 revenue, and the homepage printed it over a headline
+// about a sponsorship whose value was never disclosed. The same scrape on
+// the La Lana hub turned "US$8,000 a US$20,000" into "US$20,000" — half a
+// range, set in 44px — and gave the Netflix expediente a US$3,000 millones
+// it doesn't claim instead of the "6 de 10" it declares.
+//
+// `declaredFragment` is the HTML fragment lib/data/articles.ts's
+// getDeclaredCifras() returns for this article id (the body itself is never
+// on a list query). The teaser is checked too, because a legacy article
+// with no native body keeps its declaration in the plain-text teaser — that
+// is still a DECLARATION, read by the same parser the article page uses,
+// not a scrape of its prose.
+export type StoryFigure = CifraFigure & {
+  /** true for an editor's Cifra clave (caption may be set); false for a headline figure (caption is ''). */
+  declared: boolean;
+};
+
+export function storyFigure(
+  article: { title: string; teaser?: string | null },
+  declaredFragment?: string | null,
+): StoryFigure | null {
+  const declared = extractCifraFromBody(declaredFragment ?? null, article.teaser ?? null);
+  if (declared) return { ...declared, declared: true };
+  const value = extractPullFigure(article.title);
+  return value ? { value, caption: '', source: '', declared: false } : null;
+}
+
 // HTML bodies: string-level transform on already-sanitized editor HTML
 // (same trust boundary as markOpinionCallout below). Runs BEFORE the ad
 // split — splitAfterParagraph only counts top-level </p>, and the figure
