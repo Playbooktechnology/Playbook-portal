@@ -21,18 +21,22 @@ export function VideoTab({ data, onChange }: Props) {
   return (
     <div>
       <h2 className="admin-section-title">Video Playbook</h2>
-      <p className="admin-section-desc">El video destacado, el secundario, los clips cortos y los Reels de Instagram.</p>
+      <p className="admin-section-desc">
+        La portada se actualiza sola con lo último del canal de YouTube: el video largo más reciente, los siguientes en lista y los
+        últimos shorts, cada 30 minutos. Los videos de esta pestaña son el respaldo: se muestran sólo si YouTube no responde, y
+        son lo que ves en la vista previa de aquí al lado. El título, el subtítulo y el enlace al canal sí se usan siempre.
+      </p>
       <TextField label="Título de la sección" help="El encabezado grande de la sección Video." value={data.heading} onChange={v => set('heading', v)} />
       <TextField label="Subtítulo" help="El texto pequeño debajo del título de la sección." value={data.sub} onChange={v => set('sub', v)} />
       <TextField label="Texto del enlace al canal" help="El texto del enlace que lleva al canal de YouTube." value={data.channelLinkLabel} onChange={v => set('channelLinkLabel', v)} />
       <TextField label="Enlace del canal" type="url" required help="La URL del canal de YouTube." value={data.channelLinkUrl} onChange={v => set('channelLinkUrl', v)} />
 
-      <h3 className="admin-section-title">Video destacado</h3>
+      <h3 className="admin-section-title">Video destacado (respaldo)</h3>
       <TextField label="ID de video de YouTube" help='El código después de "v=" o "youtu.be/" (ej. 1fGmZUNy_xk), no el link completo.' value={data.featured.embedId} onChange={v => setFeatured({ embedId: v })} />
       <TextField label="Título del video (accesibilidad)" help="Un texto descriptivo para lectores de pantalla; no se muestra en pantalla." value={data.featured.embedTitle} onChange={v => setFeatured({ embedTitle: v })} />
       <TextField label="Título" help="El título que se muestra debajo del video destacado." value={data.featured.title} onChange={v => setFeatured({ title: v })} />
 
-      <h3 className="admin-section-title">Video secundario</h3>
+      <h3 className="admin-section-title">Video secundario (respaldo)</h3>
       <TextField label="ID de video de YouTube" help='El código después de "v=" o "youtu.be/" (ej. vBdq4jG2hvc), no el link completo.' value={data.secondary.embedId} onChange={v => setSecondary({ embedId: v })} />
       <TextField label="Título del video (accesibilidad)" help="Un texto descriptivo para lectores de pantalla; no se muestra en pantalla." value={data.secondary.embedTitle} onChange={v => setSecondary({ embedTitle: v })} />
       <TextField label="Título" help="El título que se muestra debajo del video secundario." value={data.secondary.title} onChange={v => setSecondary({ title: v })} />

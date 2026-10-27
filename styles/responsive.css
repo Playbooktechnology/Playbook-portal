@@ -175,6 +175,12 @@
   .quote:last-child{border-bottom:none;}
   .topic-directory{grid-template-columns:repeat(3,1fr);}
   .video-top,.infsec-grid,.about-card{grid-template-columns:1fr;}
+  /* Shorts: a sideways rail with snap points instead of six 9:16 tiles
+     stacked down the page (each ~600px tall at full width). The rail runs
+     into the container's right padding so the cut-off third tile reads as
+     "there is more", which is the whole affordance. */
+  .video-shorts-rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-right:-24px;padding:0 24px 8px 0;}
+  .video-shorts-rail li{flex:0 0 42%;scroll-snap-align:start;}
   .infsec-grid{gap:14px;}
   .infsec-rows{margin-top:6px;}
   .proof-grid{grid-template-columns:1fr;}
