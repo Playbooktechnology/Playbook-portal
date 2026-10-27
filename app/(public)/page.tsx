@@ -37,9 +37,9 @@ import { DEFAULT_OG_IMAGE, OG_DEFAULTS } from '@/lib/og-image';
 //   4. Topic directory (archive entry point)
 //   5. Productos editoriales
 //   — inline-mid-editorial ad between Productos and Video —
-//   6. Video Playbook — reads the YouTube channel's feed since 2026-10-27:
-//      newest long video, the next ones as a list, a rail of the latest
-//      shorts, channel CTA. CMS videos are the fallback (see VideoSection)
+//   6. Lo último en video — the three newest long videos from the YouTube
+//      channel's feed (A3, 2026-10-27), player on click; hides when the
+//      newest is older than lib/freshness.ts allows (see VideoSection)
 //   7. Infinitas three-column grid (vertical-sponsor ad inside the section)
 //   8. Playbook en números + testimonios, compressed into one proof band
 //   9. Acerca de Playbook
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   // The channel feed is fetched alongside the rest, not after it: it is cached
-  // for 30 minutes and never throws (null falls back to the CMS videos), so it
+  // for an hour and never throws (a backup copy, or null to hide the band), so it
   // costs the homepage nothing on a warm cache and at most its 4s timeout on a
   // cold one with YouTube down.
   const [articles, content, channelFeed] = await Promise.all([
@@ -82,6 +82,7 @@ export default async function HomePage() {
           sidebar={<HomeSidebar />}
           stillMatters={<StillMattersSection articles={articles} />}
           topicsBar={<TopicsBar />}
+          showAuthorsGlobal={content.siteSettings.mostrarAutorGlobal}
         />
         <MostReadSection />
       </main>
@@ -91,7 +92,11 @@ export default async function HomePage() {
           news package above already uses — the opinion section derives its
           cards from the source='opinion' subset (see that component), so
           no extra query. */}
-      <OpinionSection data={content.opinionSection} articles={articles} />
+      <OpinionSection
+        data={content.opinionSection}
+        articles={articles}
+        whenStale={<MostReadSection days={30} excludeWeekly anchorId="mas-leidas-mes" standalone />}
+      />
       <MidCta data={content.midCta} />
       <TopicDirectory />
       <ProductsSection data={content.productsSection} />

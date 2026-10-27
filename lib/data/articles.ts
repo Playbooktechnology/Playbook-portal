@@ -359,6 +359,8 @@ export type ArticleMeta = {
   tagsSport: string[];
   tagsVertical: string[];
   substackUrl: string;
+  /** Row creation time: the real publish hour when it falls on `date` (lib/dates.ts). */
+  createdAt: Date;
 };
 
 // Selects only the columns safe to expose to a reader who hasn't been
@@ -410,6 +412,7 @@ async function queryArticleMeta(id: string): Promise<ArticleMeta | null> {
       tagsVertical: articles.tagsVertical,
       tagsProperty: articles.tagsProperty,
       substackUrl: articles.substackUrl,
+      createdAt: articles.createdAt,
     })
     .from(articles)
     .where(eq(articles.id, id))

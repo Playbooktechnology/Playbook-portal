@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import type { Article } from '@/lib/data/articles';
-import { rankArticles, selectHero, daysSince, baseScore, bridgeScore } from '@/lib/rank';
-import { LIST_COUNT } from '@/lib/constants';
+import { stillMattersPicks } from '@/lib/home-blocks';
 import { articlePath } from '@/lib/article-url';
 
 // Homepage module "Lo que sigue importando" (design brief, 2026-08-05).
@@ -31,46 +30,15 @@ import { articlePath } from '@/lib/article-url';
 // It renders nowhere else; do not also mount it below, or the same four
 // stories appear twice on one screen.
 //
-// Window: brief proposes 10–14 days; 12 until editorial confirms.
-const WINDOW_DAYS = 12;
-const ITEM_COUNT = 4;
-// Below three the column reads as a stub rather than a module — two leftover
-// stories under a heading look like the end of a list, not a selection
-// (publisher, 2026-10-01). It collapses instead, and the left column is just
-// the hero, which is what it was before this module moved here.
-const MIN_ITEMS = 3;
-// 2026-08-20: this used to gate on the legacy `priority` field directly
-// (≥4 stars), which the 0-99 boleta rewrite (lib/rank.ts) superseded.
-// baseScore() already does the right thing for both graded and
-// not-yet-graded rows (falling back to bridgeScore(priority) for the
-// latter), so bridging the old 4-star cutoff through the same function
-// keeps this module's editorial bar unchanged while pointing it at the
-// real score once an article has one.
-const MIN_SCORE = bridgeScore(4);
+// Window, minimum and score bar: see lib/home-blocks.ts.
 
 export function StillMattersSection({ articles }: { articles: Article[] }) {
-  const now = new Date();
-
-  // Same pool derivation as NewsGrid's default view (opinion stays out
-  // unless deliberately featured) — keep the two in sync or the "no
-  // duplicates" guarantee silently breaks.
-  const news = articles.filter(a => a.source !== 'opinion' || a.featured);
-  const ranked = rankArticles(news, now);
-  const hero = selectHero(ranked, now);
-  const list = ranked.filter(a => a !== hero).slice(0, LIST_COUNT);
-  const shown = new Set([hero, ...list].filter(Boolean).map(a => (a as Article).id));
-
-  const items = articles
-    .filter(a => !shown.has(a.id) && (a.featured || baseScore(a) >= MIN_SCORE) && daysSince(a.date, now) <= WINDOW_DAYS)
-    // Importance first, recency as the tiebreak: this module exists
-    // precisely because recency alone already has a whole band above it.
-    .sort((a, b) => baseScore(b) - baseScore(a) || (b.date || '').localeCompare(a.date || ''))
-    .slice(0, ITEM_COUNT);
-
-  // Quiet weeks (nothing starred inside the window that isn't already on
-  // the homepage) collapse the module entirely — an empty "still matters"
-  // module would say the opposite of what it means.
-  if (items.length < MIN_ITEMS) return null;
+  // Selection lives in lib/home-blocks.ts, next to the first block it must
+  // never repeat — the ticker reads the same two functions. Quiet weeks
+  // (fewer than the minimum) come back empty and collapse the module: an
+  // empty "still matters" module would say the opposite of what it means.
+  const items = stillMattersPicks(articles);
+  if (!items.length) return null;
 
   return (
     <section className="still-matters" aria-labelledby="still-matters-title">

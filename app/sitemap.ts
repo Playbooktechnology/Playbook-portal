@@ -9,6 +9,7 @@ import { HUBS } from '@/lib/hubs';
 import { SITE_URL } from '@/lib/site-url';
 import { articleUrl } from '@/lib/article-url';
 import { authorDisplayName, isIndexableAuthorName } from '@/lib/author-name';
+import { authorPath } from '@/lib/authors';
 
 // Originally set to `revalidate = 3600` (ISR) to match legacy/api/sitemap.js's
 // Cache-Control: public, max-age=3600 without a DB round-trip on every
@@ -108,7 +109,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
   authorDates.forEach((dates, name) => {
     entries.push({
-      url: `${SITE_URL}/autor?nombre=${encodeURIComponent(name)}`,
+      url: `${SITE_URL}${authorPath(name)}`,
       lastModified: mostRecentDate(dates),
       ...TIERS.author,
     });

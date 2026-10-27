@@ -5,6 +5,7 @@ import { rankScore } from '@/lib/rank';
 import { KNOWN_SOURCES, SOURCE_LABELS, normalizeSource, type Source } from '@/lib/constants';
 import { SCOPE_OPTIONS, SPORT_OPTIONS, VERTICAL_OPTIONS } from '@/lib/taxonomy';
 import { NewsRow } from '@/components/article/NewsRow';
+import { getSiteContent } from '@/lib/data/site-content';
 import { ArchiveGridCard } from '@/components/article/ArchiveGridCard';
 import { ArchiveFeatureRow } from '@/components/article/ArchiveFeatureRow';
 import { ArchiveLineRow } from '@/components/article/ArchiveLineRow';
@@ -346,6 +347,7 @@ function groupRiver(articles: Article[], now: Date): RiverBlock[] {
 
 export default async function ArchivoPage({ searchParams }: Props) {
   const rawFilters = await searchParams;
+  const { siteSettings } = await getSiteContent();
   // Old bookmarks and inbound links still say ?source=industry-shots (the
   // pre-2026-08-14 machine key) — normalize so they keep filtering to the
   // Noticias section instead of silently matching nothing.
@@ -479,7 +481,7 @@ export default async function ArchivoPage({ searchParams }: Props) {
                     featuredIds.has(a.id) ? (
                       <ArchiveFeatureRow key={a.id} article={a} priority={i === 0} />
                     ) : (
-                      <NewsRow key={a.id} article={a} heading="h3" withTagPills />
+                      <NewsRow key={a.id} article={a} heading="h3" withTagPills showAuthorsGlobal={siteSettings.mostrarAutorGlobal} />
                     ),
                 )
               : <EmptyDrawer filtered={activeFilters.length > 0} clearHref="/archivo?view=list" />}
