@@ -8,7 +8,7 @@ import { PRODUCT_HUBS } from '@/lib/product-hubs';
 import { HUBS } from '@/lib/hubs';
 import { SITE_URL } from '@/lib/site-url';
 import { articleUrl } from '@/lib/article-url';
-import { authorDisplayName, isIndexableAuthorName } from '@/lib/author-name';
+import { authorDisplayName, hasAuthorMarkup, isIndexableAuthorName } from '@/lib/author-name';
 import { authorPath } from '@/lib/authors';
 import { getPlaymakerProfiles, playmakerPath } from '@/lib/playmaker/profiles';
 
@@ -99,6 +99,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const authorDates = new Map<string, string[]>();
   articles.forEach(a => {
     if (!a.author || !shouldShowAuthor(a, content.siteSettings.mostrarAutorGlobal)) return;
+    // Brackets or a URL in the raw byline: no author page to advertise.
+    if (hasAuthorMarkup(a.author)) return;
     // The clean display name, never the raw column: the one author page this
     // site actually generated was being published with unrendered markdown in
     // the URL (see lib/author-name.ts). An unindexable name is dropped rather

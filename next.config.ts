@@ -134,7 +134,14 @@ const nextConfig: NextConfig = {
     return legacyHtmlRedirects.map(r => ({ ...r, permanent: true }));
   },
   async headers() {
-    return [{ source: '/(.*)', headers: securityHeaders }];
+    return [
+      { source: '/(.*)', headers: securityHeaders },
+      // The RSS feed is for readers, not search results: its items are the
+      // same articles already indexed at /articulo/<slug>. `source` matches
+      // the path only, so this also covers every query-string variant
+      // (/feed.xml?tagsScope=…, the per-topic feeds /tema advertises).
+      { source: '/feed.xml', headers: [{ key: 'X-Robots-Tag', value: 'noindex' }] },
+    ];
   },
   // Playmaker share images read their fonts from disk at request time
   // (lib/playmaker/share-image.tsx); make sure the files ship with the routes.
