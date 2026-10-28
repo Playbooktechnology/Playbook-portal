@@ -51,7 +51,7 @@ import { SITE_URL } from '@/lib/site-url';
 import { articlePath, articleUrl } from '@/lib/article-url';
 import { authorDisplayName } from '@/lib/author-name';
 import { dateTimeLabel, isoMexico, publishedIso, publishedLabel } from '@/lib/dates';
-import { NEWSROOM_BYLINE, authorPath } from '@/lib/authors';
+import { NEWSROOM_BYLINE, authorHref } from '@/lib/authors';
 import { METERING_ENABLED } from '@/lib/constants';
 import { isValidPreviewToken, previewTokenFor } from '@/lib/preview-token';
 import { getMostReadArticles } from '@/lib/most-read';
@@ -100,7 +100,9 @@ function renderAuthorByline(author: string) {
     // The clean name in the URL, the raw string as the visible text — they
     // are identical for a plain byline, and for anything else the URL must
     // match what /autor canonicalises to and what the sitemap publishes.
-    return <Link href={authorPath(author)}>{author}</Link>;
+    // A stray bracket or bare URL with no markdown link gets no link at all.
+    const href = authorHref(author);
+    return href ? <Link href={href}>{author}</Link> : author;
   }
   linkPattern.lastIndex = 0;
   const nodes: React.ReactNode[] = [];
@@ -494,7 +496,7 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
             // when the author has articles, and /equipo already builds this
             // exact URL for its Person nodes — the article was the one
             // surface that named an author without ever linking to them.
-            url: `${SITE_URL}${authorPath(meta.author)}`,
+            url: authorHref(meta.author) ? `${SITE_URL}${authorHref(meta.author)}` : undefined,
             worksFor: PLAYBOOK_ORG_REF,
           }
         // No byline shown: Playbook itself is the author. This used to emit

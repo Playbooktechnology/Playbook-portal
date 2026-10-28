@@ -5,7 +5,7 @@ import { getPublicArticles, type Article } from '@/lib/data/articles';
 import { getSiteContent } from '@/lib/data/site-content';
 import { NewsRow } from '@/components/article/NewsRow';
 import { SITE_URL } from '@/lib/site-url';
-import { authorDisplayName, isIndexableAuthorName } from '@/lib/author-name';
+import { authorDisplayName, hasAuthorMarkup, isIndexableAuthorName } from '@/lib/author-name';
 import { authorPath, authorSlug, profileFor, type AuthorProfile } from '@/lib/authors';
 import { shouldShowAuthor } from '@/lib/related-articles';
 import { jsonLdScript } from '@/lib/json-ld';
@@ -29,7 +29,7 @@ async function resolveAuthor(slug: string): Promise<{
   const profile = profileFor(slug);
   const names = new Set(profile ? [profile.name, ...(profile.aliases ?? [])].map(authorSlug) : [slug]);
   const articles = pool
-    .filter(a => a.author && names.has(authorSlug(a.author)) && shouldShowAuthor(a, content.siteSettings.mostrarAutorGlobal))
+    .filter(a => a.author && !hasAuthorMarkup(a.author) && names.has(authorSlug(a.author)) && shouldShowAuthor(a, content.siteSettings.mostrarAutorGlobal))
     .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
   const name = profile?.name ?? (articles[0] ? authorDisplayName(articles[0].author) : '');
   if (!name) return null;

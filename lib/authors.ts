@@ -1,5 +1,5 @@
 import { slugify } from './slugify';
-import { authorDisplayName } from './author-name';
+import { authorDisplayName, hasAuthorMarkup } from './author-name';
 
 // Firmas y páginas de autor (A5, 2026-10-27).
 //
@@ -56,6 +56,11 @@ export function authorPath(name: string): string {
   return `/autor/${authorSlug(name)}`;
 }
 
+/** La liga a /autor de una firma, o null si la firma trae corchetes o URLs. */
+export function authorHref(author: string): string | null {
+  return hasAuthorMarkup(author) ? null : authorPath(author);
+}
+
 /** El perfil de una firma (por nombre, alias o slug), si existe. */
 export function profileFor(nameOrSlug: string): AuthorProfile | null {
   const slug = authorSlug(nameOrSlug);
@@ -75,5 +80,5 @@ export function bylineName(
   const show = article.mostrarAutor === true || mostrarAutorGlobal === true;
   const name = show ? authorDisplayName(article.author) : '';
   if (!name) return { name: NEWSROOM_BYLINE, href: '/como-trabajamos', isNewsroom: true };
-  return { name, href: authorPath(name), isNewsroom: false };
+  return { name, href: authorHref(article.author), isNewsroom: false };
 }
