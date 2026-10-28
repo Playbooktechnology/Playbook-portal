@@ -155,6 +155,15 @@ export const articles = pgTable(
     // default) means no pin, which is every row's steady state; nothing
     // reads this column unless it is set.
     heroPinnedUntil: timestamp('hero_pinned_until', { withTimezone: true }),
+    // "Actualizado" on the article page (2026-10-27). updated_at moves on
+    // every save, typo fixes included, so it cannot say whether a story
+    // changed in substance. These two only move when the editor writes (or
+    // changes) the "Actualización de fondo" note in the CMS: the note says
+    // what changed, the timestamp is when it was saved. Both null = never
+    // updated in substance, which is every row's steady state. Additive and
+    // nullable — migration 0015 (IF NOT EXISTS).
+    substantiveUpdateAt: timestamp('substantive_update_at', { withTimezone: true }),
+    substantiveUpdateNote: text('substantive_update_note'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
     updatedBy: uuid('updated_by').references(() => editors.id, { onDelete: 'set null' }),

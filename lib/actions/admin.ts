@@ -137,6 +137,14 @@ export type ArticleInput = {
   imageCredit: string;
   /** See schema.ts articles.listed — the per-article counterpart to Hub.listed. */
   listed: boolean;
+  /**
+   * "Actualización de fondo": what changed in substance. Writing a new or
+   * different note stamps substantive_update_at with this save's time;
+   * leaving it as it was keeps the old time; emptying it removes
+   * "Actualizado" from the page. Ignored on create (a new story has nothing
+   * to update).
+   */
+  substantiveUpdateNote?: string;
 };
 
 export type SaveArticleResult = { conflict: true } | { conflict: false; article: Article };
@@ -155,6 +163,21 @@ export type SaveArticleResult = { conflict: true } | { conflict: false; article:
 // component when checked directly with psql.
 function sameMillisecond(column: typeof articles.updatedAt, expected: string) {
   return sql`date_trunc('milliseconds', ${column}) = date_trunc('milliseconds', ${expected}::timestamptz)`;
+}
+
+// The SET clause for "Actualizado". The CASE runs inside the UPDATE, where a
+// column reference is the row's value BEFORE this save, so "the note changed"
+// is decided by Postgres against what is stored — not against whatever the
+// editor's browser loaded, which may be stale. An unchanged note keeps its
+// original timestamp: re-saving a story for a typo never re-dates the update.
+function substantiveUpdate(rawNote: string | undefined) {
+  if (rawNote === undefined) return {};
+  const note = rawNote.trim();
+  if (!note) return { substantiveUpdateNote: null, substantiveUpdateAt: null };
+  return {
+    substantiveUpdateNote: note,
+    substantiveUpdateAt: sql`CASE WHEN ${articles.substantiveUpdateNote} IS DISTINCT FROM ${note} THEN now() ELSE ${articles.substantiveUpdateAt} END`,
+  };
 }
 
 export async function saveArticle(
@@ -191,6 +214,7 @@ export async function saveArticle(
       imageUrl: input.imageUrl,
       imageCredit: input.imageCredit || null,
       listed: input.listed,
+      ...substantiveUpdate(input.substantiveUpdateNote),
       updatedAt: new Date(),
       updatedBy: session.user.id,
     })

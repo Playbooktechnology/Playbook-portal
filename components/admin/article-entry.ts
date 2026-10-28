@@ -42,6 +42,7 @@ function toData(a: Article) {
     imageCredit: a.imageCredit ?? '',
     status: a.status,
     listed: a.listed,
+    substantiveUpdateNote: a.substantiveUpdateNote ?? '',
   };
 }
 
@@ -103,6 +104,7 @@ export function newArticleEntry(): ArticleEntry {
       imageCredit: '',
       status: 'published',
       listed: true,
+      substantiveUpdateNote: '',
     },
   };
 }
@@ -131,6 +133,8 @@ export function toPreviewArticle(data: ArticleEntry['data']): Article {
     createdAt: new Date(0),
     updatedAt: new Date(0),
     updatedBy: null,
+    substantiveUpdateAt: null,
+    substantiveUpdateNote: data.substantiveUpdateNote || null,
     // Same "DB-only, never rendered by the preview" reasoning as the fields
     // above -- no CMS control for the hero pin yet (set via
     // scripts/update-article.ts), so the preview never has a real value.
