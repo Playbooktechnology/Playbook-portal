@@ -46,13 +46,6 @@ imageUrl, imageCredit`.
   edition's Substack byline names someone else, flag it in the run report
   instead of relabeling it. (Four editions went out with an empty author
   between 2026-09-04 and 2026-10-09; the rule was backfilled on all of them.)
-- **`substantiveUpdateNote`** (CMS: "Actualización de fondo", 2026-10-27) —
-  never set by a publishing run: a story is born without it. It is written
-  later, in the CMS, only for a change of substance (new data, a corrected
-  figure that changes the reading, an outcome). Saving a new or different
-  note stamps `substantive_update_at` and the page shows "Actualizado" with
-  that time and the note; `dateModified` follows it. Typo and style fixes
-  never go here.
 - **`author: "Aldo Sales"`** — always pairs with `mostrarAutor: true` and with
   **no** `Opinión de Playbook` box (`format-tiers.md` §3b's TFBR attribution
   note carries the exact rule and its rationale).

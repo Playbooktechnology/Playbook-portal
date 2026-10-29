@@ -359,6 +359,13 @@ Anything but `200` means the cover will not render. Take the photo from the
 subject's own site instead (here, fcbarcelona.com's own Barça Store photo,
 which also fixed a credit that said "FC Barcelona" over a third-party host).
 
+**An `ERR_HTTP2_PROTOCOL_ERROR` in the session's browser is not proof**
+(editor, 2026-10-28, the Algeciras piece). The lagacetadecadiz.es cover passed
+both curl checks above but failed in the container's Chromium with that error
+and `naturalWidth` 0; the editor confirmed it loads for readers. The agent
+proxy can break HTTP/2 to some hosts. When the curl checks pass and only the
+in-session browser fails this way, ask the editor to look before swapping.
+
 Set `imageCredit` to identify the real source, whatever it is — `"Foto:
 [Fotógrafo] / Unsplash"`, `"Foto: [Agencia]"`, `"Foto: [Club/Liga/
 Organización]"` — matched to whatever the photo's own page attributes it to. It
@@ -397,18 +404,8 @@ ratio:
 
 A self-cropped image needs the same hosting path as any other custom asset:
 commit it to `public/assets/img/`, push, and use the resulting
-`https://www.playbook.la/assets/img/...` URL — Wikimedia and Unsplash only
-serve their own original crops. Never the `playbook-portal-phi.vercel.app`
-deployment host (2026-10-27): it serves the same file, but it is a domain
-that isn't playbook.la, and 93 covers had to be rewritten for it.
-
-**External cover and body images are copied to Playbook's own storage
-automatically** (2026-10-27, `lib/images/localize.ts`): right after an
-admin save or a Make.com insert, and in a daily sweep of the last three
-days for anything published by `scripts/publish-newsletter.ts`. Pick the
-photo exactly as before (source, credit, ratio): the copy changes the URL,
-never the credit line. An image whose host refuses the download keeps its
-original URL and shows up in /admin → Imágenes.
+`https://playbook-portal-phi.vercel.app/assets/img/...` URL — Wikimedia and
+Unsplash only serve their own original crops.
 
 **Never publish a cover photo without doing this ratio check first**, regardless
 of how good the photo looks in isolation. A source article's own hero image is
