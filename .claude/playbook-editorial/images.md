@@ -359,6 +359,13 @@ Anything but `200` means the cover will not render. Take the photo from the
 subject's own site instead (here, fcbarcelona.com's own Barça Store photo,
 which also fixed a credit that said "FC Barcelona" over a third-party host).
 
+**An `ERR_HTTP2_PROTOCOL_ERROR` in the session's browser is not proof**
+(editor, 2026-10-28, the Algeciras piece). The lagacetadecadiz.es cover passed
+both curl checks above but failed in the container's Chromium with that error
+and `naturalWidth` 0; the editor confirmed it loads for readers. The agent
+proxy can break HTTP/2 to some hosts. When the curl checks pass and only the
+in-session browser fails this way, ask the editor to look before swapping.
+
 Set `imageCredit` to identify the real source, whatever it is — `"Foto:
 [Fotógrafo] / Unsplash"`, `"Foto: [Agencia]"`, `"Foto: [Club/Liga/
 Organización]"` — matched to whatever the photo's own page attributes it to. It
