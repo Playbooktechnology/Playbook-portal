@@ -1233,6 +1233,14 @@ as "as of this piece" and can't go stale wrong — and the first beat after
 the article date is highlighted as what's next. **Mutually exclusive with
 `Cronología`**: both are the story on a dated spine.
 
+**Date a near beat to the day** (2026-10-29, the Checo/Cadillac piece). A
+`d mmm AAAA` beat is counted in days from the article's day: "mañana",
+"en N días" up to 31, then rounded to months. A `mmm AAAA` or `AAAA` beat
+only carries month precision, so it is counted in months (a bare year as
+mid-year). Before this fix the day was dropped: a race three days out read
+"en 1 mes", and a beat later in the article's own month got no chip and no
+highlight. Write the day whenever it is known.
+
 ### `Votación:` — the governance tally
 
 ```
