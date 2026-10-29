@@ -73,6 +73,15 @@ the facts:
    revision round. **Ask once, right after the block, before drafting** — not as
    an afterthought once a gap surfaces.
 
+   **Never fake a crawler or browser identity to get past a block** (2026-10-29,
+   the Canelo/Kalshi run). After Forbes returned 403, the run tried a request
+   with a social-media crawler user agent to pull the page's preview image.
+   The session's safety layer stopped it as bot-check circumvention, and that
+   was the right call: a 403 is the site saying no. Ask the editor for the text
+   or the image link instead. The editor pasted the Forbes opening, which added
+   the US$170 millones, the businesses and the quote that the relays had left
+   out.
+
 0c. **A successful WebFetch can still fabricate a specific detail.** (2026-09-01,
    the NFL Australia/México run.) A syndicated copy of a Reuters wire loaded
    fine (`HTTP 200`, full text), and WebFetch's own summary of it still
