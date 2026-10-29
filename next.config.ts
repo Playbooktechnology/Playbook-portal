@@ -131,7 +131,14 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   async redirects() {
-    return legacyHtmlRedirects.map(r => ({ ...r, permanent: true }));
+    return [
+      ...legacyHtmlRedirects.map(r => ({ ...r, permanent: true })),
+      // The previous site's blog index. Its articles (/blog/<slug>) are
+      // resolved one by one in middleware.ts; the bare index has no single
+      // equivalent, so it goes to the archive. 301, not the 308 that
+      // `permanent: true` sends, to match the /blog/<slug> redirects.
+      { source: '/blog', destination: '/archivo', statusCode: 301 },
+    ];
   },
   async headers() {
     return [
