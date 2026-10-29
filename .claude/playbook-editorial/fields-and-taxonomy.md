@@ -311,6 +311,14 @@ built for "I want THIS to lead". Give it a stated, self-expiring window
 `score` and `score_boleta` are written only through `scoreFromBoleta()` from
 the revised answers, with the reason recorded in `ambiguous`.
 
+**A pin cannot lift an unconfirmed story** (editor, 2026-10-29, FIFA ticketing
+piece). `selectHero` checks pins only among confirmed rows, so a
+`heroPinnedUntil` on a `confirmed: false` article does nothing while any
+confirmed story is live. Say so before setting the pin and let the editor
+decide: re-answer `confirmed` (recording why in `ambiguous` and keeping the
+hedge in the title, here "habría"), or leave it unpinned. That run re-answered
+it at the editor's call, which also removed the −2 decenas (67 to 87).
+
 Record genuinely arguable answers in `ambiguous` and say why in `notes`; the
 whole point of storing the boleta is that a disputed running order becomes an
 argument about one answer rather than about taste.
