@@ -188,6 +188,17 @@ export function ArticlesTab({ entries, onChange, onRemove }: Props) {
                   <span>Mostrar autor de este artículo</span>
                 </label>
               </div>
+              {/* "Actualizado" (2026-10-27): only for a story that already
+                  exists — a new one has nothing to update yet. */}
+              {entry.inBaseline && (
+                <TextField
+                  label="Actualización de fondo"
+                  help='Solo para un cambio de fondo (dato nuevo, cifra corregida que cambia la lectura, desenlace). Al guardar un texto nuevo o distinto aquí, la nota muestra "Actualizado" con la hora de ese guardado y este texto. Las correcciones menores (erratas, estilo) no se anotan aquí. Vaciarlo quita "Actualizado".'
+                  multiline
+                  value={a.substantiveUpdateNote ?? ''}
+                  onChange={v => updateEntry(entry.clientKey, { substantiveUpdateNote: v })}
+                />
+              )}
               <TextField
                 label="Publicación"
                 help="El nombre de la publicación de origen."

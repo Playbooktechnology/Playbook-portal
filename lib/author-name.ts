@@ -49,3 +49,13 @@ export function isIndexableAuthorName(name: string): boolean {
   // not an author.
   return /\p{L}/u.test(name);
 }
+
+// Whether the RAW column carries markup instead of a name: any square bracket
+// or URL. Checked on the raw value, before authorDisplayName() strips the
+// markdown, because the stripped form ("Rodrigo Dosal, fundador de DOME
+// Sport") looks like a name and would otherwise get its own /autor page.
+// Such a value never becomes an /autor link, sitemap entry or schema url —
+// the byline text still renders, just unlinked.
+export function hasAuthorMarkup(author: string | null | undefined): boolean {
+  return /[[\]]|https?:\/\/|www\./i.test(String(author || ''));
+}

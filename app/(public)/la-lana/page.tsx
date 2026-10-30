@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getArticlesBySource, getArticleById } from '@/lib/data/articles';
+import { getArticlesBySource, getArticleById, getDeclaredCifras } from '@/lib/data/articles';
 import { getSiteContent } from '@/lib/data/site-content';
 import { productHubsContent } from '@/lib/product-hubs-content';
-import { caseNumber, caseStatus, extractPullFigure, extractTrailStops } from '@/lib/product-hubs';
+import { caseNumber, caseStatus, storyFigure, extractTrailStops } from '@/lib/product-hubs';
 import { DeparturesBoard, type BoardRow } from '@/components/products/DeparturesBoard';
 import { LanaArchiveCabinet, type CabinetFolder } from '@/components/products/LanaArchiveCabinet';
 import { SITE_URL } from '@/lib/site-url';
@@ -50,7 +50,11 @@ function boardKey(conexion: string): string {
 }
 
 export default async function LaLanaHubPage() {
-  const [articles, content] = await Promise.all([getArticlesBySource('la-lana'), getSiteContent()]);
+  const [articles, content, declaredCifras] = await Promise.all([
+    getArticlesBySource('la-lana'),
+    getSiteContent(),
+    getDeclaredCifras(),
+  ]);
   const hubs = productHubsContent(content.productHubs);
   const now = new Date();
   const [lead, ...rest] = articles;
@@ -117,14 +121,28 @@ export default async function LaLanaHubPage() {
             <div className="lana-folder-body">
               <div className="lana-folder-copy">
                 <Stamp status={caseStatus(lead, now)} />
-                {/* The story's single biggest number, pulled out large as
-                    the visual hook instead of buried in body text. No
+                {/* The story's figure, set large as the visual hook. No
                     fallback: the folder tab already carries the case
                     number, so a figure-less story just leads with its
-                    title instead of saying "003" twice. */}
+                    title instead of saying "003" twice.
+                    lib/product-hubs.ts's storyFigure decides which number:
+                    the expediente's declared Cifra clave, else one in the
+                    headline, else a labeled Ecuación result (2026-10-27) —
+                    never the excerpt or teaser prose. On this
+                    hub that matters more than anywhere: La Lana titles are
+                    questions and carry no numbers (0 of 19, 2026-10-27), so
+                    the declaration is the only honest source, and the old
+                    scrape set half a range ("US$20,000" of "US$8,000 a
+                    US$20,000") in 72px. */}
                 {(() => {
-                  const figure = extractPullFigure(lead.title, lead.excerpt, lead.teaser);
-                  return figure ? <p className="lana-pull-figure">{figure}</p> : null;
+                  const figure = storyFigure(lead, declaredCifras[lead.id]);
+                  if (!figure) return null;
+                  return (
+                    <>
+                      <p className="lana-pull-figure">{figure.value}</p>
+                      {figure.caption && <p className="lana-pull-figure-caption">{figure.caption}</p>}
+                    </>
+                  );
                 })()}
                 <h2>
                   <Link href={articlePath(lead.id)}>{lead.title}</Link>
@@ -164,7 +182,10 @@ export default async function LaLanaHubPage() {
             caseNo: caseNumber(article, articles),
             dateFormatted: article.dateFormatted,
             status: caseStatus(article, now),
-            figure: extractPullFigure(article.title, article.excerpt, article.teaser),
+            ...(() => {
+              const figure = storyFigure(article, declaredCifras[article.id]);
+              return { figure: figure?.value ?? null, figureCaption: figure?.caption || null };
+            })(),
             excerpt: article.excerpt,
             readingTime: article.readingTime,
           }))}

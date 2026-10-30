@@ -273,6 +273,31 @@ function parseEquation(raw: string): Equation | null {
   return { terms, ops, result };
 }
 
+// An Ecuación's result as a STORY figure (2026-10-27), for the surfaces that
+// answer to lib/product-hubs.ts's storyFigure — the La Lana hub first among
+// them, where titles carry no numbers. Same parser as the article's own
+// device, so a hub can't promote an equation the article itself would have
+// rejected (a failed self-check, a term with no number).
+//
+// The RESULT'S LABEL is required, and it becomes the caption. That is
+// storyFigure's one rule applied here: the number only goes up if something
+// says what it measures. The Ligue 1 expediente is why the rule has teeth:
+// its equation reads "€150M − €65M = €85M" with no labels, and the same story
+// mentions a different €85 millones (the DAZN payout) a few paragraphs on.
+// Promoted bare, "€85M" over that headline is the Siroko case again. Labeled
+// ("= €85M antes de reparto"), it says what it is.
+//
+// `fragment` is the HTML lib/data/articles.ts cuts out around the
+// declaration — never the whole body.
+export function equationFigure(fragment: string): { value: string; caption: string; source: string } | null {
+  const re = deviceHtmlRe('Ecuaci[óo]n');
+  const match = re.exec(fragment);
+  if (!match) return null;
+  const parsed = parseEquation(match[1]);
+  if (!parsed || !parsed.result.label) return null;
+  return { value: parsed.result.figure, caption: parsed.result.label, source: '' };
+}
+
 function eqTermMarkup(term: { figure: string; label: string }, cls: string): string {
   const label = term.label ? `<span class="lect-eq-unit">${esc(term.label)}</span>` : '';
   return `<span class="${cls}">${countupSpan(term.figure, 'lect-eq-num')}${label}</span>`;

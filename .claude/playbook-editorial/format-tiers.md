@@ -67,6 +67,20 @@ running story before, and a reader would finish the brief still not knowing how
 the thing works — that is the story asking for C. Route it deliberately at this
 step; C is not a length the draft grows into, it has its own architecture (§3b).
 
+**Second worked example: the cost lands on someone other than the actor**
+(editor, 2026-10-27, LaLiga/CCTV/Mbappé). The draft shipped as a 484-word B
+because the news read as "a player loses sponsors and a broadcaster suspends a
+league". The editor sent it back the same day: *"se está subestimando la
+relevancia… habla de la importancia que tienen las acciones de un activo como
+Mbappé de una propiedad como LaLiga a sus intereses económicos con un socio
+comercial"*. Rebuilt as a C, it carried the league's own statement and Tebas's,
+the league's rights history in China (a private buyer that defaulted, then
+state buyers), its international rights income, and the NBA precedent. **The
+tell:** when the party paying the cost is not the party that acted (a league
+paying for a player, a federation for a club, a brand for an ambassador), the
+story is about the structure that connects them. That is a mechanism question,
+and it routes to C at Step 3, not after publishing.
+
 Two notes on how these meet what the portal already publishes:
 
 - **B's operating range on the portal has been 300–500 words.** The guide's
@@ -466,6 +480,17 @@ on what changed. It goes **immediately before `**Opinión de Playbook:**`**
 just before `Fuentes:`). Placed after the Opinión, it pushes the Opinión out of
 its callout: `check-voice.mjs` flags that as a RENDER BUG. A second update gets
 its own paragraph after the first.
+
+**A link inside the note goes outside the asterisks** (2026-10-27, the
+FIFA 2030 rights follow-up correcting the 2026-08-08 piece). `parseInlineMarks`
+in `scripts/publish-newsletter.ts` does not parse a `[link](url)` nested inside
+`*…*`: the whole span comes out italic with the brackets and URL printed as
+literal text. Close the italics around the link instead:
+`*Actualizado el 27 de octubre de 2026: FIFA* [abrió la licitación](/articulo?id=…) *y dijo que…*`.
+Check the regenerated paragraph before running `update-article.ts` for real.
+When the row was published without markdown on hand, rebuild `bodyMarkdown`
+from the stored `body_json` and confirm it round-trips through
+`markdownToTipTap` to the same content before adding the note.
 
 **No note** for typos, style, a cover or credit swap, or tag and date changes
 made in the CMS. The note counts toward the word total; a marginal overshoot

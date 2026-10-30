@@ -60,7 +60,7 @@ const csp = [
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'self'",
-  "frame-src 'self' https://www.youtube.com https://www.instagram.com https://fundingchoicesmessages.google.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://ep2.adtrafficquality.google https://www.google.com",
+  "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.instagram.com https://fundingchoicesmessages.google.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://ep2.adtrafficquality.google https://www.google.com",
   "img-src 'self' https: data: blob:",
   "media-src 'self' https:",
   `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval' https://va.vercel-scripts.com" : ''} https://www.instagram.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://fundingchoicesmessages.google.com https://analytics.ahrefs.com`,
@@ -131,10 +131,29 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   async redirects() {
-    return legacyHtmlRedirects.map(r => ({ ...r, permanent: true }));
+    return [
+      ...legacyHtmlRedirects.map(r => ({ ...r, permanent: true })),
+      // The previous site's blog index. Its articles (/blog/<slug>) are
+      // resolved one by one in middleware.ts; the bare index has no single
+      // equivalent, so it goes to the archive. 301, not the 308 that
+      // `permanent: true` sends, to match the /blog/<slug> redirects.
+      { source: '/blog', destination: '/archivo', statusCode: 301 },
+    ];
   },
   async headers() {
-    return [{ source: '/(.*)', headers: securityHeaders }];
+    return [
+      { source: '/(.*)', headers: securityHeaders },
+      // The RSS feed is for readers, not search results: its items are the
+      // same articles already indexed at /articulo/<slug>. `source` matches
+      // the path only, so this also covers every query-string variant
+      // (/feed.xml?tagsScope=…, the per-topic feeds /tema advertises).
+      { source: '/feed.xml', headers: [{ key: 'X-Robots-Tag', value: 'noindex' }] },
+    ];
+  },
+  // Playmaker share images read their fonts from disk at request time
+  // (lib/playmaker/share-image.tsx); make sure the files ship with the routes.
+  outputFileTracingIncludes: {
+    '/playmaker/**': ['./lib/playmaker/fonts/**', './public/assets/playmaker/**'],
   },
   images: {
     remotePatterns: [

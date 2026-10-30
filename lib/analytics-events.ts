@@ -118,7 +118,53 @@ export type PlaybookEvent =
   | 'hp_click_cifra'
   | 'hp_click_marcador'
   | 'hp_click_temas'
-  | 'hp_newsletter_submit';
+  | 'hp_click_expediente'
+  | 'hp_click_video'
+  | 'hp_click_infinitas'
+  | 'hp_newsletter_submit'
+  // ---- Daily-site measurement block (2026-10-27, A1). Site-wide, unlike the
+  // hp_ family: each one names an ACT, wherever on the site it happens.
+  //   share_click        a share button (param `network`)
+  //   video_click        a video thumbnail or title in "Lo último en video"
+  //   marcador_filter    a filter changed on /marcador's table
+  //   related_click      a "Sigue leyendo" link at the foot of a story
+  //   outbound_substack  any link that leaves for *.substack.com (fired next
+  //                      to outbound_click, which keeps `is_substack` too)
+  //   studio_lead        a lead for Playbook Studio: a link that declares it,
+  //                      or a contact form sent from /contacto?motivo=studio
+  | 'share_click'
+  | 'video_click'
+  | 'marcador_filter'
+  | 'related_click'
+  | 'outbound_substack'
+  | 'studio_lead';
+
+/**
+ * Where a newsletter signup happened — the `placement` parameter of
+ * `newsletter_signup`. Fixed list (2026-10-27), so GA4 reports group cleanly:
+ *   header    the "Suscríbete gratis" button in the top bar
+ *   sidebar   the homepage rail module
+ *   nota      the mid-article module on a news story
+ *   franja    the full-width homepage band (MidCta)
+ *   marcador  the module on /marcador
+ *   edicion   the mid-article module on a newsletter edition (La Lana,
+ *             TFBR, Infinitas): the reader is inside an issue, not a story
+ *   hub       a coverage hub (/coberturas/<slug>) — outside the list asked
+ *             for, kept so those signups don't vanish into another bucket
+ */
+export type NewsletterPlacement = 'header' | 'sidebar' | 'nota' | 'franja' | 'marcador' | 'edicion' | 'hub';
+
+const EDITION_PRODUCTS = new Set<string>(['la-lana', 'futbol-business-review', 'infinitas']);
+
+/**
+ * The mid-article module is one component on every story, so it declares
+ * `nota` and this settles it at submit time from the page's product (which
+ * ArticleEngagement registers from the row's source): inside a newsletter
+ * edition it reports as `edicion`.
+ */
+export function resolvePlacement(placement: NewsletterPlacement, product: ProductKey): NewsletterPlacement {
+  return placement === 'nota' && EDITION_PRODUCTS.has(product) ? 'edicion' : placement;
+}
 
 // The homepage events, as a runtime set: SiteEvents reads an event name out of
 // a DOM attribute, and an attribute is a string — TypeScript cannot vouch for
@@ -132,12 +178,19 @@ const HOMEPAGE_EVENTS = new Set<string>([
   'hp_click_cifra',
   'hp_click_marcador',
   'hp_click_temas',
+  'hp_click_expediente',
+  'hp_click_video',
+  'hp_click_infinitas',
 ]);
+
+// Site-wide events an element may declare with `data-analytics` too. Kept
+// apart from HOMEPAGE_EVENTS so the hp_ promise above stays checkable.
+const DECLARED_EVENTS = new Set<string>(['video_click', 'related_click', 'studio_lead']);
 
 /** The declared event name, if it is one we actually publish. */
 export function homepageEvent(name: string | null | undefined): PlaybookEvent | null {
   if (!name) return null;
-  return HOMEPAGE_EVENTS.has(name) ? (name as PlaybookEvent) : null;
+  return HOMEPAGE_EVENTS.has(name) || DECLARED_EVENTS.has(name) ? (name as PlaybookEvent) : null;
 }
 
 // Mirrored into Vercel Web Analytics as well as GA4. Conversions and
@@ -146,6 +199,7 @@ const VERCEL_MIRRORED: ReadonlySet<PlaybookEvent> = new Set<PlaybookEvent>([
   'newsletter_signup',
   'email_wall_cta',
   'hub_visit',
+  'studio_lead',
 ]);
 
 export type EventParams = Record<string, string | number | boolean | undefined>;

@@ -2,7 +2,7 @@
 
 import { Fragment, useEffect, useRef, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
-import { rankArticles, selectHero } from '@/lib/rank';
+import { homepagePool, newsPackage } from '@/lib/home-blocks';
 import { LEAD_COUNT, LIST_COUNT, MOBILE_LIST_COUNT, KNOWN_SOURCES, SOURCE_LABELS } from '@/lib/constants';
 import { hubForSource } from '@/lib/product-hubs';
 import type { Article } from '@/lib/data/articles';
@@ -96,8 +96,11 @@ export function NewsGrid({
   sidebar,
   stillMatters,
   topicsBar,
+  showAuthorsGlobal = false,
 }: {
   articles: Article[];
+  /** siteSettings.mostrarAutorGlobal, for the bylines. */
+  showAuthorsGlobal?: boolean;
   sidebar?: React.ReactNode;
   stillMatters?: React.ReactNode;
   topicsBar?: React.ReactNode;
@@ -196,9 +199,10 @@ export function NewsGrid({
   const exitHub = activeSource === 'all' ? null : hubForSource(activeSource);
   const exitCopy = SOURCE_EXIT[activeSource];
 
-  const news = articles.filter(a => a.source !== 'opinion' || a.featured);
+  const news = homepagePool(articles);
   const pool = activeSource === 'all' ? news : news.filter(a => a.source === activeSource);
-  const filtered = rankArticles(pool);
+  // Ranking + hero/list split live in lib/home-blocks.ts (2026-10-27): the
+  // header ticker reads the same function to stay out of this block.
   // selectHero EXCLUDES editorial products outright — "el hero es un slot de
   // noticias, y La Lana nunca pelea un lugar contra una nota de última hora".
   // That rule is right for the mixed pool, and wrong the moment the reader
@@ -214,8 +218,7 @@ export function NewsGrid({
   // homepage changes. Fixed at the caller and not in selectHero on purpose:
   // the other four call sites all hand it a mixed pool, where the exclusion is
   // exactly what they want.
-  const hero = selectHero(filtered) ?? filtered[0] ?? null;
-  const list = filtered.filter(a => a !== hero).slice(0, LIST_COUNT);
+  const { filtered, hero, list } = newsPackage(pool);
   const overflow = Math.max(0, filtered.length - LEAD_COUNT - LIST_COUNT);
   // Index of the row the ad follows. The hero is story 1, so story 6 is row
   // 5 — index 4. A filtered source with fewer stories than that keeps the ad
@@ -276,13 +279,13 @@ export function NewsGrid({
           ) : (
             <>
               <div className="news-lead-col">
-                {hero && <LeadStory article={hero} analyticsEvent="hp_click_hero" />}
+                {hero && <LeadStory article={hero} analyticsEvent="hp_click_hero" relativeTime showAuthorsGlobal={showAuthorsGlobal} />}
                 {stillMatters}
               </div>
               <div className="news-list">
                 {list.slice(0, MOBILE_LIST_COUNT).map((a, i) => (
                   <Fragment key={a.id}>
-                    <NewsRow article={a} heading="h3" analyticsEvent="hp_click_lista" />
+                    <NewsRow article={a} heading="h3" analyticsEvent="hp_click_lista" relativeTime showAuthorsGlobal={showAuthorsGlobal} />
                     {i === adAfterRow && <AdSlot slot="inline-feed" />}
                   </Fragment>
                 ))}
@@ -294,7 +297,7 @@ export function NewsGrid({
                 {list.length > MOBILE_LIST_COUNT && (
                   <div className="news-list-extra">
                     {list.slice(MOBILE_LIST_COUNT).map(a => (
-                      <NewsRow key={a.id} article={a} heading="h3" analyticsEvent="hp_click_lista" />
+                      <NewsRow key={a.id} article={a} heading="h3" analyticsEvent="hp_click_lista" relativeTime showAuthorsGlobal={showAuthorsGlobal} />
                     ))}
                   </div>
                 )}

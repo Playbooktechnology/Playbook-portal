@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { getPublicArticles } from '@/lib/data/articles';
+import { getArticlesBySource, getDeclaredCifras, getPublicArticles } from '@/lib/data/articles';
 import { getSiteContent } from '@/lib/data/site-content';
+import { getChannelFeed } from '@/lib/data/youtube';
 import { NewsGrid } from '@/components/home/NewsGrid';
 import { HomeChoreography } from '@/components/home/HomeChoreography';
 import { SiteMotion } from '@/components/SiteMotion';
@@ -9,7 +10,7 @@ import { StillMattersSection } from '@/components/home/StillMattersSection';
 import { HomeSidebar } from '@/components/home/HomeSidebar';
 import { TopicDirectory } from '@/components/home/TopicDirectory';
 import { TopicsBar } from '@/components/home/TopicsBar';
-import { OpinionSection } from '@/components/sections/OpinionSection';
+import { LanaExpedientesSection } from '@/components/sections/LanaExpedientesSection';
 import { ProductsSection } from '@/components/sections/ProductsSection';
 import { MidCta } from '@/components/sections/MidCta';
 import { VideoSection } from '@/components/sections/VideoSection';
@@ -31,13 +32,14 @@ import { DEFAULT_OG_IMAGE, OG_DEFAULTS } from '@/lib/og-image';
 //      no longer shows — a second window for still-relevant news, NOT a
 //      growth of the 1+5 (different query, collapses when empty).
 //   — leaderboard-home ad between the news package and Análisis —
-//   2. Análisis/Opinión (v24 grid treatment)
+//   2. La Lana del Deporte · El Expediente (replaced Análisis/Opinión 2026-10-27)
 //   3. Newsletter band — MidCta only (the CMS-editable one)
 //   4. Topic directory (archive entry point)
 //   5. Productos editoriales
 //   — inline-mid-editorial ad between Productos and Video —
-//   6. Video Playbook (two-video block + channel CTA; the Instagram
-//      grid was scrapped — user feedback)
+//   6. Lo último en video — the three newest long videos from the YouTube
+//      channel's feed (A3, 2026-10-27), player on click; hides when the
+//      newest is older than lib/freshness.ts allows (see VideoSection)
 //   7. Infinitas three-column grid (vertical-sponsor ad inside the section)
 //   8. Playbook en números + testimonios, compressed into one proof band
 //   9. Acerca de Playbook
@@ -56,7 +58,17 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [articles, content] = await Promise.all([getPublicArticles(), getSiteContent()]);
+  // The channel feed is fetched alongside the rest, not after it: it is cached
+  // for an hour and never throws (a backup copy, or null to hide the band), so it
+  // costs the homepage nothing on a warm cache and at most its 4s timeout on a
+  // cold one with YouTube down.
+  const [articles, content, channelFeed, lanaFiles, declaredCifras] = await Promise.all([
+    getPublicArticles(),
+    getSiteContent(),
+    getChannelFeed(),
+    getArticlesBySource('la-lana'),
+    getDeclaredCifras(),
+  ]);
 
   return (
     <>
@@ -72,22 +84,29 @@ export default async function HomePage() {
           sidebar={<HomeSidebar />}
           stillMatters={<StillMattersSection articles={articles} />}
           topicsBar={<TopicsBar />}
+          showAuthorsGlobal={content.siteSettings.mostrarAutorGlobal}
         />
         <MostReadSection />
       </main>
 
       <AdSlot slot="leaderboard-home" />
-      {/* `articles` is the same React-cached getPublicArticles() result the
-          news package above already uses — the opinion section derives its
-          cards from the source='opinion' subset (see that component), so
-          no extra query. */}
-      <OpinionSection data={content.opinionSection} articles={articles} />
+      {/* La Lana del Deporte · El Expediente: the three latest files from
+          the same source /la-lana reads (getArticlesBySource is a filter
+          over the cached getAllArticles pool, no extra query). Took the
+          "Artículos de opinión" slot, which only ever showed its CMS
+          fallback (see that component). */}
+      <LanaExpedientesSection
+        articles={lanaFiles}
+        cmsCards={content.opinionSection.cards}
+        declaredCifras={declaredCifras}
+        whenStale={<MostReadSection days={30} excludeWeekly anchorId="mas-leidas-mes" standalone />}
+      />
       <MidCta data={content.midCta} />
       <TopicDirectory />
       <ProductsSection data={content.productsSection} />
       <AdSlot slot="inline-mid-editorial" />
-      <VideoSection data={content.videoSection} />
-      <InfinitasSection data={content.infinitasSection} />
+      <VideoSection data={content.videoSection} feed={channelFeed} />
+      <InfinitasSection data={content.infinitasSection} articles={articles} />
       <div className="proof-band">
         <StatsSection data={content.statsSection} />
         <TestimonialsSection data={content.testimonialsSection} />

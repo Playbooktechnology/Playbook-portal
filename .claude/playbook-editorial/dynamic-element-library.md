@@ -1544,8 +1544,6 @@ Walk this for every article before publishing:
    (`Control`, `Alcance`, `Condiciones`, `Precedentes`, `Contraste`) BEFORE
    defaulting to `Jugada` or `Cronología` — that default is what the 2026-08-27
    audit found carrying 60% of the collection.
-   Where a human gate exists, the walk is shown to the reviewer, not just
-   done (`publish-sourced-article`'s `publishing-mechanics.md`, Step 8).
 2. Budget computed from `readingTime` **and** `priority` (+1 at `priority: 5`).
 3. No repeated device type.
 4. Devices in document order, spine first, ≥2 prose paragraphs between them.

@@ -4,7 +4,7 @@ import { DealsBoard } from './DealsBoard';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { getPublicArticles, getDeclaredCifras } from '@/lib/data/articles';
 import { rankArticles, selectHero } from '@/lib/rank';
-import { extractPullFigure, extractCifraFromBody } from '@/lib/product-hubs';
+import { storyFigure } from '@/lib/product-hubs';
 import { articlePath } from '@/lib/article-url';
 
 // Right rail of the homepage news package (Fase 7 UX). Server component:
@@ -77,13 +77,16 @@ export async function HomeSidebar() {
   // to declare it — which is what the publish skills now ask for
   // (.claude/playbook-editorial/dynamic-element-library.md, "Cifra clave").
   let cifra: { figure: string; caption?: string; id: string; title: string } | null = null;
-  let fromHeadline: { figure: string; id: string; title: string } | null = null;
-  const declaredFragments = await getDeclaredCifras();
+  let fallback: { figure: string; caption?: string; id: string; title: string } | null = null;
+  const declaredFigures = await getDeclaredCifras();
   for (const article of ranked) {
     if (article === hero) continue;
-    const fragment = declaredFragments[article.id];
-    const declared = fragment ? extractCifraFromBody(fragment, null) : null;
-    if (declared) {
+    // Per-story resolution is lib/product-hubs.ts's storyFigure — the same
+    // rule every other figure surface uses. What stays HERE is the one thing
+    // only this rail does: choosing ACROSS stories, where a declared figure
+    // further down the ranking beats a headline figure higher up.
+    const found = storyFigure(article, declaredFigures[article.id]);
+    if (found?.declared) {
       // The caption is what the figure MEANS, and the rail used to drop it:
       // "US$8,000 a US$20,000" over a headline about talent factories left the
       // reader with a number and no unit (user feedback, 2026-08-07). The
@@ -91,21 +94,22 @@ export async function HomeSidebar() {
       // same line here keeps the two surfaces explaining the number
       // identically.
       cifra = {
-        figure: declared.value,
-        caption: declared.caption || undefined,
+        figure: found.value,
+        caption: found.caption || undefined,
         id: article.id,
         title: article.title,
       };
       break;
     }
     // Remembered, not taken: a declared figure further down the ranking still
-    // outranks it, so the walk continues.
-    if (!fromHeadline) {
-      const figure = extractPullFigure(article.title);
-      if (figure) fromHeadline = { figure, id: article.id, title: article.title };
+    // outranks it, so the walk continues. A headline figure, or a labeled
+    // Ecuación result for a story with neither (storyFigure's third tier),
+    // which keeps its label as the caption.
+    if (!fallback && found) {
+      fallback = { figure: found.value, caption: found.caption || undefined, id: article.id, title: article.title };
     }
   }
-  cifra = cifra ?? fromHeadline;
+  cifra = cifra ?? fallback;
 
   return (
     <div className="sidebar-sticky">
@@ -115,7 +119,7 @@ export async function HomeSidebar() {
           Lo que mueve al negocio del deporte, directo a tu correo.
         </p>
         <NewsletterForm
-          placement="home-sidebar"
+          placement="sidebar"
           formClassName="side-newsletter-form"
           action="https://playbookmedia.substack.com/"
           emailId="nl-email-side"
