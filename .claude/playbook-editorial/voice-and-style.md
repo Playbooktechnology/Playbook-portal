@@ -884,6 +884,15 @@ juego significan 624 minutos nuevos de inventario potencial."*
   the precision of the original figure. Applies going forward; published
   articles are only converted when they are otherwise being edited.
 
+  **A rate printed in the filing is not the day's rate** (editor, 2026-10-31,
+  Ollamani 3T26). Quarterly reports state their own period-end exchange rate
+  (Ollamani: 18.0692 at 30 Sep), and it is tempting to reuse it because it
+  sits next to the figures. That run did, published US$53.6M for MX$967.8M,
+  and the editor caught it against outlets using the current rate (~18.8,
+  US$51.4M): all 18 conversions were 4–5% high and had to be redone live.
+  Fetch the rate on publication day (`https://open.er-api.com/v6/latest/USD`)
+  even when the source hands you one.
+
   A device's own **value** slot keeps the
   original currency only (`Cifra clave`'s 24-character cap has no room for a
   conversion); put the USD figure in the device's caption instead, in prose,
