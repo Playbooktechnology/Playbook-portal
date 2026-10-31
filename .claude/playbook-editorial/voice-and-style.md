@@ -891,7 +891,23 @@ juego significan 624 minutos nuevos de inventario potencial."*
   and the editor caught it against outlets using the current rate (~18.8,
   US$51.4M): all 18 conversions were 4–5% high and had to be redone live.
   Fetch the rate on publication day (`https://open.er-api.com/v6/latest/USD`)
-  even when the source hands you one.
+  even when the source hands you one. For an MXN figure the editor's reference
+  is Banxico's FIX for the publication date, read from
+  `https://www.banxico.org.mx/tipcamb/tipCamIHAction.do?idioma=sp` (column
+  tables: the date column, then Determinación, Publicación DOF, Para
+  solventar; FIX is the Determinación value on that date's row).
+
+  **A minority partner's line on the income statement is not money it paid**
+  (editor, 2026-10-31, same Ollamani piece). The draft read the consolidated
+  "participación no controladora" (MX$205.7M) as what General Atlantic
+  "absorbe", and the editor pulled it: it is an accounting allocation of the
+  subsidiary's result to the minority stake, not a cash outlay, and the filing
+  ties it to "el 49% del negocio de Fútbol", not to a named investor. Report the
+  ownership fact (who holds what since when) and leave the line out unless the
+  piece explains exactly what it is. The same correction removed a causal read
+  ("la desviación vino de operar la sede") that the filing's breakdown did not
+  support: when a report does not itemise a line, say that it does not, and
+  stop there.
 
   A device's own **value** slot keeps the
   original currency only (`Cifra clave`'s 24-character cap has no room for a
