@@ -40,6 +40,22 @@ watermark or on-screen graphic) is visible. When the story has no single
 protagonist, prefer a photo that shows what the piece is about (a stadium
 full of fans for a ticketing story) over a generic match frame.
 
+**When the source has no usable photo, look for live game action first**
+(editor, 2026-11-03, on the SponsorUnited MLB sponsorship report). That run
+offered three stadium shots already used on earlier pieces (a dugout, two
+Dodger Stadium exteriors), and the editor rejected all of them: "quiero una
+mucho mejor foto para portada, una que sea de un partido en juego". A league-
+or market-wide story (a sponsorship report, an attendance record, a rights
+cycle) still reads best with the sport being played, and ideally a frame that
+also shows the piece's subject (sponsor boards behind home plate for a
+sponsorship story). Before recycling a cover from the archive, search Commons
+by text, not just by category, for the league and season ("Dodgers pitching
+2025", "at bat 2025 baseball game"): `Special:Search?search=…&ns6=1` through
+WebFetch works even while the `w/api.php` endpoint returns 429. Check the
+file page for the league level too: a minor-league or spring-training frame
+is not "a partido de MLB", and say so when offering one. A previously used
+cover is the fallback, not the first option.
+
 ### When the article body won't load, the image usually still will
 
 (2026-08-12, on the Lakers sale, where the ESPN primary returned an empty body
