@@ -92,6 +92,27 @@
       "when": 1790165586741,
       "tag": "0012_add_deals_table",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1793130593747,
+      "tag": "0013_add_deal_drafts",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1793131248599,
+      "tag": "0014_add_image_rewrites",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1793144923576,
+      "tag": "0015_article_substantive_update",
+      "breakpoints": true
     }
   ]
 }

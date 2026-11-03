@@ -28,6 +28,7 @@ export function toDeal(row: DealRow): Deal {
     playbookRead: row.playbookRead,
     keyFigures: row.keyFigures ?? [],
     createdAt: row.createdAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
   };
 }
 

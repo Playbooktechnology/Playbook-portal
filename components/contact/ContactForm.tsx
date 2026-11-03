@@ -2,6 +2,7 @@
 
 import { useRef, useState, useTransition } from 'react';
 import { submitContactMessage } from '@/lib/actions/contact';
+import { trackEvent } from '@/lib/analytics-events';
 
 export function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -15,6 +16,12 @@ export function ContactForm() {
     startTransition(async () => {
       const result = await submitContactMessage(formData);
       if (result.ok) {
+        // A message sent from a "Playbook Studio" link (/contacto?motivo=studio)
+        // is a commercial lead, not reader mail — counted on the confirmed
+        // send, never on the click that led here.
+        if (new URLSearchParams(window.location.search).get('motivo') === 'studio') {
+          trackEvent('studio_lead', { placement: 'contacto' });
+        }
         setStatus('success');
         formRef.current?.reset();
       } else {

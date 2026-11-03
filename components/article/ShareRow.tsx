@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { gsap } from '@/lib/gsap';
+import { resolvePageProduct, trackEvent } from '@/lib/analytics-events';
 
 // Native share URLs only, no SDKs, no third-party scripts, no tracking
 // pixels (ported from legacy/js/article-page.js's shareRow()). WhatsApp
@@ -17,7 +18,16 @@ import { gsap } from '@/lib/gsap';
 // shapes on purpose: the design system's documented language is round =
 // action, square = metadata. Accessibility unchanged — every button
 // keeps its aria-label, and the network names move into title tooltips.
-export function ShareRow({ url, title }: { url: string; title: string }) {
+export function ShareRow({
+  url,
+  title,
+  placement = 'nota',
+}: {
+  url: string;
+  title: string;
+  /** Where the row sits, for share_click: 'nota' on stories, 'playmaker' on profiles. */
+  placement?: string;
+}) {
   const [copied, setCopied] = useState(false);
   const shareText = `${title} — Playbook`;
   const waHref = `https://api.whatsapp.com/send?text=${encodeURIComponent(`${shareText} ${url}`)}`;
@@ -32,8 +42,18 @@ export function ShareRow({ url, title }: { url: string; title: string }) {
     gsap.fromTo(e.currentTarget, { scale: 0.86 }, { scale: 1, duration: 0.35, ease: 'back.out(3)' });
   }
 
+  // share_click fires on the click, which is all the site can observe: the
+  // network's own dialog opens in a new tab and never reports back whether
+  // the reader actually posted.
+  function share(network: string) {
+    return (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+      pulse(e);
+      trackEvent('share_click', { network, placement, product: resolvePageProduct(window.location.pathname) });
+    };
+  }
+
   async function copyLink(e: React.MouseEvent<HTMLButtonElement>) {
-    pulse(e);
+    share('copy')(e);
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
@@ -57,7 +77,7 @@ export function ShareRow({ url, title }: { url: string; title: string }) {
           rel="noopener noreferrer"
           aria-label="Compartir en WhatsApp"
           title="WhatsApp"
-          onClick={pulse}
+          onClick={share('whatsapp')}
         >
           <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
             <path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19L4 20z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
@@ -70,7 +90,7 @@ export function ShareRow({ url, title }: { url: string; title: string }) {
           rel="noopener noreferrer"
           aria-label="Compartir en Facebook"
           title="Facebook"
-          onClick={pulse}
+          onClick={share('facebook')}
         >
           <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
             <path d="M15 4h-2a4 4 0 0 0-4 4v2H7v3h2v7h3v-7h2.5l.5-3H12V8a1 1 0 0 1 1-1h2z" fill="currentColor" />
@@ -83,7 +103,7 @@ export function ShareRow({ url, title }: { url: string; title: string }) {
           rel="noopener noreferrer"
           aria-label="Compartir en X"
           title="X"
-          onClick={pulse}
+          onClick={share('x')}
         >
           <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
             <path d="M4 4l16 16M20 4L4 20" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" fill="none" />
@@ -96,7 +116,7 @@ export function ShareRow({ url, title }: { url: string; title: string }) {
           rel="noopener noreferrer"
           aria-label="Compartir en LinkedIn"
           title="LinkedIn"
-          onClick={pulse}
+          onClick={share('linkedin')}
         >
           <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
             <path

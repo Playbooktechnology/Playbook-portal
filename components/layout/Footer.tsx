@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { getSiteContent } from '@/lib/data/site-content';
 import { SocialIcon } from './SocialIcon';
 import { CookiePreferencesLink } from './CookiePreferencesLink';
+import { INFINITAS_PATH } from '@/lib/internal-links';
 
 export async function Footer() {
   const { footer } = await getSiteContent();
@@ -33,9 +34,10 @@ export async function Footer() {
             })}
           </div>
           <div style={{ marginTop: 12 }}>
-            <a className="pill inf-pill" href={footer.infinitasLinkUrl} target="_blank" rel="noopener noreferrer">
+            {/* Always the hub (A8): the CMS value pointed to Substack. */}
+            <Link className="pill inf-pill" href={INFINITAS_PATH}>
               {footer.infinitasLinkLabel}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

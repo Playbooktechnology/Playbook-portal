@@ -4,6 +4,7 @@ import { hubForArticle } from '@/lib/hubs';
 import { articlePath } from '@/lib/article-url';
 import { industryLabel } from '@/lib/topics';
 import { normalizeSource } from '@/lib/constants';
+import { StoryByline } from './StoryByline';
 
 type Heading = 'h3' | 'h4';
 
@@ -37,10 +38,16 @@ export function NewsRow({
   heading = 'h3',
   withTagPills = false,
   analyticsEvent,
+  relativeTime = false,
+  showAuthorsGlobal = false,
 }: {
   article: Article;
   heading?: Heading;
   withTagPills?: boolean;
+  /** "hace X min" the same day — "Último en Playbook" only. */
+  relativeTime?: boolean;
+  /** siteSettings.mostrarAutorGlobal, for the byline. */
+  showAuthorsGlobal?: boolean;
   /** Set only by the homepage; every other call site sends nothing. */
   analyticsEvent?: string;
 }) {
@@ -55,9 +62,7 @@ export function NewsRow({
         {hubForArticle(article.tagsProperty)?.name ?? rowBadge(article)}
       </span>
       <Heading>{article.title}</Heading>
-      <div className="byline">
-        {article.dateFormatted} · {article.readingTime || 1} min
-      </div>
+      <StoryByline article={article} relative={relativeTime} showAuthorsGlobal={showAuthorsGlobal} />
     </>
   );
 

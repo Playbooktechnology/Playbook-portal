@@ -5,6 +5,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 // per-route bundling — no reason to reintroduce alias resolution as a
 // variable for a one-line import.
 import { ANON_COOKIE_NAME, signAnonId, verifyAnonCookie } from './lib/anon-cookie';
+import { findArticleIdForLegacyBlogSlug } from './lib/legacy-blog';
 
 // Ensures every visitor has a valid signed anonymous-reader cookie before
 // they ever reach an article — this is what lets metering (lib/metering.ts)
@@ -82,6 +83,28 @@ function legacyArticleRedirect(request: NextRequest): URL | null {
   return new URL(`/articulo/${encodeURIComponent(id)}`, request.nextUrl.origin);
 }
 
+// --------------------------------- /blog/<slug> del sitio anterior (2026-10-28)
+// 301 a /articulo/<id> cuando el slug viejo tiene un artículo publicado
+// equivalente; si no, sigue de largo y el catch-all da el 404 branded. La
+// normalización (acentos, percent-encoding, letras partidas con guion) y por
+// qué se compara sin guiones viven en lib/legacy-blog.ts.
+//
+// Acá y no en una página: una página sólo puede responder 307/308, y este
+// redirect es 301 por la misma razón que el de /articulo?id= de arriba.
+// /blog pelado → /archivo es un redirect fijo y vive en next.config.ts.
+async function legacyBlogRedirect(request: NextRequest): Promise<URL | null> {
+  const match = /^\/blog\/([^/]+)\/?$/.exec(request.nextUrl.pathname);
+  if (!match) return null;
+  try {
+    const id = await findArticleIdForLegacyBlogSlug(match[1]);
+    return id ? new URL(`/articulo/${encodeURIComponent(id)}`, request.nextUrl.origin) : null;
+  } catch (err) {
+    // Sin base no hay a dónde redirigir: el 404 de siempre, nunca un 500.
+    console.error('[middleware] legacy /blog lookup failed:', err);
+    return null;
+  }
+}
+
 // ------------------------------------------- Un solo host (2026-09-02)
 // El deployment de producción responde en DOS hosts: www.playbook.la y el
 // alias playbook-portal-phi.vercel.app. Verificado — el alias devuelve 200
@@ -148,6 +171,9 @@ export async function middleware(request: NextRequest) {
 
   const legacyArticle = legacyArticleRedirect(request);
   if (legacyArticle) return NextResponse.redirect(legacyArticle, 301);
+
+  const legacyBlog = await legacyBlogRedirect(request);
+  if (legacyBlog) return NextResponse.redirect(legacyBlog, 301);
 
   // Fails open on any error (e.g. AUTH_SECRET missing in this environment —
   // signAnonId/verifyAnonCookie both throw in that case) instead of letting

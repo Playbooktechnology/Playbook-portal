@@ -1,7 +1,16 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { deleteDeal, listDeals, saveDeal } from '@/lib/actions/deals';
+import {
+  approveDealDraft,
+  deleteDeal,
+  dismissDealDraft,
+  listDealDrafts,
+  listDeals,
+  saveDeal,
+  type DealDraftView,
+} from '@/lib/actions/deals';
+import { DRAFT_FIELD_LABEL, type DraftField } from '@/lib/deal-draft';
 import {
   DEAL_STATUS_LABEL,
   DEAL_TYPES,
@@ -68,6 +77,31 @@ function toDraft(d: Deal): Draft {
   };
 }
 
+// A queued proposal opens in the same form as a hand-entered deal; empty
+// fields stay empty so the editor sees what's missing.
+function fromProposal(p: DealDraftView): Draft {
+  const f = p.fields;
+  return {
+    ...emptyDraft(),
+    date: f.date || p.articleDate || todayInMexico(),
+    brand: f.brand ?? '',
+    counterparty: f.counterparty ?? '',
+    type: f.type || 'patrocinio',
+    country: f.country ?? '',
+    sport: f.sport ?? '',
+    duration: f.duration ?? '',
+    amountText: f.amountUsd == null ? '' : String(f.amountUsd),
+    amountDisclosed: false,
+    status: f.status || 'reportado',
+    summary: f.summary ?? '',
+    articleUrl: f.articleUrl || `/articulo/${p.articleId}`,
+  };
+}
+
+function missingLabels(missing: string[]): string {
+  return missing.map(m => DRAFT_FIELD_LABEL[m as DraftField] ?? m).join(', ');
+}
+
 function fromDraft(draft: Draft): Partial<DealInput> {
   const { amountText, ...rest } = draft;
   const digits = amountText.replace(/[^\d]/g, '');
@@ -83,6 +117,11 @@ export function DealsTab({ onToast }: Props) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [saving, setSaving] = useState(false);
+  // Set while the form is reviewing a queued proposal: saving then means
+  // "Aprobar", which is the only way a proposal reaches `deals`.
+  const [proposals, setProposals] = useState<DealDraftView[]>([]);
+  const [proposalsError, setProposalsError] = useState('');
+  const [reviewing, setReviewing] = useState<DealDraftView | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -92,6 +131,12 @@ export function DealsTab({ onToast }: Props) {
       setLoadError(`No se pudieron cargar los acuerdos: ${(err as Error).message}`);
     } finally {
       setLoading(false);
+    }
+    try {
+      setProposals(await listDealDrafts());
+      setProposalsError('');
+    } catch (err) {
+      setProposalsError(`No se pudieron cargar los pendientes: ${(err as Error).message}`);
     }
   }, []);
 
@@ -103,17 +148,38 @@ export function DealsTab({ onToast }: Props) {
 
   function openNew() {
     setEditingId(null);
+    setReviewing(null);
     setDraft(emptyDraft());
   }
 
   function openEdit(deal: Deal) {
     setEditingId(deal.id);
+    setReviewing(null);
     setDraft(toDraft(deal));
+  }
+
+  function openReview(p: DealDraftView) {
+    setEditingId(null);
+    setReviewing(p);
+    setDraft(fromProposal(p));
   }
 
   function close() {
     setEditingId(null);
+    setReviewing(null);
     setDraft(null);
+  }
+
+  async function handleDismiss(p: DealDraftView) {
+    if (!window.confirm(`¿Descartar la propuesta de "${p.articleTitle}"? No volverá a aparecer.`)) return;
+    try {
+      await dismissDealDraft(p.id);
+      onToast('Propuesta descartada.');
+      if (reviewing?.id === p.id) close();
+      await refresh();
+    } catch (err) {
+      onToast(`No se pudo descartar: ${(err as Error).message}`, true);
+    }
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -121,8 +187,10 @@ export function DealsTab({ onToast }: Props) {
     if (!draft) return;
     setSaving(true);
     try {
-      const saved = await saveDeal(editingId, fromDraft(draft));
-      onToast(`Guardado: ${dealTitle(saved)}. Ya está en el sitio.`);
+      const saved = reviewing
+        ? await approveDealDraft(reviewing.id, fromDraft(draft))
+        : await saveDeal(editingId, fromDraft(draft));
+      onToast(`${reviewing ? 'Aprobado' : 'Guardado'}: ${dealTitle(saved)}. Ya está en el sitio.`);
       close();
       await refresh();
     } catch (err) {
@@ -172,7 +240,30 @@ export function DealsTab({ onToast }: Props) {
 
       {draft && (
         <form className="deal-form" onSubmit={handleSave}>
-          <h3 className="admin-section-title">{editingId ? 'Editar acuerdo' : 'Nuevo acuerdo'}</h3>
+          <h3 className="admin-section-title">
+            {reviewing ? 'Revisar propuesta' : editingId ? 'Editar acuerdo' : 'Nuevo acuerdo'}
+          </h3>
+          {reviewing && (
+            <div className="deal-proposal-note">
+              <p>
+                Propuesta a partir de{' '}
+                <a href={`/articulo/${reviewing.articleId}`} target="_blank" rel="noopener noreferrer">
+                  {reviewing.articleTitle}
+                </a>
+                . Corrige lo que haga falta; al aprobar entra al Marcador.
+              </p>
+              {reviewing.missing.length > 0 && (
+                <p>
+                  <b>No se encontró en la nota:</b> {missingLabels(reviewing.missing)}.
+                </p>
+              )}
+              {reviewing.fields.note && (
+                <p>
+                  <b>Revisar:</b> {reviewing.fields.note}
+                </p>
+              )}
+            </div>
+          )}
           <div className="deal-form-grid">
             <label className="field">
               <span className="field-label">Fecha</span>
@@ -269,13 +360,48 @@ export function DealsTab({ onToast }: Props) {
 
           <div className="deal-form-actions">
             <button className="btn" type="submit" disabled={saving}>
-              {saving ? 'Guardando…' : 'Guardar acuerdo'}
+              {saving ? 'Guardando…' : reviewing ? 'Aprobar y publicar' : 'Guardar acuerdo'}
             </button>
             <button type="button" className="btn-mini" onClick={close} disabled={saving}>
               Cancelar
             </button>
           </div>
         </form>
+      )}
+
+      <h3 className="admin-section-title">Pendientes de aprobar ({proposals.length})</h3>
+      <p className="admin-section-desc">
+        Propuestas armadas con el texto de notas de Patrocinios, Naming Rights, Inversiones, Derechos de TV o Venues.
+        No se ven en el sitio ni suman al acumulado hasta que las apruebas.
+      </p>
+      {proposalsError && <p className="field-error">{proposalsError}</p>}
+      {proposals.length === 0 ? (
+        <p className="array-empty">No hay propuestas pendientes.</p>
+      ) : (
+        <ul className="team-list">
+          {proposals.map(p => (
+            <li key={p.id} className="team-row deal-row">
+              <div className="team-row-main">
+                <b>
+                  {p.fields.brand && p.fields.counterparty
+                    ? dealTitle({ brand: p.fields.brand, counterparty: p.fields.counterparty })
+                    : p.articleTitle}
+                </b>
+                <span className="team-row-meta">
+                  {p.articleDate && `${shortDate(p.articleDate)} · `}
+                  {p.fields.type ? DEAL_TYPE_LABEL[p.fields.type] ?? p.fields.type : 'Sin tipo'}
+                  {p.missing.length > 0 && ` · Falta: ${missingLabels(p.missing)}`}
+                </span>
+              </div>
+              <button type="button" className="btn-mini" onClick={() => openReview(p)}>
+                Revisar
+              </button>
+              <button type="button" className="btn-mini btn-danger" onClick={() => handleDismiss(p)}>
+                Descartar
+              </button>
+            </li>
+          ))}
+        </ul>
       )}
 
       <h3 className="admin-section-title">Acuerdos registrados ({deals.length})</h3>

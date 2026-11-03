@@ -242,6 +242,9 @@ a.lana-board-row:hover .lana-board-conexion{color:#fff;}
   line-height:1;letter-spacing:.01em;color:var(--pb-ink);margin:0 0 16px;padding:0 6px;
   box-shadow:inset 0 -0.24em 0 0 var(--pb-green);
 }
+/* La línea de qué mide una cifra DECLARADA (storyFigure). Pegada a la cifra:
+   el margen inferior de .lana-pull-figure se lo queda el caption. */
+.lana-pull-figure + .lana-pull-figure-caption{margin:-6px 0 16px;max-width:44ch;font-size:14px;line-height:1.45;color:var(--pb-gray);}
 .lana-folder-copy h2{
   font-family:var(--serif-display);font-weight:400;font-size:clamp(24px,3vw,34px);
   line-height:1.12;text-transform:uppercase;margin:0 0 14px;
@@ -374,6 +377,28 @@ a.lana-board-row:hover .lana-board-conexion{color:#fff;}
 .lana-cabinet.is-cabinet .lana-cab-excerpt{
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
+/* Cifra declarada en el cajón (2026-10-27): el caption va AL LADO de la
+   cifra, centrado verticalmente, no debajo. Centrado y no en línea base: con
+   align-items:center la fila mide lo que el más alto de los dos (44px de
+   cifra contra ~18px de caption), así que no puede crecer, por geometría.
+   Alineado por línea base, el texto de 13.5px se colgaba bajo la base de la
+   cifra de 44px y la fila crecía ~3px: medido, escondía "Abrir" 2.4-2.6px en
+   cuatro carpetas. Centrado: 0 de 18, con la misma holgura que producción.
+
+   Debajo no cabe, medido. El cuerpo abierto son 200px fijos y una carpeta
+   con cifra y título de dos líneas ya llega con ~2px de sobra a "Abrir" (el
+   dek ni siquiera aparece: el flex lo encoge a cero desde antes de este
+   cambio). Un caption debajo escondía "Abrir" ~20px. Medir esto engaña: la
+   carpeta abierta va a translateZ(130px) bajo perspectiva de 1200px y
+   scale(1.05), así que getBoundingClientRect la agranda ~18% y clientHeight
+   no; hay que comparar las dos cosas en el mismo espacio.
+
+   Una línea con elipsis: los captions declarados antes de la regla de seis
+   palabras miden 9 a 25 palabras, y el completo vive en la página del
+   expediente. */
+.lana-cabinet .lana-cab-figure{display:flex;align-items:center;gap:12px;min-width:0;max-width:100%;flex:none;}
+.lana-cabinet .lana-cab-figure .lana-pull-figure{flex:none;}
+.lana-cabinet .lana-cab-figure-caption{flex:1;min-width:0;font-size:13.5px;line-height:1.3;color:var(--pb-gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .lana-cabinet.is-cabinet .lana-cab-folder .lana-folder-open{opacity:1;transform:none;}
 
 /* Placa de progreso: reusa los valores que ya tenía. */
@@ -536,6 +561,7 @@ a.lana-board-row:hover .lana-board-conexion{color:#fff;}
   transform:rotate(-1.2deg);
 }
 .shots-feature-copy{display:flex;flex-direction:column;align-items:flex-start;}
+.shots-figure-caption{margin-top:8px;max-width:46ch;font-size:13px;line-height:1.4;color:var(--pb-gray);}
 .shots-feature-copy h3{
   font-family:var(--serif-display);font-weight:400;font-size:clamp(22px,2.8vw,32px);
   line-height:1.1;text-transform:uppercase;letter-spacing:.01em;margin:10px 0;

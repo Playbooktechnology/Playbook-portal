@@ -16,6 +16,8 @@ import { db } from '../db/client';
 import { users } from '../db/schema';
 import { sql } from 'drizzle-orm';
 import { getReachLast30Days } from '../analytics-data';
+import { AUTHOR_PROFILES } from '../authors';
+import { hasAuthorMarkup } from '../author-name';
 
 export type TeamProfile = {
   role: string;
@@ -27,7 +29,16 @@ export type TeamProfile = {
 
 // Fill in as bios/photos arrive. Keyed by the EXACT string in `articles.author`
 // (case-sensitive — that's the join key, there is no separate id).
-export const TEAM_PROFILES: Record<string, TeamProfile> = {};
+// Derived from lib/authors.ts since 2026-10-27 (A5): one place holds a
+// person's role, beat and photo, and both /equipo and /autor/<slug> read it.
+export const TEAM_PROFILES: Record<string, TeamProfile> = Object.fromEntries(
+  AUTHOR_PROFILES.flatMap(p =>
+    [p.name, ...(p.aliases ?? [])].map(name => [
+      name,
+      { role: p.role, beat: p.covers, bio: p.career[0] ?? '', photo: p.photo },
+    ]),
+  ),
+);
 
 export type TeamMember = {
   name: string;
@@ -44,14 +55,10 @@ export async function getTeamMembers(): Promise<TeamMember[]> {
   for (const a of articles) {
     const name = (a.author || '').trim();
     if (!name) continue;
-    // Guards against one known-bad production row: `author` holding a raw
-    // markdown citation ("[Rodrigo Dosal](url), fundador de [DOME
-    // Sport](url)") instead of a name — a guest-contributor credit that
-    // landed in the wrong field, not a Playbook byline. Narrow on purpose:
-    // only markdown-link syntax is excluded, so a real name is never
-    // dropped on a hunch. The underlying row still needs a manual fix
-    // (flagged separately) — this only keeps it off the team roster.
-    if (name.includes('](')) continue;
+    // A byline holding markup (brackets or a URL, e.g. a raw markdown
+    // guest credit) is not a person on the roster and gets no /autor link
+    // — see hasAuthorMarkup in lib/author-name.ts.
+    if (hasAuthorMarkup(name)) continue;
     const existing = byAuthor.get(name);
     if (existing) {
       existing.count += 1;

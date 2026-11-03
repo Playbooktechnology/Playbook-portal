@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getArticlesByTag } from '@/lib/data/articles';
 import { TAXONOMY, type TaxonomyTier } from '@/lib/taxonomy';
 import { NewsRow } from '@/components/article/NewsRow';
+import { getSiteContent } from '@/lib/data/site-content';
 import { SITE_URL } from '@/lib/site-url';
 
 type Props = { searchParams: Promise<Partial<Record<TaxonomyTier, string>>> };
@@ -55,6 +56,7 @@ const TIER_LABELS: Record<TaxonomyTier, string> = {
 export default async function TemaPage({ searchParams }: Props) {
   const topic = await resolveTopic(searchParams);
   const articles = topic ? await getArticlesByTag(topic.tier, topic.value) : [];
+  const { siteSettings } = await getSiteContent();
 
   return (
     <>
@@ -76,7 +78,7 @@ export default async function TemaPage({ searchParams }: Props) {
             </div>
           ) : articles.length ? (
             <div className="news-list">
-              {articles.map(a => <NewsRow key={a.id} article={a} heading="h3" />)}
+              {articles.map(a => <NewsRow key={a.id} article={a} heading="h3" showAuthorsGlobal={siteSettings.mostrarAutorGlobal} />)}
             </div>
           ) : (
             <p className="empty-state">Todavía no hay artículos sobre {topic.value}.</p>

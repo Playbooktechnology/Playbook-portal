@@ -8,7 +8,9 @@ import { PRODUCT_HUBS } from '@/lib/product-hubs';
 import { HUBS } from '@/lib/hubs';
 import { SITE_URL } from '@/lib/site-url';
 import { articleUrl } from '@/lib/article-url';
-import { authorDisplayName, isIndexableAuthorName } from '@/lib/author-name';
+import { authorDisplayName, hasAuthorMarkup, isIndexableAuthorName } from '@/lib/author-name';
+import { authorPath } from '@/lib/authors';
+import { getPlaymakerProfiles, playmakerPath } from '@/lib/playmaker/profiles';
 
 // Originally set to `revalidate = 3600` (ISR) to match legacy/api/sitemap.js's
 // Cache-Control: public, max-age=3600 without a DB round-trip on every
@@ -97,6 +99,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const authorDates = new Map<string, string[]>();
   articles.forEach(a => {
     if (!a.author || !shouldShowAuthor(a, content.siteSettings.mostrarAutorGlobal)) return;
+    // Brackets or a URL in the raw byline: no author page to advertise.
+    if (hasAuthorMarkup(a.author)) return;
     // The clean display name, never the raw column: the one author page this
     // site actually generated was being published with unrendered markdown in
     // the URL (see lib/author-name.ts). An unindexable name is dropped rather
@@ -108,11 +112,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
   authorDates.forEach((dates, name) => {
     entries.push({
-      url: `${SITE_URL}/autor?nombre=${encodeURIComponent(name)}`,
+      url: `${SITE_URL}${authorPath(name)}`,
       lastModified: mostRecentDate(dates),
       ...TIERS.author,
     });
   });
+
+  // Playmaker (A6): the section and every profile already published (drafts
+  // never, upcoming Thursdays not until their day — getPlaymakerProfiles).
+  const playmakers = getPlaymakerProfiles().filter(p => !p.draft);
+  if (playmakers.length) {
+    entries.push({ url: `${SITE_URL}${playmakerPath()}`, lastModified: mostRecentDate(playmakers.map(p => p.publishedAt)), ...TIERS.author });
+    playmakers.forEach(p => entries.push({ url: `${SITE_URL}${playmakerPath(p.slug)}`, lastModified: mostRecentDate([p.publishedAt]), ...TIERS.author }));
+  }
 
   // Topic pages: one per scope/sport/vertical value at least one current
   // article carries, guarded against stale values no longer in the closed

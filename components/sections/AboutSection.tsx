@@ -10,7 +10,7 @@ export function AboutSection({ data }: { data: SiteContentData['aboutSection'] }
           href={safeUrl(data.videoUrl)}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Ver Al Banquillo en YouTube"
+          aria-label="Ver el canal de Playbook en YouTube"
         >
           {/* Plain <img>, not next/image, deliberately: data.image is an
               editor-supplied URL from site_content, not a fixed set of

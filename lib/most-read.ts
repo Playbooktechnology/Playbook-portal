@@ -30,9 +30,13 @@ export type MostReadItem = { article: Article; count: number };
 // avoid (see lib/data/articles.ts). One hour matches the GA4 side's own
 // revalidate window (lib/ga4.ts) so the two sources can't disagree about
 // how fresh the ranking is — a top 5 does not need to move faster.
+// The window is an argument since 2026-10-27 ("Sigue leyendo" asks for the
+// last 48 hours, the opinion slot's substitute for the last 30 days);
+// unstable_cache folds arguments into the cache key, so each window caches
+// on its own.
 const queryFirstPartyReads = unstable_cache(
-  async () => {
-    const since = new Date(Date.now() - 7 * 86400000);
+  async (days: number) => {
+    const since = new Date(Date.now() - days * 86400000);
     return db
       .select({ id: articleReads.articleId, count: sql<number>`count(*)::int` })
       .from(articleReads)
@@ -66,15 +70,17 @@ async function safely<T>(label: string, run: () => Promise<T>): Promise<T | null
   }
 }
 
-export async function getMostReadArticles(): Promise<MostReadItem[] | null> {
+export async function getMostReadArticles(
+  { days = 7, limit = 5 }: { days?: number; limit?: number } = {},
+): Promise<MostReadItem[] | null> {
   // GA4 rows are [{ id, pageviews }]; null = not configured OR it failed.
   // An empty array from a configured-but-young property falls through to
   // first-party data rather than hiding a module we have real data for.
-  const ga4 = await safely('GA4', () => topArticleIds({ days: 7, limit: 10 }));
+  const ga4 = await safely('GA4', () => topArticleIds({ days, limit: Math.max(10, limit * 2) }));
   let ranked: { id: string; count: number }[] =
     ga4?.map(r => ({ id: r.id, count: r.pageviews })) ?? [];
   if (!ranked.length) {
-    ranked = (await safely('el registro propio', () => queryFirstPartyReads())) ?? [];
+    ranked = (await safely('el registro propio', () => queryFirstPartyReads(days))) ?? [];
   }
   if (!ranked.length) return null;
 
@@ -86,5 +92,5 @@ export async function getMostReadArticles(): Promise<MostReadItem[] | null> {
       return article ? { article, count: r.count } : null;
     })
     .filter((item): item is MostReadItem => item !== null)
-    .slice(0, 5);
+    .slice(0, limit);
 }

@@ -16,16 +16,37 @@ import { articlePath } from '@/lib/article-url';
 // the ranking reads as intensity without publishing internal traffic.
 // The bars draw when ScrollReveal marks each item .is-visible (pure CSS,
 // full and static under prefers-reduced-motion — styles/portada.css).
-export async function MostReadSection() {
-  const items = await getMostReadArticles();
+//
+// Second use (2026-10-27, lib/freshness.ts): when the homepage's opinion /
+// expedientes section has nothing younger than its maximum age, this band
+// takes its place over a longer window. It skips whatever the 7-day band
+// above already lists, so the page never shows the same five titles twice.
+export async function MostReadSection({
+  days = 7,
+  excludeWeekly = false,
+  anchorId = 'mas-leidas',
+  standalone = false,
+}: {
+  days?: number;
+  /** Leave out the stories the 7-day band already shows. */
+  excludeWeekly?: boolean;
+  anchorId?: string;
+  /** Render as its own homepage band (in the analysis slot) instead of inside the news package. */
+  standalone?: boolean;
+} = {}) {
+  let items = await getMostReadArticles({ days, limit: excludeWeekly ? 10 : 5 });
+  if (items && excludeWeekly) {
+    const weekly = new Set((await getMostReadArticles())?.map(i => i.article.id) ?? []);
+    items = items.filter(i => !weekly.has(i.article.id)).slice(0, 5);
+  }
   if (!items || !items.length) return null;
   const max = Math.max(...items.map(item => item.count));
 
-  return (
-    <section className="mr-band" id="mas-leidas" aria-labelledby="mas-leidas-title">
+  const band = (
+    <section className="mr-band" id={anchorId} aria-labelledby={`${anchorId}-title`}>
       <div className="mr-head">
-        <h2 id="mas-leidas-title">Más leídas</h2>
-        <span className="mr-sub">Últimos 7 días</span>
+        <h2 id={`${anchorId}-title`}>Más leídas</h2>
+        <span className="mr-sub">Últimos {days} días</span>
       </div>
       <ol className="mr-list">
         {items.map(({ article, count }, i) => (
@@ -45,6 +66,14 @@ export async function MostReadSection() {
           </li>
         ))}
       </ol>
+    </section>
+  );
+  if (!standalone) return band;
+  // Takes the analysis section's slot, anchor included, so the header's
+  // "Análisis" link still lands somewhere.
+  return (
+    <section className="analysis-section analysis-section--most-read" id="analisis">
+      <div className="container">{band}</div>
     </section>
   );
 }

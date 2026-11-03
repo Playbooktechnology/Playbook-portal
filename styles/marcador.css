@@ -12,6 +12,8 @@
   font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
   font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-txt);margin:0;
 }
+.mk-cadence{display:flex;flex-wrap:wrap;gap:4px 16px;margin:6px 0 0;font-size:13px;color:var(--gray-txt);}
+.mk-cadence span:first-child{font-weight:600;color:var(--ink);}
 .mk-hero h1{
   font-family:var(--serif-display);font-weight:400;text-transform:uppercase;
   font-size:clamp(40px,6vw,72px);line-height:.95;letter-spacing:.01em;margin:8px 0 14px;

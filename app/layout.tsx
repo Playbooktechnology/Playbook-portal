@@ -18,6 +18,7 @@ import '../styles/cookie-notice.css';
 import '../styles/ads.css';
 import '../styles/legal.css';
 import '../styles/team.css';
+import '../styles/playmaker.css';
 import '../styles/product-hubs.css';
 // The 2026-08-05 design upgrade, one file per surface (after
 // product-hubs.css on purpose — these layer per-product skins over it):

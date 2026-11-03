@@ -26,6 +26,15 @@ function hubForCardUrl(url: string) {
   return PRODUCT_HUBS.find(h => h.path === path) ?? null;
 }
 
+// A8 (2026-10-27): Infinitas's concept is internally called "El Marcador",
+// which on the homepage read as a second El Marcador next to El Marcador de
+// Negocios. Its card no longer prints it; the other three keep theirs, and the
+// line under the heading says what each one is.
+//
+// BORRADOR — texto para ajustar por la redacción.
+const CONCEPTS_LINE =
+  'El Trago son las noticias del día, servidas cortas. El Expediente abre un caso de La Lana del Deporte con sus cifras. La Sala de Juntas es la mesa de negocio de The Futbol Business Review.';
+
 function ProductCardView({ product }: { product: ProductCard }) {
   const href = safeUrl(product.url);
   const external = isExternalUrl(product.url);
@@ -51,7 +60,9 @@ function ProductCardView({ product }: { product: ProductCard }) {
         <p>{product.description}</p>
         {product.meta && <span className="meta">{product.meta}</span>}
         <span className="product-foot">
-          {hub && <span className="product-concept" aria-hidden="true">{hub.concept}</span>}
+          {hub && hub.source !== 'infinitas' && (
+            <span className="product-concept" aria-hidden="true">{hub.concept}</span>
+          )}
           <span className="product-arrow" aria-hidden="true">→</span>
         </span>
       </div>
@@ -66,6 +77,7 @@ export function ProductsSection({ data }: { data: SiteContentData['productsSecti
         <div className="section-head reveal" style={{ paddingTop: 0 }}>
           <div>
             <h2>{data.heading}</h2>
+            <p className="sub">{CONCEPTS_LINE}</p>
           </div>
         </div>
         <div className="product-grid">

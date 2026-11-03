@@ -19,7 +19,7 @@ export function ArticleNewsletterCta() {
         <p>Recibe Playbook gratis en tu correo, cada semana.</p>
       </div>
       <NewsletterForm
-        placement="article-mid"
+        placement="nota"
         formClassName="article-newsletter-cta-form"
         action="https://playbookmedia.substack.com/subscribe"
         emailId="nl-email-article"

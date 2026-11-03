@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/sync-readers-sheet",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/localize-images",
+      "schedule": "30 10 * * *"
     }
   ]
 }

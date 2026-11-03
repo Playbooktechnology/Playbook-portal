@@ -3,17 +3,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from '@/lib/gsap';
 import { newsletterActionUrl } from '@/lib/newsletter-url';
-import { trackEvent, resolvePageProduct } from '@/lib/analytics-events';
+import { trackEvent, resolvePageProduct, resolvePlacement, type NewsletterPlacement } from '@/lib/analytics-events';
 
 function isValidEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-// Which `placement` values sit on the homepage. 'mid-cta' is the CMS-editable
+// Which `placement` values sit on the homepage. 'franja' is the CMS-editable
 // band; it also renders inside the /admin live preview, where GA4 is not
 // loaded at all (the script is in the (public) layout), so that copy sends
 // nothing.
-const HOMEPAGE_PLACEMENTS = new Set<string>(['home-sidebar', 'mid-cta']);
+const HOMEPAGE_PLACEMENTS = new Set<string>(['sidebar', 'franja']);
 
 // Ported from legacy/js/ui.js's initNewsletterForms(). The form still posts
 // to an external Substack URL in a new tab (target="_blank") — this
@@ -38,7 +38,7 @@ export function NewsletterForm({
   buttonLabel: string;
   successMessage: string;
   /** Which surface this form sits on, for reporting. */
-  placement: 'home-sidebar' | 'mid-cta' | 'hub' | 'article-mid' | 'marcador';
+  placement: NewsletterPlacement;
 }) {
   const [hasError, setHasError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -73,10 +73,8 @@ export function NewsletterForm({
     // means "handed off to Substack with a valid-looking address" -- the
     // same thing the success copy claims. Naming it after what we can
     // actually observe keeps the number honest.
-    trackEvent('newsletter_signup', {
-      placement,
-      product: resolvePageProduct(window.location.pathname),
-    });
+    const product = resolvePageProduct(window.location.pathname);
+    trackEvent('newsletter_signup', { placement: resolvePlacement(placement, product), product });
     // Second name for the same act, asked for with the homepage module
     // events (2026-10-01): `hp_newsletter_submit` makes the newsletter
     // comparable against the hero, the list and the rail in one report,

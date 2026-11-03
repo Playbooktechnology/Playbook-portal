@@ -4,11 +4,14 @@ import { and, eq, sql } from 'drizzle-orm';
 import { generateHTML } from '@tiptap/html';
 import type { JSONContent } from '@tiptap/core';
 import { revalidateTag } from 'next/cache';
+import { after } from 'next/server';
 import { auth } from '@/auth';
 import { db } from '@/lib/db/client';
 import { articles, contentRevisions, siteContent } from '@/lib/db/schema';
 import { ARTICLES_CACHE_TAG, type Article } from '@/lib/data/articles';
 import { SITE_CONTENT_CACHE_TAG, type SiteContentData } from '@/lib/data/site-content';
+import { proposeDealDraftForArticle } from '@/lib/data/deal-drafts';
+import { localizeArticleImages } from '@/lib/images/localize';
 import { TIPTAP_EXTENSIONS } from '@/lib/tiptap-extensions';
 import { slugify } from '@/lib/slugify';
 import { validateTags, formatTagIssues, REQUIRED_PROPERTY_BY_SOURCE } from '@/lib/taxonomy';
@@ -134,6 +137,14 @@ export type ArticleInput = {
   imageCredit: string;
   /** See schema.ts articles.listed — the per-article counterpart to Hub.listed. */
   listed: boolean;
+  /**
+   * "Actualización de fondo": what changed in substance. Writing a new or
+   * different note stamps substantive_update_at with this save's time;
+   * leaving it as it was keeps the old time; emptying it removes
+   * "Actualizado" from the page. Ignored on create (a new story has nothing
+   * to update).
+   */
+  substantiveUpdateNote?: string;
 };
 
 export type SaveArticleResult = { conflict: true } | { conflict: false; article: Article };
@@ -152,6 +163,21 @@ export type SaveArticleResult = { conflict: true } | { conflict: false; article:
 // component when checked directly with psql.
 function sameMillisecond(column: typeof articles.updatedAt, expected: string) {
   return sql`date_trunc('milliseconds', ${column}) = date_trunc('milliseconds', ${expected}::timestamptz)`;
+}
+
+// The SET clause for "Actualizado". The CASE runs inside the UPDATE, where a
+// column reference is the row's value BEFORE this save, so "the note changed"
+// is decided by Postgres against what is stored — not against whatever the
+// editor's browser loaded, which may be stale. An unchanged note keeps its
+// original timestamp: re-saving a story for a typo never re-dates the update.
+function substantiveUpdate(rawNote: string | undefined) {
+  if (rawNote === undefined) return {};
+  const note = rawNote.trim();
+  if (!note) return { substantiveUpdateNote: null, substantiveUpdateAt: null };
+  return {
+    substantiveUpdateNote: note,
+    substantiveUpdateAt: sql`CASE WHEN ${articles.substantiveUpdateNote} IS DISTINCT FROM ${note} THEN now() ELSE ${articles.substantiveUpdateAt} END`,
+  };
 }
 
 export async function saveArticle(
@@ -188,6 +214,7 @@ export async function saveArticle(
       imageUrl: input.imageUrl,
       imageCredit: input.imageCredit || null,
       listed: input.listed,
+      ...substantiveUpdate(input.substantiveUpdateNote),
       updatedAt: new Date(),
       updatedBy: session.user.id,
     })
@@ -204,6 +231,12 @@ export async function saveArticle(
     snapshot: updated,
   });
 
+  // A re-tag into a deal vertical counts too; the helper skips articles
+  // that already have a deal or a draft (pending or dismissed).
+  await proposeDealDraftForArticle(db, updated);
+  // External cover/body images are copied to Vercel Blob after the
+  // response is sent (lib/images/localize.ts); the editor isn't kept waiting.
+  after(() => localizeArticleImages(db, updated.id));
   revalidateTag(ARTICLES_CACHE_TAG);
   return { conflict: false, article: updated };
 }
@@ -265,6 +298,8 @@ export async function createArticle(input: ArticleInput & { id?: string }): Prom
         snapshot: inserted,
       });
 
+      await proposeDealDraftForArticle(db, inserted);
+      after(() => localizeArticleImages(db, inserted.id));
       revalidateTag(ARTICLES_CACHE_TAG);
       return { article: inserted };
     } catch (err: unknown) {

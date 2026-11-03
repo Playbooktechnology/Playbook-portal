@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { auth } from '@/auth';
-import { getPublicArticles, getArticleById, getArticleMetaById, getArticlesBySource, isSnapshotArticle, type Article } from '@/lib/data/articles';
+import { getPublicArticles, getArticleById, getArticleMetaById, getArticlesBySource, getDeclaredCifras, isSnapshotArticle, type Article } from '@/lib/data/articles';
 import { getSiteContent } from '@/lib/data/site-content';
 import { relatedArticles, shouldShowAuthor } from '@/lib/related-articles';
 import { resolveEntitlement } from '@/lib/metering';
@@ -50,8 +50,12 @@ import { DEFAULT_OG_IMAGE, OG_DEFAULTS } from '@/lib/og-image';
 import { SITE_URL } from '@/lib/site-url';
 import { articlePath, articleUrl } from '@/lib/article-url';
 import { authorDisplayName } from '@/lib/author-name';
+import { dateTimeLabel, isoMexico, publishedIso, publishedLabel } from '@/lib/dates';
+import { NEWSROOM_BYLINE, authorHref } from '@/lib/authors';
 import { METERING_ENABLED } from '@/lib/constants';
 import { isValidPreviewToken, previewTokenFor } from '@/lib/preview-token';
+import { getMostReadArticles } from '@/lib/most-read';
+import { todayInMexico } from '@/lib/deals';
 
 // The slug arrives as a path segment now, not as `?id=`. Next has already
 // percent-decoded it by the time it reaches us, so ids with accents or
@@ -80,7 +84,7 @@ function pathFor(id: string) {
 const PLAYBOOK_ORG_REF = { '@id': `${SITE_URL}#organization` };
 
 // The byline's default behavior wraps the whole author string in one
-// internal `/autor?nombre=` link (a house-staff author archive page).
+// internal /autor/<slug> link (a house-staff author archive page).
 // Guest collaborations (2026-08-08, e.g. "Rodrigo Dosal, fundador de DOME
 // Sport") instead need per-name external links (the author's own
 // Instagram, their org's site), which a single internal link can't
@@ -96,7 +100,9 @@ function renderAuthorByline(author: string) {
     // The clean name in the URL, the raw string as the visible text — they
     // are identical for a plain byline, and for anything else the URL must
     // match what /autor canonicalises to and what the sitemap publishes.
-    return <Link href={`/autor?nombre=${encodeURIComponent(authorDisplayName(author))}`}>{author}</Link>;
+    // A stray bracket or bare URL with no markdown link gets no link at all.
+    const href = authorHref(author);
+    return href ? <Link href={href}>{author}</Link> : author;
   }
   linkPattern.lastIndex = 0;
   const nodes: React.ReactNode[] = [];
@@ -446,8 +452,13 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
     // is explicit that the image should be relevant to the article rather
     // than a logo, and an article with no cover photo is common here.
     image: [meta.imageUrl || `${SITE_URL}${DEFAULT_OG_IMAGE.url}`],
-    datePublished: meta.date || undefined,
-    dateModified: meta.date || undefined,
+    // With the hour and the Mexico City offset when the publish time is known
+    // (lib/dates.ts). dateModified is the last change of SUBSTANCE
+    // (substantive_update_at), never updated_at: that one moves on every save,
+    // typo fixes included, and Google reads a newer dateModified as a real
+    // update. With no substantive update it repeats datePublished.
+    datePublished: publishedIso(meta),
+    dateModified: (meta.substantiveUpdateAt && isoMexico(meta.substantiveUpdateAt)) || publishedIso(meta),
     articleSection: meta.publication || undefined,
     inLanguage: 'es-MX',
     url: canonicalUrl,
@@ -485,7 +496,7 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
             // when the author has articles, and /equipo already builds this
             // exact URL for its Person nodes — the article was the one
             // surface that named an author without ever linking to them.
-            url: `${SITE_URL}/autor?nombre=${encodeURIComponent(authorDisplayName(meta.author))}`,
+            url: authorHref(meta.author) ? `${SITE_URL}${authorHref(meta.author)}` : undefined,
             worksFor: PLAYBOOK_ORG_REF,
           }
         // No byline shown: Playbook itself is the author. This used to emit
@@ -627,13 +638,27 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
       {shotStrip}
       <ArticleHeadline title={meta.title} />
       <div className="byline article-byline">
-        {showAuthor && meta.author && (
-          <>
-            <span className="byline-author">Por {renderAuthorByline(meta.author)}</span>
-            {' '}·{' '}
-          </>
+        {/* Every story is signed (A5): the author when shown, otherwise the
+            newsroom, linked to how it works. */}
+        {showAuthor && meta.author ? (
+          <span className="byline-author">Por {renderAuthorByline(meta.author)}</span>
+        ) : (
+          <span className="byline-author">
+            Por <Link href="/como-trabajamos">{NEWSROOM_BYLINE}</Link>
+          </span>
         )}
-        {meta.dateFormatted} · {meta.readingTime || 1} min de lectura
+        {' '}·{' '}
+        <time dateTime={publishedIso(meta)}>Publicado {publishedLabel(meta)}</time> · {meta.readingTime || 1} min de lectura
+        {/* "Actualizado" only after a change of substance, with what changed
+            (schema.ts substantive_update_*), never for a typo fix. */}
+        {meta.substantiveUpdateAt && (
+          <span className="article-updated">
+            <time dateTime={isoMexico(meta.substantiveUpdateAt)}>
+              Actualizado {dateTimeLabel(meta.substantiveUpdateAt)}
+            </time>
+            {meta.substantiveUpdateNote && <>: {meta.substantiveUpdateNote}</>}
+          </span>
+        )}
       </div>
       {meta.imageUrl && (
         <figure className={`article-photo-wrap${lanaShell ? ' lect-exhibit' : ''}`}>
@@ -713,7 +738,16 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
   // confirmed this reader is allowed to see it. Reuses `header`/`showAuthor`
   // computed above from `meta` — `article` is a superset of the same row,
   // so there's nothing to recompute for those fields.
-  const [article, pool] = await Promise.all([getArticleById(meta.id), getPublicArticles()]);
+  // getDeclaredCifras: one cached query for the whole "Sigue leyendo" row, so
+  // each RelatedCard can apply the declared-or-headline figure rule without a
+  // body fetch per card (see lib/data/articles.ts on why bodies stay off lists).
+  const [article, pool, declaredCifras, readNow] = await Promise.all([
+    getArticleById(meta.id),
+    getPublicArticles(),
+    getDeclaredCifras(),
+    // "Sigue leyendo"'s third tier (A9): the last 48 hours' most read.
+    getMostReadArticles({ days: 2, limit: 10 }),
+  ]);
   if (!article) notFound();
 
   // Fase 4's TipTap editor starts populating bodyJson/bodyHtml for
@@ -730,7 +764,7 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
   const bodySource = fromSnapshot ? article.excerpt || '' : article.teaser || article.excerpt || '';
   const bodyIsHtml = !hasNativeBody && looksLikeHtml(bodySource);
   const paragraphs = hasNativeBody || bodyIsHtml ? [] : paragraphsFrom(bodySource);
-  const related = relatedArticles(article, pool);
+  const related = relatedArticles(article, pool, readNow?.map(r => r.article) ?? [], todayInMexico());
 
   // Fase 7: inline-article ad slot after the third paragraph, for both
   // body shapes. HTML bodies split at a safe top-level boundary (or not at
@@ -898,6 +932,8 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
             <Link
               className="lect-next-link reveal"
               href={articlePath(lanaShell.next.article.id)}
+              data-analytics="related_click"
+              data-item-id={lanaShell.next.article.id}
             >
               <span className="lect-next-tab">
                 <span className="lect-next-kicker">Siguiente expediente</span>
@@ -915,8 +951,14 @@ export default async function ArticuloPage({ params, searchParams }: Props) {
           <section className="article-related lect-related">
             <h2>Sigue leyendo</h2>
             <div className="lect-related-grid">
-              {relatedShown.map(a => (
-                <RelatedCard key={a.id} article={a} />
+              {relatedShown.map((a, i) => (
+                <RelatedCard
+                  key={a.id}
+                  article={a}
+                  declared={declaredCifras[a.id]}
+                  position={i + 1}
+                  showAuthorsGlobal={content.siteSettings.mostrarAutorGlobal}
+                />
               ))}
             </div>
           </section>
