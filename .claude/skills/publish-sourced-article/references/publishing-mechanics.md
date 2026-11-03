@@ -13,6 +13,13 @@ see `.env.local.example`). The insert script uses Neon's HTTP driver because
 this session's outbound network only supports HTTPS, not raw TCP. Don't try to
 reconnect it to `lib/db/client.ts`'s `pg` Pool.
 
+**A fresh checkout also needs `node_modules`** (2026-10-23, Disney+ / F1
+Academy run). A new cloud container has no dependencies installed, so Step 0's
+`node scripts/find-duplicates.mjs` fails with `ERR_MODULE_NOT_FOUND` for
+`@neondatabase/serverless` even with `POSTGRES_URL` exported. If
+`node_modules` is missing, run `npm ci --ignore-scripts` (about a minute) before
+Step 0, in the background while the primary source is being fetched.
+
 ---
 
 ## Step 8: Human review, before anything touches the database
