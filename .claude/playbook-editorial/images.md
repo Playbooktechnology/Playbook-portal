@@ -40,6 +40,22 @@ watermark or on-screen graphic) is visible. When the story has no single
 protagonist, prefer a photo that shows what the piece is about (a stadium
 full of fans for a ticketing story) over a generic match frame.
 
+**When the source has no usable photo, look for live game action first**
+(editor, 2026-11-03, on the SponsorUnited MLB sponsorship report). That run
+offered three stadium shots already used on earlier pieces (a dugout, two
+Dodger Stadium exteriors), and the editor rejected all of them: "quiero una
+mucho mejor foto para portada, una que sea de un partido en juego". A league-
+or market-wide story (a sponsorship report, an attendance record, a rights
+cycle) still reads best with the sport being played, and ideally a frame that
+also shows the piece's subject (sponsor boards behind home plate for a
+sponsorship story). Before recycling a cover from the archive, search Commons
+by text, not just by category, for the league and season ("Dodgers pitching
+2025", "at bat 2025 baseball game"): `Special:Search?search=…&ns6=1` through
+WebFetch works even while the `w/api.php` endpoint returns 429. Check the
+file page for the league level too: a minor-league or spring-training frame
+is not "a partido de MLB", and say so when offering one. A previously used
+cover is the fallback, not the first option.
+
 ### When the article body won't load, the image usually still will
 
 (2026-08-12, on the Lakers sale, where the ESPN primary returned an empty body
@@ -167,14 +183,6 @@ the source** — `"Foto: [Liga/Club/Organización]"` — the same as any other
 source per "Verify and credit" above. This isn't a special case, it's the
 existing rule applied with the org's own gallery as a first-class source
 rather than an afterthought.
-
-**An outlet that republishes a handout photo is not its source.** A portrait
-or a press shot an outlet re-crops from a company's announcement is credited
-to the company that released it, not to the outlet. Trace it before you
-credit it: the publisher rejected `"Foto: Palco23"` on the 2026-11-03 Pri
-Shumate cover, which was Columbia Sportswear's March 2022 hiring headshot
-(the same image FashionUnited ran that month). It shipped as
-`"Foto: Columbia Sportswear"`.
 
 ### The broad search
 
@@ -351,6 +359,28 @@ out every image from that site: take a cross-referenced outlet's hero instead
 (the IFR piece ended on The Guardian's PA photo), or self-host it if the session
 has a path to `main` (above). After publishing, confirm the cover on the live
 page in a real browser (the `<img>` reports `naturalWidth > 0`), not with curl.
+
+**Send playbook.la as the Referer too** (editor, 2026-10-27, the Barça
+international-stores piece). Hotlink protection is the second way a `200`
+lies. The elgoldigital.com cover returned `200` to a plain GET and carried no
+CORP header, yet went live as a beige box: its Cloudflare rule answers `403`
+to any request whose Referer is another site. Run the check a second time as
+the page will make it:
+
+```
+curl -sS -A "<a normal browser UA>" -H "Referer: https://www.playbook.la/" -o /dev/null -w "%{http_code}\n" "<imageUrl>"
+```
+
+Anything but `200` means the cover will not render. Take the photo from the
+subject's own site instead (here, fcbarcelona.com's own Barça Store photo,
+which also fixed a credit that said "FC Barcelona" over a third-party host).
+
+**An `ERR_HTTP2_PROTOCOL_ERROR` in the session's browser is not proof**
+(editor, 2026-10-28, the Algeciras piece). The lagacetadecadiz.es cover passed
+both curl checks above but failed in the container's Chromium with that error
+and `naturalWidth` 0; the editor confirmed it loads for readers. The agent
+proxy can break HTTP/2 to some hosts. When the curl checks pass and only the
+in-session browser fails this way, ask the editor to look before swapping.
 
 Set `imageCredit` to identify the real source, whatever it is — `"Foto:
 [Fotógrafo] / Unsplash"`, `"Foto: [Agencia]"`, `"Foto: [Club/Liga/

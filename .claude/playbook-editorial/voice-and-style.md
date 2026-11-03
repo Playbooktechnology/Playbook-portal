@@ -234,12 +234,7 @@ by the name a reader would type, as early in the line as the sentence allows:
 una versión animada…". That is still the same formula, with the searchable
 noun phrase leading. Avoid jargon a reader wouldn't search or say: the
 publisher rejected "licitar" for TV rights ("busca comprador para sus
-derechos de TV" instead). When the protagonist is a person or a company
-nobody types (2026-11-03, Pri Shumate / Crux Football: the first three
-options were rejected as "no SEO"), let the searchable names they carry lead
-the title instead: "Exdirectiva de Nike y los Miami Dolphins invierte en
-fútbol femenino" was approved, while "…invierte en el dueño del Montpellier
-femenino" was not.
+derechos de TV" instead).
 
 | Sí | No |
 |---|---|
@@ -330,6 +325,32 @@ party hoping to benefit from it. This is the same discipline §8's evidence
 levels ask for — don't blend "this happened" with "this was decided" — applied
 to the one line most readers see and nothing past.
 
+**A mechanism that is itself a checkable fact can lead the title** (editor,
+2026-10-27, Globoplay). The editor asked for titles "atractivos para el reader
+persona" and picked *"Globoplay usa Sportv para subir 18% el precio de su plan
+básico"* over the plain *"Globoplay mete Sportv en su plan más barato y le sube
+el precio"*. That does not conflict with the rule above, because both halves are
+on the record: Sportv moved into the plan, and the same plan went from R$16.90
+to R$19.90. The title connects two published facts with a figure; it does not
+hand down a verdict. The test: if every word of the title can be checked
+against a price sheet, a filing or a release, the mechanism can lead it. If it
+needs the Opinión to stand up ("apuesta", "se arriesga", "pierde"), it stays in
+the body. When the editor asks for titles aimed at the reader persona, offer
+this shape: protagonist, verb of mechanism, hard figure, the asset that moved.
+
+**"Llamativo" means a concrete verb that literally describes the act**
+(editor, 2026-10-27, LaLiga/CCTV). After two rounds of combinations, the editor
+asked for something "muy llamativo" and picked *"China le corta la señal a
+LaLiga por un meme de Mbappé"* (54 characters) over *"La televisión estatal
+china suspende LaLiga por un meme de Mbappé"*. "Le corta la señal" is
+physical and vivid, and it is still exact for a suspension with no end date,
+where "saca" or "queda fuera" would claim a permanence the story does not
+have. When the editor asks for punch, look for the physical verb of what the
+actor actually did (apaga, corta, congela, cierra la llave) before reaching for
+an adjective, and check that it fits the evidence level: a pause gets a pause
+verb. Dropping a qualifier the excerpt carries ("televisión estatal") to make
+room for it is fine.
+
 **It is not just the title.** The same run's second paragraph originally
 buried the "this is not a ruling" caveat inside the closing Opinión, after four
 sections that read as build-up to a win. Moved to the second paragraph, right
@@ -363,6 +384,16 @@ cambiara."*
 
 **The editing question:** does the reader understand, within the first three
 paragraphs, what changed and why it is worth continuing?
+
+**No calendar date in the lede when it is the article's own date** (editor,
+2026-10-26, twice in one day: the McDonald's/FIFA piece's "Adweek, que publicó
+la noticia el 23 de octubre" and the Charlyn Corral piece's "ganó el 26 de
+octubre en Londres", both cut before publishing). The page already prints the
+date under the headline, so repeating it in the first sentence spends words on
+something the reader just saw, and naming the day an outlet published reads as
+the newsroom narrating its sourcing. Say where and what ("ganó en Londres"),
+and keep a date in the opening only when it is not the day of the news: a
+deadline, a start date, a past event the story turns on.
 
 The cold open is one of the four kinds of paragraph that carries **no** bold
 lead-in (§5).
@@ -852,6 +883,31 @@ juego significan 624 minutos nuevos de inventario potencial."*
   open.er-api, 12 oct") so a reviewer can rerun it, and round the result to
   the precision of the original figure. Applies going forward; published
   articles are only converted when they are otherwise being edited.
+
+  **A rate printed in the filing is not the day's rate** (editor, 2026-10-31,
+  Ollamani 3T26). Quarterly reports state their own period-end exchange rate
+  (Ollamani: 18.0692 at 30 Sep), and it is tempting to reuse it because it
+  sits next to the figures. That run did, published US$53.6M for MX$967.8M,
+  and the editor caught it against outlets using the current rate (~18.8,
+  US$51.4M): all 18 conversions were 4–5% high and had to be redone live.
+  Fetch the rate on publication day (`https://open.er-api.com/v6/latest/USD`)
+  even when the source hands you one. For an MXN figure the editor's reference
+  is Banxico's FIX for the publication date, read from
+  `https://www.banxico.org.mx/tipcamb/tipCamIHAction.do?idioma=sp` (column
+  tables: the date column, then Determinación, Publicación DOF, Para
+  solventar; FIX is the Determinación value on that date's row).
+
+  **A minority partner's line on the income statement is not money it paid**
+  (editor, 2026-10-31, same Ollamani piece). The draft read the consolidated
+  "participación no controladora" (MX$205.7M) as what General Atlantic
+  "absorbe", and the editor pulled it: it is an accounting allocation of the
+  subsidiary's result to the minority stake, not a cash outlay, and the filing
+  ties it to "el 49% del negocio de Fútbol", not to a named investor. Report the
+  ownership fact (who holds what since when) and leave the line out unless the
+  piece explains exactly what it is. The same correction removed a causal read
+  ("la desviación vino de operar la sede") that the filing's breakdown did not
+  support: when a report does not itemise a line, say that it does not, and
+  stop there.
 
   A device's own **value** slot keeps the
   original currency only (`Cifra clave`'s 24-character cap has no room for a
