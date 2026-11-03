@@ -443,6 +443,15 @@ at every parallax position, and inside the 4:3 archive crop. The 1:1 archive cro
 will still trim a long title. Hosting rules above apply: the re-framed file is a
 custom asset.
 
+**The ×1.12 zoom crops height too** (2026-11-03, WTA x Hello Kitty). A square
+announcement graphic re-framed to 1920×1200 by extending its background to the
+sides, at full height, still lost the top of its logo on the live page: the
+parallax scale trims about 64 px top and bottom as well as the sides. Scale the
+square to about 82% of the canvas height (980 px on 1200), center it, and
+extend the background on all four sides; that survived the zoom intact. Bump the
+filename (`-v2`) when replacing a published asset, so the CDN doesn't keep
+serving the first one.
+
 ---
 
 ## 2. In-body images — **differs by funnel**
