@@ -168,6 +168,14 @@ source per "Verify and credit" above. This isn't a special case, it's the
 existing rule applied with the org's own gallery as a first-class source
 rather than an afterthought.
 
+**An outlet that republishes a handout photo is not its source.** A portrait
+or a press shot an outlet re-crops from a company's announcement is credited
+to the company that released it, not to the outlet. Trace it before you
+credit it: the publisher rejected `"Foto: Palco23"` on the 2026-11-03 Pri
+Shumate cover, which was Columbia Sportswear's March 2022 hiring headshot
+(the same image FashionUnited ran that month). It shipped as
+`"Foto: Columbia Sportswear"`.
+
 ### The broad search
 
 **Always, always, always search for the best and most related cover photo,

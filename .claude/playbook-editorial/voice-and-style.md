@@ -234,7 +234,12 @@ by the name a reader would type, as early in the line as the sentence allows:
 una versión animada…". That is still the same formula, with the searchable
 noun phrase leading. Avoid jargon a reader wouldn't search or say: the
 publisher rejected "licitar" for TV rights ("busca comprador para sus
-derechos de TV" instead).
+derechos de TV" instead). When the protagonist is a person or a company
+nobody types (2026-11-03, Pri Shumate / Crux Football: the first three
+options were rejected as "no SEO"), let the searchable names they carry lead
+the title instead: "Exdirectiva de Nike y los Miami Dolphins invierte en
+fútbol femenino" was approved, while "…invierte en el dueño del Montpellier
+femenino" was not.
 
 | Sí | No |
 |---|---|
