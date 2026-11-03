@@ -467,6 +467,12 @@ just before `Fuentes:`). Placed after the Opinión, it pushes the Opinión out o
 its callout: `check-voice.mjs` flags that as a RENDER BUG. A second update gets
 its own paragraph after the first.
 
+**A link inside the note closes the italics around it.** `markdownToTipTap`
+does not parse a `[text](url)` nested inside `*…*`: it ships as literal
+brackets (2026-11-03, the Fox Q1 FY2027 note on the August article went live
+that way and needed a second update). Write it as `*…El detalle está en*
+[nuestra nota del trimestre](url)*.*`, italic text, plain link, italic period.
+
 **No note** for typos, style, a cover or credit swap, or tag and date changes
 made in the CMS. The note counts toward the word total; a marginal overshoot
 of the tier caused by the note alone is acceptable, and the Opinión is never
