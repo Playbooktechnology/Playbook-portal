@@ -190,7 +190,54 @@ const CASES: Case[] = [
   },
 ];
 
+// ——— Calendario chips (2026-10-29): a beat dated to the day is measured in
+//     days from the article's day. The Checo/Cadillac piece (29 oct) showed
+//     "en 1 mes" for a race on 1 nov, and same-month beats lost both the chip
+//     and the next-beat highlight.
+type ChipCase = { text: string; articleDate: string; chips: string[]; next: number; why: string };
+
+const CHIP_CASES: ChipCase[] = [
+  {
+    text: 'Calendario: 1 nov 2026 — Pérez llega a 300 carreras · 2027 — Vence el contrato de Bottas · 2029 — Vence el contrato de Pérez',
+    articleDate: '2026-10-29',
+    chips: ['en 3 días', 'en 9 meses', 'en 3 años'],
+    next: 0,
+    why: 'three days out reads in days, not "en 1 mes"; year-only beats keep month arithmetic',
+  },
+  {
+    text: 'Calendario: 16 oct 2026 — Abre la venta de boletos · 21 oct 2026 — Juego 3',
+    articleDate: '2026-10-13',
+    chips: ['en 3 días', 'en 8 días'],
+    next: 0,
+    why: 'same-month future beats get a chip and the first one is highlighted',
+  },
+  {
+    text: 'Calendario: 15 oct 2026 — Consejo de la FIFA · 18 nov 2026 — Cierre de candidaturas · mar 2027 — Elección',
+    articleDate: '2026-10-14',
+    chips: ['mañana', 'en 1 mes', 'en 5 meses'],
+    next: 0,
+    why: 'one day out is "mañana"; past 31 days a day-dated beat rounds to months',
+  },
+  {
+    text: 'Calendario: 29 sep 2026 — La ley se publica · 28 mar 2027 — Vence el plazo',
+    articleDate: '2026-09-29',
+    chips: ['', 'en 6 meses'],
+    next: 1,
+    why: 'a beat on the article day gets no chip and is not "next"',
+  },
+];
+
 let failed = 0;
+for (const c of CHIP_CASES) {
+  const markup = deviceFromParagraph(c.text, { articleDate: c.articleDate })?.markup ?? '';
+  const items = [...markup.matchAll(/<li class="lect-agenda-item"( data-next="true")?>[\s\S]*?<\/li>/g)];
+  const chips = items.map(m => m[0].match(/lect-agenda-chip">([^<]*)</)?.[1] ?? '');
+  const next = items.findIndex(m => m[1]);
+  const ok = JSON.stringify(chips) === JSON.stringify(c.chips) && next === c.next;
+  if (!ok) failed++;
+  console.log(`${ok ? '  ok  ' : 'FAIL  '}chips     ${c.why}\n        got ${JSON.stringify(chips)} next=${next}`);
+}
+
 for (const c of CASES) {
   const got = deviceFromParagraph(c.text) !== null;
   const ok = got === c.render;
@@ -199,5 +246,5 @@ for (const c of CASES) {
     `${ok ? '  ok  ' : 'FAIL  '}${c.render ? 'renders' : 'refuses'}  ${c.why}\n        ${c.text.slice(0, 96)}`,
   );
 }
-console.log(`\n${CASES.length - failed}/${CASES.length} device cases pass`);
+console.log(`\n${CASES.length + CHIP_CASES.length - failed}/${CASES.length + CHIP_CASES.length} device cases pass`);
 process.exit(failed ? 1 : 0);
