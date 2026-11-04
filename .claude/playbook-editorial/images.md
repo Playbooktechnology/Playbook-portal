@@ -454,9 +454,12 @@ serving the first one.
 
 **Some club image servers crop for you, so check before self-hosting**
 (2026-11-04, the Nadal / Real Madrid board piece). `assets.realmadrid.com`
-runs Adobe Scene7, which accepts `?wid=1600&hei=1000&fit=crop&align=0,-0.75`:
-a 16:10 crop of a near-square photo, anchored a quarter of the way from the
-top so both faces and the shirt survived the ×1.12 zoom. That URL is the
+runs Adobe Scene7, which accepts `?wid=1600&hei=1000&fit=crop&align=0,-0.97`:
+a 16:10 crop of a near-square photo anchored near the top. The first publish
+used `-0.75`, and the editor flagged that the zoom clipped the top of Nadal's
+cap; near the top (`-0.97`) kept the head whole and the shirt name readable.
+When a person's head sits near the top of the source, anchor high and check the
+head first. That URL is the
 `imageUrl` directly, with no asset to push to `main`. Any `…/is/image/…` URL is
 the same Scene7 setup; `align` runs from -1 (top/left) to 1 (bottom/right).
 Simulate the zoom on the returned file before publishing.
