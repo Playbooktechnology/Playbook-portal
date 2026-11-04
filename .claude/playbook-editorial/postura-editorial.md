@@ -101,6 +101,22 @@ piece is written so the protagonist would want to share it:
   brands, the KitKat x F1 precedent launched in Mexico, the NBA's Mexico City
   game). Shareable does not mean a rewritten press release.
 
+**When the publisher will share the piece with the protagonists, only their
+own word goes in** (publisher, 2026-11-04, LMB × Fanki run, a note meant for
+LinkedIn: *"no quiero que en esta nota salga algo que no sea oficial, algo que
+no sea de parte de Fanki o de LMB"*). Accurate media detail is out too. The
+published draft had carried five details from outlets, all true as reported
+but none in either party's announcement: SI's "five years", SI's line that
+the deal covers the softball league, SI's April 2027 launch date, a regional
+outlet's date for a club's earlier signing, and two trade-press client wins.
+They were swapped for the league's own older releases (its title-sponsor
+deal, its founding of the softball league) and the company's own post. On
+such a piece, build the fact inventory from the protagonists' releases,
+posts and on-the-record quotes first. A media-only fact either finds an
+official source or stays out, and the presentation names which ones were
+dropped. Playbook's own analysis (the mechanism, the Opinión, the open
+questions) is still Playbook's and stays in.
+
 **Where this rule stops.** It covers positive announcements only. When the
 news itself is uncomfortable for a prospect (governance, a dispute, losses, an
 accusation, a regulatory problem the story is about), §2's protocolo amarillo

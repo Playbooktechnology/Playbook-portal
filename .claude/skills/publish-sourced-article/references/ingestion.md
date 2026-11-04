@@ -296,6 +296,22 @@ World Football's original interview for Inter de Limeira) and never needed to
 be re-derived from principle, but it also was not written down anywhere until
 now, so a future run had no faster path than reasoning it out cold.
 
+### A feature with interview quotes is not the interviewee's word
+
+(2026-11-04, LMB × Fanki run.) Excélsior's April feature on the LMB carried
+direct quotes from the league's president, and a summary fetch of it handed
+back its figures (spend per visit MX$450–800, MX$1,500M a year on food and
+drink, sponsorship revenue up 12× in six years) in the same breath as those
+quotes. The draft wrote them as *"la propia LMB estima"* and *"De la Vega ha
+explicado"*. The publisher asked where they came from. Re-reading the passage
+verbatim showed the reporter stated all of them with no attribution; the one
+figure the piece did pin on the president was jobs (*"De acuerdo con cifras
+de De la Vega"*). A summary flattens that difference. Before a figure from a
+feature goes in as someone's statement, fetch the exact sentence and its
+neighbours and ask who the sentence says is speaking. If it's the reporter,
+credit the outlet ("según Excélsior"), or leave the figure out when the piece
+allows only official sources (`postura-editorial.md`).
+
 ### Research the Mexico/LATAM angle here, not at drafting time
 
 A foreign outlet's article will almost never carry the regional hook the
