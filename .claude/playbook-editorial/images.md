@@ -40,6 +40,22 @@ watermark or on-screen graphic) is visible. When the story has no single
 protagonist, prefer a photo that shows what the piece is about (a stadium
 full of fans for a ticketing story) over a generic match frame.
 
+**When the source has no usable photo, look for live game action first**
+(editor, 2026-11-03, on the SponsorUnited MLB sponsorship report). That run
+offered three stadium shots already used on earlier pieces (a dugout, two
+Dodger Stadium exteriors), and the editor rejected all of them: "quiero una
+mucho mejor foto para portada, una que sea de un partido en juego". A league-
+or market-wide story (a sponsorship report, an attendance record, a rights
+cycle) still reads best with the sport being played, and ideally a frame that
+also shows the piece's subject (sponsor boards behind home plate for a
+sponsorship story). Before recycling a cover from the archive, search Commons
+by text, not just by category, for the league and season ("Dodgers pitching
+2025", "at bat 2025 baseball game"): `Special:Search?search=…&ns6=1` through
+WebFetch works even while the `w/api.php` endpoint returns 429. Check the
+file page for the league level too: a minor-league or spring-training frame
+is not "a partido de MLB", and say so when offering one. A previously used
+cover is the fallback, not the first option.
+
 ### When the article body won't load, the image usually still will
 
 (2026-08-12, on the Lakers sale, where the ESPN primary returned an empty body
@@ -167,14 +183,6 @@ the source** — `"Foto: [Liga/Club/Organización]"` — the same as any other
 source per "Verify and credit" above. This isn't a special case, it's the
 existing rule applied with the org's own gallery as a first-class source
 rather than an afterthought.
-
-**An outlet that republishes a handout photo is not its source.** A portrait
-or a press shot an outlet re-crops from a company's announcement is credited
-to the company that released it, not to the outlet. Trace it before you
-credit it: the publisher rejected `"Foto: Palco23"` on the 2026-11-03 Pri
-Shumate cover, which was Columbia Sportswear's March 2022 hiring headshot
-(the same image FashionUnited ran that month). It shipped as
-`"Foto: Columbia Sportswear"`.
 
 ### The broad search
 
@@ -352,6 +360,28 @@ out every image from that site: take a cross-referenced outlet's hero instead
 has a path to `main` (above). After publishing, confirm the cover on the live
 page in a real browser (the `<img>` reports `naturalWidth > 0`), not with curl.
 
+**Send playbook.la as the Referer too** (editor, 2026-10-27, the Barça
+international-stores piece). Hotlink protection is the second way a `200`
+lies. The elgoldigital.com cover returned `200` to a plain GET and carried no
+CORP header, yet went live as a beige box: its Cloudflare rule answers `403`
+to any request whose Referer is another site. Run the check a second time as
+the page will make it:
+
+```
+curl -sS -A "<a normal browser UA>" -H "Referer: https://www.playbook.la/" -o /dev/null -w "%{http_code}\n" "<imageUrl>"
+```
+
+Anything but `200` means the cover will not render. Take the photo from the
+subject's own site instead (here, fcbarcelona.com's own Barça Store photo,
+which also fixed a credit that said "FC Barcelona" over a third-party host).
+
+**An `ERR_HTTP2_PROTOCOL_ERROR` in the session's browser is not proof**
+(editor, 2026-10-28, the Algeciras piece). The lagacetadecadiz.es cover passed
+both curl checks above but failed in the container's Chromium with that error
+and `naturalWidth` 0; the editor confirmed it loads for readers. The agent
+proxy can break HTTP/2 to some hosts. When the curl checks pass and only the
+in-session browser fails this way, ask the editor to look before swapping.
+
 Set `imageCredit` to identify the real source, whatever it is — `"Foto:
 [Fotógrafo] / Unsplash"`, `"Foto: [Agencia]"`, `"Foto: [Club/Liga/
 Organización]"` — matched to whatever the photo's own page attributes it to. It
@@ -412,6 +442,27 @@ mirror-tiling the card's own top rows. That keeps the title inside x 103 to 1817
 at every parallax position, and inside the 4:3 archive crop. The 1:1 archive crop
 will still trim a long title. Hosting rules above apply: the re-framed file is a
 custom asset.
+
+**The ×1.12 zoom crops height too** (2026-11-03, WTA x Hello Kitty). A square
+announcement graphic re-framed to 1920×1200 by extending its background to the
+sides, at full height, still lost the top of its logo on the live page: the
+parallax scale trims about 64 px top and bottom as well as the sides. Scale the
+square to about 82% of the canvas height (980 px on 1200), center it, and
+extend the background on all four sides; that survived the zoom intact. Bump the
+filename (`-v2`) when replacing a published asset, so the CDN doesn't keep
+serving the first one.
+
+**Some club image servers crop for you, so check before self-hosting**
+(2026-11-04, the Nadal / Real Madrid board piece). `assets.realmadrid.com`
+runs Adobe Scene7, which accepts `?wid=1600&hei=1000&fit=crop&align=0,-0.97`:
+a 16:10 crop of a near-square photo anchored near the top. The first publish
+used `-0.75`, and the editor flagged that the zoom clipped the top of Nadal's
+cap; near the top (`-0.97`) kept the head whole and the shirt name readable.
+When a person's head sits near the top of the source, anchor high and check the
+head first. That URL is the
+`imageUrl` directly, with no asset to push to `main`. Any `…/is/image/…` URL is
+the same Scene7 setup; `align` runs from -1 (top/left) to 1 (bottom/right).
+Simulate the zoom on the returned file before publishing.
 
 ---
 

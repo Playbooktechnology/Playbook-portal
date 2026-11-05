@@ -73,6 +73,15 @@ the facts:
    revision round. **Ask once, right after the block, before drafting** — not as
    an afterthought once a gap surfaces.
 
+   **Never fake a crawler or browser identity to get past a block** (2026-10-29,
+   the Canelo/Kalshi run). After Forbes returned 403, the run tried a request
+   with a social-media crawler user agent to pull the page's preview image.
+   The session's safety layer stopped it as bot-check circumvention, and that
+   was the right call: a 403 is the site saying no. Ask the editor for the text
+   or the image link instead. The editor pasted the Forbes opening, which added
+   the US$170 millones, the businesses and the quote that the relays had left
+   out.
+
 0c. **A successful WebFetch can still fabricate a specific detail.** (2026-09-01,
    the NFL Australia/México run.) A syndicated copy of a Reuters wire loaded
    fine (`HTTP 200`, full text), and WebFetch's own summary of it still
@@ -286,6 +295,22 @@ appear on the last line. Worked each time by finding the real primary
 World Football's original interview for Inter de Limeira) and never needed to
 be re-derived from principle, but it also was not written down anywhere until
 now, so a future run had no faster path than reasoning it out cold.
+
+### A feature with interview quotes is not the interviewee's word
+
+(2026-11-04, LMB × Fanki run.) Excélsior's April feature on the LMB carried
+direct quotes from the league's president, and a summary fetch of it handed
+back its figures (spend per visit MX$450–800, MX$1,500M a year on food and
+drink, sponsorship revenue up 12× in six years) in the same breath as those
+quotes. The draft wrote them as *"la propia LMB estima"* and *"De la Vega ha
+explicado"*. The publisher asked where they came from. Re-reading the passage
+verbatim showed the reporter stated all of them with no attribution; the one
+figure the piece did pin on the president was jobs (*"De acuerdo con cifras
+de De la Vega"*). A summary flattens that difference. Before a figure from a
+feature goes in as someone's statement, fetch the exact sentence and its
+neighbours and ask who the sentence says is speaking. If it's the reporter,
+credit the outlet ("según Excélsior"), or leave the figure out when the piece
+allows only official sources (`postura-editorial.md`).
 
 ### Research the Mexico/LATAM angle here, not at drafting time
 

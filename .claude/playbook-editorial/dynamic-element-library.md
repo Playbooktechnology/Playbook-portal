@@ -50,6 +50,19 @@ weight the way `priority` does.
 scan marks, inline figure highlights, bold count-ups), La Lana's `Ruta del
 dinero`, and the `Fuentes:` line.
 
+**An empty budget slot is a question the publisher will ask** (publisher,
+2026-11-03 WTA × Hello Kitty and 2026-11-04 LMB × Fanki, both times *"revisa
+si vale la pena agregar otro recurso gráfico"*). On both runs the draft used
+one device on a 3-minute B whose budget was two, and the publisher had to ask
+for the second; on the Fanki run a `Condiciones` (the rollout: what's done,
+what's pending) fit cleanly next to the `Cronología` and went live. When the
+budget allows another device, the first draft either carries it, or the
+presentation says in one line which shapes were tried and why none fits (a
+`Contrato` with no published Monto, an `Alcance` with nothing confirmed
+outside the deal). Don't add one to fill the slot. A device that repeats
+the prose is worse than none, and the trims a second device forces on a B
+near its 500-word ceiling are part of the call.
+
 **Rules of placement:**
 
 - **Never repeat a device type in one article.** The renderer refuses the
@@ -1390,6 +1403,18 @@ sets the price in display type, this sets what changed hands.
 - Wears the asset's own palette, same registry as `Venta` and `Cadena`.
 - **Mutually exclusive with `Venta` AND `Jugada`.**
 
+**`Incluye` is part of what changed hands, never money that came with the
+deal** (editor, 2026-10-23, on the Valencia CF / Pitchwise piece). The page
+prints `Incluye` in display type under the label "Qué cambia de manos", so it
+reads as the asset itself. That piece declared `Incluye — €100 millones
+(US$112 millones) de capital nuevo para el club`, and on the live page the
+€100 millones read as what was sold, when what moved was the 42% and the
+money was fresh capital going into the club. The row was removed after
+publishing. Use `Incluye` only for rights, assets or stakes that move with
+the transfer (a league's commercial rights, a stadium, a women's team). New
+capital, earn-outs and side payments stay in the prose, and the `Control`
+line is complete without `Incluye`.
+
 ### `Alcance:` — what it covers and what it doesn't
 
 ```
@@ -1532,8 +1557,6 @@ Walk this for every article before publishing:
    (`Control`, `Alcance`, `Condiciones`, `Precedentes`, `Contraste`) BEFORE
    defaulting to `Jugada` or `Cronología` — that default is what the 2026-08-27
    audit found carrying 60% of the collection.
-   Where a human gate exists, the walk is shown to the reviewer, not just
-   done (`publish-sourced-article`'s `publishing-mechanics.md`, Step 8).
 2. Budget computed from `readingTime` **and** `priority` (+1 at `priority: 5`).
 3. No repeated device type.
 4. Devices in document order, spine first, ≥2 prose paragraphs between them.
