@@ -283,6 +283,18 @@ and `infantino-desafia-a-montagliani-…-se-resquebraja` are both live rows whos
 id no longer matches their title, because the id is minted at insert and never
 migrates.
 
+### Name a little-known buyer by the asset readers know
+
+(Editor, 2026-11-05, FSG × Cadillac F1.) Ten options that opened with "FSG"
+or "Cadillac F1 vale…" were rejected. The editor's own pick put the owner in
+terms readers search for, "Dueños del Liverpool", and kept a hard figure
+from an earlier option: *"Dueños del Liverpool van por Cadillac F1 por más de
+£2,000 millones"*. In Mexico, an acronym or holding name (FSG, TWG, a fund)
+is not a searchable protagonist. The famous property it owns is. Lead with
+that, name the target, and attach the reported figure. Keep Playbook's read
+("lo que cuesta un lugar en F1") for the body unless it is literally true:
+the £2,000M buys a majority of the whole team, not a grid slot.
+
 ### The title states the fact; the body delivers the read
 
 (Playbook team, 2026-09-17, on the FIBA attendance and Senate college-sports

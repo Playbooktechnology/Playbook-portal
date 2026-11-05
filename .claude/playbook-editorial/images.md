@@ -56,6 +56,18 @@ file page for the league level too: a minor-league or spring-training frame
 is not "a partido de MLB", and say so when offering one. A previously used
 cover is the fallback, not the first option.
 
+**When Commons and Flickr are blocked, the team's own news pages are the next
+source** (2026-11-05, FSG × Cadillac F1). From this container, the API, the
+thumbnails and the browser all got 429 from upload.wikimedia.org, and
+live.staticflickr.com answered "CIDR range blocked". That left two CC BY-SA
+race frames nobody could look at. The team's site (cadillacf1team.com) gave
+race-weekend photos through each report's `og:image`, all agency-free, and
+the editor picked one of them. Credit it as "Foto: <team>". Two things to
+check. A Contentful URL takes `?w=1600&fm=jpg&q=80` but never upscales, so a
+file named `…_1200px.jpg` stays at 1200 and the label must say so. And
+reports that share a slug prefix will overwrite each other if you name local
+files by prefix.
+
 ### When the article body won't load, the image usually still will
 
 (2026-08-12, on the Lakers sale, where the ESPN primary returned an empty body
