@@ -68,6 +68,19 @@ file named `…_1200px.jpg` stays at 1200 and the label must say so. And
 reports that share a slug prefix will overwrite each other if you name local
 files by prefix.
 
+**An official site is not proof a photo is free** (2026-11-05, USOPC × private
+investors). The first covers for this piece came from teamusa.com /
+usopc.org, offered as "Foto: USOPC". The site's own markup credits its
+Paris 2024 shots "Photo by Getty Images", and the editor had to ask for
+other options. Before offering a federation's or committee's image, grep
+the page for "Getty", "AP" or "Reuters". Team USA, like many NOCs, licenses
+agency work. US government photos are public domain and agency-free. For
+any US team at a big event, look on DVIDS (dvidshub.net, Army and military
+photographers). Its pages load from this container when Commons won't, and
+`…/thumbs/photos/<yymm>/<id>/2000w_q95.jpg` gives 2000 px. The Paris 2024
+Team USA boat on the Seine was there, credited "Foto: <photographer> /
+U.S. Army".
+
 ### When the article body won't load, the image usually still will
 
 (2026-08-12, on the Lakers sale, where the ESPN primary returned an empty body
