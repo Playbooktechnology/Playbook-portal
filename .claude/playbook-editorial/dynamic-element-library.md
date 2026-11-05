@@ -1246,6 +1246,13 @@ as "as of this piece" and can't go stale wrong — and the first beat after
 the article date is highlighted as what's next. **Mutually exclusive with
 `Cronología`**: both are the story on a dated spine.
 
+**Date a near beat to the day.** A `d mmm AAAA` beat less than 60 days
+after the article counts in days or weeks ("el mismo día", "en 2 días",
+"en 3 semanas"). A month-only beat in the article's own month counts as 0:
+it gets no chip and is not highlighted. (2026-11-05, American Express /
+NBA: the Mexico City Game two days out showed no chip and the highlight
+went to Paris, two months away, until the renderer learned to count days.)
+
 ### `Votación:` — the governance tally
 
 ```
