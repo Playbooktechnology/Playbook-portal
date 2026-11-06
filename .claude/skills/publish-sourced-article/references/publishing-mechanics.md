@@ -171,6 +171,18 @@ A change to the article's facts also carries a dated update note placed just
 before the Opinión: see `format-tiers.md`, "The update note on a published
 article".
 
+**When the row has no markdown on hand, compare the round-trip by content,
+not by bytes** (2026-11-06, Fox × Roku back-link on the September DOJ piece).
+Rebuild `bodyMarkdown` from `body_json` (paragraphs and headings; marks
+`bold` → `**`, `italic` → `*`, `link` → `[t](href)`), run it back through
+`markdownToTipTap`, and compare. Postgres `jsonb` stores object keys in its
+own order (`{"text","type"}` comes back where the converter writes
+`{"type","text"}`), so a plain `JSON.stringify` compare reports a mismatch on
+every node even when nothing differs. Sort the keys recursively before you
+compare. Only a mismatch that survives that comparison is a reason not to
+run the update. Keep the rebuild helper outside `scripts/`, or delete it
+afterwards; it is a one-off, not a tool.
+
 This is also the tool for the overlap check's outcome B.
 
 ---
