@@ -200,4 +200,56 @@ for (const c of CASES) {
   );
 }
 console.log(`\n${CASES.length - failed}/${CASES.length} device cases pass`);
-process.exit(failed ? 1 : 0);
+
+// ——— Calendario chips (2026-11-05, American Express / NBA). The chips and
+// the "next" highlight are computed from the article's date. A beat in the
+// article's own month used to get 0 months: no chip, and the highlight
+// skipped to a later beat. Day-dated beats under 60 days are now counted in
+// days or weeks; everything else keeps the calendar-month count.
+type ChipCase = { articleDate: string; text: string; chips: string[]; next: number; why: string };
+const CHIP_CASES: ChipCase[] = [
+  {
+    articleDate: '2026-11-05',
+    text: 'Calendario: 7 nov 2026 — NBA Mexico City Game · 14 ene 2027 — NBA Paris Game · 17 ene 2027 — NBA Manchester Game',
+    chips: ['en 2 días', 'en 2 meses', 'en 2 meses'],
+    next: 0,
+    why: 'the live Amex case: a game two days out is the next beat and says so',
+  },
+  {
+    articleDate: '2026-11-05',
+    text: 'Calendario: 5 nov 2026 — Mismo día · 6 nov 2026 — Día siguiente · 20 nov 2026 — Dos semanas',
+    chips: ['el mismo día', 'en 1 día', 'en 2 semanas'],
+    next: 0,
+    why: 'same-day, next-day and two-week beats',
+  },
+  {
+    articleDate: '2026-11-05',
+    text: 'Calendario: 1 nov 2026 — Ya pasó · 19 mar 2027 — Lejos · 2028 — Más lejos',
+    chips: ['', 'en 4 meses', 'en 20 meses'],
+    next: 1,
+    why: 'a past beat gets no chip and is never next; 60+ days stays in months',
+  },
+  {
+    articleDate: '2026-11-05',
+    text: 'Calendario: nov 2026 — Este mes · mar 2027 — Después',
+    chips: ['', 'en 4 meses'],
+    next: 1,
+    why: 'a month-only beat in the article month keeps the old behavior',
+  },
+];
+
+let chipFailed = 0;
+for (const c of CHIP_CASES) {
+  const markup = deviceFromParagraph(c.text, { articleDate: c.articleDate })?.markup ?? '';
+  const items = [...markup.matchAll(/<li class="lect-agenda-item"( data-next="true")?>(.*?)<\/li>/g)];
+  const chips = items.map(m => m[2].match(/<span class="lect-agenda-chip">(.*?)<\/span>/)?.[1] ?? '');
+  const next = items.findIndex(m => Boolean(m[1]));
+  const ok = JSON.stringify(chips) === JSON.stringify(c.chips) && next === c.next;
+  if (!ok) chipFailed++;
+  console.log(
+    `${ok ? '  ok  ' : 'FAIL  '}chips  ${c.why}\n        got ${JSON.stringify(chips)} next=${next}` +
+      (ok ? '' : `, want ${JSON.stringify(c.chips)} next=${c.next}`),
+  );
+}
+console.log(`\n${CHIP_CASES.length - chipFailed}/${CHIP_CASES.length} Calendario chip cases pass`);
+process.exit(failed || chipFailed ? 1 : 0);

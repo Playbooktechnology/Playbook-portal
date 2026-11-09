@@ -283,6 +283,18 @@ and `infantino-desafia-a-montagliani-…-se-resquebraja` are both live rows whos
 id no longer matches their title, because the id is minted at insert and never
 migrates.
 
+### Name a little-known buyer by the asset readers know
+
+(Editor, 2026-11-05, FSG × Cadillac F1.) Ten options that opened with "FSG"
+or "Cadillac F1 vale…" were rejected. The editor's own pick put the owner in
+terms readers search for, "Dueños del Liverpool", and kept a hard figure
+from an earlier option: *"Dueños del Liverpool van por Cadillac F1 por más de
+£2,000 millones"*. In Mexico, an acronym or holding name (FSG, TWG, a fund)
+is not a searchable protagonist. The famous property it owns is. Lead with
+that, name the target, and attach the reported figure. Keep Playbook's read
+("lo que cuesta un lugar en F1") for the body unless it is literally true:
+the £2,000M buys a majority of the whole team, not a grid slot.
+
 ### The title states the fact; the body delivers the read
 
 (Playbook team, 2026-09-17, on the FIBA attendance and Senate college-sports
@@ -883,6 +895,31 @@ juego significan 624 minutos nuevos de inventario potencial."*
   open.er-api, 12 oct") so a reviewer can rerun it, and round the result to
   the precision of the original figure. Applies going forward; published
   articles are only converted when they are otherwise being edited.
+
+  **A rate printed in the filing is not the day's rate** (editor, 2026-10-31,
+  Ollamani 3T26). Quarterly reports state their own period-end exchange rate
+  (Ollamani: 18.0692 at 30 Sep), and it is tempting to reuse it because it
+  sits next to the figures. That run did, published US$53.6M for MX$967.8M,
+  and the editor caught it against outlets using the current rate (~18.8,
+  US$51.4M): all 18 conversions were 4–5% high and had to be redone live.
+  Fetch the rate on publication day (`https://open.er-api.com/v6/latest/USD`)
+  even when the source hands you one. For an MXN figure the editor's reference
+  is Banxico's FIX for the publication date, read from
+  `https://www.banxico.org.mx/tipcamb/tipCamIHAction.do?idioma=sp` (column
+  tables: the date column, then Determinación, Publicación DOF, Para
+  solventar; FIX is the Determinación value on that date's row).
+
+  **A minority partner's line on the income statement is not money it paid**
+  (editor, 2026-10-31, same Ollamani piece). The draft read the consolidated
+  "participación no controladora" (MX$205.7M) as what General Atlantic
+  "absorbe", and the editor pulled it: it is an accounting allocation of the
+  subsidiary's result to the minority stake, not a cash outlay, and the filing
+  ties it to "el 49% del negocio de Fútbol", not to a named investor. Report the
+  ownership fact (who holds what since when) and leave the line out unless the
+  piece explains exactly what it is. The same correction removed a causal read
+  ("la desviación vino de operar la sede") that the filing's breakdown did not
+  support: when a report does not itemise a line, say that it does not, and
+  stop there.
 
   A device's own **value** slot keeps the
   original currency only (`Cifra clave`'s 24-character cap has no room for a

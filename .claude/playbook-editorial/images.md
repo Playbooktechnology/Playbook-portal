@@ -40,6 +40,47 @@ watermark or on-screen graphic) is visible. When the story has no single
 protagonist, prefer a photo that shows what the piece is about (a stadium
 full of fans for a ticketing story) over a generic match frame.
 
+**When the source has no usable photo, look for live game action first**
+(editor, 2026-11-03, on the SponsorUnited MLB sponsorship report). That run
+offered three stadium shots already used on earlier pieces (a dugout, two
+Dodger Stadium exteriors), and the editor rejected all of them: "quiero una
+mucho mejor foto para portada, una que sea de un partido en juego". A league-
+or market-wide story (a sponsorship report, an attendance record, a rights
+cycle) still reads best with the sport being played, and ideally a frame that
+also shows the piece's subject (sponsor boards behind home plate for a
+sponsorship story). Before recycling a cover from the archive, search Commons
+by text, not just by category, for the league and season ("Dodgers pitching
+2025", "at bat 2025 baseball game"): `Special:Search?search=…&ns6=1` through
+WebFetch works even while the `w/api.php` endpoint returns 429. Check the
+file page for the league level too: a minor-league or spring-training frame
+is not "a partido de MLB", and say so when offering one. A previously used
+cover is the fallback, not the first option.
+
+**When Commons and Flickr are blocked, the team's own news pages are the next
+source** (2026-11-05, FSG × Cadillac F1). From this container, the API, the
+thumbnails and the browser all got 429 from upload.wikimedia.org, and
+live.staticflickr.com answered "CIDR range blocked". That left two CC BY-SA
+race frames nobody could look at. The team's site (cadillacf1team.com) gave
+race-weekend photos through each report's `og:image`, all agency-free, and
+the editor picked one of them. Credit it as "Foto: <team>". Two things to
+check. A Contentful URL takes `?w=1600&fm=jpg&q=80` but never upscales, so a
+file named `…_1200px.jpg` stays at 1200 and the label must say so. And
+reports that share a slug prefix will overwrite each other if you name local
+files by prefix.
+
+**An official site is not proof a photo is free** (2026-11-05, USOPC × private
+investors). The first covers for this piece came from teamusa.com /
+usopc.org, offered as "Foto: USOPC". The site's own markup credits its
+Paris 2024 shots "Photo by Getty Images", and the editor had to ask for
+other options. Before offering a federation's or committee's image, grep
+the page for "Getty", "AP" or "Reuters". Team USA, like many NOCs, licenses
+agency work. US government photos are public domain and agency-free. For
+any US team at a big event, look on DVIDS (dvidshub.net, Army and military
+photographers). Its pages load from this container when Commons won't, and
+`…/thumbs/photos/<yymm>/<id>/2000w_q95.jpg` gives 2000 px. The Paris 2024
+Team USA boat on the Seine was there, credited "Foto: <photographer> /
+U.S. Army".
+
 ### When the article body won't load, the image usually still will
 
 (2026-08-12, on the Lakers sale, where the ESPN primary returned an empty body
@@ -426,6 +467,27 @@ mirror-tiling the card's own top rows. That keeps the title inside x 103 to 1817
 at every parallax position, and inside the 4:3 archive crop. The 1:1 archive crop
 will still trim a long title. Hosting rules above apply: the re-framed file is a
 custom asset.
+
+**The ×1.12 zoom crops height too** (2026-11-03, WTA x Hello Kitty). A square
+announcement graphic re-framed to 1920×1200 by extending its background to the
+sides, at full height, still lost the top of its logo on the live page: the
+parallax scale trims about 64 px top and bottom as well as the sides. Scale the
+square to about 82% of the canvas height (980 px on 1200), center it, and
+extend the background on all four sides; that survived the zoom intact. Bump the
+filename (`-v2`) when replacing a published asset, so the CDN doesn't keep
+serving the first one.
+
+**Some club image servers crop for you, so check before self-hosting**
+(2026-11-04, the Nadal / Real Madrid board piece). `assets.realmadrid.com`
+runs Adobe Scene7, which accepts `?wid=1600&hei=1000&fit=crop&align=0,-0.97`:
+a 16:10 crop of a near-square photo anchored near the top. The first publish
+used `-0.75`, and the editor flagged that the zoom clipped the top of Nadal's
+cap; near the top (`-0.97`) kept the head whole and the shirt name readable.
+When a person's head sits near the top of the source, anchor high and check the
+head first. That URL is the
+`imageUrl` directly, with no asset to push to `main`. Any `…/is/image/…` URL is
+the same Scene7 setup; `align` runs from -1 (top/left) to 1 (bottom/right).
+Simulate the zoom on the returned file before publishing.
 
 ---
 

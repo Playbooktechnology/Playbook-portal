@@ -13,6 +13,13 @@ see `.env.local.example`). The insert script uses Neon's HTTP driver because
 this session's outbound network only supports HTTPS, not raw TCP. Don't try to
 reconnect it to `lib/db/client.ts`'s `pg` Pool.
 
+**A fresh checkout also needs `node_modules`** (2026-10-23, Disney+ / F1
+Academy run). A new cloud container has no dependencies installed, so Step 0's
+`node scripts/find-duplicates.mjs` fails with `ERR_MODULE_NOT_FOUND` for
+`@neondatabase/serverless` even with `POSTGRES_URL` exported. If
+`node_modules` is missing, run `npm ci --ignore-scripts` (about a minute) before
+Step 0, in the background while the primary source is being fetched.
+
 ---
 
 ## Step 8: Human review, before anything touches the database
@@ -163,6 +170,18 @@ npx tsx --env-file=.env.local scripts/update-article.ts <fix.json> --dry-run
 A change to the article's facts also carries a dated update note placed just
 before the Opinión: see `format-tiers.md`, "The update note on a published
 article".
+
+**When the row has no markdown on hand, compare the round-trip by content,
+not by bytes** (2026-11-06, Fox × Roku back-link on the September DOJ piece).
+Rebuild `bodyMarkdown` from `body_json` (paragraphs and headings; marks
+`bold` → `**`, `italic` → `*`, `link` → `[t](href)`), run it back through
+`markdownToTipTap`, and compare. Postgres `jsonb` stores object keys in its
+own order (`{"text","type"}` comes back where the converter writes
+`{"type","text"}`), so a plain `JSON.stringify` compare reports a mismatch on
+every node even when nothing differs. Sort the keys recursively before you
+compare. Only a mismatch that survives that comparison is a reason not to
+run the update. Keep the rebuild helper outside `scripts/`, or delete it
+afterwards; it is a one-off, not a tool.
 
 This is also the tool for the overlap check's outcome B.
 

@@ -2014,21 +2014,43 @@ function buildContract(contract: Contract, now: Date = new Date()): string {
 // wrong — and the first beat after the article date is highlighted as
 // what's next. Without an article date in context, the chips are simply
 // omitted (the list still stands on its own).
-type AgendaBeat = { when: string; what: string; inMonths: number | null };
+//
+// A beat dated to the day (`7 nov 2026`) is counted in days when it falls
+// less than 60 days out: "el mismo día", "en N días", "en N semanas".
+// (2026-11-05, American Express / NBA: a game two days after publication
+// shared the article's month, so month arithmetic gave it 0, no chip, and
+// the "next" highlight skipped to a beat two months away.) From 60 days on,
+// and for beats dated only to the month or year, the count stays in
+// calendar months, so the chips already live on long-range calendars do not
+// change.
+type AgendaBeat = { when: string; what: string; chip: string; future: boolean | null };
 
 const AGENDA_MONTHS: Record<string, number> = {
   ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5, jul: 6, ago: 7, sep: 8, sept: 8, oct: 9, nov: 10, dic: 11,
 };
 
-function parseBeatWhen(text: string): { year: number; month: number | null } | null {
+function parseBeatWhen(text: string): { year: number; month: number | null; day: number | null } | null {
   const clean = normalizeLabel(text).replace(/\.$/, '');
   const yearOnly = clean.match(/^(\d{4})$/);
-  if (yearOnly) return { year: Number(yearOnly[1]), month: null };
+  if (yearOnly) return { year: Number(yearOnly[1]), month: null, day: null };
   const monthYear = clean.match(/^(?:(\d{1,2})\s+)?([a-z]{3,5})\.?\s+(\d{4})$/);
   if (monthYear && AGENDA_MONTHS[monthYear[2]] !== undefined) {
-    return { year: Number(monthYear[3]), month: AGENDA_MONTHS[monthYear[2]] };
+    const day = monthYear[1] ? Number(monthYear[1]) : null;
+    if (day !== null && (day < 1 || day > 31)) return null;
+    return { year: Number(monthYear[3]), month: AGENDA_MONTHS[monthYear[2]], day };
   }
   return null;
+}
+
+const DAY_MS = 86_400_000;
+
+function agendaDayChip(inDays: number): string {
+  // Relative to the article, not to today: an old piece must not say
+  // "hoy" about a past event, so the words stay counts from publication.
+  if (inDays === 0) return 'el mismo día';
+  if (inDays === 1) return 'en 1 día';
+  if (inDays < 14) return `en ${inDays} días`;
+  return `en ${Math.round(inDays / 7)} semanas`;
 }
 
 function agendaChip(inMonths: number): string {
@@ -2043,8 +2065,11 @@ function agendaChip(inMonths: number): string {
 function parseAgenda(raw: string, ctx?: DeviceContext): AgendaBeat[] | null {
   const items = stripTags(raw).split(ITEM_SEP);
   if (items.length < 2 || items.length > 5) return null;
-  const article = ctx?.articleDate?.match(/^(\d{4})-(\d{2})-\d{2}$/);
+  const article = ctx?.articleDate?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   const articleMonths = article ? Number(article[1]) * 12 + (Number(article[2]) - 1) : null;
+  const articleDay = article
+    ? Date.UTC(Number(article[1]), Number(article[2]) - 1, Number(article[3]))
+    : null;
   const beats: AgendaBeat[] = [];
   for (const item of items) {
     const kv = item.match(KV_RE);
@@ -2054,21 +2079,35 @@ function parseAgenda(raw: string, ctx?: DeviceContext): AgendaBeat[] | null {
     if (!when || when.length > 16 || !what || what.length > 72) return null;
     const parsedWhen = parseBeatWhen(when);
     if (!parsedWhen) return null;
-    let inMonths: number | null = null;
-    if (articleMonths !== null) {
-      const beatMonths = parsedWhen.year * 12 + (parsedWhen.month ?? 6);
-      inMonths = beatMonths - articleMonths;
+    let chip = '';
+    let future: boolean | null = null;
+    if (articleMonths !== null && articleDay !== null) {
+      const inMonths = parsedWhen.year * 12 + (parsedWhen.month ?? 6) - articleMonths;
+      chip = agendaChip(inMonths);
+      future = inMonths > 0;
+      if (parsedWhen.month !== null && parsedWhen.day !== null) {
+        const inDays = Math.round(
+          (Date.UTC(parsedWhen.year, parsedWhen.month, parsedWhen.day) - articleDay) / DAY_MS,
+        );
+        if (inDays < 0) {
+          chip = '';
+          future = false;
+        } else if (inDays < 60) {
+          chip = agendaDayChip(inDays);
+          future = true;
+        }
+      }
     }
-    beats.push({ when, what, inMonths });
+    beats.push({ when, what, chip, future });
   }
   return beats;
 }
 
 function buildAgenda(beats: AgendaBeat[]): string {
-  const nextIndex = beats.findIndex(beat => beat.inMonths !== null && beat.inMonths > 0);
+  const nextIndex = beats.findIndex(beat => beat.future === true);
   const rows = beats
     .map((beat, i) => {
-      const chipText = beat.inMonths !== null ? agendaChip(beat.inMonths) : '';
+      const chipText = beat.chip;
       const chip = chipText ? `<span class="lect-agenda-chip">${esc(chipText)}</span>` : '';
       return (
         `<li class="lect-agenda-item"${i === nextIndex ? ' data-next="true"' : ''}>` +
