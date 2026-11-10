@@ -686,6 +686,11 @@ against each other on several measures at once.
 - A row whose two values aren't both numeric renders as a **bare text row with
   no bars**, so a `Sede — Nyon vs Zúrich` line can sit under the money without
   faking a magnitude.
+  **A year is a number to the parser** (2026-11-10, São Paulo GP renewal):
+  `Contrato con la F1 — hasta 2035 vs hasta 2028` went live as two nearly
+  equal bars, comparing the magnitudes of two dates. Dates, years and
+  seasons do not belong in a Duelo row. Leave them in prose, or put them in a
+  `Cronología` or `Calendario`. The publisher approved removing the row.
 - A value with a leading minus (`−€46.2M`) bars its magnitude in the loss
   treatment, red bar and red figure, so a `Resultado del año` row can sit next
   to revenue rows without a longer bar reading as a bigger win.
