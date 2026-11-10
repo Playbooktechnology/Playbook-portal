@@ -296,15 +296,16 @@ World Football's original interview for Inter de Limeira) and never needed to
 be re-derived from principle, but it also was not written down anywhere until
 now, so a future run had no faster path than reasoning it out cold.
 
-**Standing rule since 2026-11-10: 2Playbook never goes on `Fuentes:`, and the
-line carries three sources at most** (publisher, Athletic × Unique Box run:
-*"recuerda que 2Playbook no puede ir en fuentes y que máximo son 3 fuentes
-por noticia"*). This is no longer a per-link instruction. A fact that only
-2Playbook carries either finds another source or leaves the draft. On that
-run, that cut the Instagram quote and the operator's name. Neither
-`sourceUrl` nor the `Fuentes:` line may point at 2Playbook. When more than
-three sources were used, keep the primary issuer and the outlets with
-original reporting, and leave the rest in the boleta notes.
+**2Playbook is never a per-link instruction. It is a standing rule.** The
+rule lives in `format-tiers.md` §6 (with Récord, Estadio and Mediotiempo, and
+the three-source cap) and `images.md` (cover credit), and it is item 16 of the
+§12 checklist. Do not restate it here. What this step adds is practical: when
+the link the human hands over *is* a 2Playbook piece, read it for facts, then
+find each fact somewhere else before drafting. A fact that only 2Playbook
+carries leaves the draft (on the Athletic × Unique Box run, 2026-11-10, that
+cut an Instagram quote). The publisher had to remind the session of the rule
+on that run, and the audit that followed found four live notes crediting
+2Playbook (`format-tiers.md` §6 has the record).
 
 ### A feature with interview quotes is not the interviewee's word
 
