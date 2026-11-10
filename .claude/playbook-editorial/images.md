@@ -68,6 +68,17 @@ file named `…_1200px.jpg` stays at 1200 and the label must say so. And
 reports that share a slug prefix will overwrite each other if you name local
 files by prefix.
 
+**Offer four or five covers on the first pass, not three** (publisher,
+2026-11-05 to 11-10: *"busca más opciones de portada"* on the Nadal, USOPC
+and College Football Playoff runs, and *"dame más opciones de imágenes"* on
+Ollamani). Each time, the pick came from the second batch: the Indiana
+Rose Bowl celebration for the CFP, the Team USA boat on the Seine for the
+USOPC. The first draft should cover the shapes the editor reaches for: a
+celebration or moment of the event itself, live game action, the venue full
+of people, and one frame tied to the story's mechanism (on-campus games →
+a campus stadium). On the CFP run, DVIDS had all four of those within one
+search.
+
 **An official site is not proof a photo is free** (2026-11-05, USOPC × private
 investors). The first covers for this piece came from teamusa.com /
 usopc.org, offered as "Foto: USOPC". The site's own markup credits its
