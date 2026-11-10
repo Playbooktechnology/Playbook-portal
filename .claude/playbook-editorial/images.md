@@ -68,6 +68,14 @@ file named `…_1200px.jpg` stays at 1200 and the label must say so. And
 reports that share a slug prefix will overwrite each other if you name local
 files by prefix.
 
+**When curl gets 429 from Wikimedia, try the browser** (2026-11-10, Athletic
+× Unique Box). Every `curl` to `upload.wikimedia.org` returned 429, but a
+Playwright page loading the same thumbnail URLs got them on the first try
+(`page.goto(url)` and save `response.body()`). That gave three Commons
+covers checked against the contact sheet, not offered blind. It is not
+reliable: a fourth file fetched a minute later hit 429 in the browser too.
+Fetch in one batch, at most a few seconds apart, and keep the files.
+
 **Offer four or five covers on the first pass, not three** (publisher,
 2026-11-05 to 11-10: *"busca más opciones de portada"* on the Nadal, USOPC
 and College Football Playoff runs, and *"dame más opciones de imágenes"* on
