@@ -296,6 +296,16 @@ World Football's original interview for Inter de Limeira) and never needed to
 be re-derived from principle, but it also was not written down anywhere until
 now, so a future run had no faster path than reasoning it out cold.
 
+**Standing rule since 2026-11-10: 2Playbook never goes on `Fuentes:`, and the
+line carries three sources at most** (publisher, Athletic × Unique Box run:
+*"recuerda que 2Playbook no puede ir en fuentes y que máximo son 3 fuentes
+por noticia"*). This is no longer a per-link instruction. A fact that only
+2Playbook carries either finds another source or leaves the draft. On that
+run, that cut the Instagram quote and the operator's name. Neither
+`sourceUrl` nor the `Fuentes:` line may point at 2Playbook. When more than
+three sources were used, keep the primary issuer and the outlets with
+original reporting, and leave the rest in the boleta notes.
+
 ### A feature with interview quotes is not the interviewee's word
 
 (2026-11-04, LMB × Fanki run.) Excélsior's April feature on the LMB carried
