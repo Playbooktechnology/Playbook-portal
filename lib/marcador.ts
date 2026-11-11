@@ -1,5 +1,5 @@
 import type { Acuerdo, Alcance, Tipo } from './marcador-schema';
-import { isoWeek, periodStart, type PeriodKey } from './deals';
+import { MARCADOR_ARCHIVE_AFTER_DAYS, isoWeek, periodStart, type PeriodKey } from './deals';
 
 // Pure logic for El Marcador v2 (Fase 4, 2026-11-11): the homepage widget
 // reads data/marcador.json records (lib/data/marcador.ts) and decides
@@ -248,4 +248,13 @@ export function filterAcuerdos(acuerdos: Acuerdo[], f: MarcadorFilters, today: s
         (!q || fold(`${a.titulo} ${a.partes.join(' ')} ${a.resumen} ${paisLabel(a)} ${DEPORTE_LABEL[a.deporte] ?? a.deporte}`).includes(q)),
     )
     .sort(byDateDesc);
+}
+
+/**
+ * Modo archivo: the newest deal is more than FRESHNESS.marcadorArchiveAfterDays
+ * old (or there are none). One rule for the widget, /marcador and the alert.
+ */
+export function isArchive(acuerdos: Acuerdo[], today: string): boolean {
+  const latest = lastUpdated(acuerdos);
+  return latest === null || daysBetween(latest, today) > MARCADOR_ARCHIVE_AFTER_DAYS;
 }

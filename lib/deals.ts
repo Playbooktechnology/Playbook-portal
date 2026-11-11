@@ -1,8 +1,10 @@
 import { FRESHNESS } from './freshness';
 
-// Pure logic for El Marcador de Negocios (homepage rail module + /marcador).
-// No database access here, so the client-side table on /marcador can import
-// the same labels, filters and formatting the server components use.
+// Shared, client-safe pieces of El Marcador: CDMX dates and ISO weeks, the
+// period filter and the archive threshold (used by lib/marcador.ts, the v2
+// logic), plus the v1 `Deal` shape that /admin's legacy Marcador tab still
+// edits in the `deals` table. The public site reads data/marcador.json since
+// 2026-11-11.
 
 export const DEAL_TYPES = [
   { key: 'patrocinio', label: 'Patrocinio' },
@@ -156,13 +158,6 @@ export function formatUsdShort(amount: number): string {
   return `US$${groupThousands(amount)}`;
 }
 
-// Long form for headline figures, in the site's own register:
-// "US$6,000 millones".
-export function formatUsdLong(amount: number): string {
-  if (amount >= 1e6) return `US$${millions(amount)} millones`;
-  return `US$${groupThousands(amount)}`;
-}
-
 // "Revelado" means one of the parties announced the figure (a release, a
 // regulatory filing). A figure only the press has published is stored too,
 // but shown as an estimate (~) and never added to the confirmed total.
@@ -175,86 +170,6 @@ export function dealAmountLabel(deal: Deal): string {
   return deal.amountDisclosed ? formatUsdShort(deal.amountUsd) : `~${formatUsdShort(deal.amountUsd)}`;
 }
 
-// Only confirmed deals with a disclosed figure add to the year's total.
-export function countsTowardTotal(deal: Deal): boolean {
-  return deal.status === 'confirmado' && hasKnownAmount(deal);
-}
-
-// ----------------------------------------------------------------- Selection
-
-function byDateDesc(a: Deal, b: Deal): number {
-  return b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt);
-}
-
-function byAmountDesc(a: Deal, b: Deal): number {
-  return (b.amountUsd ?? -1) - (a.amountUsd ?? -1) || byDateDesc(a, b);
-}
-
-export function inRange(deal: Deal, start: string, end: string): boolean {
-  return deal.date >= start && deal.date <= end;
-}
-
-// A flagged deal older than this stops leading the card on its own: past
-// two weeks the rail shows the newest confirmed deal instead, so the
-// module never sits on a stale pick between editorial updates.
-// The number lives with the other homepage age limits in lib/freshness.ts.
-export const FEATURED_MAX_AGE_DAYS = FRESHNESS.marcadorFeaturedMaxAgeDays;
-
-export type FeaturedMode = 'semana' | 'destacado' | 'reciente';
-
-function daysBetween(from: string, to: string): number {
-  return Math.round((toUtc(to).getTime() - toUtc(from).getTime()) / 86400000);
-}
-
-// The featured card, in three steps:
-//   1. this week's flagged deal ("El acuerdo de la semana");
-//   2. otherwise the latest flagged deal, while it is at most
-//      FEATURED_MAX_AGE_DAYS old ("Último destacado · fecha");
-//   3. otherwise the most recent CONFIRMED deal ("Más reciente · fecha"),
-//      falling back to the newest deal of any status only when nothing is
-//      confirmed. Never null unless the table is empty.
-// Both surfaces (rail and /marcador) call this, so their card can't differ.
-export function selectFeatured(
-  deals: Deal[],
-  today: string,
-): { deal: Deal; mode: FeaturedMode } | null {
-  const week = isoWeek(today);
-  const flagged = deals.filter(d => d.featured).sort(byDateDesc);
-  const thisWeek = flagged.find(d => inRange(d, week.start, week.end));
-  if (thisWeek) return { deal: thisWeek, mode: 'semana' };
-  if (flagged[0] && daysBetween(flagged[0].date, today) <= FEATURED_MAX_AGE_DAYS) {
-    return { deal: flagged[0], mode: 'destacado' };
-  }
-  const byDate = [...deals].sort(byDateDesc);
-  const latest = byDate.find(d => d.status === 'confirmado') ?? byDate[0];
-  return latest ? { deal: latest, mode: 'reciente' } : null;
-}
-
-export function featuredKicker(featured: { deal: Deal; mode: FeaturedMode }): string {
-  switch (featured.mode) {
-    case 'semana':
-      return 'El acuerdo de la semana';
-    case 'destacado':
-      return `Último destacado · ${shortDate(featured.deal.date)}`;
-    default:
-      return `Más reciente · ${shortDate(featured.deal.date)}`;
-  }
-}
-
-// The week label both surfaces print, from one place: the rail's compact
-// "Sem. 44" and /marcador's "Semana 44 · 26 oct 2026 al 1 nov 2026". The
-// date range only shows when the week actually has deals — a range over an
-// empty week reads as if something were listed there.
-export function weekLabel(deals: Deal[], today: string): { week: number; short: string; long: string } {
-  const w = isoWeek(today);
-  const hasDeals = deals.some(d => inRange(d, w.start, w.end));
-  return {
-    week: w.week,
-    short: `Sem. ${w.week}`,
-    long: hasDeals ? `Semana ${w.week} · ${shortDate(w.start)} al ${shortDate(w.end)}` : `Semana ${w.week}`,
-  };
-}
-
 // ------------------------------------------------- Modo archivo (2026-11-11)
 // The rail used to print a weekly cadence computed from TODAY's date — "Sem.
 // 46", "Semana sin operaciones confirmadas", "Próxima: viernes 13 nov" —
@@ -264,93 +179,10 @@ export function weekLabel(deals: Deal[], today: string): { week: number; short: 
 // gone. Instead, when the newest deal is older than
 // FRESHNESS.marcadorArchiveAfterDays, the rail says plainly what it has: the
 // latest deals with their real dates, no week number, no next update.
-// The same threshold drives the daily alert (/api/salud/portada).
+// The rule itself lives in lib/marcador.ts (isArchive), shared by the widget,
+// /marcador and the daily alert (/api/salud/portada).
 
 export const MARCADOR_ARCHIVE_AFTER_DAYS = FRESHNESS.marcadorArchiveAfterDays;
-
-/** Date of the newest deal (YYYY-MM-DD), or null when the table is empty. */
-export function latestDealDate(deals: Deal[]): string | null {
-  return deals.reduce<string | null>((max, d) => (max === null || d.date > max ? d.date : max), null);
-}
-
-/** Days from the newest deal to `today` (both CDMX dates); null when empty. */
-export function daysSinceLatestDeal(deals: Deal[], today: string): number | null {
-  const latest = latestDealDate(deals);
-  return latest ? daysBetween(latest, today) : null;
-}
-
-export function isMarcadorArchive(deals: Deal[], today: string): boolean {
-  const age = daysSinceLatestDeal(deals, today);
-  return age === null || age > MARCADOR_ARCHIVE_AFTER_DAYS;
-}
-
-/** The newest deals, newest first: what the archive-mode rail lists. */
-export function latestDeals(deals: Deal[], limit = 4): Deal[] {
-  return [...deals].sort(byDateDesc).slice(0, limit);
-}
-
-// "También esta semana": the week's other deals, biggest first. A week with
-// no other deals shows the latest ones instead, and says so.
-export function railDeals(
-  deals: Deal[],
-  week: { start: string; end: string },
-  excludeId: string | undefined,
-  limit = 3,
-): { deals: Deal[]; thisWeek: boolean } {
-  const others = deals.filter(d => d.id !== excludeId);
-  const weekly = others.filter(d => inRange(d, week.start, week.end)).sort(byAmountDesc);
-  if (weekly.length) return { deals: weekly.slice(0, limit), thisWeek: true };
-  return { deals: others.sort(byDateDesc).slice(0, limit), thisWeek: false };
-}
-
-export function yearTotal(deals: Deal[], year: number): { total: number; count: number } {
-  const counted = deals.filter(d => d.date.startsWith(`${year}-`) && countsTowardTotal(d));
-  return { total: counted.reduce((sum, d) => sum + (d.amountUsd ?? 0), 0), count: counted.length };
-}
-
-export function yearStats(deals: Deal[], year: number) {
-  const ofYear = deals.filter(d => d.date.startsWith(`${year}-`));
-  const { total, count } = yearTotal(deals, year);
-  return {
-    total,
-    countedDeals: count,
-    tracked: ofYear.length,
-    disclosed: ofYear.filter(hasKnownAmount).length,
-    countries: new Set(ofYear.map(d => d.country).filter(Boolean)).size,
-  };
-}
-
-// Ranks by any known figure, estimates included (they render with ~), since
-// the biggest deals of a year are often the ones nobody announces a price for.
-export function topDeals(deals: Deal[], year: number, limit = 5): Deal[] {
-  return deals
-    .filter(d => d.date.startsWith(`${year}-`) && d.amountUsd != null)
-    .sort(byAmountDesc)
-    .slice(0, limit);
-}
-
-export function countByType(deals: Deal[], year: number): { key: string; label: string; count: number }[] {
-  const ofYear = deals.filter(d => d.date.startsWith(`${year}-`));
-  return DEAL_TYPES.map(t => ({ key: t.key, label: t.label, count: ofYear.filter(d => d.type === t.key).length }));
-}
-
-// Three figures for the featured card. Editor-declared ones win; the gaps
-// are filled from the deal's own fields so the card always has three.
-export function featuredFigures(deal: Deal): KeyFigure[] {
-  const declared = deal.keyFigures.filter(f => f.value && f.label).slice(0, 3);
-  const derived: KeyFigure[] = [
-    { value: dealAmountLabel(deal), label: 'monto' },
-    ...(deal.duration ? [{ value: deal.duration, label: 'duración' }] : []),
-    { value: deal.date.slice(0, 4), label: 'anuncio' },
-    ...(deal.country ? [{ value: deal.country, label: 'país' }] : []),
-  ];
-  const used = new Set(declared.map(f => f.label.toLowerCase()));
-  for (const f of derived) {
-    if (declared.length >= 3) break;
-    if (!used.has(f.label)) declared.push(f);
-  }
-  return declared;
-}
 
 export function dealTitle(deal: Pick<Deal, 'brand' | 'counterparty'>): string {
   return `${deal.brand} × ${deal.counterparty}`;
@@ -381,23 +213,4 @@ export function periodStart(period: PeriodKey, today: string): string {
     default:
       return '';
   }
-}
-
-export type DealFilters = { type: string; country: string; sport: string; period: PeriodKey; query: string };
-
-function fold(s: string): string {
-  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-}
-
-export function filterDeals(deals: Deal[], f: DealFilters, today: string): Deal[] {
-  const start = periodStart(f.period, today);
-  const q = fold(f.query.trim());
-  return deals.filter(
-    d =>
-      (!f.type || d.type === f.type) &&
-      (!f.country || d.country === f.country) &&
-      (!f.sport || d.sport === f.sport) &&
-      (!start || d.date >= start) &&
-      (!q || fold(`${d.brand} ${d.counterparty} ${d.summary} ${d.country} ${d.sport}`).includes(q)),
-  );
 }

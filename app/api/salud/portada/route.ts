@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getDeclaredCifras, getPublicArticles } from '@/lib/data/articles';
-import { getAllDeals } from '@/lib/data/deals';
+import { getAcuerdosPublicos } from '@/lib/data/marcador';
 import { CIFRA_MAX_AGE_DAYS, selectDailyFigure } from '@/lib/daily-figure';
-import { MARCADOR_ARCHIVE_AFTER_DAYS, daysSinceLatestDeal, dealTitle, latestDeals } from '@/lib/deals';
+import { MARCADOR_ARCHIVE_AFTER_DAYS } from '@/lib/deals';
+import { daysBetween, isArchive, lastUpdated } from '@/lib/marcador';
 import { ageInDays, mexicoDay } from '@/lib/freshness';
 import { articlePath } from '@/lib/article-url';
 import { SITE_URL } from '@/lib/site-url';
@@ -14,24 +15,21 @@ import { SITE_URL } from '@/lib/site-url';
 //
 // Public and unauthenticated on purpose: everything here is already on the
 // homepage, and it spares the Action a database secret. The decisions come
-// from the same functions the rail renders with (lib/deals.ts,
+// from the same functions the rail renders with (lib/marcador.ts,
 // lib/daily-figure.ts), so the alert checks what readers actually see.
 export const dynamic = 'force-dynamic';
 
-// deals.article_url is stored site-relative ("/articulo/…"); the issue needs a link.
-function absoluteUrl(url: string): string | null {
-  if (!url) return null;
-  return url.startsWith('/') ? `${SITE_URL}${url}` : url;
-}
 
 export async function GET() {
   const now = new Date();
   try {
-    const [deals, articles, declared] = await Promise.all([getAllDeals(), getPublicArticles(), getDeclaredCifras()]);
+    const acuerdos = getAcuerdosPublicos();
+    const [articles, declared] = await Promise.all([getPublicArticles(), getDeclaredCifras()]);
     const today = mexicoDay(now);
 
-    const newest = latestDeals(deals, 1)[0] ?? null;
-    const dealAge = daysSinceLatestDeal(deals, today);
+    const latest = lastUpdated(acuerdos);
+    const newest = acuerdos.filter(a => a.fecha === latest).sort((a, b) => a.id.localeCompare(b.id))[0] ?? null;
+    const dealAge = latest ? daysBetween(latest, today) : null;
 
     // `ultima`: the newest figure the rail could show at any age, so the
     // alert can say what the last one was even when the block is hidden.
@@ -45,9 +43,9 @@ export async function GET() {
         hoy: today,
         marcador: {
           umbralDias: MARCADOR_ARCHIVE_AFTER_DAYS,
-          desactualizado: dealAge === null || dealAge > MARCADOR_ARCHIVE_AFTER_DAYS,
+          desactualizado: isArchive(acuerdos, today),
           diasDesdeUltimo: dealAge,
-          ultimo: newest && { fecha: newest.date, titulo: dealTitle(newest), url: absoluteUrl(newest.articleUrl) },
+          ultimo: newest && { fecha: newest.fecha, titulo: newest.titulo, url: newest.url },
         },
         cifra: {
           umbralDias: CIFRA_MAX_AGE_DAYS,

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAcuerdosPublicos } from '@/lib/data/marcador';
-import { MARCADOR_ARCHIVE_AFTER_DAYS, todayInMexico } from '@/lib/deals';
+import { todayInMexico } from '@/lib/deals';
 import {
   ALCANCE_LABEL,
   DEPORTE_LABEL,
@@ -10,8 +10,8 @@ import {
   activeWeek,
   countByTipo,
   dateLabel,
-  daysBetween,
   heroFigure,
+  isArchive,
   lastUpdated,
   montoCell,
   paisLabel,
@@ -50,7 +50,7 @@ export default function MarcadorPage() {
   const today = todayInMexico();
   const year = today.slice(0, 4);
   const latest = lastUpdated(acuerdos);
-  const archive = !latest || daysBetween(latest, today) > MARCADOR_ARCHIVE_AFTER_DAYS;
+  const archive = isArchive(acuerdos, today);
   const week = archive ? null : activeWeek(acuerdos, today);
   const score = week && weekScore(week);
   const featured = week && pickFeatured(week);

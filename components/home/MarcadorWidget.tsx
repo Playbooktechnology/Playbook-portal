@@ -1,14 +1,13 @@
 import Link from 'next/link';
 import type { Acuerdo } from '@/lib/marcador-schema';
-import { MARCADOR_ARCHIVE_AFTER_DAYS } from '@/lib/deals';
 import {
   ALCANCE_LABEL,
   TIPO_LABEL,
   activeWeek,
   dateLabel,
   dayLabel,
-  daysBetween,
   heroFigure,
+  isArchive,
   lastUpdated,
   montoCell,
   pickFeatured,
@@ -58,7 +57,7 @@ export function MarcadorWidget({ acuerdos, today }: { acuerdos: Acuerdo[]; today
     </>
   );
 
-  if (daysBetween(latest, today) > MARCADOR_ARCHIVE_AFTER_DAYS) {
+  if (isArchive(acuerdos, today)) {
     return (
       <section className="side-module side-mk side-mk--archive" aria-labelledby="side-mk-title">
         <div className="side-mk-head">

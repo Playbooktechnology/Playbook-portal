@@ -5,16 +5,19 @@
 //   npm run test:frescura
 import assert from 'node:assert/strict';
 import { cifraDateLabel, cifraHeading, selectDailyFigure } from '../lib/daily-figure';
-import { isMarcadorArchive, latestDeals, type Deal } from '../lib/deals';
 import { mexicoDay } from '../lib/freshness';
 import { extractPullFigure } from '../lib/product-hubs';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import type { Acuerdo } from '../lib/marcador-schema';
-import { EMPTY_FILTERS, activeWeek, filterAcuerdos, heroFigure, pickFeatured, resumenCorto, rowDeals, siteHref, weekScore, yearKpis } from '../lib/marcador';
+import { EMPTY_FILTERS, activeWeek, isArchive, filterAcuerdos, heroFigure, pickFeatured, resumenCorto, rowDeals, siteHref, weekScore, yearKpis } from '../lib/marcador';
 import { getAcuerdos, getAcuerdosPublicos } from '../lib/data/marcador';
 import { alcanceDesdePaises, cifraDeFrase, frasesConMonto, idPara } from '../lib/marcador-propuesta';
 import { MarcadorWidget } from '../components/home/MarcadorWidget';
+import { spawnSync } from 'node:child_process';
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 let failed = 0;
 function check(name: string, fn: () => void) {
@@ -27,27 +30,31 @@ function check(name: string, fn: () => void) {
   }
 }
 
-// ——— El Marcador
-function deal(date: string, brand: string): Deal {
-  return {
-    id: `${date}-${brand}`, date, brand, counterparty: 'X', type: 'patrocinio', country: 'México', sport: '',
-    duration: '', amountUsd: null, amountDisclosed: false, status: 'confirmado', summary: '', articleUrl: '',
-    featured: false, playbookRead: null, keyFigures: [], createdAt: `${date}T12:00:00Z`, updatedAt: `${date}T12:00:00Z`,
-  };
-}
-const deals = [deal('2026-10-31', 'A'), deal('2026-10-20', 'B'), deal('2026-10-25', 'C'), deal('2026-09-21', 'D'), deal('2026-10-28', 'E')];
+// ——— El Marcador: modo archivo (Fase 2)
+const archivo = ['2026-10-31', '2026-10-20', '2026-10-25', '2026-09-21', '2026-10-28'].map((f, i) => acuerdo(f, `a${i}`));
 
 check('Marcador: 10 days after the newest deal stays active', () => {
-  assert.equal(isMarcadorArchive(deals, '2026-11-10'), false);
+  assert.equal(isArchive(archivo, '2026-11-10'), false);
 });
 check('Marcador: 11 days after the newest deal enters archive mode', () => {
-  assert.equal(isMarcadorArchive(deals, '2026-11-11'), true);
+  assert.equal(isArchive(archivo, '2026-11-11'), true);
 });
-check('Marcador: an empty table counts as archive', () => {
-  assert.equal(isMarcadorArchive([], '2026-11-11'), true);
+check('Marcador: an empty file counts as archive', () => {
+  assert.equal(isArchive([], '2026-11-11'), true);
 });
-check('Marcador: archive mode lists the 4 newest deals, newest first', () => {
-  assert.deepEqual(latestDeals(deals).map(d => d.date), ['2026-10-31', '2026-10-28', '2026-10-25', '2026-10-20']);
+check('Marcador: archive mode lists the 4 newest deals, newest first, with their dates', () => {
+  const html = renderToStaticMarkup(createElement(MarcadorWidget, { acuerdos: archivo, today: '2026-11-11' }));
+  const dates = [...html.matchAll(/<time dateTime="([\d-]+)"/g)].map(m => m[1]);
+  assert.deepEqual(dates, ['2026-10-31', '2026-10-28', '2026-10-25', '2026-10-20']);
+  assert.ok(!html.includes('Semana') && !html.includes('Acuerdo de la semana'));
+});
+check('Marcador: an invalid record stops the build with the record and the field named', () => {
+  const bad = [{ ...acuerdo('2026-11-06', 'fox-roku'), tipo: 'sponsor' }];
+  const file = join(mkdtempSync(join(tmpdir(), 'marcador-')), 'marcador.json');
+  writeFileSync(file, JSON.stringify(bad));
+  const run = spawnSync('npx', ['tsx', 'scripts/validate-marcador.ts', file], { encoding: 'utf8' });
+  assert.equal(run.status, 1);
+  assert.match(run.stderr, /registro 1 \(2026-11-06-fox-roku\) · tipo: valor no permitido/);
 });
 
 // ——— La cifra del día
