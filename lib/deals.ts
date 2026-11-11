@@ -255,50 +255,38 @@ export function weekLabel(deals: Deal[], today: string): { week: number; short: 
   };
 }
 
-// ------------------------------------------------- Weekly cadence (A7)
-// El Marcador se actualiza cada viernes. Both surfaces print the same line
-// (components/marcador/MarcadorCadence.tsx): the week's count, when the table
-// last changed and the next scheduled Friday — computed from today's date on
-// every request, never stored.
+// ------------------------------------------------- Modo archivo (2026-11-11)
+// The rail used to print a weekly cadence computed from TODAY's date — "Sem.
+// 46", "Semana sin operaciones confirmadas", "Próxima: viernes 13 nov" —
+// whether or not anyone had loaded a deal. With the table untouched since 23
+// sep, the week kept advancing and the promise kept moving to the next Friday,
+// so the module looked alive while frozen for seven weeks. That cadence is
+// gone. Instead, when the newest deal is older than
+// FRESHNESS.marcadorArchiveAfterDays, the rail says plainly what it has: the
+// latest deals with their real dates, no week number, no next update.
+// The same threshold drives the daily alert (/api/salud/portada).
 
-/** Day (YYYY-MM-DD, CDMX) of the most recent edit to the table, or null when empty. */
-export function lastUpdateDay(deals: Deal[]): string | null {
-  const latest = deals.reduce<string>((max, d) => {
-    const t = d.updatedAt > d.createdAt ? d.updatedAt : d.createdAt;
-    return t > max ? t : max;
-  }, '');
-  return latest ? todayInMexico(new Date(latest)) : null;
+export const MARCADOR_ARCHIVE_AFTER_DAYS = FRESHNESS.marcadorArchiveAfterDays;
+
+/** Date of the newest deal (YYYY-MM-DD), or null when the table is empty. */
+export function latestDealDate(deals: Deal[]): string | null {
+  return deals.reduce<string | null>((max, d) => (max === null || d.date > max ? d.date : max), null);
 }
 
-/**
- * The next scheduled update: the first Friday after the last update that is
- * not already in the past. A Friday whose update has happened points to the
- * following one; a Friday still waiting for it points to itself.
- */
-export function nextUpdateFriday(today: string, lastUpdate: string | null): string {
-  let d = lastUpdate && lastUpdate >= today ? addDays(lastUpdate, 1) : today;
-  while (toUtc(d).getUTCDay() !== 5) d = addDays(d, 1);
-  return d;
+/** Days from the newest deal to `today` (both CDMX dates); null when empty. */
+export function daysSinceLatestDeal(deals: Deal[], today: string): number | null {
+  const latest = latestDealDate(deals);
+  return latest ? daysBetween(latest, today) : null;
 }
 
-/** "viernes 30 oct" */
-export function fridayLabel(date: string): string {
-  const [, m, d] = date.split('-');
-  return `viernes ${Number(d)} ${MONTHS[Number(m) - 1]}`;
+export function isMarcadorArchive(deals: Deal[], today: string): boolean {
+  const age = daysSinceLatestDeal(deals, today);
+  return age === null || age > MARCADOR_ARCHIVE_AFTER_DAYS;
 }
 
-/** "3 acuerdos esta semana" / "Semana sin operaciones confirmadas" (+ reported, when any). */
-export function weekCountLabel(deals: Deal[], today: string): string {
-  const w = isoWeek(today);
-  const inWeek = deals.filter(d => inRange(d, w.start, w.end));
-  const confirmed = inWeek.filter(d => d.status === 'confirmado').length;
-  const reported = inWeek.length - confirmed;
-  if (!confirmed) {
-    return reported
-      ? `Semana sin operaciones confirmadas · ${reported} ${reported === 1 ? 'reportada' : 'reportadas'}`
-      : 'Semana sin operaciones confirmadas';
-  }
-  return `${inWeek.length} ${inWeek.length === 1 ? 'acuerdo' : 'acuerdos'} esta semana`;
+/** The newest deals, newest first: what the archive-mode rail lists. */
+export function latestDeals(deals: Deal[], limit = 4): Deal[] {
+  return [...deals].sort(byDateDesc).slice(0, limit);
 }
 
 // "También esta semana": the week's other deals, biggest first. A week with

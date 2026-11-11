@@ -7,15 +7,18 @@ import {
   featuredFigures,
   featuredKicker,
   formatUsdShort,
+  isMarcadorArchive,
   isoWeek,
+  latestDeals,
   railDeals,
   selectFeatured,
+  shortDate,
   todayInMexico,
   weekLabel,
   yearTotal,
+  type Deal,
 } from '@/lib/deals';
 import { DealLink } from '@/components/marcador/DealLink';
-import { MarcadorCadence } from '@/components/marcador/MarcadorCadence';
 
 // ——— "El Marcador de Negocios" (sidebar module, replaced El tablero de la
 // FIFA 2026-09-23). Reads the `deals` table through lib/data/deals.ts, on the
@@ -27,9 +30,16 @@ import { MarcadorCadence } from '@/components/marcador/MarcadorCadence';
 // deal (lib/deals.ts selectFeatured says which, and the kicker says so), and the list
 // below falls back to the latest deals. Renders nothing only when the table
 // is empty.
+//
+// Modo archivo (2026-11-11): when the newest deal is older than
+// FRESHNESS.marcadorArchiveAfterDays, none of the weekly framing is true any
+// more, so the rail drops it — no week number, no featured card, no total —
+// and lists the latest deals with their real dates (lib/deals.ts).
 export async function DealsBoard() {
   const deals = await getAllDeals();
+  if (!deals.length) return null;
   const today = todayInMexico();
+  if (isMarcadorArchive(deals, today)) return <DealsArchive deals={deals} year={today.slice(0, 4)} />;
   const week = isoWeek(today);
   const pick = selectFeatured(deals, today);
   if (!pick) return null;
@@ -46,7 +56,6 @@ export async function DealsBoard() {
         <h2 className="side-title" id="side-deals-title">El Marcador de Negocios</h2>
         <span className="side-deals-week">{label.short}</span>
       </div>
-      <MarcadorCadence deals={deals} today={today} className="side-deals-status" />
 
       <article className="side-deals-card">
         <p className="side-deals-kicker">
@@ -93,6 +102,33 @@ export async function DealsBoard() {
         </p>
       )}
 
+      <Link className="side-deals-cta" data-analytics="hp_click_marcador" href="/marcador">
+        Ver el marcador completo →
+      </Link>
+    </section>
+  );
+}
+
+function DealsArchive({ deals, year }: { deals: Deal[]; year: string }) {
+  return (
+    <section className="side-module side-deals side-deals--archive" aria-labelledby="side-deals-title">
+      <div className="side-deals-head">
+        <h2 className="side-title" id="side-deals-title">El Marcador de Negocios</h2>
+      </div>
+      <p className="side-deals-sub side-deals-sub--archive">Los acuerdos de {year}</p>
+      <ul className="side-deals-list">
+        {latestDeals(deals).map(d => (
+          <li key={d.id}>
+            <DealLink href={d.articleUrl || '/marcador'} className="side-deals-row" analyticsEvent="hp_click_marcador">
+              <span className="side-deals-row-name">{dealTitle(d)}</span>
+              <span className="side-deals-row-amount">{dealAmountLabel(d)}</span>
+              <span className="side-deals-row-type">
+                <time dateTime={d.date}>{shortDate(d.date)}</time> · {DEAL_TYPE_LABEL[d.type] ?? d.type}
+              </span>
+            </DealLink>
+          </li>
+        ))}
+      </ul>
       <Link className="side-deals-cta" data-analytics="hp_click_marcador" href="/marcador">
         Ver el marcador completo →
       </Link>

@@ -81,10 +81,11 @@ export function DealsTable({ deals, today }: { deals: Deal[]; today: string }) {
 
       {rows.length === 0 ? (
         <p className="mk-empty">
-          {/* "Esta semana" with nothing else filtered is the weekly view: an
-              empty one is news in itself, not a filter mismatch (A7). */}
+          {/* "Esta semana" with nothing else filtered is the weekly view: say
+              what the table holds, not a verdict on the week — an empty week
+              usually means nothing was loaded yet (2026-11-11). */}
           {filters.period === 'semana' && !filters.type && !filters.country && !filters.sport && !filters.query
-            ? 'Semana sin operaciones confirmadas.'
+            ? 'Todavía no hay acuerdos registrados esta semana.'
             : 'Ningún acuerdo coincide con estos filtros.'}
         </p>
       ) : (

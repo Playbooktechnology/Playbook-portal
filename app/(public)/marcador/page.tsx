@@ -10,6 +10,8 @@ import {
   featuredFigures,
   featuredKicker,
   formatUsdLong,
+  isMarcadorArchive,
+  latestDealDate,
   selectFeatured,
   shortDate,
   todayInMexico,
@@ -21,7 +23,6 @@ import {
 import { SITE_URL } from '@/lib/site-url';
 import { DealsTable } from '@/components/marcador/DealsTable';
 import { DealLink } from '@/components/marcador/DealLink';
-import { MarcadorCadence } from '@/components/marcador/MarcadorCadence';
 import { NewsletterForm } from '@/components/shared/NewsletterForm';
 
 // /marcador — the full view behind the homepage rail's "El Marcador de
@@ -42,6 +43,7 @@ export default async function MarcadorPage() {
   const deals = await getAllDeals();
   const today = todayInMexico();
   const label = weekLabel(deals, today);
+  const latest = latestDealDate(deals);
   const year = Number(today.slice(0, 4));
   const stats = yearStats(deals, year);
   const pick = selectFeatured(deals, today);
@@ -60,9 +62,10 @@ export default async function MarcadorPage() {
           patrocinios, derechos de transmisión, retail, inversión y estadios.
         </p>
         <p className="mk-updated">
-          {label.long}
+          {/* Modo archivo: a week label over a frozen table reads as if this
+              week had been reviewed. Say when the last deal is from instead. */}
+          {latest && isMarcadorArchive(deals, today) ? `Último acuerdo registrado: ${shortDate(latest)}` : label.long}
         </p>
-        <MarcadorCadence deals={deals} today={today} className="mk-cadence" />
       </header>
 
       {deals.length === 0 ? (

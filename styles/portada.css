@@ -70,6 +70,14 @@
 /* ——— "La cifra del día" (sidebar module, round 2): the day's biggest
    figure as a counting green chip — Scoreboard mechanics in the rail,
    derived from the ranked pool with zero CMS work. ——— */
+/* "La cifra del día" / "La cifra" + the figure's own date (2026-11-11):
+   same head treatment as El Marcador's, title left, date right. */
+.side-cifra-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border-top:2px solid var(--ink);}
+.side-cifra-head .side-title{border-top:none;}
+.side-cifra-date{
+  font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-txt);white-space:nowrap;
+}
 .side-cifra-card{display:flex;flex-direction:column;gap:8px;padding-top:12px;color:inherit;}
 .side-cifra-value{
   align-self:flex-start;font-family:var(--serif-display);font-weight:400;
@@ -199,9 +207,9 @@
   font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
   font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-txt);
 }
-/* A7: this week's count and the update cadence, same text as /marcador. */
-.side-deals-status{display:flex;flex-direction:column;gap:2px;margin:0;font-size:12px;line-height:1.4;color:var(--gray-txt);}
-.side-deals-status span:first-child{font-weight:600;color:var(--ink);}
+/* Modo archivo (2026-11-11): the newest deal is over 10 days old, so the
+   rail drops the week and the featured card and lists dated deals. */
+.side-deals-sub--archive{margin:0;color:var(--gray-txt);}
 .side-deals-card{
   background:var(--ink-fixed);color:#fff;padding:16px 16px 14px;
   display:flex;flex-direction:column;gap:8px;border:1px solid var(--ink-fixed);
