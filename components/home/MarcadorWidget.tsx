@@ -10,6 +10,7 @@ import {
   isArchive,
   lastUpdated,
   montoCell,
+  featuredTag,
   pickFeatured,
   registeredInYear,
   resumenCorto,
@@ -77,7 +78,7 @@ export function MarcadorWidget({ acuerdos, today }: { acuerdos: Acuerdo[]; today
 
   const week = activeWeek(acuerdos, today)!;
   const score = weekScore(week);
-  const featured = pickFeatured(week);
+  const featured = pickFeatured(week, acuerdos);
   const rows = rowDeals(acuerdos, week, featured?.id ?? null);
   const hero = featured && heroFigure(featured);
 
@@ -107,7 +108,7 @@ export function MarcadorWidget({ acuerdos, today }: { acuerdos: Acuerdo[]; today
       {featured && (
         <article className="side-mk-deal">
           <p className="side-mk-tags">
-            <span className="side-mk-tag side-mk-tag--lead">Acuerdo de la semana</span>
+            <span className="side-mk-tag side-mk-tag--lead">{featuredTag(featured, week)}</span>
             <span className="side-mk-tag">{ALCANCE_LABEL[featured.alcance]}</span>
             <span className="side-mk-tag">{TIPO_LABEL[featured.tipo]}</span>
           </p>

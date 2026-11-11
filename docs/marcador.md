@@ -48,6 +48,11 @@ Hazla una vez por semana, idealmente el viernes.
    - Sin el texto entre comillas, solo lo marca como destacado y la tarjeta sale
      sin el bloque de lectura.
    - Si otro acuerdo de la misma semana era el destacado, deja de serlo.
+   - El destacado se queda arriba hasta que marques uno nuevo, aunque cambie la
+     semana. Mientras sea de una semana anterior, la etiqueta dice
+     "Acuerdo de la semana 45" en lugar de "Acuerdo de la semana".
+   - Si nunca se marcó ninguno, el widget elige solo: México primero, luego
+     Latam, luego el mayor monto revelado de la semana.
 
 4. **Publicar.** Haz commit de `data/marcador.json` (y de
    `data/marcador-descartadas.json`, si descartaste algo) y súbelo a `main`.

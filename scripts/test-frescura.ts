@@ -10,7 +10,7 @@ import { extractPullFigure } from '../lib/product-hubs';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import type { Acuerdo } from '../lib/marcador-schema';
-import { EMPTY_FILTERS, activeWeek, isArchive, filterAcuerdos, heroFigure, pickFeatured, resumenCorto, rowDeals, siteHref, weekScore, yearKpis } from '../lib/marcador';
+import { EMPTY_FILTERS, activeWeek, featuredTag, isArchive, filterAcuerdos, heroFigure, pickFeatured, resumenCorto, rowDeals, siteHref, weekScore, yearKpis } from '../lib/marcador';
 import { getAcuerdos, getAcuerdosPublicos } from '../lib/data/marcador';
 import { alcanceDesdePaises, cifraDeFrase, frasesConMonto, idPara } from '../lib/marcador-propuesta';
 import { MarcadorWidget } from '../components/home/MarcadorWidget';
@@ -131,6 +131,19 @@ check('Marcador v2: without a flag, México leads, then the biggest disclosed am
   assert.equal(pickFeatured(activeWeek(unflagged, '2026-11-10')!)?.id, '2026-11-05-amex-nba');
   const noMexico = unflagged.filter(a => a.alcance !== 'mexico');
   assert.equal(pickFeatured(activeWeek(noMexico, '2026-11-10')!)?.id, '2026-11-06-fox-roku');
+});
+check('Marcador v2: the previous featured deal stays until a new one is flagged', () => {
+  const semana46 = [...semana45, acuerdo('2026-11-10', 'gotham'), acuerdo('2026-11-10', 'espn-cfp', { monto_usd_m: 1700, monto_tipo: 'reportado', fuente_monto: 'x' })];
+  const w = activeWeek(semana46, '2026-11-11')!;
+  assert.equal(w.week, 46);
+  const pick = pickFeatured(w, semana46)!;
+  assert.equal(pick.id, '2026-11-06-fox-roku');
+  assert.equal(featuredTag(pick, w), 'Acuerdo de la semana 45');
+  assert.ok(!rowDeals(semana46, w, pick.id).some(a => a.id === pick.id), 'the featured deal is not repeated in the rows');
+  const flagged46 = semana46.map(a => (a.id === '2026-11-10-gotham' ? { ...a, destacado_semana: true } : a));
+  const pick46 = pickFeatured(activeWeek(flagged46, '2026-11-11')!, flagged46)!;
+  assert.equal(pick46.id, '2026-11-10-gotham');
+  assert.equal(featuredTag(pick46, w), 'Acuerdo de la semana');
 });
 check('Marcador v2: four rows, México first, topped up from earlier weeks', () => {
   const w = activeWeek(semana45, '2026-11-10')!;

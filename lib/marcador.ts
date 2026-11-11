@@ -105,18 +105,29 @@ export function weekScore(week: MarcadorWeek): { acuerdos: number; mexico: numbe
 }
 
 /**
- * The week's featured deal: the one flagged destacado_semana; otherwise
- * Mexico first, then Latam, then the largest disclosed amount (most recent
- * breaks a tie).
+ * The featured deal, in order:
+ *   1. the one flagged destacado_semana in the week on screen;
+ *   2. otherwise the most recent flagged deal from an earlier week: the
+ *      editor's last pick stays up until a new one is flagged (2026-11-11);
+ *   3. with no flag anywhere, the automatic rule over the week: Mexico first,
+ *      then Latam, then the largest disclosed amount (most recent breaks a tie).
+ * Pass all public records as `acuerdos` for step 2; without them it is skipped.
  */
-export function pickFeatured(week: MarcadorWeek): Acuerdo | null {
+export function pickFeatured(week: MarcadorWeek, acuerdos: Acuerdo[] = []): Acuerdo | null {
   const flagged = week.acuerdos.filter(a => a.destacado_semana).sort(byDateDesc)[0];
   if (flagged) return flagged;
+  const previous = acuerdos.filter(a => a.destacado_semana && a.fecha < week.start).sort(byDateDesc)[0];
+  if (previous) return previous;
   return (
     [...week.acuerdos].sort(
       (a, b) => ALCANCE_RANK[a.alcance] - ALCANCE_RANK[b.alcance] || revealed(b) - revealed(a) || byDateDesc(a, b),
     )[0] ?? null
   );
+}
+
+/** The card's lead tag: "Acuerdo de la semana", or "… de la semana 45" when the pick is from an earlier week. */
+export function featuredTag(featured: Acuerdo, week: MarcadorWeek): string {
+  return featured.fecha < week.start ? `Acuerdo de la semana ${isoWeek(featured.fecha).week}` : 'Acuerdo de la semana';
 }
 
 /**
@@ -129,7 +140,7 @@ export function rowDeals(acuerdos: Acuerdo[], week: MarcadorWeek, featuredId: st
   const inWeek = week.acuerdos
     .filter(a => a.id !== featuredId)
     .sort((a, b) => Number(b.alcance === 'mexico') - Number(a.alcance === 'mexico') || amount(b) - amount(a) || byDateDesc(a, b));
-  const earlier = acuerdos.filter(a => a.fecha < week.start).sort(byDateDesc);
+  const earlier = acuerdos.filter(a => a.fecha < week.start && a.id !== featuredId).sort(byDateDesc);
   return [...inWeek, ...earlier].slice(0, limit);
 }
 

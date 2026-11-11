@@ -15,6 +15,7 @@ import {
   lastUpdated,
   montoCell,
   paisLabel,
+  featuredTag,
   pickFeatured,
   siteHref,
   topAcuerdos,
@@ -53,7 +54,7 @@ export default function MarcadorPage() {
   const archive = isArchive(acuerdos, today);
   const week = archive ? null : activeWeek(acuerdos, today);
   const score = week && weekScore(week);
-  const featured = week && pickFeatured(week);
+  const featured = week && pickFeatured(week, acuerdos);
   const hero = featured && heroFigure(featured);
   const kpis = yearKpis(acuerdos, year);
   const top = topAcuerdos(acuerdos, year);
@@ -105,7 +106,7 @@ export default function MarcadorPage() {
                 <article className="mk-featured" aria-labelledby="mk-featured-title">
                   <div className="mk-featured-main">
                     <p className="side-mk-tags">
-                      <span className="side-mk-tag side-mk-tag--lead">Acuerdo de la semana</span>
+                      <span className="side-mk-tag side-mk-tag--lead">{featuredTag(featured, week)}</span>
                       <span className="side-mk-tag">{ALCANCE_LABEL[featured.alcance]}</span>
                       <span className="side-mk-tag">{TIPO_LABEL[featured.tipo]}</span>
                     </p>
@@ -263,7 +264,8 @@ export default function MarcadorPage() {
           </li>
           <li>
             La semana va de lunes a domingo, en hora de Ciudad de México. Si la semana en curso todavía no tiene
-            acuerdos, mostramos la última semana con actividad.
+            acuerdos, mostramos la última semana con actividad. El acuerdo destacado lo elige la redacción y se queda
+            hasta que elige uno nuevo.
           </li>
           <li>
             ¿Falta un acuerdo o hay un dato que corregir? Escríbenos desde <Link href="/contacto">Contacto</Link>.
