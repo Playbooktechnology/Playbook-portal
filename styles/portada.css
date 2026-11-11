@@ -70,6 +70,14 @@
 /* ——— "La cifra del día" (sidebar module, round 2): the day's biggest
    figure as a counting green chip — Scoreboard mechanics in the rail,
    derived from the ranked pool with zero CMS work. ——— */
+/* "La cifra del día" / "La cifra" + the figure's own date (2026-11-11):
+   same head treatment as El Marcador's, title left, date right. */
+.side-cifra-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border-top:2px solid var(--ink);}
+.side-cifra-head .side-title{border-top:none;}
+.side-cifra-date{
+  font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-txt);white-space:nowrap;
+}
 .side-cifra-card{display:flex;flex-direction:column;gap:8px;padding-top:12px;color:inherit;}
 .side-cifra-value{
   align-self:flex-start;font-family:var(--serif-display);font-weight:400;
@@ -187,86 +195,87 @@
   .section-link{display:inline-block;}
 }
 
-/* ——— "El Marcador de Negocios" (sidebar module, 2026-09-23, replaced El
-   tablero de la FIFA). A black featured card in the scoreboard register
-   (Anton figures on ink, green accents), a plain list, and the year's
-   confirmed total on the same tilted green chip La cifra del día uses. The
-   card stays black in both themes; in dark mode a rule keeps its edge. ——— */
-.side-deals{display:flex;flex-direction:column;gap:12px;}
-.side-deals-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border-top:2px solid var(--ink);}
-.side-deals-head .side-title{border-top:none;}
-.side-deals-week{
+/* ——— "El Marcador de Negocios" v2 (sidebar, 2026-11-11). Reference:
+   docs/referencias/playbook-home.html, block id="marcador": Anton head with
+   the week on the right, a three-cell score, the black deal card (green tag,
+   green hero figure, approved reading with a green rule), four rows with a
+   scope tag (green only for México, gray for the rest), CTA and footer.
+   The card is black in both themes; dark mode adds a rule at its edge.
+   Mobile keeps score + card + one row (see the 640px query). ——— */
+.side-mk{display:flex;flex-direction:column;gap:0;}
+.side-mk-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0 10px;border-top:2px solid var(--ink);}
+/* One line for the title; in a narrow rail the week drops below instead of splitting it. */
+.side-mk-head .side-title{border-top:none;white-space:nowrap;}
+.side-mk-week{
   font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
-  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-txt);
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-txt);white-space:nowrap;
 }
-/* A7: this week's count and the update cadence, same text as /marcador. */
-.side-deals-status{display:flex;flex-direction:column;gap:2px;margin:0;font-size:12px;line-height:1.4;color:var(--gray-txt);}
-.side-deals-status span:first-child{font-weight:600;color:var(--ink);}
-.side-deals-card{
-  background:var(--ink-fixed);color:#fff;padding:16px 16px 14px;
+.side-mk-sub{
+  margin:6px 0 10px;font-family:var(--sans);font-size:10px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--gray-txt);
+}
+.side-mk-score{display:flex;margin:12px 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.side-mk-score div{flex:1;display:flex;flex-direction:column-reverse;justify-content:flex-end;padding:10px 12px;border-left:1px solid var(--rule);min-width:0;}
+.side-mk-score div:first-child{border-left:none;padding-left:0;}
+.side-mk-score dd{margin:0;font-family:var(--serif-display);font-size:26px;line-height:1;font-variant-numeric:tabular-nums;color:var(--ink);}
+.side-mk-score dt{font-family:var(--sans);font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-txt);margin-top:3px;}
+.side-mk-deal{
+  background:var(--ink-fixed);color:#fff;padding:16px 18px;margin-top:14px;
   display:flex;flex-direction:column;gap:8px;border:1px solid var(--ink-fixed);
 }
-[data-theme="dark"] .side-deals-card{border-color:var(--rule);}
+[data-theme="dark"] .side-mk-deal{border-color:var(--rule);}
 @media(prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .side-deals-card{border-color:var(--rule);}
+  :root:not([data-theme="light"]) .side-mk-deal{border-color:var(--rule);}
 }
-.side-deals-kicker{
-  display:flex;align-items:center;gap:6px;margin:0;
-  font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
-  font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green);
+.side-mk-tags{display:flex;flex-wrap:wrap;gap:6px;margin:0;}
+.side-mk-tag{
+  font-family:var(--sans);font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 7px;border:1px solid #4a515b;color:#c9d1db;
 }
-.side-deals-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);flex:0 0 6px;}
-.side-deals-name{font-family:var(--serif-display);font-weight:400;font-size:26px;line-height:1.08;margin:0;color:#fff;}
-.side-deals-summary{font-family:var(--sans);font-size:12px;line-height:1.45;color:rgba(255,255,255,.74);margin:0;}
-.side-deals-figures{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:4px 0 0;
-  border-top:1px solid rgba(255,255,255,.18);border-bottom:1px solid rgba(255,255,255,.18);
+.side-mk-tag--lead{background:var(--green);border-color:var(--green);color:var(--ink-fixed);}
+.side-mk-name{font-family:var(--serif-display);font-weight:400;font-size:26px;line-height:1.02;margin:2px 0 0;color:#fff;text-transform:uppercase;}
+.side-mk-hero{display:flex;flex-direction:column;gap:2px;margin:0;}
+.side-mk-hero-value{font-family:var(--serif-display);font-size:34px;line-height:1;color:var(--green);font-variant-numeric:tabular-nums;overflow-wrap:anywhere;}
+.side-mk-hero-label{font-family:var(--sans);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62);}
+.side-mk-summary{font-family:var(--sans);font-size:12.5px;line-height:1.45;color:#c9d1db;margin:2px 0 0;}
+.side-mk-lectura{font-family:var(--sans);font-size:12.5px;line-height:1.45;color:#fff;margin:0;border-left:3px solid var(--green);padding-left:10px;}
+.side-mk-lectura b{color:var(--green);font-weight:600;}
+.side-mk-read{align-self:flex-start;font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--green);margin-top:4px;}
+.side-mk-read:hover,.side-mk-read:focus-visible{text-decoration:underline;text-underline-offset:3px;}
+.side-mk-rows{list-style:none;margin:0;padding:0;}
+.side-mk-row-item{border-top:1px solid var(--rule);}
+.side-mk-row-item:last-child{border-bottom:1px solid var(--rule);}
+.side-mk-row{display:flex;justify-content:space-between;gap:10px;padding:11px 0;color:inherit;}
+.side-mk-row-main{min-width:0;}
+.side-mk-row-name{font-family:var(--sans);font-weight:600;font-size:13px;line-height:1.3;transition:color var(--duration-fast) ease;}
+.side-mk-row:hover .side-mk-row-name,.side-mk-row:focus-visible .side-mk-row-name{color:var(--green);}
+.side-mk-scope{
+  display:inline-block;margin-left:6px;vertical-align:1px;padding:2px 6px;border-radius:2px;
+  font-family:var(--sans);font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  background:#E5EBF4;color:var(--ink-fixed);
 }
-/* dt precedes dd in the markup (valid dl grouping); column-reverse puts the
-   number on top the way the scoreboard reads. */
-.side-deals-figure{
-  display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:3px;
-  padding:10px 8px;border-left:1px solid rgba(255,255,255,.18);min-width:0;
+.side-mk-scope--mx{background:var(--green);}
+.side-mk-row-desc{display:block;margin-top:2px;font-family:var(--sans);font-size:11.5px;line-height:1.35;color:var(--gray-txt);}
+.side-mk-row-amount{
+  flex:none;text-align:right;white-space:nowrap;align-self:center;
+  font-family:var(--sans);font-weight:600;font-size:12.5px;font-variant-numeric:tabular-nums;
 }
-.side-deals-figure:first-child{border-left:none;padding-left:0;}
-.side-deals-figure dd{
-  margin:0;font-family:var(--serif-display);font-size:20px;line-height:1.05;color:var(--green);
-  overflow-wrap:anywhere;font-variant-numeric:tabular-nums;
-}
-.side-deals-figure dt{font-family:var(--sans);font-size:10px;line-height:1.3;color:rgba(255,255,255,.62);}
-.side-deals-read{align-self:flex-start;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--green);margin-top:2px;}
-.side-deals-read:hover,.side-deals-read:focus-visible{text-decoration:underline;text-underline-offset:3px;}
-
-.side-deals-sub{
-  margin:4px 0 0;font-family:var(--sans);font-size:10px;font-weight:700;
-  letter-spacing:.08em;text-transform:uppercase;color:var(--ink);
-}
-.side-deals-list{list-style:none;margin:0;padding:0;}
-.side-deals-list li{border-top:1px solid var(--rule);}
-.side-deals-list li:last-child{border-bottom:1px solid var(--rule);}
-.side-deals-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:9px 0;color:inherit;}
-.side-deals-row-name{font-family:var(--sans);font-weight:600;font-size:12.5px;line-height:1.3;transition:color var(--duration-fast) ease;}
-.side-deals-row-amount{
-  grid-row:span 2;align-self:center;text-align:right;
-  font-family:var(--serif-display);font-size:16px;line-height:1.1;font-variant-numeric:tabular-nums;
-}
-.side-deals-row-type{font-family:var(--sans);font-size:11px;color:var(--gray-txt);}
-.side-deals-row:hover .side-deals-row-name,.side-deals-row:focus-visible .side-deals-row-name{color:var(--green);}
-
-.side-deals-total{
-  display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:2px 0 0;
-  font-family:var(--sans);font-size:11.5px;line-height:1.35;color:var(--gray-txt);
-}
-.side-deals-total-value{
-  font-family:var(--serif-display);font-size:18px;line-height:1.2;color:var(--ink-fixed);
-  background:var(--green);padding:1px 8px;transform:rotate(-1.2deg);font-variant-numeric:tabular-nums;
-}
-.side-deals-cta{
-  display:block;text-align:center;background:var(--ink);color:var(--paper);
-  font-family:var(--sans);font-weight:700;font-size:13px;padding:12px 16px;border-radius:999px;
+.side-mk-row-amount small{display:block;font-weight:500;font-size:10px;color:var(--gray-txt);}
+.side-mk-cta{
+  display:block;text-align:center;background:var(--ink);color:var(--paper);margin:14px 0 0;
+  font-family:var(--sans);font-weight:600;font-size:13px;padding:11px 16px;border-radius:999px;
   transition:background var(--duration-fast) ease,color var(--duration-fast) ease;
 }
-.side-deals-cta:hover,.side-deals-cta:focus-visible{background:var(--green);color:var(--ink-fixed);}
+.side-mk-cta:hover,.side-mk-cta:focus-visible{background:var(--green);color:var(--ink-fixed);}
+.side-mk-cta--compact{display:none;}
+.side-mk-foot{margin:10px 0 0;font-family:var(--sans);font-size:10.5px;line-height:1.5;color:var(--gray-txt);}
+.side-mk-foot a{text-decoration:underline;text-underline-offset:2px;}
+@media(max-width:640px){
+  .side-mk-row-item--extra{display:none;}
+  .side-mk-row-item:first-child{border-bottom:1px solid var(--rule);}
+  .side-mk-cta--full{display:none;}
+  .side-mk-cta--compact{display:block;}
+}
 
 
 /* ——— "Temas" (2026-10-01): the subject row under the source chips. The

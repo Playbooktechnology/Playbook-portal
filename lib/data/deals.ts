@@ -1,10 +1,8 @@
-import { cache } from 'react';
-import { desc } from 'drizzle-orm';
-import { unstable_cache } from 'next/cache';
-import { db } from '../db/client';
 import { deals } from '../db/schema';
 import type { Deal } from '../deals';
 
+// The `deals` table is /admin's legacy Marcador tab only: since 2026-11-11 the
+// public site reads data/marcador.json (lib/data/marcador.ts).
 export const DEALS_CACHE_TAG = 'deals';
 
 type DealRow = typeof deals.$inferSelect;
@@ -31,17 +29,3 @@ export function toDeal(row: DealRow): Deal {
     updatedAt: row.updatedAt.toISOString(),
   };
 }
-
-// Same freshness contract as the articles pool (lib/data/articles.ts): shared
-// across requests for up to 60s, invalidated immediately by revalidateTag when
-// an editor saves a deal, so the rail and /marcador update without a deploy.
-const queryDeals = unstable_cache(
-  async () => {
-    const rows = await db.select().from(deals).orderBy(desc(deals.date), desc(deals.createdAt));
-    return rows.map(toDeal);
-  },
-  ['deals-all'],
-  { revalidate: 60, tags: [DEALS_CACHE_TAG] },
-);
-
-export const getAllDeals = cache((): Promise<Deal[]> => queryDeals());

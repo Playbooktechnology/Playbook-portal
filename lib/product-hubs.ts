@@ -106,7 +106,10 @@ const FIGURE_PATTERNS: RegExp[] = [
   // "R$22 millones" to "$22 millones" on the homepage's "cifra del día" —
   // a real Brazilian figure read as an unlabelled (and much larger-looking)
   // one on a Mexico-framed headline.
-  /(?:€|US\$|USD\s?|MX\$|R\$|\$)\s?[\d][\d.,]*\s?(?:mil\s+millones|millones|billones|mdd|mdp|[MBK])?(?:\s?\/\s?a[nñ]o)?/i,
+  // £ added 2026-11-11, same failure: "por más de £2,000 millones" (FSG ×
+  // Cadillac F1) fell through to the bare-count pattern below and reached the
+  // rail as "2,000 millones", with no currency at all.
+  /(?:€|£|US\$|USD\s?|MX\$|R\$|\$)\s?[\d][\d.,]*\s?(?:mil\s+millones|millones|billones|mdd|mdp|[MBK])?(?:\s?\/\s?a[nñ]o)?/i,
   // Percentages: 22%, 3.5 %
   /\d[\d.,]*\s?%/,
   // Big counts with a scale word: 91,553 asistentes / 2 millones…

@@ -1,54 +1,65 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getAllDeals } from '@/lib/data/deals';
+import { getAcuerdosPublicos } from '@/lib/data/marcador';
+import { todayInMexico } from '@/lib/deals';
 import {
-  DEAL_STATUS_LABEL,
-  DEAL_TYPE_LABEL,
-  countByType,
-  dealAmountLabel,
-  dealTitle,
-  featuredFigures,
-  featuredKicker,
-  formatUsdLong,
-  selectFeatured,
-  shortDate,
-  todayInMexico,
-  topDeals,
-  weekLabel,
-  yearStats,
-  type DealStatus,
-} from '@/lib/deals';
+  ALCANCE_LABEL,
+  DEPORTE_LABEL,
+  ESTATUS_LABEL,
+  TIPO_LABEL,
+  activeWeek,
+  countByTipo,
+  dateLabel,
+  heroFigure,
+  isArchive,
+  lastUpdated,
+  montoCell,
+  paisLabel,
+  featuredTag,
+  pickFeatured,
+  siteHref,
+  topAcuerdos,
+  weekScore,
+  yearKpis,
+} from '@/lib/marcador';
 import { SITE_URL } from '@/lib/site-url';
-import { DealsTable } from '@/components/marcador/DealsTable';
+import { MarcadorTable } from '@/components/marcador/MarcadorTable';
 import { DealLink } from '@/components/marcador/DealLink';
-import { MarcadorCadence } from '@/components/marcador/MarcadorCadence';
 import { NewsletterForm } from '@/components/shared/NewsletterForm';
 
-// /marcador — the full view behind the homepage rail's "El Marcador de
-// Negocios" (components/home/DealsBoard.tsx). Same source (the `deals` table
-// via lib/data/deals.ts), same week and total rules (lib/deals.ts), so the
-// two surfaces can never disagree on a number.
+// /marcador — the full view behind the homepage's "El Marcador de Negocios"
+// (components/home/MarcadorWidget.tsx). v2 since 2026-11-11: same source
+// (data/marcador.json, only cumple_criterio: true) and the same rules
+// (lib/marcador.ts) as the widget, so the two surfaces can't disagree on the
+// week, the featured deal or a number.
 
 export const metadata: Metadata = {
   title: 'El Marcador de Negocios',
   description:
     'Los acuerdos comerciales que mueven el negocio del deporte, registrados semana a semana: ' +
-    'patrocinios, derechos de transmisión, retail, inversión y estadios.',
+    'patrocinios, derechos de transmisión, propiedad, retail e infraestructura.',
   alternates: { canonical: `${SITE_URL}/marcador` },
   robots: { index: true, follow: true },
 };
 
-export default async function MarcadorPage() {
-  const deals = await getAllDeals();
+function millones(m: number): string {
+  return `US$${Math.round(m).toLocaleString('en-US')} millones`;
+}
+
+export default function MarcadorPage() {
+  const acuerdos = getAcuerdosPublicos();
   const today = todayInMexico();
-  const label = weekLabel(deals, today);
-  const year = Number(today.slice(0, 4));
-  const stats = yearStats(deals, year);
-  const pick = selectFeatured(deals, today);
-  const featured = pick?.deal ?? null;
-  const top = topDeals(deals, year);
-  const byType = countByType(deals, year);
-  const maxType = Math.max(1, ...byType.map(t => t.count));
+  const year = today.slice(0, 4);
+  const latest = lastUpdated(acuerdos);
+  const archive = isArchive(acuerdos, today);
+  const week = archive ? null : activeWeek(acuerdos, today);
+  const score = week && weekScore(week);
+  const featured = week && pickFeatured(week, acuerdos);
+  const hero = featured && heroFigure(featured);
+  const kpis = yearKpis(acuerdos, year);
+  const top = topAcuerdos(acuerdos, year);
+  const byTipo = countByTipo(acuerdos, year);
+  const maxTipo = Math.max(1, ...byTipo.map(t => t.count));
 
   return (
     <main className="container mk-page" id="marcador-main">
@@ -57,105 +68,131 @@ export default async function MarcadorPage() {
         <h1>El Marcador de Negocios</h1>
         <p className="mk-dek">
           Los acuerdos comerciales que mueven el negocio del deporte, registrados semana a semana:
-          patrocinios, derechos de transmisión, retail, inversión y estadios.
+          patrocinios, derechos de transmisión, propiedad, retail e infraestructura.
         </p>
         <p className="mk-updated">
-          {label.long}
+          {week
+            ? `Semana ${week.week} · ${dateLabel(week.start)} al ${dateLabel(week.end)}`
+            : latest && `Último acuerdo registrado: ${dateLabel(latest)}`}
         </p>
-        <MarcadorCadence deals={deals} today={today} className="mk-cadence" />
       </header>
 
-      {deals.length === 0 ? (
+      {acuerdos.length === 0 ? (
         <p className="mk-empty mk-empty--page">Todavía no hay acuerdos registrados.</p>
       ) : (
         <>
-          <section className="mk-stats" aria-label={`Las cifras de ${year}`}>
-            <div className="mk-stat">
-              <span className="mk-stat-value mk-stat-value--chip">{formatUsdLong(stats.total)}</span>
-              <span className="mk-stat-label">
-                acumulado {year} en {stats.countedDeals} {stats.countedDeals === 1 ? 'acuerdo confirmado' : 'acuerdos confirmados'} con monto revelado
-              </span>
-            </div>
-            <div className="mk-stat">
-              <span className="mk-stat-value">{stats.tracked}</span>
-              <span className="mk-stat-label">acuerdos registrados en {year}</span>
-            </div>
-            <div className="mk-stat">
-              <span className="mk-stat-value">
-                {stats.tracked ? Math.round((100 * stats.disclosed) / stats.tracked) : 0}%
-              </span>
-              <span className="mk-stat-label">revelaron su monto</span>
-            </div>
-            <div className="mk-stat">
-              <span className="mk-stat-value">{stats.countries}</span>
-              <span className="mk-stat-label">{stats.countries === 1 ? 'país' : 'países'} con acuerdos</span>
-            </div>
-          </section>
+          {week && score && (
+            <section className="mk-week" aria-labelledby="mk-week-title">
+              <h2 className="visually-hidden" id="mk-week-title">
+                La semana {week.week}
+              </h2>
+              {/* dt before dd (valid dl grouping); column-reverse puts the number on top. */}
+              <dl className="side-mk-score mk-week-score">
+                <div>
+                  <dt>{score.acuerdos === 1 ? 'acuerdo esta semana' : 'acuerdos esta semana'}</dt>
+                  <dd>{score.acuerdos}</dd>
+                </div>
+                <div>
+                  <dt>en México</dt>
+                  <dd>{score.mexico}</dd>
+                </div>
+                <div>
+                  <dt>{score.reportados === 1 ? 'reportado' : 'reportados'}</dt>
+                  <dd>{score.reportados}</dd>
+                </div>
+              </dl>
 
-          {featured && (
-            <section className="mk-featured" aria-labelledby="mk-featured-title">
-              <div className="mk-featured-main">
-                <p className="side-deals-kicker">
-                  {pick && featuredKicker(pick)}
-                </p>
-                <h2 id="mk-featured-title" className="mk-featured-name">
-                  {dealTitle(featured)}
-                </h2>
-                {featured.summary && <p className="mk-featured-summary">{featured.summary}</p>}
-                <p className="mk-featured-meta">
-                  {DEAL_TYPE_LABEL[featured.type] ?? featured.type}
-                  {featured.country && ` · ${featured.country}`}
-                  {featured.sport && ` · ${featured.sport}`}
-                  {` · ${DEAL_STATUS_LABEL[featured.status as DealStatus] ?? featured.status}`}
-                </p>
-                <dl className="side-deals-figures mk-featured-figures">
-                  {featuredFigures(featured).map(f => (
-                    <div key={f.label} className="side-deals-figure">
-                      <dt>{f.label}</dt>
-                      <dd>{f.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-                {featured.articleUrl && (
-                  <DealLink href={featured.articleUrl} className="side-deals-read">
-                    Leer el análisis →
-                  </DealLink>
-                )}
-              </div>
-              {featured.playbookRead && (
-                <aside className="mk-featured-read">
-                  <p className="mk-featured-read-label">La lectura de Playbook</p>
-                  <p>{featured.playbookRead}</p>
-                </aside>
+              {featured && (
+                <article className="mk-featured" aria-labelledby="mk-featured-title">
+                  <div className="mk-featured-main">
+                    <p className="side-mk-tags">
+                      <span className="side-mk-tag side-mk-tag--lead">{featuredTag(featured, week)}</span>
+                      <span className="side-mk-tag">{ALCANCE_LABEL[featured.alcance]}</span>
+                      <span className="side-mk-tag">{TIPO_LABEL[featured.tipo]}</span>
+                    </p>
+                    <h2 id="mk-featured-title" className="mk-featured-name">
+                      {featured.titulo}
+                    </h2>
+                    {hero && (
+                      <p className="side-mk-hero mk-featured-hero">
+                        <span className="side-mk-hero-value">{hero.valor}</span>
+                        <span className="side-mk-hero-label">{hero.etiqueta}</span>
+                      </p>
+                    )}
+                    <p className="mk-featured-summary">{featured.resumen}</p>
+                    <p className="mk-featured-meta">
+                      {[paisLabel(featured), DEPORTE_LABEL[featured.deporte] ?? featured.deporte, featured.duracion, ESTATUS_LABEL[featured.estatus]]
+                        .filter(Boolean)
+                        .join(' · ')}
+                    </p>
+                    <DealLink href={siteHref(featured.url)} className="side-mk-read">
+                      Leer el análisis →
+                    </DealLink>
+                  </div>
+                  {/* Only an approved reading; lectura_borrador never renders. */}
+                  {featured.lectura && (
+                    <aside className="mk-featured-read">
+                      <p className="mk-featured-read-label">Lectura Playbook</p>
+                      <p>{featured.lectura}</p>
+                    </aside>
+                  )}
+                </article>
               )}
             </section>
           )}
 
+          <section className="mk-stats" aria-label={`Las cifras de ${year}`}>
+            <div className="mk-stat">
+              <span className="mk-stat-value mk-stat-value--chip">{millones(kpis.sumaUsdM)}</span>
+              <span className="mk-stat-label">
+                en {kpis.conMonto} {kpis.conMonto === 1 ? 'acuerdo' : 'acuerdos'} con monto revelado (de {kpis.registrados}{' '}
+                registrados)
+              </span>
+            </div>
+            <div className="mk-stat">
+              <span className="mk-stat-value">{kpis.registrados}</span>
+              <span className="mk-stat-label">acuerdos registrados en {year}</span>
+            </div>
+            <div className="mk-stat">
+              <span className="mk-stat-value">{kpis.registrados ? Math.round((100 * kpis.conMonto) / kpis.registrados) : 0}%</span>
+              <span className="mk-stat-label">revelaron su monto</span>
+            </div>
+            <div className="mk-stat">
+              <span className="mk-stat-value">{kpis.paises}</span>
+              <span className="mk-stat-label">{kpis.paises === 1 ? 'país' : 'países'} con acuerdos</span>
+            </div>
+          </section>
+
           <section className="mk-section" aria-labelledby="mk-all-title">
             <h2 className="mk-section-title" id="mk-all-title">Todos los acuerdos</h2>
-            <DealsTable deals={deals} today={today} />
+            <MarcadorTable acuerdos={acuerdos} today={today} />
           </section>
 
           <div className="mk-split">
             <section className="mk-section" aria-labelledby="mk-top-title">
               <h2 className="mk-section-title" id="mk-top-title">Top 5 de {year}</h2>
               {top.length === 0 ? (
-                <p className="mk-empty">Ningún acuerdo de {year} ha revelado su monto todavía.</p>
+                <p className="mk-empty">Ningún acuerdo de {year} tiene monto todavía.</p>
               ) : (
                 <ol className="mk-top">
-                  {top.map((d, i) => (
-                    <li key={d.id} className="mk-top-item">
-                      <span className="mk-top-rank">{i + 1}</span>
-                      <DealLink href={d.articleUrl || '/marcador'} className="mk-top-link">
-                        <span className="mk-top-name">{dealTitle(d)}</span>
-                        <span className="mk-top-meta">
-                          {DEAL_TYPE_LABEL[d.type] ?? d.type} · {shortDate(d.date)}
-                          {d.status === 'reportado' && ' · Reportado'}
+                  {top.map((a, i) => {
+                    const monto = montoCell(a);
+                    return (
+                      <li key={a.id} className="mk-top-item">
+                        <span className="mk-top-rank">{i + 1}</span>
+                        <DealLink href={siteHref(a.url)} className="mk-top-link">
+                          <span className="mk-top-name">{a.titulo}</span>
+                          <span className="mk-top-meta">
+                            {TIPO_LABEL[a.tipo]} · {ALCANCE_LABEL[a.alcance]} · {dateLabel(a.fecha)}
+                          </span>
+                        </DealLink>
+                        <span className="mk-top-amount">
+                          {monto.valor}
+                          {monto.nota && <small className="mk-amount-note">{monto.nota}</small>}
                         </span>
-                      </DealLink>
-                      <span className="mk-top-amount">{dealAmountLabel(d)}</span>
-                    </li>
-                  ))}
+                      </li>
+                    );
+                  })}
                 </ol>
               )}
             </section>
@@ -163,11 +200,11 @@ export default async function MarcadorPage() {
             <section className="mk-section" aria-labelledby="mk-types-title">
               <h2 className="mk-section-title" id="mk-types-title">Acuerdos por tipo en {year}</h2>
               <ul className="mk-types">
-                {byType.map(t => (
+                {byTipo.map(t => (
                   <li key={t.key} className="mk-type">
                     <span className="mk-type-label">{t.label}</span>
                     <span className="mk-type-bar" aria-hidden="true">
-                      <span className="mk-type-fill" style={{ width: `${(100 * t.count) / maxType}%` }} />
+                      <span className="mk-type-fill" style={{ width: `${(100 * t.count) / maxTipo}%` }} />
                     </span>
                     <span className="mk-type-count">{t.count}</span>
                   </li>
@@ -178,30 +215,57 @@ export default async function MarcadorPage() {
         </>
       )}
 
-      <section className="mk-method" aria-labelledby="mk-method-title">
+      <section className="mk-method" id="metodologia" aria-labelledby="mk-method-title">
         <h2 id="mk-method-title">Metodología</h2>
+        <h3>Qué entra</h3>
         <ul>
           <li>
-            Registramos acuerdos comerciales del deporte en todo el mundo, con énfasis en los que tocan a
-            México y Latinoamérica, en cinco tipos: patrocinio, derechos de transmisión, retail y licencias, inversión y propiedad, y
-            estadios e infraestructura.
+            Patrocinios principales o de categoría relevante: camiseta, naming, título y socios oficiales de ligas,
+            eventos o federaciones.
+          </li>
+          <li>Derechos de transmisión, incluidas sublicencias y acuerdos de producción y distribución.</li>
+          <li>
+            Compra o venta de participación en propiedades deportivas: equipos, ligas, eventos y plataformas
+            deportivas.
+          </li>
+          <li>Retail y licencias de marcas deportivas.</li>
+          <li>Infraestructura con operador deportivo: estadios, arenas y el naming de sus recintos.</li>
+        </ul>
+        <h3>Qué no entra</h3>
+        <ul>
+          <li>Fusiones y adquisiciones entre operadores de apuestas sin una propiedad deportiva de por medio.</li>
+          <li>Fichajes y contratos de jugadores, pilotos o entrenadores.</li>
+          <li>Proveedores menores y acuerdos sin una fuente verificable.</li>
+          <li>Si hay duda, el acuerdo se registra pero no se muestra ni cuenta hasta resolverla.</li>
+        </ul>
+        <h3>Montos</h3>
+        <ul>
+          <li>
+            Los montos están en dólares estadounidenses. Si el anuncio fue en otra moneda, lo convertimos con el tipo
+            de cambio del Banco Central Europeo del día del anuncio.
           </li>
           <li>
-            <strong>Confirmado</strong> significa que al menos una de las partes lo anunció oficialmente.{' '}
-            <strong>Reportado</strong> significa que lo publicó un medio sin confirmación oficial.
+            Solo sumamos montos <strong>revelados</strong>: los que anunció alguna de las partes o un documento
+            regulatorio. Los <strong>reportados</strong> (publicados por un medio) y los <strong>estimados</strong> se
+            muestran con su etiqueta y no se suman. Si nadie publicó la cifra, aparece como N/R: nunca estimamos
+            montos por nuestra cuenta.
+          </li>
+        </ul>
+        <h3>Estatus y alcance</h3>
+        <ul>
+          <li>
+            <strong>Anunciado:</strong> las partes lo anunciaron, pero falta firma, cierre o aprobación.{' '}
+            <strong>Reportado:</strong> lo publicó un medio sin confirmación oficial. <strong>Confirmado:</strong> las
+            partes confirman el acuerdo. <strong>Cerrado:</strong> la compraventa se completó.
           </li>
           <li>
-            Los montos están en dólares estadounidenses. Si el anuncio fue en otra moneda, lo convertimos con el
-            tipo de cambio de referencia del Banco Central Europeo del día del anuncio.
+            <strong>Alcance:</strong> México si al menos una parte es mexicana o el acuerdo opera en México; Latam si es
+            de otro país latinoamericano; Global si las partes o el efecto son multinacionales; si no, EE. UU. o Europa.
           </li>
           <li>
-            Un monto <strong>revelado</strong> es el que anunció alguna de las partes (en un comunicado o ante un
-            regulador). Si la cifra solo la publicó la prensa, la mostramos como estimado (con ~). Si nadie la
-            publicó, aparece como N/R.
-          </li>
-          <li>
-            El acumulado del año suma solo acuerdos confirmados con monto revelado. Los estimados y los reportados
-            se registran, pero no entran en la suma. El top 5 sí incluye estimados, marcados con ~.
+            La semana va de lunes a domingo, en hora de Ciudad de México. Si la semana en curso todavía no tiene
+            acuerdos, mostramos la última semana con actividad. El acuerdo destacado lo elige la redacción y se queda
+            hasta que elige uno nuevo.
           </li>
           <li>
             ¿Falta un acuerdo o hay un dato que corregir? Escríbenos desde <Link href="/contacto">Contacto</Link>.

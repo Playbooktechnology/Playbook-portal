@@ -1,9 +1,9 @@
 /* ============================================================
    /marcador — El Marcador de Negocios, full page. Same language as the
-   homepage rail module (styles/portada.css .side-deals-*): paper and ink,
-   Anton for figures and titles, Inter for text, the house green for the
-   chip and the featured card's accents. The featured block reuses the
-   rail's .side-deals-kicker/.side-deals-figures on the same black ground.
+   homepage widget (styles/portada.css .side-mk-*): paper and ink, Anton for
+   figures and titles, Inter for text, the house green for the chip and the
+   featured card's accents. The week score, the card's tags and hero figure
+   and the scope tags reuse the widget's .side-mk-* classes (v2, 2026-11-11).
    ============================================================ */
 .mk-page{padding-top:40px;padding-bottom:72px;}
 
@@ -12,8 +12,6 @@
   font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
   font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-txt);margin:0;
 }
-.mk-cadence{display:flex;flex-wrap:wrap;gap:4px 16px;margin:6px 0 0;font-size:13px;color:var(--gray-txt);}
-.mk-cadence span:first-child{font-weight:600;color:var(--ink);}
 .mk-hero h1{
   font-family:var(--serif-display);font-weight:400;text-transform:uppercase;
   font-size:clamp(40px,6vw,72px);line-height:.95;letter-spacing:.01em;margin:8px 0 14px;
@@ -34,6 +32,14 @@
 .mk-stat-value--chip{background:var(--green);color:var(--ink-fixed);padding:2px 10px;transform:rotate(-1.2deg);}
 .mk-stat-label{font-family:var(--sans);font-size:12.5px;line-height:1.4;color:var(--gray-txt);max-width:28ch;}
 
+/* ——— La semana: score + acuerdo destacado (v2) ——— */
+.mk-week{margin:0 0 32px;}
+.mk-week-score{margin:0;max-width:560px;}
+.mk-week .mk-featured{margin-top:18px;}
+.mk-week-score dd{font-size:34px;}
+.mk-featured-hero .side-mk-hero-value{font-size:clamp(36px,4vw,52px);}
+.mk-featured .side-mk-read{font-size:14px;}
+
 /* ——— Acuerdo de la semana ——— */
 .mk-featured{
   display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:32px;
@@ -53,11 +59,6 @@
   font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
   font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin:0;
 }
-.mk-featured-figures{max-width:520px;}
-.mk-featured-figures .side-deals-figure{padding:12px 14px;}
-.mk-featured-figures .side-deals-figure:first-child{padding-left:0;}
-.mk-featured-figures .side-deals-figure dd{font-size:clamp(24px,2.4vw,32px);}
-.mk-featured-figures .side-deals-figure dt{font-size:11px;}
 .mk-featured-read{align-self:start;border-left:3px solid var(--green);padding:2px 0 2px 18px;}
 .mk-featured-read-label{
   font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
@@ -106,12 +107,17 @@
 .mk-deal a,.mk-deal > span:first-child{font-weight:700;color:var(--ink);transition:color var(--duration-fast) ease;}
 .mk-deal a:hover,.mk-deal a:focus-visible{color:var(--green);}
 .mk-deal-summary{display:block;margin-top:3px;font-size:12px;color:var(--gray-txt);max-width:48ch;}
+/* v2 adds an Alcance column: the deal (title + summary) keeps the room, the short columns stay tight. */
+@media(min-width:761px){.mk-table td.mk-deal{width:36%;min-width:260px;}}
 .mk-amount{font-family:var(--serif-display);font-size:17px;white-space:nowrap;font-variant-numeric:tabular-nums;}
 .mk-status{
   display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
   padding:2px 7px;border:1px solid var(--rule);color:var(--gray-txt);white-space:nowrap;
 }
-.mk-status--confirmado{background:var(--green);border-color:var(--green);color:var(--ink-fixed);}
+.mk-status--confirmado,.mk-status--cerrado{background:var(--green);border-color:var(--green);color:var(--ink-fixed);}
+.mk-status--anunciado{border-color:var(--ink);color:var(--ink);}
+.mk-amount-note{display:block;font-family:var(--sans);font-size:10px;font-weight:500;color:var(--gray-txt);text-align:right;}
+.mk-scope{margin-left:0;white-space:nowrap;}
 
 /* ——— Top 5 y conteo por tipo ——— */
 .mk-split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px;}
@@ -140,6 +146,8 @@
 /* ——— Metodología y newsletter ——— */
 .mk-method{margin-top:52px;padding:22px 24px;border:1px solid var(--ink);background:var(--paper-soft);}
 .mk-method h2{font-family:var(--serif-display);font-weight:400;font-size:20px;text-transform:uppercase;margin:0 0 10px;}
+.mk-method h3{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin:18px 0 6px;}
+.mk-method h3:first-of-type{margin-top:8px;}
 .mk-method ul{margin:0;padding-left:18px;font-family:var(--sans);font-size:14px;line-height:1.6;color:var(--gray-dark);}
 .mk-method li + li{margin-top:6px;}
 .mk-method strong{color:var(--ink);}
