@@ -13,6 +13,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import type { Acuerdo } from '../lib/marcador-schema';
 import { EMPTY_FILTERS, activeWeek, filterAcuerdos, heroFigure, pickFeatured, resumenCorto, rowDeals, siteHref, weekScore, yearKpis } from '../lib/marcador';
 import { getAcuerdos, getAcuerdosPublicos } from '../lib/data/marcador';
+import { alcanceDesdePaises, cifraDeFrase, frasesConMonto, idPara } from '../lib/marcador-propuesta';
 import { MarcadorWidget } from '../components/home/MarcadorWidget';
 
 let failed = 0;
@@ -175,6 +176,30 @@ check('/marcador: records with cumple_criterio other than true are never public'
   assert.ok(all.some(a => a.cumple_criterio !== true), 'the real file holds excluded records');
   assert.ok(pub.every(a => a.cumple_criterio === true));
   assert.equal(pub.length, all.filter(a => a.cumple_criterio === true).length);
+});
+
+// ——— Flujo semanal (Fase 6)
+check('marcador:add reads figures in each currency and format', () => {
+  assert.deepEqual(cifraDeFrase('Telefónica acordó con DAZN pagar €1,650 millones por cinco temporadas'), { valor: 1650, moneda: 'EUR' });
+  assert.deepEqual(cifraDeFrase('por más de R$4.000 millones'), { valor: 4000, moneda: 'BRL' });
+  assert.deepEqual(cifraDeFrase('con US$1.1 millones al campeón'), { valor: 1.1, moneda: 'USD' });
+  assert.deepEqual(cifraDeFrase('por más de £2,000 millones'), { valor: 2000, moneda: 'GBP' });
+  assert.deepEqual(cifraDeFrase('valuada en US$22,000M'), { valor: 22000, moneda: 'USD' });
+  assert.deepEqual(cifraDeFrase('unos MX$5,000 millones'), { valor: 5000, moneda: 'MXN' });
+});
+check('marcador:add lists only the sentences that carry a money figure', () => {
+  assert.deepEqual(frasesConMonto('Primera frase. Pagó €40 millones por el club. Sin cifra aquí.'), ['Pagó €40 millones por el club.']);
+});
+check('marcador:add proposes the scope from the countries', () => {
+  assert.equal(alcanceDesdePaises(['US', 'MX']), 'mexico');
+  assert.equal(alcanceDesdePaises(['BR']), 'latam');
+  assert.equal(alcanceDesdePaises(['US']), 'eeuu');
+  assert.equal(alcanceDesdePaises(['ES', 'GB']), 'europa');
+  assert.equal(alcanceDesdePaises([]), 'global');
+});
+check('marcador:add builds ids the schema accepts', () => {
+  assert.equal(idPara('2026-11-06', 'Fox × Roku'), '2026-11-06-fox-roku');
+  assert.equal(idPara('2026-11-05', 'Nestlé × NBA (21 países, México incluido)'), '2026-11-05-nestle-nba-21-paises-mexico-incluido');
 });
 
 if (failed) {

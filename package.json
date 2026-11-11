@@ -14,7 +14,11 @@
     "db:reset-editor-password": "tsx scripts/reset-editor-password.ts",
     "publish:newsletter": "tsx scripts/publish-newsletter.ts",
     "test:frescura": "tsx --tsconfig scripts/tsconfig.test.json scripts/test-frescura.ts",
-    "marcador:validar": "tsx scripts/validate-marcador.ts"
+    "marcador:validar": "tsx scripts/validate-marcador.ts",
+    "marcador:add": "tsx scripts/marcador-add.ts",
+    "marcador:destacado": "tsx scripts/marcador-destacado.ts",
+    "marcador:pendientes": "tsx scripts/marcador-pendientes.ts",
+    "marcador:aprobar": "tsx scripts/marcador-aprobar.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",

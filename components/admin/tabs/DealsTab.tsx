@@ -228,8 +228,9 @@ export function DealsTab({ onToast }: Props) {
           this table: saving here no longer changes the site. */}
       <p className="field-error">
         Esta pestaña ya no alimenta el sitio. Desde el 11 nov 2026, El Marcador se lee de data/marcador.json en el
-        repositorio: lo que guardes aquí no aparece en la portada ni en /marcador. Cómo agregar un acuerdo:
-        docs/marcador.md.
+        repositorio: lo que guardes o apruebes aquí no aparece en la portada ni en /marcador. Para agregar un acuerdo:
+        npm run marcador:add -- &lt;url-de-la-nota&gt;; para ver lo que la automatización detectó: npm run
+        marcador:pendientes. Guía completa: docs/marcador.md.
       </p>
 
       {loadError && <p className="field-error">{loadError}</p>}
