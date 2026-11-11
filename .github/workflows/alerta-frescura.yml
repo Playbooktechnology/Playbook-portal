@@ -50,7 +50,7 @@ jobs:
               if (m.desactualizado) {
                 problems.push(
                   m.ultimo
-                    ? `**El Marcador de Negocios** — sin acuerdos nuevos desde el ${m.ultimo.fecha} (${m.diasDesdeUltimo} días; umbral: ${m.umbralDias}). Último registro: ${m.ultimo.titulo}. El widget está en modo archivo.`
+                    ? `**El Marcador de Negocios** — sin acuerdos nuevos desde el ${m.ultimo.fecha} (${m.diasDesdeUltimo} días; umbral: ${m.umbralDias}). Último registro: ${m.ultimo.titulo}${m.ultimo.url ? ` (${m.ultimo.url})` : ''}. El widget está en modo archivo.`
                     : '**El Marcador de Negocios** — la tabla de acuerdos está vacía.',
                 );
               }
@@ -75,7 +75,7 @@ jobs:
             const { owner, repo } = context.repo;
             const open = await github.paginate(github.rest.issues.listForRepo, { owner, repo, state: 'open', per_page: 100 });
             const existing = open.find(i => !i.pull_request && i.title === TITLE);
-            const today = data?.hoy ?? new Date().toISOString().slice(0, 10);
+            const today = data?.hoy ?? new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Mexico_City' }).format(new Date());
 
             if (!problems.length) {
               if (existing) {
