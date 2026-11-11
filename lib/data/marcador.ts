@@ -1,7 +1,7 @@
 import raw from '../../data/marcador.json';
 import { validateMarcador, type Acuerdo } from '../marcador-schema';
 import type { Deal } from '../deals';
-import { siteHref } from '../marcador';
+import { DEPORTE_LABEL, PAIS_LABEL, siteHref } from '../marcador';
 
 // El Marcador de Negocios reads data/marcador.json since 2026-11-11 (it
 // replaced the `deals` table, which had sat untouched since 23 sep). The file
@@ -36,20 +36,8 @@ const LEGACY_TYPE: Record<Acuerdo['tipo'], string> = {
   infraestructura: 'estadios',
 };
 
-const COUNTRY: Record<string, string> = {
-  MX: 'México', US: 'Estados Unidos', CA: 'Canadá', ES: 'España', FR: 'Francia', GB: 'Reino Unido', IT: 'Italia',
-  PT: 'Portugal', DE: 'Alemania', BR: 'Brasil', AR: 'Argentina', CO: 'Colombia', VE: 'Venezuela', CU: 'Cuba',
-  AU: 'Australia', RW: 'Ruanda', QA: 'Catar', SA: 'Arabia Saudita', NL: 'Países Bajos', CH: 'Suiza',
-};
-
 const SCOPE: Record<Acuerdo['alcance'], string> = {
   mexico: 'México', latam: 'Latinoamérica', eeuu: 'Estados Unidos', europa: 'Europa', global: 'Global',
-};
-
-const SPORT: Record<string, string> = {
-  futbol: 'Fútbol', 'futbol-americano': 'Fútbol americano', basquetbol: 'Básquetbol', beisbol: 'Béisbol',
-  tenis: 'Tenis', automovilismo: 'Automovilismo', golf: 'Golf', boxeo: 'Boxeo', lucha: 'Lucha',
-  atletismo: 'Atletismo', fitness: 'Fitness', multideporte: 'Multideporte', apuestas: 'Apuestas',
 };
 
 export function toLegacyDeal(a: Acuerdo): Deal {
@@ -61,8 +49,8 @@ export function toLegacyDeal(a: Acuerdo): Deal {
     brand,
     counterparty: rest.join(' × '),
     type: LEGACY_TYPE[a.tipo],
-    country: a.pais.length === 1 ? (COUNTRY[a.pais[0]] ?? a.pais[0]) : SCOPE[a.alcance],
-    sport: SPORT[a.deporte] ?? a.deporte,
+    country: a.pais.length === 1 ? (PAIS_LABEL[a.pais[0]] ?? a.pais[0]) : SCOPE[a.alcance],
+    sport: DEPORTE_LABEL[a.deporte] ?? a.deporte,
     duration: a.duracion ?? '',
     amountUsd: a.monto_usd_m === null ? null : Math.round(a.monto_usd_m * 1e6),
     amountDisclosed: a.monto_tipo === 'revelado',

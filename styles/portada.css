@@ -195,35 +195,6 @@
   .section-link{display:inline-block;}
 }
 
-/* ——— /marcador featured card pieces (kicker, figure grid, read link). The
-   homepage widget moved to the v2 block below (2026-11-11); these stay until
-   the page itself moves to v2 (Fase 5). ——— */
-.side-deals-kicker{
-  display:flex;align-items:center;gap:6px;margin:0;
-  font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
-  font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green);
-}
-.side-deals-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);flex:0 0 6px;}
-.side-deals-figures{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:4px 0 0;
-  border-top:1px solid rgba(255,255,255,.18);border-bottom:1px solid rgba(255,255,255,.18);
-}
-/* dt precedes dd in the markup (valid dl grouping); column-reverse puts the
-   number on top the way the scoreboard reads. */
-.side-deals-figure{
-  display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:3px;
-  padding:10px 8px;border-left:1px solid rgba(255,255,255,.18);min-width:0;
-}
-.side-deals-figure:first-child{border-left:none;padding-left:0;}
-.side-deals-figure dd{
-  margin:0;font-family:var(--serif-display);font-size:20px;line-height:1.05;color:var(--green);
-  overflow-wrap:anywhere;font-variant-numeric:tabular-nums;
-}
-.side-deals-figure dt{font-family:var(--sans);font-size:10px;line-height:1.3;color:rgba(255,255,255,.62);}
-.side-deals-read{align-self:flex-start;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--green);margin-top:2px;}
-.side-deals-read:hover,.side-deals-read:focus-visible{text-decoration:underline;text-underline-offset:3px;}
-
-
 /* ——— "El Marcador de Negocios" v2 (sidebar, 2026-11-11). Reference:
    docs/referencias/playbook-home.html, block id="marcador": Anton head with
    the week on the right, a three-cell score, the black deal card (green tag,

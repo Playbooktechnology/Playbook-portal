@@ -11,7 +11,8 @@ import { extractPullFigure } from '../lib/product-hubs';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import type { Acuerdo } from '../lib/marcador-schema';
-import { activeWeek, heroFigure, pickFeatured, resumenCorto, rowDeals, siteHref, weekScore } from '../lib/marcador';
+import { EMPTY_FILTERS, activeWeek, filterAcuerdos, heroFigure, pickFeatured, resumenCorto, rowDeals, siteHref, weekScore, yearKpis } from '../lib/marcador';
+import { getAcuerdos, getAcuerdosPublicos } from '../lib/data/marcador';
 import { MarcadorWidget } from '../components/home/MarcadorWidget';
 
 let failed = 0;
@@ -157,6 +158,23 @@ check('Marcador v2: an approved reading renders with its label', () => {
 check('Marcador v2: 11 days after the newest deal, the widget is in archive mode', () => {
   const html = renderToStaticMarkup(createElement(MarcadorWidget, { acuerdos: semana45, today: '2026-11-17' }));
   assert.ok(html.includes('Los acuerdos de 2026') && !html.includes('Semana 45') && !html.includes('Acuerdo de la semana'));
+});
+
+// ——— /marcador v2 (Fase 5)
+check('/marcador: the year total adds up disclosed amounts only', () => {
+  const k = yearKpis(semana45, '2026');
+  assert.deepEqual(k, { registrados: 5, conMonto: 2, sumaUsdM: 23000, paises: 2 });
+});
+check('/marcador: the Alcance filter', () => {
+  const rows = filterAcuerdos(semana45, { ...EMPTY_FILTERS, alcance: 'mexico' }, '2026-11-10');
+  assert.deepEqual(rows.map(a => a.id), ['2026-11-05-amex-nba']);
+});
+check('/marcador: records with cumple_criterio other than true are never public', () => {
+  const all = getAcuerdos();
+  const pub = getAcuerdosPublicos();
+  assert.ok(all.some(a => a.cumple_criterio !== true), 'the real file holds excluded records');
+  assert.ok(pub.every(a => a.cumple_criterio === true));
+  assert.equal(pub.length, all.filter(a => a.cumple_criterio === true).length);
 });
 
 if (failed) {

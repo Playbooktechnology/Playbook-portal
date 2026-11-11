@@ -1,5 +1,5 @@
 import type { Acuerdo, Alcance, Tipo } from './marcador-schema';
-import { isoWeek } from './deals';
+import { isoWeek, periodStart, type PeriodKey } from './deals';
 
 // Pure logic for El Marcador v2 (Fase 4, 2026-11-11): the homepage widget
 // reads data/marcador.json records (lib/data/marcador.ts) and decides
@@ -157,4 +157,85 @@ export function siteHref(url: string | null): string {
 
 export function daysBetween(from: string, to: string): number {
   return Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86400000);
+}
+
+export const PAIS_LABEL: Record<string, string> = {
+  MX: 'México', US: 'Estados Unidos', CA: 'Canadá', ES: 'España', FR: 'Francia', GB: 'Reino Unido', IT: 'Italia',
+  PT: 'Portugal', DE: 'Alemania', BR: 'Brasil', AR: 'Argentina', CO: 'Colombia', VE: 'Venezuela', CU: 'Cuba',
+  AU: 'Australia', RW: 'Ruanda', QA: 'Catar', SA: 'Arabia Saudita', NL: 'Países Bajos', CH: 'Suiza',
+};
+
+export const DEPORTE_LABEL: Record<string, string> = {
+  futbol: 'Fútbol', 'futbol-americano': 'Fútbol americano', basquetbol: 'Básquetbol', beisbol: 'Béisbol',
+  tenis: 'Tenis', automovilismo: 'Automovilismo', golf: 'Golf', boxeo: 'Boxeo', lucha: 'Lucha',
+  atletismo: 'Atletismo', fitness: 'Fitness', multideporte: 'Multideporte', apuestas: 'Apuestas',
+};
+
+export const ESTATUS_LABEL: Record<Acuerdo['estatus'], string> = {
+  anunciado: 'Anunciado',
+  reportado: 'Reportado',
+  confirmado: 'Confirmado',
+  cerrado: 'Cerrado',
+};
+
+export function paisLabel(a: Acuerdo): string {
+  return a.pais.length ? a.pais.map(p => PAIS_LABEL[p] ?? p).join(', ') : ALCANCE_LABEL[a.alcance];
+}
+
+// ----------------------------------------------------------------- /marcador (Fase 5)
+
+/** The year's headline figures. Only disclosed amounts are added up. */
+export function yearKpis(acuerdos: Acuerdo[], year: string) {
+  const ofYear = acuerdos.filter(a => a.fecha.startsWith(`${year}-`));
+  const disclosed = ofYear.filter(a => a.monto_tipo === 'revelado' && a.monto_usd_m !== null);
+  return {
+    registrados: ofYear.length,
+    conMonto: disclosed.length,
+    sumaUsdM: disclosed.reduce((sum, a) => sum + (a.monto_usd_m ?? 0), 0),
+    paises: new Set(ofYear.flatMap(a => a.pais)).size,
+  };
+}
+
+/** Top deals of the year by any known amount; reported/estimated ones keep their label. */
+export function topAcuerdos(acuerdos: Acuerdo[], year: string, limit = 5): Acuerdo[] {
+  return acuerdos
+    .filter(a => a.fecha.startsWith(`${year}-`) && a.monto_usd_m !== null)
+    .sort((a, b) => (b.monto_usd_m ?? 0) - (a.monto_usd_m ?? 0) || byDateDesc(a, b))
+    .slice(0, limit);
+}
+
+export function countByTipo(acuerdos: Acuerdo[], year: string): { key: Tipo; label: string; count: number }[] {
+  const ofYear = acuerdos.filter(a => a.fecha.startsWith(`${year}-`));
+  return (Object.keys(TIPO_LABEL) as Tipo[]).map(key => ({ key, label: TIPO_LABEL[key], count: ofYear.filter(a => a.tipo === key).length }));
+}
+
+export type MarcadorFilters = {
+  tipo: string;
+  alcance: string;
+  pais: string;
+  deporte: string;
+  period: PeriodKey;
+  query: string;
+};
+
+export const EMPTY_FILTERS: MarcadorFilters = { tipo: '', alcance: '', pais: '', deporte: '', period: 'anio', query: '' };
+
+function fold(s: string): string {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
+export function filterAcuerdos(acuerdos: Acuerdo[], f: MarcadorFilters, today: string): Acuerdo[] {
+  const start = periodStart(f.period, today);
+  const q = fold(f.query.trim());
+  return acuerdos
+    .filter(
+      a =>
+        (!f.tipo || a.tipo === f.tipo) &&
+        (!f.alcance || a.alcance === f.alcance) &&
+        (!f.pais || a.pais.includes(f.pais)) &&
+        (!f.deporte || a.deporte === f.deporte) &&
+        (!start || a.fecha >= start) &&
+        (!q || fold(`${a.titulo} ${a.partes.join(' ')} ${a.resumen} ${paisLabel(a)} ${DEPORTE_LABEL[a.deporte] ?? a.deporte}`).includes(q)),
+    )
+    .sort(byDateDesc);
 }
