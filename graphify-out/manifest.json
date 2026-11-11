@@ -1236,9 +1236,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1794357549.5445127,
-    "seen": 1794357655.7073882,
-    "ast_hash": "04f52ff6829a59a6d1294c03df14f585",
+    "mtime": 1794394916.1711764,
+    "seen": 1794395010.9200292,
+    "ast_hash": "23d0d92f0de9512a6d09166397f3458a",
     "semantic_hash": ""
   },
   "scripts/build-substack-backlog.mjs": {
@@ -3300,9 +3300,9 @@
     "semantic_hash": ""
   },
   "components/admin/tabs/DealsTab.tsx": {
-    "mtime": 1793220317.0324929,
-    "seen": 1793220585.414436,
-    "ast_hash": "02c3671b1bd46be7ffd6d77b0239fbf8",
+    "mtime": 1794394924.9304285,
+    "seen": 1794395010.913631,
+    "ast_hash": "6a1e6eba0036d5eeb47e16eebcb04551",
     "semantic_hash": ""
   },
   "components/home/DealsBoard.tsx": {
@@ -3336,9 +3336,9 @@
     "semantic_hash": ""
   },
   "lib/data/deals.ts": {
-    "mtime": 1793220317.3335881,
-    "seen": 1793220585.4177253,
-    "ast_hash": "df601878654ccf85e4db39e4473da957",
+    "mtime": 1794394911.2429435,
+    "seen": 1794395010.9181895,
+    "ast_hash": "5636c9d9ba943ee50a948d7975041349",
     "semantic_hash": ""
   },
   "lib/deals.ts": {
@@ -3906,15 +3906,15 @@
     "semantic_hash": ""
   },
   ".github/workflows/alerta-frescura.yml": {
-    "mtime": 1794357516.2236094,
-    "seen": 1794357655.6991434,
-    "ast_hash": "7648fbaefabfc321ecedf8576307ce23",
+    "mtime": 1794357984.2494016,
+    "seen": 1794395010.9103715,
+    "ast_hash": "84d464d2cceb362d0fde600afcc64b48",
     "semantic_hash": ""
   },
   "app/api/salud/portada/route.ts": {
-    "mtime": 1794357496.947981,
-    "seen": 1794357655.700859,
-    "ast_hash": "4f1a68b67c81e707bdc20a3f04dfe5f5",
+    "mtime": 1794357943.3052197,
+    "seen": 1794395010.9121423,
+    "ast_hash": "a9f97f8ce23e00a25fb6087ccc7b5018",
     "semantic_hash": ""
   },
   "lib/daily-figure.ts": {
@@ -3930,9 +3930,9 @@
     "semantic_hash": ""
   },
   "docs/marcador.md": {
-    "mtime": 1794357571.3145518,
-    "seen": 1794357655.711008,
-    "ast_hash": "ac5e76d1087634a16dd9049837d45036",
+    "mtime": 1794395001.0542314,
+    "seen": 1794395010.926291,
+    "ast_hash": "5605ffa470ec4bc4bbe00143b72b3deb",
     "semantic_hash": ""
   },
   "docs/referencias/playbook-home.html": {
@@ -3963,6 +3963,42 @@
     "mtime": 1794349664.6779797,
     "seen": 1794357655.716319,
     "ast_hash": "025186e3292b0b9af0dd4dc2380d51d9",
+    "semantic_hash": ""
+  },
+  "data/marcador.json": {
+    "mtime": 1794394987.9623265,
+    "seen": 1794395010.9167447,
+    "ast_hash": "8671e1e655016065d500bd98497c4d53",
+    "semantic_hash": ""
+  },
+  "lib/data/marcador.ts": {
+    "mtime": 1794394906.3840747,
+    "seen": 1794395010.9182673,
+    "ast_hash": "a5c76120eae20931ab78b09f79890104",
+    "semantic_hash": ""
+  },
+  "lib/marcador-schema.ts": {
+    "mtime": 1794362356.7248602,
+    "seen": 1794395010.9192464,
+    "ast_hash": "b4823a677b401e606c886c6016a7e3e0",
+    "semantic_hash": ""
+  },
+  "scripts/validate-marcador.ts": {
+    "mtime": 1794362149.4869623,
+    "seen": 1794395010.921437,
+    "ast_hash": "829317b247eaeb9c28422e52e5a91865",
+    "semantic_hash": ""
+  },
+  "docs/marcador/marcador-backfill-revision.md": {
+    "mtime": 1794362428.8232331,
+    "seen": 1794395010.9263313,
+    "ast_hash": "73eba422ecc5a584534f44ca0b533a6e",
+    "semantic_hash": ""
+  },
+  "docs/marcador/marcador-migracion-revision.md": {
+    "mtime": 1794362428.8226557,
+    "seen": 1794395010.9263346,
+    "ast_hash": "19990779affff2b64ba0deb0e7eef497",
     "semantic_hash": ""
   },
   "package-lock.json": {
