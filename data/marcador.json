@@ -150,6 +150,33 @@
     "fuente_monto": null
   },
   {
+    "id": "2026-07-23-albert-los-angeles-lakers",
+    "fecha": "2026-07-23",
+    "titulo": "Albert × Los Angeles Lakers",
+    "partes": [
+      "Albert",
+      "Los Angeles Lakers"
+    ],
+    "tipo": "patrocinio",
+    "alcance": "eeuu",
+    "pais": [
+      "US"
+    ],
+    "deporte": "basquetbol",
+    "duracion": null,
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": null,
+    "resumen": "Nuevo parche de camiseta en lugar de Bibigo, valuado en más de US$30 millones por temporada.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/los-lakers-firman-a-albert-como-nuevo-patrocinador-de-parche-por-us-30-millones-al-ano",
+    "fuente_monto": null
+  },
+  {
     "id": "2026-07-23-byd-psg",
     "fecha": "2026-07-23",
     "titulo": "BYD × PSG",
@@ -177,33 +204,6 @@
     "destacado_semana": false,
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/byd-se-convierte-en-socio-automotriz-oficial-del-psg-hasta-2029",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-07-23-albert-los-angeles-lakers",
-    "fecha": "2026-07-23",
-    "titulo": "Albert × Los Angeles Lakers",
-    "partes": [
-      "Albert",
-      "Los Angeles Lakers"
-    ],
-    "tipo": "patrocinio",
-    "alcance": "eeuu",
-    "pais": [
-      "US"
-    ],
-    "deporte": "basquetbol",
-    "duracion": null,
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": null,
-    "resumen": "Nuevo parche de camiseta en lugar de Bibigo, valuado en más de US$30 millones por temporada.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/los-lakers-firman-a-albert-como-nuevo-patrocinador-de-parche-por-us-30-millones-al-ano",
     "fuente_monto": null
   },
   {
@@ -352,6 +352,64 @@
     "fuente_monto": null
   },
   {
+    "id": "2026-08-11-apollo-sports-capital-yankee-global-enterprises",
+    "fecha": "2026-08-11",
+    "titulo": "Apollo Sports Capital × Yankee Global Enterprises",
+    "partes": [
+      "Apollo Sports Capital",
+      "Yankee Global Enterprises"
+    ],
+    "tipo": "propiedad",
+    "alcance": "eeuu",
+    "pais": [
+      "US"
+    ],
+    "deporte": "beisbol",
+    "duracion": null,
+    "monto_usd_m": 2600,
+    "monto_tipo": "revelado",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "US$2,600M",
+      "etiqueta": "monto"
+    },
+    "resumen": "Crédito y capital por US$2,600 millones a la sociedad dueña de los Yankees, con un asiento en el consejo.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/apollo-pone-us-2-600-millones-en-los-yankees-y-se-queda-con-un-asiento-en-el-consejo",
+    "fuente_monto": "Nota Playbook 11 ago 2026: \"US$2,600 millones — la inyección de Apollo a la sociedad dueña de los Yankees\""
+  },
+  {
+    "id": "2026-08-11-disney-y-espn-formula-e",
+    "fecha": "2026-08-11",
+    "titulo": "Disney+ y ESPN × Fórmula E",
+    "partes": [
+      "Disney+ y ESPN",
+      "Fórmula E"
+    ],
+    "tipo": "derechos",
+    "alcance": "global",
+    "pais": [],
+    "deporte": "automovilismo",
+    "duracion": "Multianual desde 2026-27",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "Multianual desde 2026-27",
+      "etiqueta": "duración"
+    },
+    "resumen": "Disney+ transmitirá el campeonato en 144 territorios, con ESPN+ como casa en Estados Unidos.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/disney-transmitira-la-formula-e-en-144-territorios-desde-diciembre",
+    "fuente_monto": null
+  },
+  {
     "id": "2026-08-11-google-fc-barcelona",
     "fecha": "2026-08-11",
     "titulo": "Google × FC Barcelona",
@@ -402,64 +460,6 @@
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/polymarket-sera-el-mercado-de-predicciones-oficial-del-atp-tour",
     "fuente_monto": null
-  },
-  {
-    "id": "2026-08-11-disney-y-espn-formula-e",
-    "fecha": "2026-08-11",
-    "titulo": "Disney+ y ESPN × Fórmula E",
-    "partes": [
-      "Disney+ y ESPN",
-      "Fórmula E"
-    ],
-    "tipo": "derechos",
-    "alcance": "global",
-    "pais": [],
-    "deporte": "automovilismo",
-    "duracion": "Multianual desde 2026-27",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "Multianual desde 2026-27",
-      "etiqueta": "duración"
-    },
-    "resumen": "Disney+ transmitirá el campeonato en 144 territorios, con ESPN+ como casa en Estados Unidos.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/disney-transmitira-la-formula-e-en-144-territorios-desde-diciembre",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-08-11-apollo-sports-capital-yankee-global-enterprises",
-    "fecha": "2026-08-11",
-    "titulo": "Apollo Sports Capital × Yankee Global Enterprises",
-    "partes": [
-      "Apollo Sports Capital",
-      "Yankee Global Enterprises"
-    ],
-    "tipo": "propiedad",
-    "alcance": "eeuu",
-    "pais": [
-      "US"
-    ],
-    "deporte": "beisbol",
-    "duracion": null,
-    "monto_usd_m": 2600,
-    "monto_tipo": "revelado",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "US$2,600M",
-      "etiqueta": "monto"
-    },
-    "resumen": "Crédito y capital por US$2,600 millones a la sociedad dueña de los Yankees, con un asiento en el consejo.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/apollo-pone-us-2-600-millones-en-los-yankees-y-se-queda-con-un-asiento-en-el-consejo",
-    "fuente_monto": "Nota Playbook 11 ago 2026: \"US$2,600 millones — la inyección de Apollo a la sociedad dueña de los Yankees\""
   },
   {
     "id": "2026-08-12-josh-kushner-y-bob-iger-los-angeles-lakers",
@@ -582,36 +582,6 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-08-20-arctos-partners-atlanta-falcons",
-    "fecha": "2026-08-20",
-    "titulo": "Arctos Partners × Atlanta Falcons",
-    "partes": [
-      "Arctos Partners",
-      "Atlanta Falcons"
-    ],
-    "tipo": "propiedad",
-    "alcance": "eeuu",
-    "pais": [
-      "US"
-    ],
-    "deporte": "futbol-americano",
-    "duracion": "Dos tramos en 18 meses",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "reportado",
-    "dato_hero": {
-      "valor": "Dos tramos en 18 meses",
-      "etiqueta": "duración"
-    },
-    "resumen": "Acuerdo para comprar el 10% del equipo a una valuación de más de US$10,000 millones, según CNBC y Sportico.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/arctos-compra-10-de-los-falcons-y-los-valua-en-mas-de-us-10-000-millones",
-    "fuente_monto": null
-  },
-  {
     "id": "2026-08-20-amazon-prime-video-seleccion-mexicana",
     "fecha": "2026-08-20",
     "titulo": "Amazon Prime Video × Selección Mexicana",
@@ -639,6 +609,36 @@
     "destacado_semana": false,
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/amazon-se-queda-con-los-38-partidos-de-local-del-tri-camino-al-mundial-2030-pero-no-en-exclusiva",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-08-20-arctos-partners-atlanta-falcons",
+    "fecha": "2026-08-20",
+    "titulo": "Arctos Partners × Atlanta Falcons",
+    "partes": [
+      "Arctos Partners",
+      "Atlanta Falcons"
+    ],
+    "tipo": "propiedad",
+    "alcance": "eeuu",
+    "pais": [
+      "US"
+    ],
+    "deporte": "futbol-americano",
+    "duracion": "Dos tramos en 18 meses",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "anunciado",
+    "dato_hero": {
+      "valor": "7.5%",
+      "etiqueta": "de los Falcons para Arctos"
+    },
+    "resumen": "Los dueños de la NFL aprobaron que Arctos, ahora parte de KKR, compre 7.5% de los Atlanta Falcons, con compromiso de sumar otro 2.5% después; Arthur Blank conserva el control.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/la-nfl-aprueba-la-venta-de-7-5-de-los-falcons-a-arctos",
     "fuente_monto": null
   },
   {
@@ -753,6 +753,33 @@
     "fuente_monto": null
   },
   {
+    "id": "2026-08-26-real-madrid-gp-de-espana",
+    "fecha": "2026-08-26",
+    "titulo": "Real Madrid × GP de España",
+    "partes": [
+      "Real Madrid",
+      "GP de España"
+    ],
+    "tipo": "patrocinio",
+    "alcance": "europa",
+    "pais": [
+      "ES"
+    ],
+    "deporte": "automovilismo",
+    "duracion": null,
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": null,
+    "resumen": "Local Event Supporter de la carrera de Madrid; su aporte real es Valdebebas, a 200 metros del circuito.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/real-madrid-patrocina-el-gp-de-espana-y-aporta-valdebebas",
+    "fuente_monto": null
+  },
+  {
     "id": "2026-08-26-roku-nwsl",
     "fecha": "2026-08-26",
     "titulo": "Roku × NWSL",
@@ -813,33 +840,6 @@
     "fuente_monto": "Nota Playbook 26 ago 2026: \"superó su meta de US$100 millones\""
   },
   {
-    "id": "2026-08-26-real-madrid-gp-de-espana",
-    "fecha": "2026-08-26",
-    "titulo": "Real Madrid × GP de España",
-    "partes": [
-      "Real Madrid",
-      "GP de España"
-    ],
-    "tipo": "patrocinio",
-    "alcance": "europa",
-    "pais": [
-      "ES"
-    ],
-    "deporte": "automovilismo",
-    "duracion": null,
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": null,
-    "resumen": "Local Event Supporter de la carrera de Madrid; su aporte real es Valdebebas, a 200 metros del circuito.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/real-madrid-patrocina-el-gp-de-espana-y-aporta-valdebebas",
-    "fuente_monto": null
-  },
-  {
     "id": "2026-08-28-claro-sports-seleccion-mexicana",
     "fecha": "2026-08-28",
     "titulo": "Claro Sports × Selección Mexicana",
@@ -867,6 +867,33 @@
     "destacado_semana": false,
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/claro-sports-se-suma-el-tri-ya-se-reparte-en-seis-pantallas",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-08-31-fox-izzi-y-sky",
+    "fecha": "2026-08-31",
+    "titulo": "FOX × izzi y Sky",
+    "partes": [
+      "FOX",
+      "izzi y Sky"
+    ],
+    "tipo": "derechos",
+    "alcance": "mexico",
+    "pais": [
+      "MX"
+    ],
+    "deporte": "multideporte",
+    "duracion": null,
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": null,
+    "resumen": "FOX y FOX+ entran a izzi y Sky un día después de la salida de Fox Sports México, con 98% de cobertura combinada.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/fox-toma-el-lugar-que-dejo-fox-sports-en-izzi-y-sky",
     "fuente_monto": null
   },
   {
@@ -924,33 +951,6 @@
     "destacado_semana": false,
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/ronaldo-compra-otro-club-y-ya-sabe-como-puede-terminar-esto",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-08-31-fox-izzi-y-sky",
-    "fecha": "2026-08-31",
-    "titulo": "FOX × izzi y Sky",
-    "partes": [
-      "FOX",
-      "izzi y Sky"
-    ],
-    "tipo": "derechos",
-    "alcance": "mexico",
-    "pais": [
-      "MX"
-    ],
-    "deporte": "multideporte",
-    "duracion": null,
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": null,
-    "resumen": "FOX y FOX+ entran a izzi y Sky un día después de la salida de Fox Sports México, con 98% de cobertura combinada.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/fox-toma-el-lugar-que-dejo-fox-sports-en-izzi-y-sky",
     "fuente_monto": null
   },
   {
@@ -1014,6 +1014,36 @@
     "fuente_monto": null
   },
   {
+    "id": "2026-09-01-kansas-city-chiefs-hunt-midwest",
+    "fecha": "2026-09-01",
+    "titulo": "Kansas City Chiefs × Hunt Midwest",
+    "partes": [
+      "Kansas City Chiefs",
+      "Hunt Midwest"
+    ],
+    "tipo": "infraestructura",
+    "alcance": "eeuu",
+    "pais": [
+      "US"
+    ],
+    "deporte": "futbol-americano",
+    "duracion": "Apertura en 2031",
+    "monto_usd_m": 4500,
+    "monto_tipo": "revelado",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "US$4,500M",
+      "etiqueta": "monto"
+    },
+    "resumen": "Two-Point Development, la desarrolladora conjunta del nuevo estadio en Kansas, la sede del equipo y los distritos comerciales. Inversión combinada anunciada: US$4,500 millones.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/kansas-se-queda-con-los-chiefs-y-su-estadio-de-us-4-500m",
+    "fuente_monto": "Nota Playbook 1 sep 2026: \"La inversión de capital combinada llega a US$4,500 millones\""
+  },
+  {
     "id": "2026-09-01-nbcuniversal-serie-a",
     "fecha": "2026-09-01",
     "titulo": "NBCUniversal × Serie A",
@@ -1072,36 +1102,6 @@
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/kroenke-compra-los-angels-a-moreno-en-record-de-us-4-000-millones",
     "fuente_monto": "Nota Playbook 1 sep 2026: \"fuentes consultadas por ESPN sitúan la operación en US$4,000 millones\""
-  },
-  {
-    "id": "2026-09-01-kansas-city-chiefs-hunt-midwest",
-    "fecha": "2026-09-01",
-    "titulo": "Kansas City Chiefs × Hunt Midwest",
-    "partes": [
-      "Kansas City Chiefs",
-      "Hunt Midwest"
-    ],
-    "tipo": "infraestructura",
-    "alcance": "eeuu",
-    "pais": [
-      "US"
-    ],
-    "deporte": "futbol-americano",
-    "duracion": "Apertura en 2031",
-    "monto_usd_m": 4500,
-    "monto_tipo": "revelado",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "US$4,500M",
-      "etiqueta": "monto"
-    },
-    "resumen": "Two-Point Development, la desarrolladora conjunta del nuevo estadio en Kansas, la sede del equipo y los distritos comerciales. Inversión combinada anunciada: US$4,500 millones.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/kansas-se-queda-con-los-chiefs-y-su-estadio-de-us-4-500m",
-    "fuente_monto": "Nota Playbook 1 sep 2026: \"La inversión de capital combinada llega a US$4,500 millones\""
   },
   {
     "id": "2026-09-02-hard-rock-gp-de-miami",
@@ -1164,36 +1164,6 @@
     "fuente_monto": "Nota Playbook 2 sep 2026: \"intercambio de acciones valuado en €2,800 millones\" · conversión BCE 2026-09-02: 1 EUR = 1.1578 USD"
   },
   {
-    "id": "2026-09-03-starbucks-toulouse-fc",
-    "fecha": "2026-09-03",
-    "titulo": "Starbucks × Toulouse FC",
-    "partes": [
-      "Starbucks",
-      "Toulouse FC"
-    ],
-    "tipo": "patrocinio",
-    "alcance": "europa",
-    "pais": [
-      "FR"
-    ],
-    "deporte": "futbol",
-    "duracion": "Temporada 2026-27",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "Temporada 2026-27",
-      "etiqueta": "duración"
-    },
-    "resumen": "Primer patrocinio de camiseta de Starbucks en el futbol: la manga del primer equipo y del centro de formación.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/starbucks-debuta-en-camisetas-de-futbol-con-el-toulouse",
-    "fuente_monto": null
-  },
-  {
     "id": "2026-09-03-nike-london-city-lionesses",
     "fecha": "2026-09-03",
     "titulo": "Nike × London City Lionesses",
@@ -1221,6 +1191,36 @@
     "destacado_semana": false,
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/nike-rompe-el-record-de-patrocinio-femenil-con-london-city",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-09-03-starbucks-toulouse-fc",
+    "fecha": "2026-09-03",
+    "titulo": "Starbucks × Toulouse FC",
+    "partes": [
+      "Starbucks",
+      "Toulouse FC"
+    ],
+    "tipo": "patrocinio",
+    "alcance": "europa",
+    "pais": [
+      "FR"
+    ],
+    "deporte": "futbol",
+    "duracion": "Temporada 2026-27",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "Temporada 2026-27",
+      "etiqueta": "duración"
+    },
+    "resumen": "Primer patrocinio de camiseta de Starbucks en el futbol: la manga del primer equipo y del centro de formación.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/starbucks-debuta-en-camisetas-de-futbol-con-el-toulouse",
     "fuente_monto": null
   },
   {
@@ -1279,34 +1279,32 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-09-08-turkish-airlines-liverpool",
+    "id": "2026-09-08-l-catterton-hyrox",
     "fecha": "2026-09-08",
-    "titulo": "Turkish Airlines × Liverpool",
+    "titulo": "L Catterton × HYROX",
     "partes": [
-      "Turkish Airlines",
-      "Liverpool"
+      "L Catterton",
+      "HYROX"
     ],
-    "tipo": "patrocinio",
-    "alcance": "europa",
-    "pais": [
-      "GB"
-    ],
-    "deporte": "futbol",
-    "duracion": "5 años (2027-2031)",
-    "monto_usd_m": 406.4,
-    "monto_tipo": "reportado",
+    "tipo": "propiedad",
+    "alcance": "global",
+    "pais": [],
+    "deporte": "fitness",
+    "duracion": null,
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
     "estatus": "confirmado",
     "dato_hero": {
-      "valor": "US$406M",
-      "etiqueta": "monto reportado"
+      "valor": "€600M",
+      "etiqueta": "valuación reportada"
     },
-    "resumen": "Nuevo patrocinador principal de camiseta desde 2027-28, en lugar de Standard Chartered. The Guardian lo reporta en más de £300 millones en total.",
+    "resumen": "Consorcio con los fundadores y WndrCo compra la participación mayoritaria de Infront. Bloomberg valúa la operación en €600 millones.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
     "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/el-liverpool-elige-a-turkish-airlines-por-mas-de-60m",
-    "fuente_monto": "Nota Playbook 8 sep 2026: \"más de £300 millones en total\" · conversión BCE 2026-09-08: 1 EUR = 1.1614 USD = 0.8574 GBP"
+    "url": "https://www.playbook.la/articulo/hyrox-ya-tiene-un-camino-real-hacia-los-juegos-olimpicos",
+    "fuente_monto": null
   },
   {
     "id": "2026-09-08-lionel-messi-cd-eldense",
@@ -1339,32 +1337,34 @@
     "fuente_monto": "Nota Playbook 8 sep 2026: \"Varios medios españoles ubican la valuación por encima de los €10 millones\" · conversión BCE 2026-09-08: 1 EUR = 1.1614 USD"
   },
   {
-    "id": "2026-09-08-l-catterton-hyrox",
+    "id": "2026-09-08-turkish-airlines-liverpool",
     "fecha": "2026-09-08",
-    "titulo": "L Catterton × HYROX",
+    "titulo": "Turkish Airlines × Liverpool",
     "partes": [
-      "L Catterton",
-      "HYROX"
+      "Turkish Airlines",
+      "Liverpool"
     ],
-    "tipo": "propiedad",
-    "alcance": "global",
-    "pais": [],
-    "deporte": "fitness",
-    "duracion": null,
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
+    "tipo": "patrocinio",
+    "alcance": "europa",
+    "pais": [
+      "GB"
+    ],
+    "deporte": "futbol",
+    "duracion": "5 años (2027-2031)",
+    "monto_usd_m": 406.4,
+    "monto_tipo": "reportado",
     "estatus": "confirmado",
     "dato_hero": {
-      "valor": "€600M",
-      "etiqueta": "valuación reportada"
+      "valor": "US$406M",
+      "etiqueta": "monto reportado"
     },
-    "resumen": "Consorcio con los fundadores y WndrCo compra la participación mayoritaria de Infront. Bloomberg valúa la operación en €600 millones.",
+    "resumen": "Nuevo patrocinador principal de camiseta desde 2027-28, en lugar de Standard Chartered. The Guardian lo reporta en más de £300 millones en total.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
     "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/hyrox-ya-tiene-un-camino-real-hacia-los-juegos-olimpicos",
-    "fuente_monto": null
+    "url": "https://www.playbook.la/articulo/el-liverpool-elige-a-turkish-airlines-por-mas-de-60m",
+    "fuente_monto": "Nota Playbook 8 sep 2026: \"más de £300 millones en total\" · conversión BCE 2026-09-08: 1 EUR = 1.1614 USD = 0.8574 GBP"
   },
   {
     "id": "2026-09-09-wilson-lfa-finsus",
@@ -1516,6 +1516,34 @@
     "fuente_monto": null
   },
   {
+    "id": "2026-09-14-fox-concacaf",
+    "fecha": "2026-09-14",
+    "titulo": "FOX × Concacaf",
+    "partes": [
+      "FOX",
+      "Concacaf"
+    ],
+    "tipo": "derechos",
+    "alcance": "latam",
+    "pais": [],
+    "deporte": "futbol",
+    "duracion": "Rumbo al Mundial 2030",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "Rumbo al Mundial 2030",
+      "etiqueta": "duración"
+    },
+    "resumen": "Liga de Naciones y eliminatorias al Mundial 2030 en siete países de Centroamérica, en la señal que FOX le compró a Tigo Sports.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/fox-llena-de-selecciones-la-senal-que-le-compro-a-tigo-sports",
+    "fuente_monto": null
+  },
+  {
     "id": "2026-09-14-telefonica-dazn",
     "fecha": "2026-09-14",
     "titulo": "Telefónica × DAZN",
@@ -1544,34 +1572,6 @@
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/telefonica-paga-18-mas-a-dazn-por-distribuir-laliga",
     "fuente_monto": "Nota Playbook 14 sep 2026: \"Telefónica acordó con DAZN pagar €1,650 millones\" · conversión BCE 2026-09-14: 1 EUR = 1.1551 USD"
-  },
-  {
-    "id": "2026-09-14-fox-concacaf",
-    "fecha": "2026-09-14",
-    "titulo": "FOX × Concacaf",
-    "partes": [
-      "FOX",
-      "Concacaf"
-    ],
-    "tipo": "derechos",
-    "alcance": "latam",
-    "pais": [],
-    "deporte": "futbol",
-    "duracion": "Rumbo al Mundial 2030",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "Rumbo al Mundial 2030",
-      "etiqueta": "duración"
-    },
-    "resumen": "Liga de Naciones y eliminatorias al Mundial 2030 en siete países de Centroamérica, en la señal que FOX le compró a Tigo Sports.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/fox-llena-de-selecciones-la-senal-que-le-compro-a-tigo-sports",
-    "fuente_monto": null
   },
   {
     "id": "2026-09-16-adidas-benfica",
@@ -1662,61 +1662,6 @@
     "fuente_monto": "Nota Playbook 17 sep 2026: \"una ronda de US$250 millones en capital primario\""
   },
   {
-    "id": "2026-09-21-jd-sports-grupo-axo",
-    "fecha": "2026-09-21",
-    "titulo": "JD Sports × Grupo Axo",
-    "partes": [
-      "JD Sports",
-      "Grupo Axo"
-    ],
-    "tipo": "retail",
-    "alcance": "mexico",
-    "pais": [
-      "MX"
-    ],
-    "deporte": "multideporte",
-    "duracion": "Largo plazo",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "140+",
-      "etiqueta": "tiendas"
-    },
-    "resumen": "Franquicia de largo plazo sobre la red de tiendas que Axo ya opera: más de 140 tiendas JD y el ecommerce de la marca en México desde 2027.",
-    "lectura": "JD entra a México convirtiendo una red que Axo ya opera, lo que le ahorra tiempo y capex. Axo sale ganando más que un contrato de distribución: se vuelve la puerta de entrada para las marcas globales que quieren escala rápida en el país.",
-    "lectura_borrador": null,
-    "destacado_semana": true,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/grupo-axo-trae-a-jd-sports-a-mexico-con-140-tiendas",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-09-23-stella-artois-uefa",
-    "fecha": "2026-09-23",
-    "titulo": "Stella Artois × UEFA",
-    "partes": [
-      "AB InBev (Stella Artois)",
-      "UEFA"
-    ],
-    "tipo": "patrocinio",
-    "alcance": "europa",
-    "pais": [],
-    "deporte": "futbol",
-    "duracion": "6 temporadas, 2027/28 a 2033",
-    "monto_usd_m": 228.2,
-    "monto_tipo": "reportado",
-    "estatus": "confirmado",
-    "dato_hero": null,
-    "resumen": "Stella Artois, de AB InBev, sustituye a Heineken como cerveza oficial de Champions, Europa y Conference League desde 2027/28, por seis temporadas hasta 2033.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/stella-artois-reemplaza-a-heineken-como-cerveza-oficial-de-la-champions-league",
-    "fuente_monto": "Nota Playbook 23 sep 2026: \"es lo que produjo el salto de €120 millones a €200 millones anuales, según reportó The Athletic.\" · conversión BCE 2026-09-23: 1 EUR = 1.1411 USD"
-  },
-  {
     "id": "2026-09-21-dimayor-grupo-de-mauricio-correa",
     "fecha": "2026-09-21",
     "titulo": "Dimayor × grupo de Mauricio Correa",
@@ -1744,34 +1689,33 @@
     "fuente_monto": "Nota Playbook 21 sep 2026: \"asciende a US$90 millones por temporada\""
   },
   {
-    "id": "2026-09-23-gnp-seguros-ocesa-uag",
-    "fecha": "2026-09-23",
-    "titulo": "GNP Seguros × OCESA × UAG",
+    "id": "2026-09-21-jd-sports-grupo-axo",
+    "fecha": "2026-09-21",
+    "titulo": "JD Sports × Grupo Axo",
     "partes": [
-      "OCESA",
-      "GNP Seguros",
-      "Universidad Autónoma de Guadalajara"
+      "JD Sports",
+      "Grupo Axo"
     ],
-    "tipo": "infraestructura",
+    "tipo": "retail",
     "alcance": "mexico",
     "pais": [
       "MX"
     ],
-    "deporte": "otro",
-    "duracion": null,
+    "deporte": "multideporte",
+    "duracion": "Largo plazo",
     "monto_usd_m": null,
     "monto_tipo": "nr",
     "estatus": "confirmado",
     "dato_hero": {
-      "valor": "30,000",
-      "etiqueta": "lugares máximos según OCESA"
+      "valor": "140+",
+      "etiqueta": "tiendas"
     },
-    "resumen": "OCESA abrió el Coliseo GNP Seguros, antiguo Estadio 3 de Marzo de la UAG, como recinto de conciertos en alianza de largo plazo con GNP Seguros y la universidad.",
-    "lectura": null,
+    "resumen": "Franquicia de largo plazo sobre la red de tiendas que Axo ya opera: más de 140 tiendas JD y el ecommerce de la marca en México desde 2027.",
+    "lectura": "JD entra a México convirtiendo una red que Axo ya opera, lo que le ahorra tiempo y capex. Axo sale ganando más que un contrato de distribución: se vuelve la puerta de entrada para las marcas globales que quieren escala rápida en el país.",
     "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/coliseo-gnp-seguros-el-nuevo-recinto-de-ocesa-en-el-3-de-marzo",
+    "destacado_semana": true,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/grupo-axo-trae-a-jd-sports-a-mexico-con-140-tiendas",
     "fuente_monto": null
   },
   {
@@ -1805,6 +1749,89 @@
     "fuente_monto": null
   },
   {
+    "id": "2026-09-23-gnp-seguros-ocesa-uag",
+    "fecha": "2026-09-23",
+    "titulo": "GNP Seguros × OCESA × UAG",
+    "partes": [
+      "OCESA",
+      "GNP Seguros",
+      "Universidad Autónoma de Guadalajara"
+    ],
+    "tipo": "infraestructura",
+    "alcance": "mexico",
+    "pais": [
+      "MX"
+    ],
+    "deporte": "otro",
+    "duracion": null,
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "30,000",
+      "etiqueta": "lugares máximos según OCESA"
+    },
+    "resumen": "OCESA abrió el Coliseo GNP Seguros, antiguo Estadio 3 de Marzo de la UAG, como recinto de conciertos en alianza de largo plazo con GNP Seguros y la universidad.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/coliseo-gnp-seguros-el-nuevo-recinto-de-ocesa-en-el-3-de-marzo",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-09-23-stella-artois-uefa",
+    "fecha": "2026-09-23",
+    "titulo": "Stella Artois × UEFA",
+    "partes": [
+      "AB InBev (Stella Artois)",
+      "UEFA"
+    ],
+    "tipo": "patrocinio",
+    "alcance": "europa",
+    "pais": [],
+    "deporte": "futbol",
+    "duracion": "6 temporadas, 2027/28 a 2033",
+    "monto_usd_m": 228.2,
+    "monto_tipo": "reportado",
+    "estatus": "confirmado",
+    "dato_hero": null,
+    "resumen": "Stella Artois, de AB InBev, sustituye a Heineken como cerveza oficial de Champions, Europa y Conference League desde 2027/28, por seis temporadas hasta 2033.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/stella-artois-reemplaza-a-heineken-como-cerveza-oficial-de-la-champions-league",
+    "fuente_monto": "Nota Playbook 23 sep 2026: \"es lo que produjo el salto de €120 millones a €200 millones anuales, según reportó The Athletic.\" · conversión BCE 2026-09-23: 1 EUR = 1.1411 USD"
+  },
+  {
+    "id": "2026-09-25-almirante-participacoes-vasco-da-gama",
+    "fecha": "2026-09-25",
+    "titulo": "Almirante Participações × Vasco da Gama",
+    "partes": [
+      "Almirante Participações (Marcos Lamacchia)",
+      "SAF del Vasco da Gama"
+    ],
+    "tipo": "propiedad",
+    "alcance": "latam",
+    "pais": [
+      "BR"
+    ],
+    "deporte": "futbol",
+    "duracion": null,
+    "monto_usd_m": 140.9,
+    "monto_tipo": "reportado",
+    "estatus": "anunciado",
+    "dato_hero": null,
+    "resumen": "Almirante Participações, de Marcos Lamacchia, ganó la subasta judicial por 90% de la SAF del Vasco con R$730 millones en aportaciones; faltan aprobaciones del club y revisión de la Anresf.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/venta-del-vasco-da-gama-hijastro-de-la-presidenta-del-palmeiras-gana-la-subasta",
+    "fuente_monto": "Nota Playbook 25 sep 2026: \"Recibo: Aportaciones al futbol 2026-30 — R$500M · Centro de entrenamiento — R$120M · Préstamo convertido en acciones — R$80M · Fuerzas básicas — R$30M · Total — R$730M\" · conversión BCE 2026-09-25: 1 EUR = 1.1403 USD = 5.9091 BRL"
+  },
+  {
     "id": "2026-09-28-huawei-atletico-mineiro",
     "fecha": "2026-09-28",
     "titulo": "Huawei × Atlético Mineiro",
@@ -1836,31 +1863,32 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-09-25-almirante-participacoes-vasco-da-gama",
-    "fecha": "2026-09-25",
-    "titulo": "Almirante Participações × Vasco da Gama",
+    "id": "2026-09-29-atp-media-veritone",
+    "fecha": "2026-09-29",
+    "titulo": "ATP Media × Veritone",
     "partes": [
-      "Almirante Participações (Marcos Lamacchia)",
-      "SAF del Vasco da Gama"
+      "ATP Media",
+      "Veritone"
     ],
-    "tipo": "propiedad",
-    "alcance": "latam",
+    "tipo": "derechos",
+    "alcance": "eeuu",
     "pais": [
-      "BR"
+      "US",
+      "CA"
     ],
-    "deporte": "futbol",
-    "duracion": null,
-    "monto_usd_m": 140.9,
-    "monto_tipo": "reportado",
-    "estatus": "anunciado",
+    "deporte": "tenis",
+    "duracion": "varios años",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
     "dato_hero": null,
-    "resumen": "Almirante Participações, de Marcos Lamacchia, ganó la subasta judicial por 90% de la SAF del Vasco con R$730 millones en aportaciones; faltan aprobaciones del club y revisión de la Anresf.",
+    "resumen": "ATP Media firmó un acuerdo de varios años con Veritone para licenciar en Norteamérica su archivo de video del ATP Tour a marcas, medios y creadores.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
     "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/venta-del-vasco-da-gama-hijastro-de-la-presidenta-del-palmeiras-gana-la-subasta",
-    "fuente_monto": "Nota Playbook 25 sep 2026: \"Recibo: Aportaciones al futbol 2026-30 — R$500M · Centro de entrenamiento — R$120M · Préstamo convertido en acciones — R$80M · Fuerzas básicas — R$30M · Total — R$730M\" · conversión BCE 2026-09-25: 1 EUR = 1.1403 USD = 5.9091 BRL"
+    "url": "https://www.playbook.la/articulo/archivo-de-la-atp-acuerdo-con-veritone-para-licenciarlo-a-marcas-y-creadores",
+    "fuente_monto": null
   },
   {
     "id": "2026-09-29-banamex-liga-mexicana-del-pacifico",
@@ -1891,6 +1919,33 @@
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/banamex-se-queda-con-el-nombre-de-la-liga-del-pacifico-que-compro",
     "fuente_monto": null
+  },
+  {
+    "id": "2026-09-29-exor-juventus",
+    "fecha": "2026-09-29",
+    "titulo": "Exor × Juventus",
+    "partes": [
+      "Juventus",
+      "Exor"
+    ],
+    "tipo": "propiedad",
+    "alcance": "europa",
+    "pais": [
+      "IT"
+    ],
+    "deporte": "futbol",
+    "duracion": null,
+    "monto_usd_m": 283.9,
+    "monto_tipo": "revelado",
+    "estatus": "anunciado",
+    "dato_hero": null,
+    "resumen": "El consejo de la Juventus pedirá a sus accionistas autorizar una ampliación de capital de hasta €250 millones; Exor, dueño de 65.4%, la respaldará y adelantará €60 millones.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/juventus-vuelve-a-pedir-hasta-250-millones-a-sus-accionistas",
+    "fuente_monto": "Nota Playbook 29 sep 2026: \"El consejo de la Juventus aprobó el 29 de septiembre pedirle a sus accionistas autorización para una ampliación de capital de hasta €250 millones (US$284 millones).\" · conversión BCE 2026-09-29: 1 EUR = 1.1355 USD"
   },
   {
     "id": "2026-09-30-park-bench-girondins-de-bordeaux",
@@ -1924,59 +1979,30 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-09-29-exor-juventus",
-    "fecha": "2026-09-29",
-    "titulo": "Exor × Juventus",
+    "id": "2026-10-05-bc-partners-liv-golf",
+    "fecha": "2026-10-05",
+    "titulo": "BC Partners × LIV Golf",
     "partes": [
-      "Juventus",
-      "Exor"
+      "LIV Golf",
+      "BC Partners",
+      "Jugadores de LIV Golf"
     ],
     "tipo": "propiedad",
-    "alcance": "europa",
-    "pais": [
-      "IT"
-    ],
-    "deporte": "futbol",
+    "alcance": "global",
+    "pais": [],
+    "deporte": "golf",
     "duracion": null,
-    "monto_usd_m": 283.9,
+    "monto_usd_m": 300,
     "monto_tipo": "revelado",
     "estatus": "anunciado",
     "dato_hero": null,
-    "resumen": "El consejo de la Juventus pedirá a sus accionistas autorizar una ampliación de capital de hasta €250 millones; Exor, dueño de 65.4%, la respaldará y adelantará €60 millones.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/juventus-vuelve-a-pedir-hasta-250-millones-a-sus-accionistas",
-    "fuente_monto": "Nota Playbook 29 sep 2026: \"El consejo de la Juventus aprobó el 29 de septiembre pedirle a sus accionistas autorización para una ampliación de capital de hasta €250 millones (US$284 millones).\" · conversión BCE 2026-09-29: 1 EUR = 1.1355 USD"
-  },
-  {
-    "id": "2026-09-29-atp-media-veritone",
-    "fecha": "2026-09-29",
-    "titulo": "ATP Media × Veritone",
-    "partes": [
-      "ATP Media",
-      "Veritone"
-    ],
-    "tipo": "derechos",
-    "alcance": "eeuu",
-    "pais": [
-      "US",
-      "CA"
-    ],
-    "deporte": "tenis",
-    "duracion": "varios años",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": null,
-    "resumen": "ATP Media firmó un acuerdo de varios años con Veritone para licenciar en Norteamérica su archivo de video del ATP Tour a marcas, medios y creadores.",
+    "resumen": "El acuerdo de reestructura de LIV Golf presentado ante el tribunal daría 52.5% de la liga a los jugadores y 45% a BC Partners y minoritarios; BC Partners Credit pondría hasta US$300 millones.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
     "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/archivo-de-la-atp-acuerdo-con-veritone-para-licenciarlo-a-marcas-y-creadores",
-    "fuente_monto": null
+    "url": "https://www.playbook.la/articulo/los-jugadores-serian-duenos-de-52-5-de-liv-golf-tras-la-bancarrota",
+    "fuente_monto": "Nota Playbook 5 oct 2026: \"BC Partners Credit, la división de crédito de la firma, se compromete a poner hasta US$300 millones en lo que la liga ya llama LIV Golf 2.0.\""
   },
   {
     "id": "2026-10-05-visa-13-equipos-de-la-nfl",
@@ -2021,57 +2047,57 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-10-05-bc-partners-liv-golf",
-    "fecha": "2026-10-05",
-    "titulo": "BC Partners × LIV Golf",
+    "id": "2026-10-06-paramount-warner-bros-discovery",
+    "fecha": "2026-10-06",
+    "titulo": "Paramount × Warner Bros. Discovery",
     "partes": [
-      "LIV Golf",
-      "BC Partners",
-      "Jugadores de LIV Golf"
+      "Paramount",
+      "Warner Bros. Discovery"
     ],
     "tipo": "propiedad",
-    "alcance": "global",
-    "pais": [],
-    "deporte": "golf",
+    "alcance": "eeuu",
+    "pais": [
+      "US"
+    ],
+    "deporte": "multideporte",
     "duracion": null,
-    "monto_usd_m": 300,
+    "monto_usd_m": 110000,
     "monto_tipo": "revelado",
-    "estatus": "anunciado",
+    "estatus": "cerrado",
     "dato_hero": null,
-    "resumen": "El acuerdo de reestructura de LIV Golf presentado ante el tribunal daría 52.5% de la liga a los jugadores y 45% a BC Partners y minoritarios; BC Partners Credit pondría hasta US$300 millones.",
+    "resumen": "Paramount cerró la compra de Warner Bros. Discovery por US$110,000 millones; la empresa combinada, Skydance, une CBS Sports y TNT Sports con una deuda total estimada en US$87,500 millones.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/los-jugadores-serian-duenos-de-52-5-de-liv-golf-tras-la-bancarrota",
-    "fuente_monto": "Nota Playbook 5 oct 2026: \"BC Partners Credit, la división de crédito de la firma, se compromete a poner hasta US$300 millones en lo que la liga ya llama LIV Golf 2.0.\""
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/skydance-nuevo-gigante-de-derechos-deportivos-une-cbs-sports-y-tnt-sports",
+    "fuente_monto": "Nota Playbook 6 oct 2026: \"Paramount cerró el 6 de octubre la compra de Warner Bros. Discovery por US$110,000 millones\""
   },
   {
-    "id": "2026-10-07-grupo-prodi-udeg",
+    "id": "2026-10-07-anta-puma",
     "fecha": "2026-10-07",
-    "titulo": "Grupo PRODI × UdeG",
+    "titulo": "ANTA × PUMA",
     "partes": [
-      "Grupo PRODI (Atlas)",
-      "Universidad de Guadalajara"
+      "ANTA Sports",
+      "PUMA",
+      "Artémis"
     ],
-    "tipo": "infraestructura",
-    "alcance": "mexico",
-    "pais": [
-      "MX"
-    ],
-    "deporte": "futbol",
-    "duracion": "99 años (renta del predio)",
-    "monto_usd_m": 276.3,
+    "tipo": "retail",
+    "alcance": "global",
+    "pais": [],
+    "deporte": "multideporte",
+    "duracion": null,
+    "monto_usd_m": 1682.1,
     "monto_tipo": "revelado",
-    "estatus": "anunciado",
+    "estatus": "cerrado",
     "dato_hero": null,
-    "resumen": "Grupo PRODI presentó el estadio del Atlas y Leones Negros en un predio de la UdeG: unos MX$5,000 millones, 40 mil lugares y apertura prevista en 2030; la UdeG recibe renta y 20%.",
+    "resumen": "ANTA Sports cerró la compra del 29.06% de PUMA que tenía Artémis, vehículo de la familia Pinault, por cerca de €1,505 millones, y se volvió su mayor accionista.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/asi-sera-el-nuevo-estadio-del-atlas-cuanto-costara-40-mil-lugares-y-apertura-en-2030",
-    "fuente_monto": "Nota Playbook 7 oct 2026: \"costará cerca de MX$5,000 millones (US$275 millones), tendrá unos 40 mil lugares y lo diseña Populous\" · conversión BCE 2026-10-07: 1 EUR = 1.1177 USD = 20.2236 MXN"
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/anta-ya-es-el-mayor-accionista-de-puma-tras-pagar-us-1-710-millones-que-cambia",
+    "fuente_monto": "Nota Playbook 7 oct 2026: \"Pagó cerca de €1,505 millones (US$1,710 millones) en efectivo, a €35 por acción (US$39.74).\" · conversión BCE 2026-10-07: 1 EUR = 1.1177 USD"
   },
   {
     "id": "2026-10-07-fundadores-de-hyrox-xenom",
@@ -2099,6 +2125,33 @@
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/hyrox-y-xenom-ya-comparten-socios-los-fundadores-entran-a-su-consejo",
     "fuente_monto": null
+  },
+  {
+    "id": "2026-10-07-grupo-prodi-udeg",
+    "fecha": "2026-10-07",
+    "titulo": "Grupo PRODI × UdeG",
+    "partes": [
+      "Grupo PRODI (Atlas)",
+      "Universidad de Guadalajara"
+    ],
+    "tipo": "infraestructura",
+    "alcance": "mexico",
+    "pais": [
+      "MX"
+    ],
+    "deporte": "futbol",
+    "duracion": "99 años (renta del predio)",
+    "monto_usd_m": 276.3,
+    "monto_tipo": "revelado",
+    "estatus": "anunciado",
+    "dato_hero": null,
+    "resumen": "Grupo PRODI presentó el estadio del Atlas y Leones Negros en un predio de la UdeG: unos MX$5,000 millones, 40 mil lugares y apertura prevista en 2030; la UdeG recibe renta y 20%.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/asi-sera-el-nuevo-estadio-del-atlas-cuanto-costara-40-mil-lugares-y-apertura-en-2030",
+    "fuente_monto": "Nota Playbook 7 oct 2026: \"costará cerca de MX$5,000 millones (US$275 millones), tendrá unos 40 mil lugares y lo diseña Populous\" · conversión BCE 2026-10-07: 1 EUR = 1.1177 USD = 20.2236 MXN"
   },
   {
     "id": "2026-10-07-uber-eats-real-madrid",
@@ -2132,33 +2185,6 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-10-06-paramount-warner-bros-discovery",
-    "fecha": "2026-10-06",
-    "titulo": "Paramount × Warner Bros. Discovery",
-    "partes": [
-      "Paramount",
-      "Warner Bros. Discovery"
-    ],
-    "tipo": "propiedad",
-    "alcance": "eeuu",
-    "pais": [
-      "US"
-    ],
-    "deporte": "multideporte",
-    "duracion": null,
-    "monto_usd_m": 110000,
-    "monto_tipo": "revelado",
-    "estatus": "cerrado",
-    "dato_hero": null,
-    "resumen": "Paramount cerró la compra de Warner Bros. Discovery por US$110,000 millones; la empresa combinada, Skydance, une CBS Sports y TNT Sports con una deuda total estimada en US$87,500 millones.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/skydance-nuevo-gigante-de-derechos-deportivos-une-cbs-sports-y-tnt-sports",
-    "fuente_monto": "Nota Playbook 6 oct 2026: \"Paramount cerró el 6 de octubre la compra de Warner Bros. Discovery por US$110,000 millones\""
-  },
-  {
     "id": "2026-10-08-gilgeous-alexander-atletico-de-madrid",
     "fecha": "2026-10-08",
     "titulo": "Gilgeous-Alexander × Atlético de Madrid",
@@ -2189,79 +2215,33 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-10-07-anta-puma",
-    "fecha": "2026-10-07",
-    "titulo": "ANTA × PUMA",
+    "id": "2026-10-09-mastercard-lvbp",
+    "fecha": "2026-10-09",
+    "titulo": "Mastercard × LVBP",
     "partes": [
-      "ANTA Sports",
-      "PUMA",
-      "Artémis"
-    ],
-    "tipo": "retail",
-    "alcance": "global",
-    "pais": [],
-    "deporte": "multideporte",
-    "duracion": null,
-    "monto_usd_m": 1682.1,
-    "monto_tipo": "revelado",
-    "estatus": "cerrado",
-    "dato_hero": null,
-    "resumen": "ANTA Sports cerró la compra del 29.06% de PUMA que tenía Artémis, vehículo de la familia Pinault, por cerca de €1,505 millones, y se volvió su mayor accionista.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/anta-ya-es-el-mayor-accionista-de-puma-tras-pagar-us-1-710-millones-que-cambia",
-    "fuente_monto": "Nota Playbook 7 oct 2026: \"Pagó cerca de €1,505 millones (US$1,710 millones) en efectivo, a €35 por acción (US$39.74).\" · conversión BCE 2026-10-07: 1 EUR = 1.1177 USD"
-  },
-  {
-    "id": "2026-10-10-nestle-nba",
-    "fecha": "2026-10-10",
-    "titulo": "Nestlé × NBA",
-    "partes": [
-      "Nestlé",
-      "NBA"
+      "Mastercard",
+      "Liga Venezolana de Béisbol Profesional"
     ],
     "tipo": "patrocinio",
-    "alcance": "mexico",
+    "alcance": "latam",
     "pais": [
-      "AU",
-      "BR",
-      "CA",
-      "CO",
-      "FR",
-      "DE",
-      "GH",
-      "IT",
-      "ID",
-      "MY",
-      "MX",
-      "NZ",
-      "NG",
-      "SG",
-      "ES",
-      "TH",
-      "TR",
-      "GB",
-      "US",
-      "VN",
-      "PH"
+      "VE"
     ],
-    "deporte": "basquetbol",
-    "duracion": "varios años, desde el 1 de enero de 2027",
+    "deporte": "beisbol",
+    "duracion": "3 temporadas",
     "monto_usd_m": null,
     "monto_tipo": "nr",
     "estatus": "confirmado",
     "dato_hero": {
-      "valor": "21",
-      "etiqueta": "mercados"
+      "valor": "80",
+      "etiqueta": "años sin marca en el nombre de la liga"
     },
-    "resumen": "Milo, Nesquik y Nescau, de Nestlé, serán socias oficiales de la NBA desde enero de 2027 en 20 mercados, México incluido, y Filipinas desde octubre de 2027. Monto no revelado.",
+    "resumen": "Mastercard da nombre a la Liga Venezolana de Béisbol Profesional, que juega como Mastercard LVBP, por tres temporadas. Incluye pagos sin contacto en estadios y descuentos. Monto no revelado.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
     "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/nestle-lleva-milo-nesquik-y-nescau-a-la-nba-en-21-paises-mexico-incluido",
+    "url": "https://www.playbook.la/articulo/mastercard-pone-su-nombre-a-la-liga-venezolana-de-beisbol",
     "fuente_monto": null
   },
   {
@@ -2325,33 +2305,53 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-10-09-mastercard-lvbp",
-    "fecha": "2026-10-09",
-    "titulo": "Mastercard × LVBP",
+    "id": "2026-10-10-nestle-nba",
+    "fecha": "2026-10-10",
+    "titulo": "Nestlé × NBA",
     "partes": [
-      "Mastercard",
-      "Liga Venezolana de Béisbol Profesional"
+      "Nestlé",
+      "NBA"
     ],
     "tipo": "patrocinio",
-    "alcance": "latam",
+    "alcance": "mexico",
     "pais": [
-      "VE"
+      "AU",
+      "BR",
+      "CA",
+      "CO",
+      "FR",
+      "DE",
+      "GH",
+      "IT",
+      "ID",
+      "MY",
+      "MX",
+      "NZ",
+      "NG",
+      "SG",
+      "ES",
+      "TH",
+      "TR",
+      "GB",
+      "US",
+      "VN",
+      "PH"
     ],
-    "deporte": "beisbol",
-    "duracion": "3 temporadas",
+    "deporte": "basquetbol",
+    "duracion": "varios años, desde el 1 de enero de 2027",
     "monto_usd_m": null,
     "monto_tipo": "nr",
     "estatus": "confirmado",
     "dato_hero": {
-      "valor": "80",
-      "etiqueta": "años sin marca en el nombre de la liga"
+      "valor": "21",
+      "etiqueta": "mercados"
     },
-    "resumen": "Mastercard da nombre a la Liga Venezolana de Béisbol Profesional, que juega como Mastercard LVBP, por tres temporadas. Incluye pagos sin contacto en estadios y descuentos. Monto no revelado.",
+    "resumen": "Milo, Nesquik y Nescau, de Nestlé, serán socias oficiales de la NBA desde enero de 2027 en 20 mercados, México incluido, y Filipinas desde octubre de 2027. Monto no revelado.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
     "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/mastercard-pone-su-nombre-a-la-liga-venezolana-de-beisbol",
+    "url": "https://www.playbook.la/articulo/nestle-lleva-milo-nesquik-y-nescau-a-la-nba-en-21-paises-mexico-incluido",
     "fuente_monto": null
   },
   {
@@ -2379,64 +2379,6 @@
     "destacado_semana": false,
     "cumple_criterio": false,
     "url": "https://www.playbook.la/articulo/australian-open-nombra-a-adobe-su-socio-oficial-de-ia-y-marketing",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-10-13-nfl-cmll",
-    "fecha": "2026-10-13",
-    "titulo": "NFL × CMLL",
-    "partes": [
-      "NFL",
-      "Consejo Mundial de Lucha Libre"
-    ],
-    "tipo": "patrocinio",
-    "alcance": "mexico",
-    "pais": [
-      "MX"
-    ],
-    "deporte": "lucha",
-    "duracion": "una función (18 de noviembre de 2026)",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": null,
-    "resumen": "La NFL y el CMLL anunciaron 'Noche de Cascos y Máscaras', función de lucha libre con temática de futbol americano en la Arena México el 18 de noviembre, previa al 49ers-Vikings.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/la-nfl-y-el-cmll-anuncian-noche-de-cascos-y-mascaras-en-la-arena-mexico",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-10-13-formula-1-ruanda",
-    "fecha": "2026-10-13",
-    "titulo": "Fórmula 1 × Ruanda",
-    "partes": [
-      "Formula 1",
-      "Gobierno de Ruanda",
-      "Visit Rwanda"
-    ],
-    "tipo": "infraestructura",
-    "alcance": "global",
-    "pais": [
-      "RW"
-    ],
-    "deporte": "automovilismo",
-    "duracion": "10 años",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "10",
-      "etiqueta": "años de contrato"
-    },
-    "resumen": "La F1 firmó un contrato de diez años con Ruanda para el African Grand Prix, presentado por Visit Rwanda, en un circuito por construir en Bugesera. Valor no revelado.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/la-formula-1-vuelve-a-africa-ruanda-firma-por-diez-anos",
     "fuente_monto": null
   },
   {
@@ -2478,6 +2420,37 @@
     "fuente_monto": null
   },
   {
+    "id": "2026-10-13-formula-1-ruanda",
+    "fecha": "2026-10-13",
+    "titulo": "Fórmula 1 × Ruanda",
+    "partes": [
+      "Formula 1",
+      "Gobierno de Ruanda",
+      "Visit Rwanda"
+    ],
+    "tipo": "infraestructura",
+    "alcance": "global",
+    "pais": [
+      "RW"
+    ],
+    "deporte": "automovilismo",
+    "duracion": "10 años",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "10",
+      "etiqueta": "años de contrato"
+    },
+    "resumen": "La F1 firmó un contrato de diez años con Ruanda para el African Grand Prix, presentado por Visit Rwanda, en un circuito por construir en Bugesera. Valor no revelado.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/la-formula-1-vuelve-a-africa-ruanda-firma-por-diez-anos",
+    "fuente_monto": null
+  },
+  {
     "id": "2026-10-13-netflix-fifa",
     "fecha": "2026-10-13",
     "titulo": "Netflix × FIFA",
@@ -2506,6 +2479,33 @@
     "destacado_semana": false,
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/netflix-tendra-los-104-partidos-del-mundial-2030-en-espana",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-10-13-nfl-cmll",
+    "fecha": "2026-10-13",
+    "titulo": "NFL × CMLL",
+    "partes": [
+      "NFL",
+      "Consejo Mundial de Lucha Libre"
+    ],
+    "tipo": "patrocinio",
+    "alcance": "mexico",
+    "pais": [
+      "MX"
+    ],
+    "deporte": "lucha",
+    "duracion": "una función (18 de noviembre de 2026)",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": null,
+    "resumen": "La NFL y el CMLL anunciaron 'Noche de Cascos y Máscaras', función de lucha libre con temática de futbol americano en la Arena México el 18 de noviembre, previa al 49ers-Vikings.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/la-nfl-y-el-cmll-anuncian-noche-de-cascos-y-mascaras-en-la-arena-mexico",
     "fuente_monto": null
   },
   {
@@ -2685,121 +2685,6 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-10-19-psg-nfl",
-    "fecha": "2026-10-19",
-    "titulo": "PSG × NFL",
-    "partes": [
-      "Paris Saint-Germain",
-      "NFL",
-      "Fanatics",
-      "Nike"
-    ],
-    "tipo": "retail",
-    "alcance": "europa",
-    "pais": [
-      "FR"
-    ],
-    "deporte": "futbol-americano",
-    "duracion": "edición limitada",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "€210",
-      "etiqueta": "precio por jersey"
-    },
-    "resumen": "El PSG y la NFL lanzaron dos jerseys de edición limitada, diseñados por Fanatics con Nike, para el Saints-Steelers en el Stade de France; se venden en tiendas del PSG y de la NFL.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/psg-y-la-nfl-lanzan-dos-jerseys-para-el-primer-juego-en-francia",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-10-19-torcedor-premiado-corinthians",
-    "fecha": "2026-10-19",
-    "titulo": "Torcedor Premiado × Corinthians",
-    "partes": [
-      "Torcedor Premiado (CRMBonus)",
-      "Corinthians"
-    ],
-    "tipo": "patrocinio",
-    "alcance": "latam",
-    "pais": [
-      "BR"
-    ],
-    "deporte": "futbol",
-    "duracion": "hasta finales de 2028, con opción de dos años más",
-    "monto_usd_m": 19.8,
-    "monto_tipo": "estimado",
-    "estatus": "confirmado",
-    "dato_hero": null,
-    "resumen": "Corinthians firmó con Torcedor Premiado, de CRMBonus, un patrocinio en los números de la camiseta hasta 2028; recibirá cerca de 40% del margen de suscripciones más un mínimo garantizado no revelado.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/corinthians-firma-un-patrocinio-que-paga-segun-cuantos-aficionados-se-suscriben",
-    "fuente_monto": "Nota Playbook 19 oct 2026: \"Alexandre Zolko, fundador de CRMBonus, proyecta más de R$100 millones (US$19.8 millones) en cuatro años si la plataforma llega a 5% de la afición corinthiana. Es una proyección, sin garantía.\" · conversión BCE 2026-10-19: 1 EUR = 1.1225 USD = 5.6633 BRL"
-  },
-  {
-    "id": "2026-10-19-netflix-la-velada-del-ano",
-    "fecha": "2026-10-19",
-    "titulo": "Netflix × La Velada del Año",
-    "partes": [
-      "Netflix",
-      "Ibai Llanos",
-      "Velaris-Kena Productions"
-    ],
-    "tipo": "derechos",
-    "alcance": "global",
-    "pais": [],
-    "deporte": "boxeo",
-    "duracion": "2027 a 2029, con opción a un año más",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "€11.7 millones",
-      "etiqueta": "facturación del evento en 2025"
-    },
-    "resumen": "Netflix transmitirá en más de 190 países La Velada del Año, el evento de boxeo y música de Ibai Llanos, de 2027 a 2029; Ibai conserva la propiedad. Monto no revelado.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/netflix-transmitira-la-velada-del-ano-de-ibai-llanos-de-2027-a-2029",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-10-20-fage-wta",
-    "fecha": "2026-10-20",
-    "titulo": "FAGE × WTA",
-    "partes": [
-      "FAGE",
-      "WTA"
-    ],
-    "tipo": "patrocinio",
-    "alcance": "eeuu",
-    "pais": [
-      "US"
-    ],
-    "deporte": "tenis",
-    "duracion": "hasta 2029",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": null,
-    "resumen": "FAGE será patrocinador titular de las WTA Finals hasta 2029, en Indian Wells en 2026 y Charlotte de 2027 a 2029, y yogur oficial de la WTA. Reemplaza al PIF. Monto no revelado.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/wta-finals-tienen-nuevo-patrocinador-fage-entra-en-lugar-del-pif",
-    "fuente_monto": null
-  },
-  {
     "id": "2026-10-16-cazetv-cnn-brasil",
     "fecha": "2026-10-16",
     "titulo": "CazéTV × CNN Brasil",
@@ -2828,66 +2713,6 @@
     "destacado_semana": false,
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/cazetv-ya-sublicencia-sus-derechos-ligue-1-y-europa-league-llegan-a-cnn-brasil",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-10-19-siroko-chicago-bulls",
-    "fecha": "2026-10-19",
-    "titulo": "Siroko × Chicago Bulls",
-    "partes": [
-      "Siroko",
-      "Chicago Bulls"
-    ],
-    "tipo": "patrocinio",
-    "alcance": "eeuu",
-    "pais": [
-      "US"
-    ],
-    "deporte": "basquetbol",
-    "duracion": "multianual",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "2",
-      "etiqueta": "franquicias de la NBA patrocinadas por Siroko"
-    },
-    "resumen": "Siroko firmó un patrocinio multianual como socio oficial internacional de los Chicago Bulls, con presencia en el United Center, canales digitales y contenido para Siroko TV.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/siroko-firma-con-los-chicago-bulls-y-suma-su-segunda-franquicia-de-la-nba",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-10-20-atlanta-hawks-prime-video",
-    "fecha": "2026-10-20",
-    "titulo": "Atlanta Hawks × Prime Video",
-    "partes": [
-      "Atlanta Hawks",
-      "Amazon Prime Video"
-    ],
-    "tipo": "derechos",
-    "alcance": "eeuu",
-    "pais": [
-      "US"
-    ],
-    "deporte": "basquetbol",
-    "duracion": "temporada 2026-27",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "5",
-      "etiqueta": "estados del territorio regional"
-    },
-    "resumen": "Los Atlanta Hawks hicieron de Prime Video su casa exclusiva de streaming local en 2026-27, incluido en Prime; es el primer equipo de la NBA con ese esquema.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/atlanta-hawks-primer-equipo-de-la-nba-con-sus-partidos-locales-solo-en-prime-video",
     "fuente_monto": null
   },
   {
@@ -2922,6 +2747,124 @@
     "fuente_monto": null
   },
   {
+    "id": "2026-10-19-netflix-la-velada-del-ano",
+    "fecha": "2026-10-19",
+    "titulo": "Netflix × La Velada del Año",
+    "partes": [
+      "Netflix",
+      "Ibai Llanos",
+      "Velaris-Kena Productions"
+    ],
+    "tipo": "derechos",
+    "alcance": "global",
+    "pais": [],
+    "deporte": "boxeo",
+    "duracion": "2027 a 2029, con opción a un año más",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "€11.7 millones",
+      "etiqueta": "facturación del evento en 2025"
+    },
+    "resumen": "Netflix transmitirá en más de 190 países La Velada del Año, el evento de boxeo y música de Ibai Llanos, de 2027 a 2029; Ibai conserva la propiedad. Monto no revelado.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/netflix-transmitira-la-velada-del-ano-de-ibai-llanos-de-2027-a-2029",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-10-19-psg-nfl",
+    "fecha": "2026-10-19",
+    "titulo": "PSG × NFL",
+    "partes": [
+      "Paris Saint-Germain",
+      "NFL",
+      "Fanatics",
+      "Nike"
+    ],
+    "tipo": "retail",
+    "alcance": "europa",
+    "pais": [
+      "FR"
+    ],
+    "deporte": "futbol-americano",
+    "duracion": "edición limitada",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "€210",
+      "etiqueta": "precio por jersey"
+    },
+    "resumen": "El PSG y la NFL lanzaron dos jerseys de edición limitada, diseñados por Fanatics con Nike, para el Saints-Steelers en el Stade de France; se venden en tiendas del PSG y de la NFL.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/psg-y-la-nfl-lanzan-dos-jerseys-para-el-primer-juego-en-francia",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-10-19-siroko-chicago-bulls",
+    "fecha": "2026-10-19",
+    "titulo": "Siroko × Chicago Bulls",
+    "partes": [
+      "Siroko",
+      "Chicago Bulls"
+    ],
+    "tipo": "patrocinio",
+    "alcance": "eeuu",
+    "pais": [
+      "US"
+    ],
+    "deporte": "basquetbol",
+    "duracion": "multianual",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "2",
+      "etiqueta": "franquicias de la NBA patrocinadas por Siroko"
+    },
+    "resumen": "Siroko firmó un patrocinio multianual como socio oficial internacional de los Chicago Bulls, con presencia en el United Center, canales digitales y contenido para Siroko TV.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/siroko-firma-con-los-chicago-bulls-y-suma-su-segunda-franquicia-de-la-nba",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-10-19-torcedor-premiado-corinthians",
+    "fecha": "2026-10-19",
+    "titulo": "Torcedor Premiado × Corinthians",
+    "partes": [
+      "Torcedor Premiado (CRMBonus)",
+      "Corinthians"
+    ],
+    "tipo": "patrocinio",
+    "alcance": "latam",
+    "pais": [
+      "BR"
+    ],
+    "deporte": "futbol",
+    "duracion": "hasta finales de 2028, con opción de dos años más",
+    "monto_usd_m": 19.8,
+    "monto_tipo": "estimado",
+    "estatus": "confirmado",
+    "dato_hero": null,
+    "resumen": "Corinthians firmó con Torcedor Premiado, de CRMBonus, un patrocinio en los números de la camiseta hasta 2028; recibirá cerca de 40% del margen de suscripciones más un mínimo garantizado no revelado.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/corinthians-firma-un-patrocinio-que-paga-segun-cuantos-aficionados-se-suscriben",
+    "fuente_monto": "Nota Playbook 19 oct 2026: \"Alexandre Zolko, fundador de CRMBonus, proyecta más de R$100 millones (US$19.8 millones) en cuatro años si la plataforma llega a 5% de la afición corinthiana. Es una proyección, sin garantía.\" · conversión BCE 2026-10-19: 1 EUR = 1.1225 USD = 5.6633 BRL"
+  },
+  {
     "id": "2026-10-20-32-equity-nfl-general-atlantic",
     "fecha": "2026-10-20",
     "titulo": "32 Equity (NFL) × General Atlantic",
@@ -2947,6 +2890,63 @@
     "destacado_semana": false,
     "cumple_criterio": false,
     "url": "https://www.playbook.la/articulo/la-nfl-y-general-atlantic-crean-un-fondo-de-inversion-en-deporte",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-10-20-atlanta-hawks-prime-video",
+    "fecha": "2026-10-20",
+    "titulo": "Atlanta Hawks × Prime Video",
+    "partes": [
+      "Atlanta Hawks",
+      "Amazon Prime Video"
+    ],
+    "tipo": "derechos",
+    "alcance": "eeuu",
+    "pais": [
+      "US"
+    ],
+    "deporte": "basquetbol",
+    "duracion": "temporada 2026-27",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "5",
+      "etiqueta": "estados del territorio regional"
+    },
+    "resumen": "Los Atlanta Hawks hicieron de Prime Video su casa exclusiva de streaming local en 2026-27, incluido en Prime; es el primer equipo de la NBA con ese esquema.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/atlanta-hawks-primer-equipo-de-la-nba-con-sus-partidos-locales-solo-en-prime-video",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-10-20-fage-wta",
+    "fecha": "2026-10-20",
+    "titulo": "FAGE × WTA",
+    "partes": [
+      "FAGE",
+      "WTA"
+    ],
+    "tipo": "patrocinio",
+    "alcance": "eeuu",
+    "pais": [
+      "US"
+    ],
+    "deporte": "tenis",
+    "duracion": "hasta 2029",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": null,
+    "resumen": "FAGE será patrocinador titular de las WTA Finals hasta 2029, en Indian Wells en 2026 y Charlotte de 2027 a 2029, y yogur oficial de la WTA. Reemplaza al PIF. Monto no revelado.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/wta-finals-tienen-nuevo-patrocinador-fage-entra-en-lugar-del-pif",
     "fuente_monto": null
   },
   {
@@ -2981,31 +2981,35 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-10-23-viessmann-fc-bayern",
+    "id": "2026-10-23-indycar-circuit-de-barcelona-catalunya",
     "fecha": "2026-10-23",
-    "titulo": "Viessmann × FC Bayern",
+    "titulo": "IndyCar × Circuit de Barcelona-Catalunya",
     "partes": [
-      "Viessmann Generations Group",
-      "FC Bayern München AG"
+      "Penske Entertainment (IndyCar)",
+      "Fira Circuit",
+      "Gobierno de Cataluña"
     ],
-    "tipo": "propiedad",
+    "tipo": "infraestructura",
     "alcance": "europa",
     "pais": [
-      "DE"
+      "ES"
     ],
-    "deporte": "futbol",
-    "duracion": null,
-    "monto_usd_m": 279.8,
-    "monto_tipo": "reportado",
-    "estatus": "anunciado",
-    "dato_hero": null,
-    "resumen": "Viessmann Generations Group se queda con poco menos de 6.7% de FC Bayern München AG mediante ampliación de capital; es el cuarto accionista minoritario junto a Adidas, Audi y Allianz.",
+    "deporte": "automovilismo",
+    "duracion": "multianual",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "2007",
+      "etiqueta": "última carrera del campeonato en Europa"
+    },
+    "resumen": "Penske Entertainment firmó un acuerdo multianual con Fira Circuit para que IndyCar corra en el Circuit de Barcelona-Catalunya del 16 al 18 de julio de 2027.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/el-bayern-suma-un-cuarto-accionista-y-ya-no-le-quedan-acciones-por-vender",
-    "fuente_monto": "Nota Playbook 23 oct 2026: \"Manager Magazin reporta unos €250 millones (US$280 millones), según personas cercanas a la operación.\" · conversión BCE 2026-10-23: 1 EUR = 1.1193 USD"
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/indycar-vuelve-a-europa-correra-en-barcelona-en-2027-en-casa-de-alex-palou",
+    "fuente_monto": null
   },
   {
     "id": "2026-10-23-pitchwise-valencia-cf",
@@ -3036,6 +3040,33 @@
     "fuente_monto": "Nota Playbook 23 oct 2026: \"Superdeporte reporta que la compra de las acciones se acerca a €400 millones (US$448 millones), por debajo de los €525 millones (US$587 millones) que daría multiplicar el valor de empresa por 42%\" · conversión BCE 2026-10-23: 1 EUR = 1.1193 USD"
   },
   {
+    "id": "2026-10-23-viessmann-fc-bayern",
+    "fecha": "2026-10-23",
+    "titulo": "Viessmann × FC Bayern",
+    "partes": [
+      "Viessmann Generations Group",
+      "FC Bayern München AG"
+    ],
+    "tipo": "propiedad",
+    "alcance": "europa",
+    "pais": [
+      "DE"
+    ],
+    "deporte": "futbol",
+    "duracion": null,
+    "monto_usd_m": 279.8,
+    "monto_tipo": "reportado",
+    "estatus": "anunciado",
+    "dato_hero": null,
+    "resumen": "Viessmann Generations Group se queda con poco menos de 6.7% de FC Bayern München AG mediante ampliación de capital; es el cuarto accionista minoritario junto a Adidas, Audi y Allianz.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/el-bayern-suma-un-cuarto-accionista-y-ya-no-le-quedan-acciones-por-vender",
+    "fuente_monto": "Nota Playbook 23 oct 2026: \"Manager Magazin reporta unos €250 millones (US$280 millones), según personas cercanas a la operación.\" · conversión BCE 2026-10-23: 1 EUR = 1.1193 USD"
+  },
+  {
     "id": "2026-10-26-allianz-la28",
     "fecha": "2026-10-26",
     "titulo": "Allianz × LA28",
@@ -3063,6 +3094,36 @@
     "destacado_semana": false,
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/la28-allianz-pone-su-nombre-a-la-sede-del-voleibol-de-playa",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-10-26-dazn-directv",
+    "fecha": "2026-10-26",
+    "titulo": "DAZN × DIRECTV",
+    "partes": [
+      "DAZN",
+      "DIRECTV"
+    ],
+    "tipo": "derechos",
+    "alcance": "eeuu",
+    "pais": [
+      "US"
+    ],
+    "deporte": "basquetbol",
+    "duracion": "multianual",
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "5",
+      "etiqueta": "equipos de la NBA"
+    },
+    "resumen": "DAZN sublicenció a DIRECTV los partidos locales de Cavaliers, Pacers, Grizzlies, Timberwolves y Spurs, por satélite, streaming, U-verse y DIRECTV for Business.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/dazn-lleva-a-directv-cinco-equipos-de-la-nba",
     "fuente_monto": null
   },
   {
@@ -3097,64 +3158,35 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-10-23-indycar-circuit-de-barcelona-catalunya",
-    "fecha": "2026-10-23",
-    "titulo": "IndyCar × Circuit de Barcelona-Catalunya",
+    "id": "2026-10-27-ea-nfl",
+    "fecha": "2026-10-27",
+    "titulo": "EA × NFL",
     "partes": [
-      "Penske Entertainment (IndyCar)",
-      "Fira Circuit",
-      "Gobierno de Cataluña"
+      "Electronic Arts",
+      "NFL",
+      "Philadelphia Eagles",
+      "Pond Lehocky"
     ],
-    "tipo": "infraestructura",
-    "alcance": "europa",
-    "pais": [
-      "ES"
-    ],
-    "deporte": "automovilismo",
-    "duracion": "multianual",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "2007",
-      "etiqueta": "última carrera del campeonato en Europa"
-    },
-    "resumen": "Penske Entertainment firmó un acuerdo multianual con Fira Circuit para que IndyCar corra en el Circuit de Barcelona-Catalunya del 16 al 18 de julio de 2027.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/indycar-vuelve-a-europa-correra-en-barcelona-en-2027-en-casa-de-alex-palou",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-10-26-dazn-directv",
-    "fecha": "2026-10-26",
-    "titulo": "DAZN × DIRECTV",
-    "partes": [
-      "DAZN",
-      "DIRECTV"
-    ],
-    "tipo": "derechos",
+    "tipo": "patrocinio",
     "alcance": "eeuu",
     "pais": [
       "US"
     ],
-    "deporte": "basquetbol",
-    "duracion": "multianual",
+    "deporte": "futbol-americano",
+    "duracion": null,
     "monto_usd_m": null,
     "monto_tipo": "nr",
     "estatus": "confirmado",
     "dato_hero": {
-      "valor": "5",
-      "etiqueta": "equipos de la NBA"
+      "valor": "2,000 millones",
+      "etiqueta": "partidas de Madden NFL al año"
     },
-    "resumen": "DAZN sublicenció a DIRECTV los partidos locales de Cavaliers, Pacers, Grizzlies, Timberwolves y Spurs, por satélite, streaming, U-verse y DIRECTV for Business.",
+    "resumen": "EA y la NFL lanzaron un programa para que patrocinadores de equipos y de la liga lleven sus anuncios de estadio a Madden NFL; los Eagles lo estrenan con Pond Lehocky.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/dazn-lleva-a-directv-cinco-equipos-de-la-nba",
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/los-patrocinadores-de-la-nfl-llevan-sus-anuncios-de-estadio-a-madden",
     "fuente_monto": null
   },
   {
@@ -3217,34 +3249,6 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-10-28-hyrox-world-triathlon",
-    "fecha": "2026-10-28",
-    "titulo": "HYROX × World Triathlon",
-    "partes": [
-      "HYROX",
-      "World Triathlon"
-    ],
-    "tipo": "derechos",
-    "alcance": "global",
-    "pais": [],
-    "deporte": "fitness",
-    "duracion": null,
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "anunciado",
-    "dato_hero": {
-      "valor": "177+",
-      "etiqueta": "federaciones nacionales"
-    },
-    "resumen": "World Triathlon firmó con HYROX un acuerdo preliminar que hace del Hybrid Racing una disciplina oficial y da a HYROX la operación exclusiva de los campeonatos de élite del formato Ultimate.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/hyrox-operara-en-exclusiva-los-mundiales-de-elite-de-world-triathlon",
-    "fuente_monto": null
-  },
-  {
     "id": "2026-10-28-fia-aws",
     "fecha": "2026-10-28",
     "titulo": "FIA × AWS",
@@ -3273,59 +3277,31 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-10-29-generali-milan-e-inter",
-    "fecha": "2026-10-29",
-    "titulo": "Generali × Milan e Inter",
+    "id": "2026-10-28-hyrox-world-triathlon",
+    "fecha": "2026-10-28",
+    "titulo": "HYROX × World Triathlon",
     "partes": [
-      "Generali",
-      "AC Milan",
-      "Inter"
-    ],
-    "tipo": "infraestructura",
-    "alcance": "europa",
-    "pais": [
-      "IT"
-    ],
-    "deporte": "futbol",
-    "duracion": "20 a 25 años",
-    "monto_usd_m": 723.5,
-    "monto_tipo": "reportado",
-    "estatus": "confirmado",
-    "dato_hero": null,
-    "resumen": "El estadio que AC Milan e Inter construirán para sustituir a San Siro se llamará Generali Stadium; Generali será además aseguradora oficial de los dos clubes.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/el-nuevo-estadio-del-milan-y-el-inter-se-llamara-generali-stadium",
-    "fuente_monto": "Nota Playbook 29 oct 2026: \"La prensa italiana lo sitúa en €650 millones (US$727 millones).\" · conversión BCE 2026-10-29: 1 EUR = 1.113 USD"
-  },
-  {
-    "id": "2026-11-03-dazn-fifa",
-    "fecha": "2026-11-03",
-    "titulo": "DAZN × FIFA",
-    "partes": [
-      "DAZN",
-      "FIFA"
+      "HYROX",
+      "World Triathlon"
     ],
     "tipo": "derechos",
     "alcance": "global",
     "pais": [],
-    "deporte": "futbol",
+    "deporte": "fitness",
     "duracion": null,
     "monto_usd_m": null,
     "monto_tipo": "nr",
-    "estatus": "reportado",
+    "estatus": "anunciado",
     "dato_hero": {
-      "valor": "US$1,000M",
-      "etiqueta": "pagó DAZN por la edición 2025"
+      "valor": "177+",
+      "etiqueta": "federaciones nacionales"
     },
-    "resumen": "DAZN aseguró una opción exclusiva sobre los derechos globales de streaming del Mundial de Clubes 2029, según The Guardian; ni FIFA ni DAZN lo han anunciado.",
+    "resumen": "World Triathlon firmó con HYROX un acuerdo preliminar que hace del Hybrid Racing una disciplina oficial y da a HYROX la operación exclusiva de los campeonatos de élite del formato Ultimate.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
     "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/dazn-asegura-una-opcion-exclusiva-para-el-mundial-de-clubes-2029",
+    "url": "https://www.playbook.la/articulo/hyrox-operara-en-exclusiva-los-mundiales-de-elite-de-world-triathlon",
     "fuente_monto": null
   },
   {
@@ -3357,147 +3333,32 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-10-27-ea-nfl",
-    "fecha": "2026-10-27",
-    "titulo": "EA × NFL",
+    "id": "2026-10-29-generali-milan-e-inter",
+    "fecha": "2026-10-29",
+    "titulo": "Generali × Milan e Inter",
     "partes": [
-      "Electronic Arts",
-      "NFL",
-      "Philadelphia Eagles",
-      "Pond Lehocky"
+      "Generali",
+      "AC Milan",
+      "Inter"
     ],
-    "tipo": "patrocinio",
-    "alcance": "eeuu",
-    "pais": [
-      "US"
-    ],
-    "deporte": "futbol-americano",
-    "duracion": null,
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "2,000 millones",
-      "etiqueta": "partidas de Madden NFL al año"
-    },
-    "resumen": "EA y la NFL lanzaron un programa para que patrocinadores de equipos y de la liga lleven sus anuncios de estadio a Madden NFL; los Eagles lo estrenan con Pond Lehocky.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/los-patrocinadores-de-la-nfl-llevan-sus-anuncios-de-estadio-a-madden",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-11-03-pri-shumate-crux-football",
-    "fecha": "2026-11-03",
-    "titulo": "Pri Shumate × Crux Football",
-    "partes": [
-      "Pri Shumate",
-      "Crux Football"
-    ],
-    "tipo": "propiedad",
+    "tipo": "infraestructura",
     "alcance": "europa",
-    "pais": [],
+    "pais": [
+      "IT"
+    ],
     "deporte": "futbol",
-    "duracion": null,
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "anunciado",
-    "dato_hero": null,
-    "resumen": "Pri Shumate, exdirectora de marketing de los Miami Dolphins y exdirectiva de Nike, entró como inversionista en Crux Football, grupo europeo que compra clubes de futbol femenil. No se reveló el monto.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/exdirectiva-de-nike-y-los-miami-dolphins-invierte-en-futbol-femenino",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-11-02-wta-tiktok",
-    "fecha": "2026-11-02",
-    "titulo": "WTA × TikTok",
-    "partes": [
-      "WTA",
-      "TikTok"
-    ],
-    "tipo": "derechos",
-    "alcance": "global",
-    "pais": [],
-    "deporte": "tenis",
-    "duracion": null,
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "250M",
-      "etiqueta": "vistas e interacciones de la WTA en TikTok en 2026"
-    },
-    "resumen": "La WTA y TikTok anunciaron una alianza global de contenido con un programa de creadores en torneos, espacios en TikTok GamePlan y transmisiones en vivo, la primera el sorteo de las WTA Finals.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/la-wta-y-tiktok-firman-una-alianza-global-para-llevar-creadores-a-los-torneos",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-11-03-wta-sanrio",
-    "fecha": "2026-11-03",
-    "titulo": "WTA × Sanrio",
-    "partes": [
-      "WTA",
-      "Sanrio",
-      "Forever Collectibles",
-      "Wild Collective",
-      "HOMAGE"
-    ],
-    "tipo": "retail",
-    "alcance": "global",
-    "pais": [],
-    "deporte": "tenis",
-    "duracion": null,
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
+    "duracion": "20 a 25 años",
+    "monto_usd_m": 723.5,
+    "monto_tipo": "reportado",
     "estatus": "confirmado",
     "dato_hero": null,
-    "resumen": "La WTA y Sanrio lanzan la primera colección oficial de Hello Kitty de la gira, a la venta en las WTA Finals de Indian Wells y en Sanrio.com, fabricada bajo licencia por tres empresas.",
+    "resumen": "El estadio que AC Milan e Inter construirán para sustituir a San Siro se llamará Generali Stadium; Generali será además aseguradora oficial de los dos clubes.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
     "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/hello-kitty-llega-al-tenis-la-wta-lanza-coleccion-y-tendra-tienda-en-2027",
-    "fuente_monto": null
-  },
-  {
-    "id": "2026-11-04-lmb-fanki",
-    "fecha": "2026-11-04",
-    "titulo": "LMB × Fanki",
-    "partes": [
-      "Liga Mexicana de Beisbol",
-      "Fanki"
-    ],
-    "tipo": "patrocinio",
-    "alcance": "mexico",
-    "pais": [
-      "MX"
-    ],
-    "deporte": "beisbol",
-    "duracion": "hasta 2031",
-    "monto_usd_m": null,
-    "monto_tipo": "nr",
-    "estatus": "confirmado",
-    "dato_hero": {
-      "valor": "20",
-      "etiqueta": "equipos conectados a un mismo boletaje"
-    },
-    "resumen": "La LMB anunció que Fanki será su boletera oficial hasta 2031, centralizando el boletaje de sus 20 equipos, y presentó la app LMB Diamante.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": false,
-    "url": "https://www.playbook.la/articulo/lmb-centraliza-su-boletaje-con-fanki-hasta-2031-y-lanza-lmb-diamante",
-    "fuente_monto": null
+    "url": "https://www.playbook.la/articulo/el-nuevo-estadio-del-milan-y-el-inter-se-llamara-generali-stadium",
+    "fuente_monto": "Nota Playbook 29 oct 2026: \"La prensa italiana lo sitúa en €650 millones (US$727 millones).\" · conversión BCE 2026-10-29: 1 EUR = 1.113 USD"
   },
   {
     "id": "2026-10-29-whoop-lebron-james",
@@ -3530,31 +3391,34 @@
     "fuente_monto": null
   },
   {
-    "id": "2026-11-05-adidas-ac-milan",
-    "fecha": "2026-11-05",
-    "titulo": "Adidas × AC Milan",
+    "id": "2026-11-02-american-express-nba",
+    "fecha": "2026-11-02",
+    "titulo": "American Express × NBA",
     "partes": [
-      "AC Milan",
-      "Adidas"
+      "American Express",
+      "NBA",
+      "WNBA"
     ],
     "tipo": "patrocinio",
-    "alcance": "europa",
+    "alcance": "mexico",
     "pais": [
-      "IT"
+      "MX",
+      "FR",
+      "GB"
     ],
-    "deporte": "futbol",
-    "duracion": "10 temporadas, 2028-29 a 2038",
-    "monto_usd_m": 561.2,
-    "monto_tipo": "reportado",
-    "estatus": "reportado",
+    "deporte": "basquetbol",
+    "duracion": null,
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
     "dato_hero": null,
-    "resumen": "El AC Milan cerró un acuerdo para que Adidas fabrique su uniforme desde 2028-29 hasta 2038 por unos €500 millones, según La Gazzetta dello Sport; sustituiría a Puma.",
+    "resumen": "American Express será socio presentador de algunas NBA Houses y socio asociado de partidos internacionales de la NBA, empezando por el NBA Mexico City Game del 7 de noviembre en la Arena CDMX.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
     "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/milan-dejaria-puma-por-adidas-500-millones-record-en-la-serie-a",
-    "fuente_monto": "Nota Playbook 5 nov 2026: \"Serían diez temporadas, hasta 2038, por unos €500 millones (US$563 millones), alrededor de €50 millones (US$56 millones) al año.\" · conversión BCE 2026-11-05: 1 EUR = 1.1224 USD"
+    "url": "https://www.playbook.la/articulo/american-express-y-la-nba-llevan-su-alianza-al-mexico-city-game",
+    "fuente_monto": null
   },
   {
     "id": "2026-11-02-equinox-silver-lake-ares-y-sixth-street",
@@ -3592,6 +3456,115 @@
     "fuente_monto": null
   },
   {
+    "id": "2026-11-02-wta-tiktok",
+    "fecha": "2026-11-02",
+    "titulo": "WTA × TikTok",
+    "partes": [
+      "WTA",
+      "TikTok"
+    ],
+    "tipo": "derechos",
+    "alcance": "global",
+    "pais": [],
+    "deporte": "tenis",
+    "duracion": null,
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "250M",
+      "etiqueta": "vistas e interacciones de la WTA en TikTok en 2026"
+    },
+    "resumen": "La WTA y TikTok anunciaron una alianza global de contenido con un programa de creadores en torneos, espacios en TikTok GamePlan y transmisiones en vivo, la primera el sorteo de las WTA Finals.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/la-wta-y-tiktok-firman-una-alianza-global-para-llevar-creadores-a-los-torneos",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-11-03-dazn-fifa",
+    "fecha": "2026-11-03",
+    "titulo": "DAZN × FIFA",
+    "partes": [
+      "DAZN",
+      "FIFA"
+    ],
+    "tipo": "derechos",
+    "alcance": "global",
+    "pais": [],
+    "deporte": "futbol",
+    "duracion": null,
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "reportado",
+    "dato_hero": {
+      "valor": "US$1,000M",
+      "etiqueta": "pagó DAZN por la edición 2025"
+    },
+    "resumen": "DAZN aseguró una opción exclusiva sobre los derechos globales de streaming del Mundial de Clubes 2029, según The Guardian; ni FIFA ni DAZN lo han anunciado.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/dazn-asegura-una-opcion-exclusiva-para-el-mundial-de-clubes-2029",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-11-03-pri-shumate-crux-football",
+    "fecha": "2026-11-03",
+    "titulo": "Pri Shumate × Crux Football",
+    "partes": [
+      "Pri Shumate",
+      "Crux Football"
+    ],
+    "tipo": "propiedad",
+    "alcance": "europa",
+    "pais": [],
+    "deporte": "futbol",
+    "duracion": null,
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "anunciado",
+    "dato_hero": null,
+    "resumen": "Pri Shumate, exdirectora de marketing de los Miami Dolphins y exdirectiva de Nike, entró como inversionista en Crux Football, grupo europeo que compra clubes de futbol femenil. No se reveló el monto.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/exdirectiva-de-nike-y-los-miami-dolphins-invierte-en-futbol-femenino",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-11-03-wta-sanrio",
+    "fecha": "2026-11-03",
+    "titulo": "WTA × Sanrio",
+    "partes": [
+      "WTA",
+      "Sanrio",
+      "Forever Collectibles",
+      "Wild Collective",
+      "HOMAGE"
+    ],
+    "tipo": "retail",
+    "alcance": "global",
+    "pais": [],
+    "deporte": "tenis",
+    "duracion": null,
+    "monto_usd_m": null,
+    "monto_tipo": "nr",
+    "estatus": "confirmado",
+    "dato_hero": null,
+    "resumen": "La WTA y Sanrio lanzan la primera colección oficial de Hello Kitty de la gira, a la venta en las WTA Finals de Indian Wells y en Sanrio.com, fabricada bajo licencia por tres empresas.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/hello-kitty-llega-al-tenis-la-wta-lanza-coleccion-y-tendra-tienda-en-2027",
+    "fuente_monto": null
+  },
+  {
     "id": "2026-11-04-fsg-cadillac-f1",
     "fecha": "2026-11-04",
     "titulo": "FSG × Cadillac F1",
@@ -3621,34 +3594,61 @@
     "fuente_monto": "Nota Playbook 4 nov 2026: \"en una operación de más de £2,000 millones (US$2,690 millones), según The Guardian\" · conversión BCE 2026-11-04: 1 EUR = 1.1267 USD = 0.8346 GBP"
   },
   {
-    "id": "2026-11-02-american-express-nba",
-    "fecha": "2026-11-02",
-    "titulo": "American Express × NBA",
+    "id": "2026-11-04-lmb-fanki",
+    "fecha": "2026-11-04",
+    "titulo": "LMB × Fanki",
     "partes": [
-      "American Express",
-      "NBA",
-      "WNBA"
+      "Liga Mexicana de Beisbol",
+      "Fanki"
     ],
     "tipo": "patrocinio",
     "alcance": "mexico",
     "pais": [
-      "MX",
-      "FR",
-      "GB"
+      "MX"
     ],
-    "deporte": "basquetbol",
-    "duracion": null,
+    "deporte": "beisbol",
+    "duracion": "hasta 2031",
     "monto_usd_m": null,
     "monto_tipo": "nr",
     "estatus": "confirmado",
+    "dato_hero": {
+      "valor": "20",
+      "etiqueta": "equipos conectados a un mismo boletaje"
+    },
+    "resumen": "La LMB anunció que Fanki será su boletera oficial hasta 2031, centralizando el boletaje de sus 20 equipos, y presentó la app LMB Diamante.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": false,
+    "url": "https://www.playbook.la/articulo/lmb-centraliza-su-boletaje-con-fanki-hasta-2031-y-lanza-lmb-diamante",
+    "fuente_monto": null
+  },
+  {
+    "id": "2026-11-05-adidas-ac-milan",
+    "fecha": "2026-11-05",
+    "titulo": "Adidas × AC Milan",
+    "partes": [
+      "AC Milan",
+      "Adidas"
+    ],
+    "tipo": "patrocinio",
+    "alcance": "europa",
+    "pais": [
+      "IT"
+    ],
+    "deporte": "futbol",
+    "duracion": "10 temporadas, 2028-29 a 2038",
+    "monto_usd_m": 561.2,
+    "monto_tipo": "reportado",
+    "estatus": "reportado",
     "dato_hero": null,
-    "resumen": "American Express será socio presentador de algunas NBA Houses y socio asociado de partidos internacionales de la NBA, empezando por el NBA Mexico City Game del 7 de noviembre en la Arena CDMX.",
+    "resumen": "El AC Milan cerró un acuerdo para que Adidas fabrique su uniforme desde 2028-29 hasta 2038 por unos €500 millones, según La Gazzetta dello Sport; sustituiría a Puma.",
     "lectura": null,
     "lectura_borrador": null,
     "destacado_semana": false,
     "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/american-express-y-la-nba-llevan-su-alianza-al-mexico-city-game",
-    "fuente_monto": null
+    "url": "https://www.playbook.la/articulo/milan-dejaria-puma-por-adidas-500-millones-record-en-la-serie-a",
+    "fuente_monto": "Nota Playbook 5 nov 2026: \"Serían diez temporadas, hasta 2038, por unos €500 millones (US$563 millones), alrededor de €50 millones (US$56 millones) al año.\" · conversión BCE 2026-11-05: 1 EUR = 1.1224 USD"
   },
   {
     "id": "2026-11-06-fox-roku",
@@ -3676,6 +3676,33 @@
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/fox-completa-la-compra-de-roku-por-us-22-000-millones",
     "fuente_monto": "Nota Playbook 6 nov 2026: \"Fox Corporation completó el 6 de noviembre la compra de Roku, valuada en US$22,000 millones cuando se anunció en junio.\""
+  },
+  {
+    "id": "2026-11-09-espn-college-football-playoff",
+    "fecha": "2026-11-09",
+    "titulo": "ESPN × College Football Playoff",
+    "partes": [
+      "ESPN",
+      "College Football Playoff"
+    ],
+    "tipo": "derechos",
+    "alcance": "eeuu",
+    "pais": [
+      "US"
+    ],
+    "deporte": "futbol-americano",
+    "duracion": "5 temporadas (2027 a 2031)",
+    "monto_usd_m": 1700,
+    "monto_tipo": "reportado",
+    "estatus": "confirmado",
+    "dato_hero": null,
+    "resumen": "El CFP aprobó pasar a 24 equipos desde 2027-28 y ESPN será dueño exclusivo y mundial de los derechos del torneo ampliado, por cerca de US$1,700 millones en cinco temporadas, según ESPN vía FOS.",
+    "lectura": null,
+    "lectura_borrador": null,
+    "destacado_semana": false,
+    "cumple_criterio": true,
+    "url": "https://www.playbook.la/articulo/el-college-football-playoff-pasa-a-24-equipos-y-espn-paga-us-1-700m-mas",
+    "fuente_monto": "Nota Playbook 9 nov 2026: \"el acuerdo suma cerca de US$1,700 millones en cinco temporadas, unos US$340 millones al año.\""
   },
   {
     "id": "2026-11-10-gotham-fc-familia-moelis",
@@ -3707,32 +3734,5 @@
     "cumple_criterio": true,
     "url": "https://www.playbook.la/articulo/gotham-fc-levanta-us-100-millones-y-vale-un-record-de-us-350-millones",
     "fuente_monto": "Nota Playbook 10 nov 2026: \"Gotham FC, el club de la NWSL de Nueva York y Nueva Jersey, levantó US$100 millones con siete nuevos accionistas minoritarios, según Forbes.\""
-  },
-  {
-    "id": "2026-11-09-espn-college-football-playoff",
-    "fecha": "2026-11-09",
-    "titulo": "ESPN × College Football Playoff",
-    "partes": [
-      "ESPN",
-      "College Football Playoff"
-    ],
-    "tipo": "derechos",
-    "alcance": "eeuu",
-    "pais": [
-      "US"
-    ],
-    "deporte": "futbol-americano",
-    "duracion": "5 temporadas (2027 a 2031)",
-    "monto_usd_m": 1700,
-    "monto_tipo": "reportado",
-    "estatus": "confirmado",
-    "dato_hero": null,
-    "resumen": "El CFP aprobó pasar a 24 equipos desde 2027-28 y ESPN será dueño exclusivo y mundial de los derechos del torneo ampliado, por cerca de US$1,700 millones en cinco temporadas, según ESPN vía FOS.",
-    "lectura": null,
-    "lectura_borrador": null,
-    "destacado_semana": false,
-    "cumple_criterio": true,
-    "url": "https://www.playbook.la/articulo/el-college-football-playoff-pasa-a-24-equipos-y-espn-paga-us-1-700m-mas",
-    "fuente_monto": "Nota Playbook 9 nov 2026: \"el acuerdo suma cerca de US$1,700 millones en cinco temporadas, unos US$340 millones al año.\""
   }
 ]

@@ -4,6 +4,20 @@ Guía de operación de los dos módulos automatizados del sidebar de la portada.
 Las secciones para agregar y destacar acuerdos llegan con el flujo semanal
 (Fase 6 de `fix/marcador-v2-cifra`).
 
+## De dónde salen los datos
+
+Desde el 11 nov 2026 la fuente única es **`data/marcador.json`**: un objeto por
+acuerdo, con el esquema de `lib/marcador-schema.ts`.
+
+- `npm run marcador:validar` revisa el archivo. También corre antes de cada build:
+  si hay un registro inválido, el deploy no sale y el error dice qué registro y
+  qué campo hay que corregir.
+- Solo se muestran y cuentan los registros con `cumple_criterio: true`.
+- La pestaña Marcador de `/admin` ya no alimenta el sitio.
+- Las decisiones de la migración y del backfill están en
+  `docs/marcador/marcador-migracion-revision.md` y
+  `docs/marcador/marcador-backfill-revision.md`.
+
 ## Qué pasa si no se actualizan
 
 Ambos módulos se degradan solos, sin mostrar nada falso. Los umbrales viven en

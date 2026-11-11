@@ -1,9 +1,7 @@
 import { cache } from 'react';
-import { desc } from 'drizzle-orm';
-import { unstable_cache } from 'next/cache';
-import { db } from '../db/client';
 import { deals } from '../db/schema';
 import type { Deal } from '../deals';
+import { getAcuerdosPublicos, toLegacyDeal } from './marcador';
 
 export const DEALS_CACHE_TAG = 'deals';
 
@@ -32,16 +30,13 @@ export function toDeal(row: DealRow): Deal {
   };
 }
 
-// Same freshness contract as the articles pool (lib/data/articles.ts): shared
-// across requests for up to 60s, invalidated immediately by revalidateTag when
-// an editor saves a deal, so the rail and /marcador update without a deploy.
-const queryDeals = unstable_cache(
-  async () => {
-    const rows = await db.select().from(deals).orderBy(desc(deals.date), desc(deals.createdAt));
-    return rows.map(toDeal);
-  },
-  ['deals-all'],
-  { revalidate: 60, tags: [DEALS_CACHE_TAG] },
+// Public reads (rail, /marcador, sitemap, /api/salud/portada) come from
+// data/marcador.json since 2026-11-11, through lib/data/marcador.ts: only
+// records with cumple_criterio: true, newest first. The `deals` table above
+// stays for /admin until the weekly flow replaces it (docs/marcador.md).
+export const getAllDeals = cache(
+  async (): Promise<Deal[]> =>
+    getAcuerdosPublicos()
+      .map(toLegacyDeal)
+      .sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id)),
 );
-
-export const getAllDeals = cache((): Promise<Deal[]> => queryDeals());
