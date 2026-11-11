@@ -1236,9 +1236,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1794394916.1711764,
-    "seen": 1794395010.9200292,
-    "ast_hash": "23d0d92f0de9512a6d09166397f3458a",
+    "mtime": 1794396024.478375,
+    "seen": 1794396093.7619252,
+    "ast_hash": "05c890ba74cc650cab6e084e4f71c0b6",
     "semantic_hash": ""
   },
   "scripts/build-substack-backlog.mjs": {
@@ -3294,9 +3294,9 @@
     "semantic_hash": ""
   },
   "app/(public)/marcador/page.tsx": {
-    "mtime": 1794357425.739698,
-    "seen": 1794357655.699789,
-    "ast_hash": "978d0047afd3c3027609ebfa14edd895",
+    "mtime": 1794395963.5259671,
+    "seen": 1794396093.7548954,
+    "ast_hash": "5703ff308dbdfc1eed3592e026de1b17",
     "semantic_hash": ""
   },
   "components/admin/tabs/DealsTab.tsx": {
@@ -3306,9 +3306,9 @@
     "semantic_hash": ""
   },
   "components/home/DealsBoard.tsx": {
-    "mtime": 1794357425.7390308,
-    "seen": 1794357655.7036085,
-    "ast_hash": "149f4b3dab3960015bea858370b9ffc7",
+    "mtime": 1794395963.5243108,
+    "seen": 1794396093.75797,
+    "ast_hash": "4b6d900bccdd9d98a7a54e993e1f5a14",
     "semantic_hash": ""
   },
   "components/marcador/DealLink.tsx": {
@@ -3924,9 +3924,9 @@
     "semantic_hash": ""
   },
   "scripts/test-frescura.ts": {
-    "mtime": 1794357547.8276114,
-    "seen": 1794357655.708222,
-    "ast_hash": "b67f33d8ac0bb3e4ea6d13158c6070ce",
+    "mtime": 1794396016.0578918,
+    "seen": 1794396093.7627556,
+    "ast_hash": "a39874f6e07c28466916998d1b34deb8",
     "semantic_hash": ""
   },
   "docs/marcador.md": {
@@ -3972,9 +3972,9 @@
     "semantic_hash": ""
   },
   "lib/data/marcador.ts": {
-    "mtime": 1794394906.3840747,
-    "seen": 1794395010.9182673,
-    "ast_hash": "a5c76120eae20931ab78b09f79890104",
+    "mtime": 1794395938.149796,
+    "seen": 1794396093.7602663,
+    "ast_hash": "28b0b8c96439a7ed5b77347d281d1d57",
     "semantic_hash": ""
   },
   "lib/marcador-schema.ts": {
@@ -3999,6 +3999,24 @@
     "mtime": 1794362428.8226557,
     "seen": 1794395010.9263346,
     "ast_hash": "19990779affff2b64ba0deb0e7eef497",
+    "semantic_hash": ""
+  },
+  "components/home/MarcadorWidget.tsx": {
+    "mtime": 1794395960.2602415,
+    "seen": 1794396093.7580178,
+    "ast_hash": "61440041080859ee3d0d489392203b95",
+    "semantic_hash": ""
+  },
+  "lib/marcador.ts": {
+    "mtime": 1794395938.1322403,
+    "seen": 1794396093.7611737,
+    "ast_hash": "db9e889f61659d048dcedd924a04cd51",
+    "semantic_hash": ""
+  },
+  "scripts/tsconfig.test.json": {
+    "mtime": 1794396024.4763498,
+    "seen": 1794396093.762799,
+    "ast_hash": "5f5b9b876d6d5af5ad8eeea64545e842",
     "semantic_hash": ""
   },
   "package-lock.json": {
