@@ -3294,9 +3294,9 @@
     "semantic_hash": ""
   },
   "app/(public)/marcador/page.tsx": {
-    "mtime": 1794402603.2724874,
-    "seen": 1794402733.5209937,
-    "ast_hash": "9830d82d5d5ea155eddd501036641168",
+    "mtime": 1794403672.2654738,
+    "seen": 1794403725.8828995,
+    "ast_hash": "a5d65fc09a08873c43f53819d8535c2e",
     "semantic_hash": ""
   },
   "components/admin/tabs/DealsTab.tsx": {
@@ -3918,15 +3918,15 @@
     "semantic_hash": ""
   },
   "scripts/test-frescura.ts": {
-    "mtime": 1794402654.967366,
-    "seen": 1794402733.5323064,
-    "ast_hash": "fe4a9ac5404bd0ec3e2502a17955b220",
+    "mtime": 1794403639.3907614,
+    "seen": 1794403725.8945684,
+    "ast_hash": "603c2fbf476217ad0688092ac4c31053",
     "semantic_hash": ""
   },
   "docs/marcador.md": {
-    "mtime": 1794402022.6551368,
-    "seen": 1794402107.1104615,
-    "ast_hash": "f7991b567b53fcdb63ca971d9bc5cec2",
+    "mtime": 1794403672.2649248,
+    "seen": 1794403725.899896,
+    "ast_hash": "354fb26cf028294b2b1bed28a26c8db3",
     "semantic_hash": ""
   },
   "docs/referencias/playbook-home.html": {
@@ -3960,9 +3960,9 @@
     "semantic_hash": ""
   },
   "data/marcador.json": {
-    "mtime": 1794402033.5763714,
-    "seen": 1794402107.0988429,
-    "ast_hash": "8671e1e655016065d500bd98497c4d53",
+    "mtime": 1794403402.6802268,
+    "seen": 1794403725.8891346,
+    "ast_hash": "7cf2268982698750b13919ab2c783d1e",
     "semantic_hash": ""
   },
   "lib/data/marcador.ts": {
@@ -3996,15 +3996,15 @@
     "semantic_hash": ""
   },
   "components/home/MarcadorWidget.tsx": {
-    "mtime": 1794402603.27197,
-    "seen": 1794402733.525249,
-    "ast_hash": "f371b09b0dae7cae027807e86e5b8a75",
+    "mtime": 1794403625.2638972,
+    "seen": 1794403725.8873737,
+    "ast_hash": "22cfea850dc94130085573b2f04bce7c",
     "semantic_hash": ""
   },
   "lib/marcador.ts": {
-    "mtime": 1794402603.2715583,
-    "seen": 1794402733.529891,
-    "ast_hash": "81ee6b219b6244d18882caf683ab0fd8",
+    "mtime": 1794403653.863336,
+    "seen": 1794403725.8920763,
+    "ast_hash": "834d1833ce29ee078ab47b7b3f1a88a2",
     "semantic_hash": ""
   },
   "scripts/tsconfig.test.json": {
