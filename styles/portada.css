@@ -232,8 +232,9 @@
    The card is black in both themes; dark mode adds a rule at its edge.
    Mobile keeps score + card + one row (see the 640px query). ——— */
 .side-mk{display:flex;flex-direction:column;gap:0;}
-.side-mk-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border-top:2px solid var(--ink);}
-.side-mk-head .side-title{border-top:none;}
+.side-mk-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0 10px;border-top:2px solid var(--ink);}
+/* One line for the title; in a narrow rail the week drops below instead of splitting it. */
+.side-mk-head .side-title{border-top:none;white-space:nowrap;}
 .side-mk-week{
   font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
   font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-txt);white-space:nowrap;

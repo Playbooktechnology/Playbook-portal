@@ -89,18 +89,19 @@ export function MarcadorWidget({ acuerdos, today }: { acuerdos: Acuerdo[]; today
         <span className="side-mk-week">Semana {week.week}</span>
       </div>
 
+      {/* dt before dd (valid dl grouping); column-reverse puts the number on top. */}
       <dl className="side-mk-score">
         <div>
-          <dd>{score.acuerdos}</dd>
           <dt>{score.acuerdos === 1 ? 'acuerdo' : 'acuerdos'}</dt>
+          <dd>{score.acuerdos}</dd>
         </div>
         <div>
-          <dd>{score.mexico}</dd>
           <dt>en México</dt>
+          <dd>{score.mexico}</dd>
         </div>
         <div>
-          <dd>{score.reportados}</dd>
           <dt>{score.reportados === 1 ? 'reportado' : 'reportados'}</dt>
+          <dd>{score.reportados}</dd>
         </div>
       </dl>
 
