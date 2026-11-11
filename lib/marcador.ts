@@ -178,8 +178,18 @@ export const ESTATUS_LABEL: Record<Acuerdo['estatus'], string> = {
   cerrado: 'Cerrado',
 };
 
+const REGION_NAMES = new Intl.DisplayNames(['es'], { type: 'region' });
+
+/** "México", "Ghana": the curated name when there is one, else the standard Spanish region name. */
+export function nombrePais(code: string): string {
+  return PAIS_LABEL[code] ?? REGION_NAMES.of(code) ?? code;
+}
+
+/** Country cell: up to three names; a wider deal (Nestlé × NBA: 20 markets) reads "20 países". */
 export function paisLabel(a: Acuerdo): string {
-  return a.pais.length ? a.pais.map(p => PAIS_LABEL[p] ?? p).join(', ') : ALCANCE_LABEL[a.alcance];
+  if (!a.pais.length) return ALCANCE_LABEL[a.alcance];
+  if (a.pais.length > 3) return `${a.pais.length} países`;
+  return a.pais.map(nombrePais).join(', ');
 }
 
 // ----------------------------------------------------------------- /marcador (Fase 5)

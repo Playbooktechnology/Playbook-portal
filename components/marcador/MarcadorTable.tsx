@@ -9,11 +9,11 @@ import {
   DEPORTE_LABEL,
   EMPTY_FILTERS,
   ESTATUS_LABEL,
-  PAIS_LABEL,
   TIPO_LABEL,
   dateLabel,
   filterAcuerdos,
   montoCell,
+  nombrePais,
   paisLabel,
   siteHref,
   type MarcadorFilters,
@@ -28,7 +28,7 @@ export function MarcadorTable({ acuerdos, today }: { acuerdos: Acuerdo[]; today:
   const [filters, setFilters] = useState<MarcadorFilters>(EMPTY_FILTERS);
 
   const paises = useMemo(
-    () => [...new Set(acuerdos.flatMap(a => a.pais))].sort((a, b) => (PAIS_LABEL[a] ?? a).localeCompare(PAIS_LABEL[b] ?? b, 'es')),
+    () => [...new Set(acuerdos.flatMap(a => a.pais))].sort((a, b) => nombrePais(a).localeCompare(nombrePais(b), 'es')),
     [acuerdos],
   );
   const deportes = useMemo(() => [...new Set(acuerdos.map(a => a.deporte))].sort(), [acuerdos]);
@@ -62,7 +62,7 @@ export function MarcadorTable({ acuerdos, today }: { acuerdos: Acuerdo[]; today:
         </label>
         <FilterSelect label="Tipo" value={filters.tipo} onChange={set('tipo')} options={Object.entries(TIPO_LABEL)} />
         <FilterSelect label="Alcance" value={filters.alcance} onChange={set('alcance')} options={Object.entries(ALCANCE_LABEL)} />
-        <FilterSelect label="País" value={filters.pais} onChange={set('pais')} options={paises.map(p => [p, PAIS_LABEL[p] ?? p])} />
+        <FilterSelect label="País" value={filters.pais} onChange={set('pais')} options={paises.map(p => [p, nombrePais(p)])} />
         <FilterSelect label="Deporte" value={filters.deporte} onChange={set('deporte')} options={deportes.map(d => [d, DEPORTE_LABEL[d] ?? d])} />
         <FilterSelect
           label="Periodo"
