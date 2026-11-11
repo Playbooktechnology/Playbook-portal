@@ -13,7 +13,8 @@
     "db:migrate": "tsx scripts/run-migrations.ts",
     "db:reset-editor-password": "tsx scripts/reset-editor-password.ts",
     "publish:newsletter": "tsx scripts/publish-newsletter.ts",
-    "test:frescura": "tsx scripts/test-frescura.ts"
+    "test:frescura": "tsx scripts/test-frescura.ts",
+    "marcador:validar": "tsx scripts/validate-marcador.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",
