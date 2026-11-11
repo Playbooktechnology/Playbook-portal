@@ -181,7 +181,7 @@ export default async function MarcadorPage() {
         </>
       )}
 
-      <section className="mk-method" aria-labelledby="mk-method-title">
+      <section className="mk-method" id="metodologia" aria-labelledby="mk-method-title">
         <h2 id="mk-method-title">Metodología</h2>
         <ul>
           <li>

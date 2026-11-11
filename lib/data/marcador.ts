@@ -1,6 +1,7 @@
 import raw from '../../data/marcador.json';
 import { validateMarcador, type Acuerdo } from '../marcador-schema';
 import type { Deal } from '../deals';
+import { siteHref } from '../marcador';
 
 // El Marcador de Negocios reads data/marcador.json since 2026-11-11 (it
 // replaced the `deals` table, which had sat untouched since 23 sep). The file
@@ -67,7 +68,7 @@ export function toLegacyDeal(a: Acuerdo): Deal {
     amountDisclosed: a.monto_tipo === 'revelado',
     status: a.estatus === 'reportado' ? 'reportado' : 'confirmado',
     summary: a.resumen,
-    articleUrl: a.url ?? '',
+    articleUrl: a.url ? siteHref(a.url) : '',
     featured: a.destacado_semana,
     // Only an approved reading is ever shown; lectura_borrador never leaves the file.
     playbookRead: a.lectura,
