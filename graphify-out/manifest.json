@@ -246,9 +246,9 @@
     "semantic_hash": "759e6bdda6dfdec6c85ba7c9e760edca"
   },
   "app/sitemap.ts": {
-    "mtime": 1793220317.0324929,
-    "seen": 1793220585.4135191,
-    "ast_hash": "9941ced1fd450f2cb426b3167db1b8d6",
+    "mtime": 1794402603.2731864,
+    "seen": 1794402733.5224102,
+    "ast_hash": "37230f8439ab8a87717778bfb29b82e3",
     "semantic_hash": ""
   },
   "auth.ts": {
@@ -3294,9 +3294,9 @@
     "semantic_hash": ""
   },
   "app/(public)/marcador/page.tsx": {
-    "mtime": 1794396830.9042933,
-    "seen": 1794396933.8287413,
-    "ast_hash": "13311ecd33cf4a58b32d6042947ae211",
+    "mtime": 1794402603.2724874,
+    "seen": 1794402733.5209937,
+    "ast_hash": "9830d82d5d5ea155eddd501036641168",
     "semantic_hash": ""
   },
   "components/admin/tabs/DealsTab.tsx": {
@@ -3330,15 +3330,15 @@
     "semantic_hash": ""
   },
   "lib/data/deals.ts": {
-    "mtime": 1794394911.2429435,
-    "seen": 1794395010.9181895,
-    "ast_hash": "5636c9d9ba943ee50a948d7975041349",
+    "mtime": 1794402603.2734063,
+    "seen": 1794402733.5286942,
+    "ast_hash": "814ba7bc12e4eb9e0b59c99985e3805b",
     "semantic_hash": ""
   },
   "lib/deals.ts": {
-    "mtime": 1794357411.1789396,
-    "seen": 1794357655.7063465,
-    "ast_hash": "922de52422bfa08e165bfa5179851ae7",
+    "mtime": 1794402654.9677176,
+    "seen": 1794402733.5292127,
+    "ast_hash": "a0c24601190d76e790035852c64ac5d8",
     "semantic_hash": ""
   },
   "scripts/upsert-deals.ts": {
@@ -3558,9 +3558,9 @@
     "semantic_hash": ""
   },
   "lib/freshness.ts": {
-    "mtime": 1794357400.7156026,
-    "seen": 1794357655.7064133,
-    "ast_hash": "bddb94c1fabf1de23c0d809ba53d63d1",
+    "mtime": 1794402628.6284173,
+    "seen": 1794402733.5293102,
+    "ast_hash": "64d8c34fe4cb3a0f001858ef401aa9cd",
     "semantic_hash": ""
   },
   "lib/home-blocks.ts": {
@@ -3906,9 +3906,9 @@
     "semantic_hash": ""
   },
   "app/api/salud/portada/route.ts": {
-    "mtime": 1794357943.3052197,
-    "seen": 1794395010.9121423,
-    "ast_hash": "a9f97f8ce23e00a25fb6087ccc7b5018",
+    "mtime": 1794402603.2729,
+    "seen": 1794402733.5220897,
+    "ast_hash": "a1cbabba8f2377262990b28afb441f3d",
     "semantic_hash": ""
   },
   "lib/daily-figure.ts": {
@@ -3918,9 +3918,9 @@
     "semantic_hash": ""
   },
   "scripts/test-frescura.ts": {
-    "mtime": 1794401979.845602,
-    "seen": 1794402107.104509,
-    "ast_hash": "853802ffddc4eff65b657166616d28a9",
+    "mtime": 1794402654.967366,
+    "seen": 1794402733.5323064,
+    "ast_hash": "fe4a9ac5404bd0ec3e2502a17955b220",
     "semantic_hash": ""
   },
   "docs/marcador.md": {
@@ -3966,9 +3966,9 @@
     "semantic_hash": ""
   },
   "lib/data/marcador.ts": {
-    "mtime": 1794396729.8910294,
-    "seen": 1794396933.8338482,
-    "ast_hash": "34f76b6fa831378e28dea2d14665f2b8",
+    "mtime": 1794402603.2735767,
+    "seen": 1794402733.5287669,
+    "ast_hash": "2c9d07d25ef0b0ca25c9b87f88e52c4f",
     "semantic_hash": ""
   },
   "lib/marcador-schema.ts": {
@@ -3996,15 +3996,15 @@
     "semantic_hash": ""
   },
   "components/home/MarcadorWidget.tsx": {
-    "mtime": 1794396285.4881158,
-    "seen": 1794396933.8315852,
-    "ast_hash": "3086defbc2bfd18f7d4c6bbe5768438f",
+    "mtime": 1794402603.27197,
+    "seen": 1794402733.525249,
+    "ast_hash": "f371b09b0dae7cae027807e86e5b8a75",
     "semantic_hash": ""
   },
   "lib/marcador.ts": {
-    "mtime": 1794397914.206485,
-    "seen": 1794402107.102155,
-    "ast_hash": "415408bdc75f4ebf42b585e047fbd139",
+    "mtime": 1794402603.2715583,
+    "seen": 1794402733.529891,
+    "ast_hash": "81ee6b219b6244d18882caf683ab0fd8",
     "semantic_hash": ""
   },
   "scripts/tsconfig.test.json": {
