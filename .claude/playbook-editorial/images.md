@@ -520,6 +520,18 @@ extend the background on all four sides; that survived the zoom intact. Bump the
 filename (`-v2`) when replacing a published asset, so the CDN doesn't keep
 serving the first one.
 
+**A group photo with no room above the heads needs headroom added**
+(2026-11-12, Mundial Femenil 2031 bid). The FMF photo of four federation
+presidents was cropped to 16:9 with the heads near the top edge. Live, the
+16:10 frame and the zoom cut every head except the shortest one, and the
+editor caught it. The fix was a 16:10 canvas with the photo moved down about
+70 px (on 731), and the strip above it filled with a smooth gradient in the
+wall's own color, feathered into the photo. Two fills failed. Mirroring the
+top rows showed reflected heads at the edge, and tiling a head-free patch of
+wall repeated visibly. Before re-publishing, simulate the crop and check
+every head, not just the first one. If one head sits within about 10% of the
+top edge, it will be cut.
+
 **Some club image servers crop for you, so check before self-hosting**
 (2026-11-04, the Nadal / Real Madrid board piece). `assets.realmadrid.com`
 runs Adobe Scene7, which accepts `?wid=1600&hei=1000&fit=crop&align=0,-0.97`:
