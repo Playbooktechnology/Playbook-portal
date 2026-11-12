@@ -128,7 +128,12 @@ Credit the outlet whose image it is (`"Foto: Sportico"`), and prefer
 commercial competitor's CDN — the credit is what the site's takedown clause
 rests on, and a copy under `public/assets/img/` cannot break when they move a
 path. Self-hosted covers only resolve once the asset is on `main`, so push it
-before the article references it.
+before the article references it. **Pushing is not enough. Wait until the asset URL returns 200 before
+publishing.** A deploy usually takes 1 to 3 minutes. On 2026-11-12 the
+Futures piece went live while its cover still returned 404, because the wait
+loop timed out silently and the publish command ran anyway. Gate the publish
+on the 200 (`until [ $(curl -s -o /dev/null -w '%{http_code}' URL) = 200 ]`),
+not on a fixed number of retries.
 
 **Check you actually have a path to `main` before choosing self-hosting**
 (2026-09-15, publish-sourced-article, the DAZN leadership-reshuffle piece). A
@@ -330,6 +335,25 @@ search starts, §1). When the protagonist's own photo of the same moment exists,
 it is the recommendation; if the outlet's is clearly better, show both in the
 draft presentation, say which carries less rights risk, and let the human
 choose.
+
+**A photo the editor finds on social media still needs its credit traced**
+(2026-11-12, Futures Basketball League). The editor sent a LinkedIn post from
+Sports Business Journal with a strong photo of LeBron James and Kevin Durant at
+Paris 2024. A LinkedIn image carries no credit, so open the outlet's own article:
+SBJ's credited the photo to Getty Images. Trade outlets (SBJ, Sportico, Front
+Office Sports) and wires license most player photography from Getty, AP or
+Reuters, so assume a player photo in their posts is agency work until the
+credit line says otherwise. Tell the editor why it can't run and offer the
+closest free alternative.
+
+**When no free photo shows two people together, a diptych is an option.**
+On that run Commons had no Paris 2024 photo of both players together, but it
+had one of each, taken at the same Games by the same photographer. Two
+portrait crops side by side made a 1600×900 cover that was close to the photo
+the editor wanted, and it was the one chosen. Use two shots that match in
+event, light and framing, credit the photographer once ("Fotos: …"), and
+check that the license allows a derivative (CC BY and CC BY-SA do).
+Self-host the composite, since it exists only as our file.
 
 ### The competitor exclusion — never 2Playbook, Récord, Estadio or Mediotiempo
 
