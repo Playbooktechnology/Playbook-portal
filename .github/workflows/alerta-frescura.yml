@@ -1,0 +1,111 @@
+name: Alerta de frescura (Marcador y Cifra del día)
+
+# Daily check of the two automated homepage modules (2026-11-11). Reads the
+# public /api/salud/portada endpoint and keeps ONE issue in sync:
+#   - something stale and no open issue  → opens it (GitHub notifies the repo)
+#   - something stale and issue open     → updates its body; comments only when
+#     the situation changed, so the same alert doesn't notify every morning
+#   - everything fresh and issue open    → comments and closes it
+# Thresholds live in lib/freshness.ts; this workflow only reports them.
+#
+# Mexico City has no DST since 2022, so 14:00 UTC is 8:00 CDMX all year.
+# Scheduled workflows run from the default branch only: this starts after merge.
+
+on:
+  schedule:
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Revisar frescura y sincronizar el issue
+        uses: actions/github-script@v7
+        env:
+          HEALTH_URL: https://www.playbook.la/api/salud/portada
+        with:
+          script: |
+            const TITLE = '[Alerta] Marcador / Cifra del día desactualizado';
+            const MARKER = '<!-- alerta-frescura -->';
+
+            let data = null;
+            let fetchError = null;
+            try {
+              const res = await fetch(process.env.HEALTH_URL, { headers: { 'cache-control': 'no-cache' } });
+              data = await res.json().catch(() => null);
+              if (!res.ok || !data || data.error) fetchError = `HTTP ${res.status}${data?.error ? `: ${data.error}` : ''}`;
+            } catch (err) {
+              fetchError = String(err);
+            }
+
+            const problems = [];
+            if (fetchError) {
+              problems.push(`**Revisión fallida.** No se pudo leer ${process.env.HEALTH_URL} (${fetchError}).`);
+            } else {
+              const m = data.marcador;
+              if (m.desactualizado) {
+                problems.push(
+                  m.ultimo
+                    ? `**El Marcador de Negocios** — sin acuerdos nuevos desde el ${m.ultimo.fecha} (${m.diasDesdeUltimo} días; umbral: ${m.umbralDias}). Último registro: ${m.ultimo.titulo}${m.ultimo.url ? ` (${m.ultimo.url})` : ''}. El widget está en modo archivo.`
+                    : '**El Marcador de Negocios** — la tabla de acuerdos está vacía.',
+                );
+              }
+              const c = data.cifra;
+              if (c.desactualizado) {
+                problems.push(
+                  c.ultima
+                    ? `**La cifra del día** — la última cifra disponible es del ${c.ultima.fecha} (${c.diasDesdeUltima} días; umbral: ${c.umbralDias}): ${c.ultima.cifra}, de "${c.ultima.nota}" (${c.ultima.url}). El bloque está oculto en la portada.`
+                    : '**La cifra del día** — ninguna nota publicada tiene una cifra que mostrar. El bloque está oculto en la portada.',
+                );
+              }
+            }
+
+            // Fingerprint of WHAT is wrong (not how many days): a new comment
+            // only when this changes.
+            const state = fetchError
+              ? 'fetch-error'
+              : [data.marcador.desactualizado && `m:${data.marcador.ultimo?.fecha}`, data.cifra.desactualizado && `c:${data.cifra.ultima?.fecha}`]
+                  .filter(Boolean)
+                  .join('|');
+
+            const { owner, repo } = context.repo;
+            const open = await github.paginate(github.rest.issues.listForRepo, { owner, repo, state: 'open', per_page: 100 });
+            const existing = open.find(i => !i.pull_request && i.title === TITLE);
+            const today = data?.hoy ?? new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Mexico_City' }).format(new Date());
+
+            if (!problems.length) {
+              if (existing) {
+                await github.rest.issues.createComment({ owner, repo, issue_number: existing.number, body: `Todo al día (${today}): el Marcador y La cifra del día están dentro de sus umbrales. Cierro el aviso.` });
+                await github.rest.issues.update({ owner, repo, issue_number: existing.number, state: 'closed', state_reason: 'completed' });
+                core.info(`Closed #${existing.number}.`);
+              } else {
+                core.info('Todo al día; nada que reportar.');
+              }
+              return;
+            }
+
+            const body = [
+              MARKER,
+              `<!-- state:${state} -->`,
+              `Revisión del ${today} (8:00, hora de México).`,
+              '',
+              ...problems.map(p => `- ${p}`),
+              '',
+              'Cómo atenderlo: `docs/marcador.md`. Este aviso se actualiza solo cada mañana y se cierra cuando todo vuelve a estar al día.',
+            ].join('\n');
+
+            if (!existing) {
+              const { data: issue } = await github.rest.issues.create({ owner, repo, title: TITLE, body });
+              core.info(`Opened #${issue.number}.`);
+              return;
+            }
+            const previous = (existing.body || '').match(/<!-- state:(.*?) -->/)?.[1] ?? '';
+            await github.rest.issues.update({ owner, repo, issue_number: existing.number, body });
+            if (previous !== state) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: existing.number, body: `Cambió el estado (${today}):\n\n${problems.map(p => `- ${p}`).join('\n')}` });
+            }
+            core.info(`Updated #${existing.number}${previous !== state ? ' (state changed, commented)' : ''}.`);

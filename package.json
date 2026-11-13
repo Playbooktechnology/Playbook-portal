@@ -4,15 +4,21 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "vercel-build": "tsx scripts/predeploy-migrate.ts && next build",
+    "build": "tsx scripts/validate-marcador.ts && next build",
+    "vercel-build": "tsx scripts/predeploy-migrate.ts && tsx scripts/validate-marcador.ts && next build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/run-migrations.ts",
     "db:reset-editor-password": "tsx scripts/reset-editor-password.ts",
-    "publish:newsletter": "tsx scripts/publish-newsletter.ts"
+    "publish:newsletter": "tsx scripts/publish-newsletter.ts",
+    "test:frescura": "tsx --tsconfig scripts/tsconfig.test.json scripts/test-frescura.ts",
+    "marcador:validar": "tsx scripts/validate-marcador.ts",
+    "marcador:add": "tsx scripts/marcador-add.ts",
+    "marcador:destacado": "tsx scripts/marcador-destacado.ts",
+    "marcador:pendientes": "tsx scripts/marcador-pendientes.ts",
+    "marcador:aprobar": "tsx scripts/marcador-aprobar.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",

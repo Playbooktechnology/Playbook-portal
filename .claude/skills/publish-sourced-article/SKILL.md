@@ -39,13 +39,13 @@ insert script. Four differences, all of them here:
 |---|---|---|
 | **0** | **Overlap check — before drafting a word.** This funnel is the one most likely to arrive at a story Playbook already published. | `references/overlap-check.md` |
 | **1** | **Ingest.** Fetch the link, confirm date and core facts from the page. When it won't load, work the ladder — including asking the human for the article text — rather than improvising. | `references/ingestion.md` |
-| **2** | **Cross-reference (mandatory).** Verify, enrich, stay independent. **Read each primary co-issuer's own release before drafting** — it carries the governance terms wire copy cuts, and it produces the `Fuentes:` line as a by-product. Research the regional angle here too. | `references/ingestion.md` |
+| **2** | **Cross-reference (mandatory).** Verify, enrich, stay independent. **Read each primary co-issuer's own release before drafting** — it carries the governance terms wire copy cuts, and it produces the `Fuentes:` line as a by-product. **Never 2Playbook, Récord, Estadio or Mediotiempo on `Fuentes:`, in the body, in `sourceUrl` or on the cover credit; three sources at most** (`format-tiers.md` §6). Research the regional angle here too. | `references/ingestion.md` |
 | **2b** | **Sensitivity check.** If the story touches an ally, prospect, source or strategic relationship: relevance × sensitivity, the two tests, protocolo amarillo. Surface the call in the draft presentation. | `references/postura-editorial.md` |
 | **3** | **Route the format — A / B / C / D — before drafting a word**, then apply that format's architecture. Depth decides the format; graphics are a consequence. A story carrying mechanism + money + precedent is a Deep Dive, not a long brief. | `references/format-tiers.md` §1 |
 | **4** | **Apply the voice.** Movimiento + mecanismo + incentivo + consecuencia; find the palanca; one thing per paragraph; one clause in the headline. | `references/voice-and-style.md` |
 | **5** | **Apply the element library.** Walk every device, respect the budget, check each declaration rendered. | `references/dynamic-element-library.md` |
 | **6** | **Fill the fields and source the image.** Set the **0–99 `boleta`** on every article — omitting it silently ranks the piece on the retired star scale. `tagsProperty` decides whether the piece lands on a hub; read its boundary rule before setting it. | `references/fields-and-taxonomy.md` → "Ranking", `references/images.md` |
-| **7** | **Self-check** against the twelve-point publication checklist and run `check-voice.mjs`. | `references/voice-and-style.md` §12 |
+| **7** | **Self-check** against the sixteen-point publication checklist and run `check-voice.mjs`. | `references/voice-and-style.md` §12 |
 | **8** | **Human review — the gate.** Present the complete draft, ask, revise, repeat. | `references/publishing-mechanics.md` |
 | **9** | **Publish only what was approved. Report, capture feedback.** | `references/publishing-mechanics.md` |
 

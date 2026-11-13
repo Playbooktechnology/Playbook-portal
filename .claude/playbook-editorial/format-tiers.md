@@ -539,6 +539,16 @@ reportes" or leave it out. The 2026-10-15 audit found three live articles with
 Récord on the line (Deyna Castellanos, Rebeca Bernal, Fox en Izzi y Sky); all
 three were re-credited.
 
+**The same four never appear in the body either**: no "según 2Playbook", no
+"de acuerdo con Récord", and they never go in `sourceUrl`. The 2026-11-10 audit
+found four live notes from the previous week (GP de São Paulo, Santos ×
+padre de Neymar, Mediapro × Conmebol, premios del Mundial femenil) carrying
+2Playbook on `Fuentes:`, and two of them also named it in the body. The rule
+had been written here since September, but the runs read it as one paragraph
+among many. All four were re-credited, and the rule is now also item 16 of the
+publication checklist (`voice-and-style.md` §12), so it gets checked on every
+draft.
+
 **Three entries at most, never more** (Playbook team, 2026-10-15, on the
 Adobe x Australian Open update, whose line had grown to eleven names after a
 round of verification). The line credits who said it; it is not a record of

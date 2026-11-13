@@ -296,6 +296,17 @@ World Football's original interview for Inter de Limeira) and never needed to
 be re-derived from principle, but it also was not written down anywhere until
 now, so a future run had no faster path than reasoning it out cold.
 
+**2Playbook is never a per-link instruction. It is a standing rule.** The
+rule lives in `format-tiers.md` §6 (with Récord, Estadio and Mediotiempo, and
+the three-source cap) and `images.md` (cover credit), and it is item 16 of the
+§12 checklist. Do not restate it here. What this step adds is practical: when
+the link the human hands over *is* a 2Playbook piece, read it for facts, then
+find each fact somewhere else before drafting. A fact that only 2Playbook
+carries leaves the draft (on the Athletic × Unique Box run, 2026-11-10, that
+cut an Instagram quote). The publisher had to remind the session of the rule
+on that run, and the audit that followed found four live notes crediting
+2Playbook (`format-tiers.md` §6 has the record).
+
 ### A feature with interview quotes is not the interviewee's word
 
 (2026-11-04, LMB × Fanki run.) Excélsior's April feature on the LMB carried

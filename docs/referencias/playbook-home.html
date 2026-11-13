@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playbook · Tú ves el partido. Nosotros vemos el negocio.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#9AEA39;--yellow:#E4FD51;--grey:#E5EBF4;
+    --bg:#fff;--ink:#0b0d10;--muted:#5f6977;--line:#e2e7ee;--soft:#f5f7fa;--card:#000;--cardink:#fff;--cardmuted:#c9d1db;--imgA:#1b1f25;--imgB:#3a4049;
+  }
+  html[data-theme="dark"]{--bg:#0b0d10;--ink:#f2f4f7;--muted:#9aa3b0;--line:#232830;--soft:#14181e;--card:#15191f;--cardink:#fff;--cardmuted:#b7c0cb;--imgA:#1f242b;--imgB:#2b313a}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  a:hover h3,a:hover h4,a:hover .ttl{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+  .anton,h1,h2,h3,h4{font-family:Anton,Impact,"Arial Narrow",sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.01em;margin:0}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+  .img{background:linear-gradient(135deg,var(--imgA),var(--imgB));position:relative;overflow:hidden}
+  .img:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(154,234,57,.12),transparent 55%)}
+  .cat{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+  .cat b{color:var(--ink);font-weight:600}
+  .meta{font-size:12px;color:var(--muted)}
+  .h4{font-family:Inter;font-weight:600;font-size:15.5px;line-height:1.3;margin:6px 0 6px;text-transform:none;letter-spacing:0}
+  .scope{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:2px;vertical-align:middle;margin-left:6px;background:var(--grey);color:#0b0d10}
+  .scope.mx{background:var(--green)}
+  /* top */
+  .topbar{border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .logo{font-family:Anton;font-size:26px;letter-spacing:.05em;position:relative;padding-left:16px;line-height:1}
+  .logo:before{content:"";position:absolute;left:0;top:5px;width:9px;height:9px;background:var(--green)}
+  .menu{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:14px;font-weight:500}
+  .menu li{position:relative;padding:6px 0}
+  .menu li span{display:inline-block;font-size:9px;margin-left:5px;opacity:.7;transform:translateY(-1px)}
+  .menu li.new:after{content:"NUEVO";position:absolute;top:-6px;right:-30px;background:var(--green);color:#000;font-size:8.5px;font-weight:700;letter-spacing:.08em;padding:1px 5px;border-radius:2px}
+  .actions{display:flex;align-items:center;gap:14px}
+  .btn{display:inline-block;background:var(--ink);color:var(--bg);font-size:13px;font-weight:600;padding:10px 18px;border-radius:30px}
+  .btn.g{background:var(--green);color:#000}
+  .link{font-size:13px;font-weight:500}
+  .moon{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer}
+  .dateline{display:flex;justify-content:space-between;align-items:center;height:38px;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
+  .dateline b{color:var(--ink);font-weight:600}
+  /* hero */
+  .hero{display:grid;grid-template-columns:1.55fr 1fr;gap:0;border-bottom:1px solid var(--line)}
+  .hero .lead{position:relative;min-height:460px;display:flex;flex-direction:column;justify-content:flex-end;padding:40px 44px 40px;color:#fff;background:linear-gradient(160deg,#20252c 0%,#0b0d10 70%)}
+  .hero .lead:before{content:"";position:absolute;right:0;top:0;width:14px;height:100%;background:var(--green)}
+  .hero .lead .k{color:var(--green);font-size:11px;letter-spacing:.14em;font-weight:600;text-transform:uppercase}
+  .hero .lead .k i{font-style:normal;background:var(--yellow);color:#000;padding:1px 6px;margin-left:8px;border-radius:2px}
+  .hero .lead h1{font-size:60px;line-height:.96;margin:14px 0 14px;max-width:640px}
+  .hero .lead p{font-size:17px;color:#cfd6e0;margin:0 0 14px;max-width:600px}
+  .hero .lead .by{font-size:12.5px;color:#9aa3b0}
+  .hero .side{display:grid;grid-template-rows:1fr 1fr}
+  .hero .side a{display:grid;grid-template-columns:1fr 130px;gap:18px;padding:26px 30px;border-bottom:1px solid var(--line);align-items:center}
+  .hero .side a:last-child{border-bottom:0;background:var(--soft)}
+  .hero .side h3{font-size:24px;line-height:1.04;margin:8px 0 8px}
+  .hero .side p{font-size:13.5px;color:var(--muted);margin:0 0 8px}
+  .hero .side .img{height:100px}
+  /* layout */
+  .cols{display:grid;grid-template-columns:1fr 360px;gap:44px;padding:34px 0 10px}
+  .mod{margin-bottom:46px}
+  .modh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px solid var(--ink);padding-bottom:8px;margin-bottom:18px}
+  .modh h2{font-size:24px}
+  .modh .r{font-size:12.5px;color:var(--muted);font-weight:500}
+  .modh .r a{font-weight:600;color:var(--ink)}
+  .tabs{display:flex;gap:20px;font-size:13px;font-weight:600;margin:-6px 0 16px;border-bottom:1px solid var(--line)}
+  .tabs span{padding:8px 0;border-bottom:3px solid transparent;color:var(--muted);cursor:pointer}
+  .tabs span.on{color:var(--ink);border-color:var(--green)}
+  .feed{display:grid;grid-template-columns:repeat(3,1fr);gap:22px 24px}
+  .card .img{height:150px;margin-bottom:12px}
+  .card.text{border-top:1px solid var(--line);padding-top:12px}
+  .more{text-align:right;font-size:13px;font-weight:600;margin-top:18px}
+  /* sigue importando */
+  .sigue{display:grid;grid-template-columns:1fr 1fr;gap:4px 36px}
+  .sigue a{display:grid;grid-template-columns:46px 1fr;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+  .sigue .d{font-family:Anton;font-size:26px;line-height:1}
+  .sigue .d small{display:block;font-family:Inter;font-size:9.5px;letter-spacing:.1em;color:var(--muted);margin-top:2px}
+  .sigue .ttl{font-weight:600;font-size:15px;line-height:1.3;display:block}
+  .sigue .why{font-size:13px;margin-top:6px;border-left:3px solid var(--green);padding-left:10px;color:var(--muted)}
+  /* playmaker */
+  .pm{display:grid;grid-template-columns:260px 1fr;gap:30px;background:var(--card);color:var(--cardink);padding:28px;position:relative}
+  .pm .photo{height:300px;position:relative;background:linear-gradient(165deg,#2c323a,#0e1114)}
+  .pm .photo:before{content:"";position:absolute;left:-10px;top:-10px;width:70px;height:70px;background:var(--green);z-index:-0}
+  .pm .photo:after{content:"";position:absolute;right:-10px;bottom:-10px;width:120px;height:14px;background:var(--green)}
+  .pm .lg{display:inline-block;font-family:Anton;font-size:15px;line-height:.92;border:2px solid var(--green);color:var(--green);padding:6px 9px;position:relative}
+  .pm .lg:after{content:"";position:absolute;right:-6px;bottom:-6px;width:10px;height:10px;background:var(--green)}
+  .pm h3{font-size:34px;line-height:1;margin:16px 0 6px;color:#fff}
+  .pm .role{color:var(--cardmuted);font-size:14px}
+  .pm .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .pm .grid div{border-top:1px solid #363c45;padding-top:10px;font-size:12px;color:#9aa3b0}
+  .pm .grid b{display:block;color:#fff;font-weight:600;font-size:14px;margin-top:2px}
+  .pm p{font-size:14px;color:var(--cardmuted);margin:0 0 14px;max-width:560px}
+  .pm .sp{font-size:10.5px;color:#9aa3b0;letter-spacing:.1em;text-transform:uppercase}
+  .pm .sp b{color:#fff;font-weight:600;letter-spacing:0;text-transform:none;font-size:12px}
+  .pm.soon{grid-template-columns:1fr 300px;align-items:center}
+  .pm.soon .photo{height:200px}
+  .pm.soon .photo:after{display:none}
+  .pm.soon .silh{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Anton;font-size:72px;color:#2a3039;letter-spacing:.04em}
+  .pm.soon .soonk{color:var(--green);font-size:11px;letter-spacing:.14em;font-weight:600;text-transform:uppercase}
+  /* empieza aqui */
+  .start{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .start a{background:var(--soft);padding:18px 16px;min-height:140px;display:flex;flex-direction:column;justify-content:space-between;border-top:3px solid var(--ink)}
+  .start a .cat{margin-bottom:8px}
+  .start a b{font-weight:600;font-size:15px;line-height:1.3}
+  .start a span{font-size:12px;color:var(--muted)}
+  /* expedientes */
+  .exp{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .exp a{border:1.5px solid var(--ink);padding:18px}
+  .exp .n{font-family:Anton;font-size:12px;letter-spacing:.12em}
+  .exp .n i{font-style:normal;background:var(--yellow);color:#000;padding:1px 6px;margin-left:8px}
+  .exp .h4{font-size:16px;margin:10px 0 8px}
+  .exp p{font-size:13px;color:var(--muted);margin:0 0 10px;min-height:38px}
+  /* sidebar */
+  .side .w{border:1px solid var(--line);margin-bottom:26px;font-size:13.5px;background:var(--bg)}
+  .wh{display:flex;justify-content:space-between;align-items:baseline;padding:14px 18px 10px}
+  .wh .t{font-family:Anton;font-size:17px;text-transform:uppercase}
+  .wh .s{font-size:10.5px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+  .nl{background:var(--card);color:var(--cardink);padding:22px 20px;border-color:var(--card)!important}
+  .nl .t{font-family:Anton;font-size:22px;text-transform:uppercase;line-height:1.05}
+  .nl p{font-size:13px;color:var(--cardmuted);margin:8px 0 12px}
+  .nl .sched{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  .nl .sched div{border:1px solid #363c45;padding:9px 10px;font-size:11.5px;color:var(--cardmuted);line-height:1.35}
+  .nl .sched b{display:block;color:var(--green);font-size:12px;margin-bottom:2px}
+  .nl .in{display:flex;gap:0}
+  .nl .in input{flex:1;border:0;padding:11px 12px;font-size:13px;font-family:Inter;outline:none}
+  .nl .in button{background:var(--green);border:0;color:#000;padding:11px 16px;font-size:13px;font-weight:600;font-family:Inter;cursor:pointer}
+  .nl .last{display:block;font-size:11.5px;color:#9aa3b0;margin-top:10px;text-decoration:underline;text-underline-offset:2px}
+  .nl .fine{font-size:10.5px;color:#7d8794;margin-top:8px}
+  .cifra .big{font-family:Anton;font-size:46px;line-height:1;padding:0 18px}
+  .cifra p{padding:8px 18px 16px;font-size:13px;color:var(--muted);margin:0}
+  .cifra p a{color:var(--ink);font-weight:600}
+  /* marcador */
+  .score{display:flex;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .score div{flex:1;padding:10px 14px;border-right:1px solid var(--line)}
+  .score div:last-child{border-right:0}
+  .score b{display:block;font-family:Anton;font-size:26px;line-height:1}
+  .score span{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .deal{background:var(--card);color:var(--cardink);padding:16px 18px}
+  .deal .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .deal .tag{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:3px 7px;border:1px solid #4a515b;color:var(--cardmuted)}
+  .deal .tag.g{background:var(--green);color:#000;border-color:var(--green)}
+  .deal h3{font-size:26px;line-height:1;margin:10px 0 6px;color:#fff}
+  .deal .amt{font-family:Anton;font-size:34px;color:var(--green);line-height:1}
+  .deal p{font-size:12.5px;color:var(--cardmuted);margin:10px 0}
+  .deal .lec{font-size:12.5px;border-left:3px solid var(--green);padding-left:10px;color:#fff}
+  .deal .lec b{color:var(--green);font-weight:600}
+  .deal .rl{display:inline-block;margin-top:12px;font-size:12.5px;font-weight:600;color:var(--green)}
+  .row{display:flex;justify-content:space-between;gap:10px;padding:11px 18px;border-top:1px solid var(--line)}
+  .row .n{font-weight:600;font-size:13px}
+  .row .d{color:var(--muted);font-size:11.5px;margin-top:1px}
+  .row .a{font-weight:600;font-size:12.5px;white-space:nowrap;text-align:right}
+  .row .a small{display:block;font-weight:500;color:var(--muted);font-size:10px}
+  .cta2{display:block;text-align:center;background:var(--ink);color:var(--bg);padding:11px;font-weight:600;font-size:13px;margin:14px 18px;border-radius:30px}
+  .foot{font-size:10.5px;color:var(--muted);padding:0 18px 14px;line-height:1.5}
+  .foot a{text-decoration:underline}
+  /* agenda */
+  .ag{display:grid;grid-template-columns:46px 1fr;gap:12px;padding:12px 18px;border-top:1px solid var(--line)}
+  .ag .dt{font-family:Anton;font-size:22px;line-height:1;text-align:center}
+  .ag .dt small{display:block;font-family:Inter;font-size:9.5px;letter-spacing:.1em;color:var(--muted);margin-top:2px}
+  .ag b{display:block;font-weight:600;font-size:13px;line-height:1.3}
+  .ag .org{font-size:11px;color:var(--muted)}
+  .ag .why{font-size:12px;margin-top:3px}
+  .mas ol{margin:0;padding:0 18px 12px 38px;font-size:13px}
+  .mas li{padding:8px 0;border-top:1px solid var(--line);line-height:1.35}
+  .mas li::marker{font-family:Anton;font-size:15px}
+  .termo{background:var(--soft);padding:16px 18px;border-color:transparent!important}
+  .termo .big{font-family:Anton;font-size:34px;line-height:1}
+  .termo p{font-size:12px;color:var(--muted);margin:6px 0 0}
+  .termo p a{color:var(--ink);font-weight:600}
+  /* full width sections */
+  .band{border-top:1px solid var(--line);padding:40px 0}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips a{border:1px solid var(--line);padding:7px 13px;border-radius:30px;font-size:12.5px;font-weight:500}
+  .chips a.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .prods{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .prods a{border:1px solid var(--line);padding:22px 20px;min-height:170px;display:flex;flex-direction:column}
+  .prods h3{font-size:22px;line-height:1.02}
+  .prods .sub{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:4px 0 10px}
+  .prods p{font-size:13px;color:var(--muted);margin:0 0 auto}
+  .prods .when{font-size:12px;font-weight:600;margin-top:12px}
+  .video{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .video .img{height:260px}
+  .video .img:before{content:"▶";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;background:var(--green);color:#000;display:flex;align-items:center;justify-content:center;font-size:18px;z-index:1}
+  .about{background:var(--card);color:var(--cardink);padding:60px 0}
+  .about h2{font-size:48px;line-height:.98;max-width:720px;color:#fff}
+  .about p{color:var(--cardmuted);max-width:640px;font-size:16px;margin:16px 0 22px}
+  .about .in{display:flex;max-width:520px}
+  .about .in input{flex:1;border:0;padding:13px 14px;font-size:14px;font-family:Inter}
+  .about .in button{background:var(--green);border:0;padding:13px 20px;font-weight:600;font-family:Inter;font-size:14px}
+  footer{padding:34px 0 50px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+  footer .fr{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+  footer ul{list-style:none;margin:0;padding:0;display:flex;gap:18px;flex-wrap:wrap}
+  /* control panel */
+  .panel{position:fixed;right:18px;bottom:18px;background:#0b0d10;color:#fff;border:1px solid #2a2f36;padding:12px 14px;font-size:12px;z-index:50;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.3);width:230px}
+  .panel .pt{font-family:Anton;font-size:12px;letter-spacing:.12em;color:var(--green);margin-bottom:8px;display:flex;justify-content:space-between}
+  .panel .pt span{cursor:pointer;color:#9aa3b0;font-family:Inter}
+  .panel label{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-top:1px solid #1f242b;cursor:pointer}
+  .panel select{background:#15191f;color:#fff;border:1px solid #2a2f36;font-size:11px;padding:2px 4px}
+  .panel.min label,.panel.min .note{display:none}
+  .panel .note{font-size:10.5px;color:#7d8794;margin-top:8px;line-height:1.4}
+  .hide{display:none!important}
+  @media(max-width:1000px){.hero{grid-template-columns:1fr}.cols{grid-template-columns:1fr}.feed,.start,.prods,.exp{grid-template-columns:1fr 1fr}.pm,.pm.soon{grid-template-columns:1fr}.sigue{grid-template-columns:1fr}.menu{display:none}.hero .lead h1{font-size:42px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap nav">
+    <a class="logo" href="#">PLAYBOOK</a>
+    <ul class="menu">
+      <li>Noticias</li>
+      <li>La Lana del Deporte</li>
+      <li id="navpm" class="new">Playmaker</li>
+      <li>The Futbol Business Review</li>
+      <li>Infinitas</li>
+      <li>El Marcador</li>
+      <li>Temas <span>▼</span></li>
+      <li>Alianzas <span>▼</span></li>
+      <li>Nosotros <span>▼</span></li>
+    </ul>
+    <div class="actions">
+      <a class="btn g" href="#">Suscríbete gratis</a>
+      <a class="link" href="#">Iniciar sesión</a>
+      <span class="moon" onclick="toggleTheme()" title="Modo oscuro">◐</span>
+    </div>
+  </div>
+  <div class="wrap dateline"><span><b>Lunes 9 de noviembre de 2026</b></span><span>Tú ves el partido. Nosotros vemos el negocio.</span></div>
+</div>
+
+<div class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <a class="lead" href="#">
+      <span class="k">La Lana del Deporte · Expediente 021 <i>Caso abierto</i></span>
+      <h1>La NBA después del juego</h1>
+      <p>Unos 30 millones de aficionados en México y una liga que ya no quiere vivir de un partido al año. Capitanes, NBA House y lo que de verdad está en juego con el Mexico City Game.</p>
+      <span class="by">Por Guillermo Mejía · 8 de noviembre · 4 min de lectura</span>
+    </a>
+    <div class="side">
+      <a href="#"><div><span class="cat">Derechos de TV · <b>Global</b></span><h3>Fox completa la compra de Roku por US$22,000 millones</h3><p>El comprador de derechos ahora es dueño de la pantalla de inicio.</p><span class="meta">Redacción Playbook · 6 nov · 3 min</span></div><div class="img"></div></a>
+      <a href="#"><div><span class="cat">Finanzas · <b>México</b></span><h3>Ollamani reporta pérdida operativa de MX$968 millones por el Mundial</h3><p>Más de lo previsto. Qué dice del estadio y de 2027.</p><span class="meta">31 oct · 3 min</span></div><div class="img"></div></a>
+    </div>
+  </section>
+
+  <div class="cols">
+    <!-- MAIN -->
+    <main>
+      <section class="mod">
+        <div class="modh"><h2>Lo último</h2><span class="r">Actualizado hace 3 min</span></div>
+        <div class="tabs"><span class="on">Todo</span><span>Noticias</span><span>La Lana del Deporte</span><span>Infinitas</span><span>México</span></div>
+        <div class="feed">
+          <a class="card" href="#"><div class="img"></div><span class="cat">Inversión · <b>Reino Unido</b></span><div class="h4">Dueños del Liverpool van por Cadillac F1 por más de £2,000 millones</div><span class="meta">Redacción Playbook · 5 nov · 3 min</span></a>
+          <a class="card" href="#"><div class="img"></div><span class="cat">Patrocinios · <b>México</b></span><div class="h4">American Express y la NBA llevan su alianza al Mexico City Game</div><span class="meta">Redacción Playbook · 5 nov · 2 min</span></a>
+          <a class="card" href="#"><div class="img"></div><span class="cat">Inversión · <b>EE. UU.</b></span><div class="h4">Equinox vuelve a sus socios: US$1,000 millones y nuevo CEO para crecer</div><span class="meta">Redacción Playbook · 5 nov · 2 min</span></a>
+          <a class="card text" href="#"><span class="cat">Patrocinios · <b>Italia</b></span><div class="h4">Milan dejaría Puma por Adidas: €500 millones, récord en la Serie A</div><span class="meta">5 nov · 2 min</span></a>
+          <a class="card text" href="#"><span class="cat">Gobernanza · <b>Global</b></span><div class="h4">Futbol femenil olímpico: FIFA pide limitarlo a menores de 23 años</div><span class="meta">5 nov · 2 min</span></a>
+          <a class="card text" href="#"><span class="cat">Patrocinios · <b>Global</b></span><div class="h4">LeBron James y Whoop firman alianza: embajador global e inversionista</div><span class="meta">5 nov · 2 min</span></a>
+          <a class="card text" href="#"><span class="cat">Inversión · <b>EE. UU.</b></span><div class="h4">Team USA busca inversionistas para su negocio comercial tras LA28</div><span class="meta">5 nov · 3 min</span></a>
+          <a class="card text" href="#"><span class="cat">Patrocinios · <b>Portugal</b></span><div class="h4">Cristiano Ronaldo se retira de Portugal: lo que pierde la marca de la selección</div><span class="meta">5 nov · 3 min</span></a>
+          <a class="card text" href="#"><span class="cat">Patrocinios · <b>EE. UU.</b></span><div class="h4">Los patrocinadores de la NFL llevan sus anuncios de estadio a Madden</div><span class="meta">4 nov · 2 min</span></a>
+        </div>
+        <div class="more"><a href="#">Todas las noticias →</a></div>
+      </section>
+
+      <section class="mod">
+        <div class="modh"><h2>Lo que sigue importando</h2><span class="r">Selección del editor</span></div>
+        <div class="sigue">
+          <a href="#"><div class="d">3<small>NOV</small></div><div><span class="ttl">El Mundial le paga dos veces a Fox: su publicidad sube 47%</span><div class="why">El dato que explica por qué Fox puede cerrar la compra de Roku esta misma semana.</div></div></a>
+          <a href="#"><div class="d">29<small>OCT</small></div><div><span class="ttl">Knicks y Rangers ya cotizan por separado en Wall Street</span><div class="why">Primer precio de mercado limpio para una franquicia de la NBA. Referencia para lo que venga.</div></div></a>
+          <a href="#"><div class="d">4<small>NOV</small></div><div><span class="ttl">Nadal acepta entrar a la Junta del Real Madrid: por qué lo propuso Florentino</span><div class="why">La más leída de la semana: la gobernanza del club como activo de marca.</div></div></a>
+          <a href="#"><div class="d">28<small>OCT</small></div><div><span class="ttl">LMB centraliza su boletaje con Fanki hasta 2031 y lanza LMB Diamante</span><div class="why">El acuerdo mexicano con más consecuencias del mes: los datos del aficionado en una sola mano.</div></div></a>
+        </div>
+      </section>
+
+      <!-- PLAYMAKER: estado "próximamente" -->
+      <section class="mod" id="pm-soon">
+        <div class="modh"><h2>Playmaker</h2><span class="r">Cada semana, una persona</span></div>
+        <div class="pm soon">
+          <div>
+            <span class="lg">PLAY<br>MAKER</span>
+            <div class="soonk" style="margin-top:16px">Próximamente en Playbook</div>
+            <h3 style="font-size:40px">Las personas que mueven<br>el negocio del deporte</h3>
+            <p>Un perfil semanal de quienes toman las decisiones en ligas, clubes, marcas y medios de México y Latinoamérica. Quién es, desde cuándo, qué le toca decidir. Sin ranking: reconocimiento.</p>
+            <a class="btn g" href="#" style="font-size:12.5px">Avísame cuando salga el primero</a>
+          </div>
+          <div class="photo"><div class="silh">?</div></div>
+        </div>
+      </section>
+
+      <!-- PLAYMAKER: estado "edición publicada" (oculto por defecto) -->
+      <section class="mod hide" id="pm-live">
+        <div class="modh"><h2>Playmaker</h2><span class="r">El perfil de la semana · <a href="#">Todos los perfiles →</a></span></div>
+        <a class="pm" href="#">
+          <div class="photo"></div>
+          <div>
+            <span class="lg">PLAY<br>MAKER</span>
+            <h3>Horacio de la Vega</h3>
+            <div class="role">Presidente · Liga Mexicana de Beisbol</div>
+            <div class="grid">
+              <div>En el cargo desde<b>[por confirmar]</b></div>
+              <div>Mandato<b>[por confirmar]</b></div>
+              <div>Cargo anterior<b>[por confirmar]</b></div>
+            </div>
+            <p>El hombre que convenció a 20 dueños de centralizar el boletaje. Perfil de la persona, no del balance.</p>
+            <span class="sp">Presentado por <b>[Patrocinador]</b></span>
+          </div>
+        </a>
+      </section>
+
+      <section class="mod" id="start">
+        <div class="modh"><h2>Empieza aquí</h2><span class="r">Lo que no caduca</span></div>
+        <div class="start">
+          <a href="#"><div><span class="cat">Mapa · 2026</span><b>El Mapa del Ecosistema Deportivo Mexicano</b></div><span>Quién es quién: ligas, clubes, marcas, medios y fondos, en un solo lugar.</span></a>
+          <a href="#"><div><span class="cat">Reporte · con ISAC</span><b>El Playbook del negocio del fútbol femenil en México</b></div><span>Demanda, valor y el benchmark comercial de la Liga MX Femenil.</span></a>
+          <a href="#"><div><span class="cat">La Lana del Deporte</span><b>Los Expedientes que más se leyeron en 2026</b></div><span>Infantino y FIFA, las casas de apuestas, Azcárraga y el Mundial, Leagues Cup.</span></a>
+          <a href="#"><div><span class="cat">Video · Los Otros Once</span><b>Cómo se coordinó el Mundial 2026 entre FIFA, Chivas y Guadalajara</b></div><span>La serie sobre las personas que hicieron posible la sede.</span></a>
+        </div>
+      </section>
+
+      <section class="mod">
+        <div class="modh"><h2>La Lana del Deporte · El Expediente</h2><span class="r">Viernes · <a href="#">Todos los expedientes →</a></span></div>
+        <div class="exp">
+          <a href="#"><span class="n">EXP. 021 <i>Caso abierto</i></span><div class="h4">La NBA después del juego</div><p>Unos 30 millones de aficionados y una liga que busca ingresos todo el año.</p><span class="meta">8 nov · 4 min</span></a>
+          <a href="#"><span class="n">EXP. 020 <i>Caso abierto</i></span><div class="h4">¿Qué puede perder LaLiga por lo que dijo Mbappé?</div><p>Unos €45 millones que el antiguo operador chino dejó de pagar y recortaron el reparto a los clubes.</p><span class="meta">30 oct · 6 min</span></a>
+          <a href="#"><span class="n">EXP. 019 <i>Caso abierto</i></span><div class="h4">La Ligue 1 creó su propia TV. ¿Por qué busca otro comprador?</div><p>Lo que pasa cuando una liga se queda sin comprador y decide producir ella misma.</p><span class="meta">23 oct · 5 min</span></a>
+        </div>
+      </section>
+
+      <section class="mod">
+        <div class="modh"><h2>Infinitas</h2><span class="r">Deporte femenil analizado como industria · <a href="#">Ir a Infinitas →</a></span></div>
+        <div class="feed">
+          <a class="card" href="#"><div class="img"></div><span class="cat">Laboral · <b>Global</b></span><div class="h4">FIFPRO: 49% de las futbolistas considera retirarse antes de tiempo</div><span class="meta">12 oct</span></a>
+          <a class="card" href="#"><div class="img"></div><span class="cat">Audiencias · <b>EE. UU.</b></span><div class="h4">Valkyries: solo 8% de sus abonados también tiene abono de los Warriors</div><span class="meta">11 oct</span></a>
+          <a class="card" href="#"><div class="img"></div><span class="cat">Ligas · <b>México</b></span><div class="h4">La Liga de Voleibol Profesional de México suma su rama varonil</div><span class="meta">4 oct</span></a>
+        </div>
+      </section>
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="side">
+      <div class="w nl">
+        <div class="t">Lo que mueve el negocio, en tu correo</div>
+        <p>Gratis. Dos envíos cortos y uno largo a la semana.</p>
+        <div class="sched">
+          <div><b>Industry Shots</b>Martes y jueves · 5 minutos</div>
+          <div><b>La Lana del Deporte</b>Viernes · el Expediente</div>
+        </div>
+        <form class="in" onsubmit="return false"><input type="email" placeholder="tu@correo.com"><button>Suscribirme</button></form>
+        <a class="last" href="#">Lee el último envío antes de suscribirte →</a>
+        <div class="fine">Se abrirá Substack para confirmar.</div>
+      </div>
+
+      <div class="w cifra">
+        <div class="wh"><span class="t">La cifra del día</span><span class="s">Lunes 9 nov</span></div>
+        <div class="big">2,000M</div>
+        <p>partidas de Madden NFL al año, según EA. Por eso <a href="#">los patrocinadores de la NFL llevan sus anuncios de estadio al videojuego →</a></p>
+      </div>
+
+      <div class="w" id="marcador">
+        <div class="wh"><span class="t">El Marcador de Negocios</span><span class="s">Semana 45</span></div>
+        <div class="score"><div><b>6</b><span>acuerdos</span></div><div><b>1</b><span>en México</span></div><div><b>2</b><span>reportados</span></div></div>
+        <div class="deal">
+          <div class="tags"><span class="tag g">Acuerdo de la semana</span><span class="tag">Global</span><span class="tag">Propiedad · Distribución</span></div>
+          <h3>Fox × Roku</h3>
+          <div class="amt">US$22,000M</div>
+          <p>Fox cierra la compra de Roku, anunciada en junio. Se queda con el sistema operativo de TV que usan más de 100 millones de hogares, The Roku Channel y sus datos de audiencia.</p>
+          <div class="lec"><b>Lectura Playbook:</b> el que compraba derechos ahora es dueño de la pantalla de inicio. Para una liga, negociar con Fox ya no es solo vender un partido: es negociar dónde aparece.</div>
+          <a class="rl" href="#">Leer el análisis →</a>
+        </div>
+        <a class="row" href="#"><div><span class="n">American Express × NBA</span><span class="scope mx">México</span><div class="d">Patrocinio · Mexico City Game</div></div><div class="a">N/R</div></a>
+        <a class="row" href="#"><div><span class="n">FSG × Cadillac F1</span><span class="scope">Global</span><div class="d">Propiedad · oferta</div></div><div class="a">+£2,000M<small>reportado</small></div></a>
+        <a class="row" href="#"><div><span class="n">Equinox · socios</span><span class="scope">EE. UU.</span><div class="d">Inversión · recapitalización</div></div><div class="a">US$1,000M</div></a>
+        <a class="row" href="#"><div><span class="n">Adidas × Milan</span><span class="scope">Europa</span><div class="d">Patrocinio técnico · desde 2027</div></div><div class="a">€500M<small>reportado</small></div></a>
+        <a class="cta2" href="#">Ver el marcador completo →</a>
+        <div class="foot">Actualizado viernes 6 nov · 64 acuerdos registrados en 2026 · <a href="#">Metodología</a></div>
+      </div>
+
+      <div class="w" id="agenda">
+        <div class="wh"><span class="t">La Agenda</span><span class="s">Próximos 21 días</span></div>
+        <a class="ag" href="#"><div class="dt">22<small>NOV</small></div><div><b>Cierra la fase regular del Apertura 2026</b><span class="org">Liga MX · México</span><div class="why">Último fin de semana de inventario regular para patrocinadores y TV antes de la Liguilla.</div></div></a>
+        <a class="ag" href="#"><div class="dt">25<small>NOV</small></div><div><b>Arrancan los cuartos de final</b><span class="org">Liga MX · México</span><div class="why">Sin play-in: ocho equipos y cuatro semanas de audiencia pico. La final se iría a 24 y 27 de diciembre si Toluca va al Intercontinental.</div></div></a>
+        <a class="ag" href="#"><div class="dt">28<small>NOV</small></div><div><b>Final de la Copa Libertadores</b><span class="org">CONMEBOL · Montevideo</span><div class="why">El partido de clubes más vendido de la región; referencia de precios del fútbol sudamericano.</div></div></a>
+        <a class="ag" href="#"><div class="dt">DIC<small>2026</small></div><div><b>Vencen patrocinios del Tri firmados "hasta 2026"</b><span class="org">FMF · México</span><div class="why">Banorte, Corona y AT&T anunciaron contratos con vigencia al Mundial. Renovación o relevo define el ciclo 2027–2030.</div></div></a>
+        <a class="cta2" href="#">Ver la agenda del trimestre →</a>
+        <div class="foot">Fechas de calendarios oficiales y anuncios públicos. Lo pendiente se marca "por confirmar".</div>
+      </div>
+
+      <div class="w mas">
+        <div class="wh"><span class="t">Más leídas</span><span class="s">Últimos 7 días</span></div>
+        <ol>
+          <li><a href="#">Nadal acepta entrar a la Junta del Real Madrid: por qué lo propuso Florentino</a></li>
+          <li><a href="#">Ollamani reporta pérdida operativa de MX$968 millones por Mundial 2026</a></li>
+          <li><a href="#">LMB centraliza su boletaje con Fanki hasta 2031 y lanza LMB Diamante</a></li>
+          <li><a href="#">Los patrocinadores de la NFL llevan sus anuncios de estadio a Madden</a></li>
+          <li><a href="#">Cristiano Ronaldo se retira de Portugal: lo que pierde la marca de la selección</a></li>
+        </ol>
+      </div>
+
+      <div class="w termo" id="termo">
+        <div class="wh" style="padding:0 0 8px"><span class="t">Termómetro Playbook</span><span class="s">Anual · en preparación</span></div>
+        <div class="big">64 acuerdos</div>
+        <p>registrados en 2026 en El Marcador. El primer Termómetro del negocio del deporte en Latinoamérica sale en enero. <a href="#">Avísame cuando salga →</a></p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- EXPLORA -->
+<section class="band">
+  <div class="wrap">
+    <div class="modh"><h2>Explora por tema</h2></div>
+    <div class="chips">
+      <a class="on" href="#">Fútbol</a><a href="#">Fútbol americano</a><a href="#">Basquetbol</a><a href="#">Béisbol</a><a href="#">Automovilismo</a><a href="#">Multideporte</a>
+      <a href="#" style="margin-left:14px">Derechos de TV</a><a href="#">Patrocinios</a><a href="#">Finanzas</a><a href="#">Inversión</a><a href="#">Venues</a><a href="#">Audiencias</a><a href="#">Gobernanza</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTOS -->
+<section class="band">
+  <div class="wrap">
+    <div class="modh"><h2>Lo que publicamos</h2><span class="r">Cuatro productos, una sola lógica: el negocio detrás del juego</span></div>
+    <div class="prods">
+      <a href="#"><h3>Industry Shots</h3><div class="sub">Noticias · "El Trago"</div><p>Lo que pasó en el negocio del deporte y por qué importa, en menos de cinco minutos.</p><div class="when">Martes y jueves</div></a>
+      <a href="#"><h3>La Lana del Deporte</h3><div class="sub">Análisis · "El Expediente"</div><p>El dinero, el poder y las decisiones que mueven al deporte fuera de la cancha.</p><div class="when">Viernes</div></a>
+      <a href="#"><h3>Playmaker</h3><div class="sub">Perfiles · Próximamente</div><p>Las personas que toman las decisiones en ligas, clubes, marcas y medios de la región.</p><div class="when">Semanal</div></a>
+      <a href="#"><h3>Infinitas</h3><div class="sub">Deporte femenil</div><p>El deporte femenil analizado como industria: ingresos, patrocinio, distribución.</p><div class="when">Semanal</div></a>
+    </div>
+    <p class="meta" style="margin-top:14px">También: <b>The Futbol Business Review</b> ("La Sala de Juntas"), análisis en inglés del fútbol en el mercado hispano de EE. UU., en colaboración con Interticket. · <b>Players</b>, el podcast.</p>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="band">
+  <div class="wrap">
+    <div class="modh"><h2>Video</h2><span class="r"><a href="#">Ir al canal de YouTube →</a></span></div>
+    <div class="video">
+      <a href="#"><div class="img"></div><div class="h4" style="font-size:18px;margin-top:12px">El verdadero valor de la Leagues Cup</div><span class="meta">26 oct</span></a>
+      <a href="#"><div class="img"></div><div class="h4" style="font-size:18px;margin-top:12px">Cómo se coordinó el Mundial 2026 entre FIFA, Chivas y Guadalajara</div><span class="meta">Los Otros Once · 15 oct</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT + SUSCRIPCIÓN -->
+<section class="about">
+  <div class="wrap">
+    <h2>Tú ves el partido.<br>Nosotros vemos el negocio.</h2>
+    <p>Playbook es el medio de negocio del deporte para quienes lo dirigen y para quienes lo van a dirigir en Latinoamérica. Dinero, medios, marcas, datos y relación con el fan, con contexto y con criterio.</p>
+    <form class="in" onsubmit="return false"><input type="email" placeholder="tu@correo.com"><button>Suscribirme gratis</button></form>
+    <div class="meta" style="color:#7d8794;margin-top:10px">Se abrirá Substack para confirmar tu suscripción.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap fr">
+    <div><div class="logo" style="font-size:20px;margin-bottom:8px">PLAYBOOK</div>El negocio del deporte en México y Latinoamérica.<br>© 2026 Playbook Media.</div>
+    <ul><li>Infinitas</li><li>Equipo</li><li>Contacto</li><li>Trabaja con Playbook</li><li>Aviso de Privacidad</li><li>Términos y Condiciones</li><li>Preferencias de cookies</li></ul>
+    <ul><li>Substack</li><li>YouTube</li><li>Instagram</li><li>LinkedIn</li><li>TikTok</li></ul>
+  </div>
+</footer>
+
+<!-- PANEL DE REVISIÓN (no forma parte del sitio) -->
+<div class="panel" id="panel">
+  <div class="pt">Revisión <span onclick="document.getElementById('panel').classList.toggle('min')">— / +</span></div>
+  <label>Playmaker <select onchange="setPM(this.value)"><option value="soon">Próximamente</option><option value="live">Edición publicada</option><option value="off">Oculto</option></select></label>
+  <label>Empieza aquí <input type="checkbox" checked onchange="tog('start',this.checked)"></label>
+  <label>La Agenda <input type="checkbox" checked onchange="tog('agenda',this.checked)"></label>
+  <label>Termómetro <input type="checkbox" checked onchange="tog('termo',this.checked)"></label>
+  <label>Modo oscuro <input type="checkbox" onchange="toggleTheme()"></label>
+  <div class="note">Panel solo para revisar el mock-up. Textos, titulares y acuerdos son reales (playbook.la, 29 oct–8 nov). Imágenes: espacios reservados.</div>
+</div>
+
+<script>
+  function tog(id,on){document.getElementById(id).classList.toggle('hide',!on)}
+  function setPM(v){
+    document.getElementById('pm-soon').classList.toggle('hide',v!=='soon');
+    document.getElementById('pm-live').classList.toggle('hide',v!=='live');
+    document.getElementById('navpm').style.display = v==='off' ? 'none' : '';
+  }
+  function toggleTheme(){var h=document.documentElement;h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'':'dark')}
+</script>
+</body>
+</html>

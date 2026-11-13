@@ -1,0 +1,5 @@
+{
+  "//": "For tsx-run scripts that render components (scripts/test-frescura.ts): Next keeps jsx as preserve, tsx needs the automatic runtime.",
+  "extends": "../tsconfig.json",
+  "compilerOptions": { "jsx": "react-jsx" }
+}

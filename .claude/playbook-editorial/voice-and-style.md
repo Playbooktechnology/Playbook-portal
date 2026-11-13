@@ -1166,7 +1166,7 @@ Length does not demonstrate depth. Selection does.
 
 ## 12. Checklist de publicación
 
-Run these fifteen before considering a piece done (guide, 2026-08-13, grown
+Run these sixteen before considering a piece done (guide, 2026-08-13, grown
 since). This is the last gate in both skills' decision flow.
 
 1. ¿Elegimos correctamente entre A, B, C y D? (`format-tiers.md` §1)
@@ -1194,6 +1194,13 @@ since). This is the last gate in both skills' decision flow.
     reconocería sin contexto se presenta en su primera mención, y queda fuera
     del título? (§7, "Marcas y medios extranjeros poco conocidos"; desde
     2026-10-14.)
+16. ¿**2Playbook, Récord, Estadio y Mediotiempo** están fuera de `Fuentes:`,
+    del cuerpo (nada de "según 2Playbook"), de `sourceUrl` y del crédito de la
+    portada, y `Fuentes:` lleva **tres nombres como máximo**? Un dato que solo
+    trae uno de esos cuatro se confirma con otra fuente, va como "según
+    reportes" o sale de la nota. (`format-tiers.md` §6, `images.md`; desde
+    2026-11-10, cuando cuatro notas de la semana anterior salieron con
+    2Playbook en `Fuentes:` y la regla llevaba escrita desde septiembre.)
 
 > **La definición final.** Playbook escribe para alguien que conoce el deporte
 > y quiere entender mejor su negocio. Abre con el movimiento, elimina el

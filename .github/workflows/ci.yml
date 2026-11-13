@@ -24,6 +24,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Freshness guards (Marcador / Cifra del día)
+        run: npm run test:frescura
+
       - name: Build
         # No POSTGRES_URL/AUTH_SECRET on purpose: lib/db/client.ts and
         # middleware.ts both defer their env var checks past build time

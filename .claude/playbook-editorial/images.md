@@ -68,6 +68,25 @@ file named `…_1200px.jpg` stays at 1200 and the label must say so. And
 reports that share a slug prefix will overwrite each other if you name local
 files by prefix.
 
+**When curl gets 429 from Wikimedia, try the browser** (2026-11-10, Athletic
+× Unique Box). Every `curl` to `upload.wikimedia.org` returned 429, but a
+Playwright page loading the same thumbnail URLs got them on the first try
+(`page.goto(url)` and save `response.body()`). That gave three Commons
+covers checked against the contact sheet, not offered blind. It is not
+reliable: a fourth file fetched a minute later hit 429 in the browser too.
+Fetch in one batch, at most a few seconds apart, and keep the files.
+
+**Offer four or five covers on the first pass, not three** (publisher,
+2026-11-05 to 11-10: *"busca más opciones de portada"* on the Nadal, USOPC
+and College Football Playoff runs, and *"dame más opciones de imágenes"* on
+Ollamani). Each time, the pick came from the second batch: the Indiana
+Rose Bowl celebration for the CFP, the Team USA boat on the Seine for the
+USOPC. The first draft should cover the shapes the editor reaches for: a
+celebration or moment of the event itself, live game action, the venue full
+of people, and one frame tied to the story's mechanism (on-campus games →
+a campus stadium). On the CFP run, DVIDS had all four of those within one
+search.
+
 **An official site is not proof a photo is free** (2026-11-05, USOPC × private
 investors). The first covers for this piece came from teamusa.com /
 usopc.org, offered as "Foto: USOPC". The site's own markup credits its
@@ -109,7 +128,12 @@ Credit the outlet whose image it is (`"Foto: Sportico"`), and prefer
 commercial competitor's CDN — the credit is what the site's takedown clause
 rests on, and a copy under `public/assets/img/` cannot break when they move a
 path. Self-hosted covers only resolve once the asset is on `main`, so push it
-before the article references it.
+before the article references it. **Pushing is not enough. Wait until the asset URL returns 200 before
+publishing.** A deploy usually takes 1 to 3 minutes. On 2026-11-12 the
+Futures piece went live while its cover still returned 404, because the wait
+loop timed out silently and the publish command ran anyway. Gate the publish
+on the 200 (`until [ $(curl -s -o /dev/null -w '%{http_code}' URL) = 200 ]`),
+not on a fixed number of retries.
 
 **Check you actually have a path to `main` before choosing self-hosting**
 (2026-09-15, publish-sourced-article, the DAZN leadership-reshuffle piece). A
@@ -312,6 +336,25 @@ it is the recommendation; if the outlet's is clearly better, show both in the
 draft presentation, say which carries less rights risk, and let the human
 choose.
 
+**A photo the editor finds on social media still needs its credit traced**
+(2026-11-12, Futures Basketball League). The editor sent a LinkedIn post from
+Sports Business Journal with a strong photo of LeBron James and Kevin Durant at
+Paris 2024. A LinkedIn image carries no credit, so open the outlet's own article:
+SBJ's credited the photo to Getty Images. Trade outlets (SBJ, Sportico, Front
+Office Sports) and wires license most player photography from Getty, AP or
+Reuters, so assume a player photo in their posts is agency work until the
+credit line says otherwise. Tell the editor why it can't run and offer the
+closest free alternative.
+
+**When no free photo shows two people together, a diptych is an option.**
+On that run Commons had no Paris 2024 photo of both players together, but it
+had one of each, taken at the same Games by the same photographer. Two
+portrait crops side by side made a 1600×900 cover that was close to the photo
+the editor wanted, and it was the one chosen. Use two shots that match in
+event, light and framing, credit the photographer once ("Fotos: …"), and
+check that the license allows a derivative (CC BY and CC BY-SA do).
+Self-host the composite, since it exists only as our file.
+
 ### The competitor exclusion — never 2Playbook, Récord, Estadio or Mediotiempo
 
 **The same four outlets barred from the `Fuentes:` line are barred as image
@@ -476,6 +519,18 @@ square to about 82% of the canvas height (980 px on 1200), center it, and
 extend the background on all four sides; that survived the zoom intact. Bump the
 filename (`-v2`) when replacing a published asset, so the CDN doesn't keep
 serving the first one.
+
+**A group photo with no room above the heads needs headroom added**
+(2026-11-12, Mundial Femenil 2031 bid). The FMF photo of four federation
+presidents was cropped to 16:9 with the heads near the top edge. Live, the
+16:10 frame and the zoom cut every head except the shortest one, and the
+editor caught it. The fix was a 16:10 canvas with the photo moved down about
+70 px (on 731), and the strip above it filled with a smooth gradient in the
+wall's own color, feathered into the photo. Two fills failed. Mirroring the
+top rows showed reflected heads at the edge, and tiling a head-free patch of
+wall repeated visibly. Before re-publishing, simulate the crop and check
+every head, not just the first one. If one head sits within about 10% of the
+top edge, it will be cut.
 
 **Some club image servers crop for you, so check before self-hosting**
 (2026-11-04, the Nadal / Real Madrid board piece). `assets.realmadrid.com`

@@ -21,8 +21,17 @@ export const FRESHNESS = {
   /** …y, ya sin las notas del primer bloque, al menos esta cantidad; si no, se oculta. */
   tickerMinItems: 3,
 
-  /** El Marcador: el destacado deja de serlo después de estos días (A7). */
-  marcadorFeaturedMaxAgeDays: 14,
+  /**
+   * El Marcador: si el acuerdo más reciente tiene más días que esto, el widget
+   * entra en modo archivo (sin semana ni destacado) y la alerta diaria avisa.
+   */
+  marcadorArchiveAfterDays: 10,
+
+  /**
+   * La cifra: una cifra de ayer o anterior se muestra como "La cifra" con su
+   * fecha; con más días que esto, el bloque se oculta y la alerta avisa.
+   */
+  cifraMaxAgeDays: 3,
 } as const;
 
 const MX_DAY = new Intl.DateTimeFormat('en-CA', {
