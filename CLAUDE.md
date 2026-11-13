@@ -248,4 +248,5 @@ Español de México, tuteo, sin raya larga, sin conexión forzada con LATAM.
 Natural, directa, segura, específica; financieramente inteligente sin
 sonar a consultoría. Evita fórmulas tipo "no es X, es Y", "en un mundo
 donde...", "queda por ver", moralejas y conclusiones redondas por
-obligación.
+obligación. La Opinión cierra con una afirmación, nunca con una pregunta retórica, y
+ningún texto publicado debe oler a IA (detalle en `voice-and-style.md` §7).
