@@ -191,6 +191,21 @@ limit is short-lived and one patient retry usually clears it. If it does not,
 the API record is enough to publish on, and the run report says the photo was
 verified from its file record rather than on screen.
 
+### For recent events, browse the season category, not keyword search
+
+(2026-11-17, Modelo × NCAA.) Commons MediaSearch for "March Madness 2026",
+"2026 NCAA Final Four" and "college basketball 2025" returned nothing usable.
+The editor asked whether there really was no recent game photo. The category
+page `Category:2025–26 NCAA Division I men's basketball season` had dozens:
+public-domain U.S. Air Force photos of the First Four, and CC BY-SA photos from
+a fan blog (MGoBlog) of the champion's Final Four and Elite Eight. File names
+like `260317-F-QL361-1002` or `MGC Elite08-TenVol 2026 0061` never match a
+keyword query. For any league or season, open the season or event category
+(`Category:<season> <league> season`, `Category:<Team A> vs. <Team B> (<date>)`)
+before deciding nothing exists. A fan blog's Flickr upload is fine when Commons
+shows a passed license review (FlickreviewR). Credit the photographer named on
+the file page.
+
 ### Wikimedia is one option, not the default
 
 (Team directive, 2026-09-17, on `/articulo/la-saudi-pro-league-deja-que-los-creators-vendan-sus-partidos`
