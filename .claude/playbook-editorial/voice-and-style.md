@@ -657,6 +657,16 @@ above, which is about English loanwords; this is about **which Spanish**, and
 the fix is always the plain Mexican word already sitting in the rest of the
 piece, not a translation exercise.
 
+**`fichar` for an executive is Spain's verb** (publisher, 2026-11-17, on the
+RedBird × Brett Yormark headline: *"'ficha' suena muy a español de España no
+de México"*). Spanish sports press uses it for any hire, from players to CEOs,
+and 2Playbook's headline on the same story did exactly that. In Mexico a club
+signs or gets a player (`contrata`, `se refuerza con`), and a company names an
+executive. Use `nombra`, `contrata` or `elige` for executives, and `contrata`
+or `llega` for players. The same check applies to `fichaje` in body copy, and
+to `entrenador` (DT is the Mexican word on second mention), `míster`, `plantilla`
+(use `plantel`), `afición` (fine) and `hinchada` (not fine).
+
 **The exception is when the story itself calls for it.** A direct quote from
 an Argentine source, or a piece centered on Argentine/Uruguayan football where
 `hincha` is the word the protagonists themselves use, stays as written — there

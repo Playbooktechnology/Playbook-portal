@@ -131,22 +131,6 @@ plausibly be a prospect, draft it in this register and say so in the draft
 presentation ("protagonista posiblemente prospecto: tono de valor de
 negocio"), so the human can confirm or ask for a sharper read.
 
-**Capitanes CDMX is a close Playbook ally** (publisher, 2026-11-14, on the
-Capitanes x Ryan Gilbert ownership note). A positive Capitanes announcement
-goes in this register from the first draft, marked "sensibilidad: alta" in
-the draft presentation; no need to wait for the human to say so. That run's
-first draft led with "no reveló monto ni porcentaje", closed the Opinión on
-"anuncia un socio, no una valuación" and linked a piece that framed Mexico
-City as the NBA's bargaining chip with Seattle. All three read as criticism
-and were rewritten. Undisclosed terms on a private deal are normal, not a
-gap to point at: record them in the boleta notes, keep them out of the
-headline, the lead and the Opinión. What replaced them is the model: the
-club's own figures, a verified public fact (the investor's board seat, from
-Companies House) and Playbook's own reporting in the club's favour (Mark
-Tatum citing Capitanes at the NBA roundtable). This sets the default
-register only; a Capitanes story that is itself uncomfortable (governance,
-a dispute, losses) still goes through protocolo amarillo and §3.
-
 ---
 
 ## 3. Publicar, escalar o frenar
