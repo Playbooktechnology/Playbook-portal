@@ -283,6 +283,17 @@ and `infantino-desafia-a-montagliani-…-se-resquebraja` are both live rows whos
 id no longer matches their title, because the id is minted at insert and never
 migrates.
 
+### When a team is sold, its name opens the headline
+
+(Publisher, 2026-11-17, Earthquakes sale.) The first published title started
+with the seller ("Dueño de los Athletics vende..."). The publisher tried "MLS
+aprueba la venta de...", then asked for a title that starts with the team and
+still carries the most relevant facts. The approved version was "San Jose
+Earthquakes y PayPal Park se venden por US$625 millones; MLS aprueba la
+operación". The team is what readers search for. Put the asset and the price
+first, and the approval or the party second. When the buyer or seller is the
+better-known name, the rule above still applies.
+
 ### Name a little-known buyer by the asset readers know
 
 (Editor, 2026-11-05, FSG × Cadillac F1.) Ten options that opened with "FSG"
