@@ -191,6 +191,18 @@ limit is short-lived and one patient retry usually clears it. If it does not,
 the API record is enough to publish on, and the run report says the photo was
 verified from its file record rather than on screen.
 
+### For a small club, look for its own photos in local press credits
+
+(2026-11-17, Atlético FC de Guayaquil.) There was nothing on Commons for a club
+founded in 2022. The club's own site did not respond, and the bigger club's site
+(Atlético de Madrid) blocked automated access. What worked: read the photo
+credits on local coverage of its latest milestone (promotion, title).
+Ecuadorian magazine Vistazo had two photos credited "Foto: Atlético FC", which
+are the club's own photography and usable under the rule above. Check each
+outlet's caption or credit line. Skip any photo without a credit, and any
+credited to an agency (API, EFE, AFP). A crest-only composite is the fallback,
+not the first offer.
+
 ### For recent events, browse the season category, not keyword search
 
 (2026-11-17, Modelo × NCAA.) Commons MediaSearch for "March Madness 2026",
