@@ -62,6 +62,16 @@ const PLAZAS: HubPlaza[] = [
     team: 'Mexicas de la Ciudad de México', status: 'establecida', source: { ...KIT } },
   { city: 'Valle de México', region: 'Estado de México', state: 'México',
     team: 'Raptors del Valle de México', status: 'establecida', source: { ...KIT } },
+  // Expansion franchise presented 2026-11-12, debuts in 2027 — so it sits
+  // past the yard line as 'anunciada' until it plays a season. Its stadium
+  // is not confirmed yet, which is why the city is the state, not a venue.
+  // Same `state` as Raptors: the map keeps Estado de México 'establecida'.
+  { city: 'Estado de México', region: 'Estado de México', state: 'México',
+    team: 'Toros Edomex', status: 'anunciada',
+    source: {
+      label: 'Playbook: La LFA Finsus suma a Toros Edomex (2026-11-12)',
+      url: 'https://www.playbook.la/articulo/la-lfa-finsus-suma-a-toros-edomex',
+    } },
   // The three announced expansion markets (Mérida, Cancún, Tijuana) were
   // pulled from the list — publisher's call, 2026-09-08. Re-add them, still
   // sourced to BRIEF, the day there's something firmer to report than the
