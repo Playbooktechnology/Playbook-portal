@@ -594,6 +594,16 @@ right edge, then the logo on a flat panel. Make the logo crisp by upscaling it
 imagen: Nike". When the portrait has the head near the top, pad the
 background upward before cropping.
 
+**Manchester City: the owner group's site has the club's photos in full
+resolution** (2026-11-19, Apollo/CFG piece). `mancity.com` returns 403 to
+automated requests; don't push past it. `cityfootballgroup.com` serves City's
+own match and trophy photos through Wix. Take the `_media/<id>~mv2.jpg` part
+of any image URL and drop the `/v1/fill/...` suffix to get the original
+(4000–8600 px). Credit "City Football Group". Commons has no licensed photo of
+Sheikh Mansour at a City match. When the editor wants the owner tied to the
+club, pair his free portrait with one of those club photos in a diptych, and
+say why you did it that way.
+
 ---
 
 ## 2. In-body images — **differs by funnel**
