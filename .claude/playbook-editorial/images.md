@@ -604,6 +604,16 @@ Sheikh Mansour at a City match. When the editor wants the owner tied to the
 club, pair his free portrait with one of those club photos in a diptych, and
 say why you did it that way.
 
+**When the brand's press page is blocked, ask the editor for the file, and
+read Drive links directly** (2026-11-19, F1/WHOOP). whoop.com and
+corp.formula1.com return 403/475 to automated requests. The release image is
+on Business Wire (`mms.businesswire.com/media/<release>/en/<id>/<n>/<file>`),
+but that host fails from this container with HTTP/2 errors and 502s. Its
+syndications (Business Upturn, UNI India) carry only the logo. After one try,
+don't keep retrying: ask the editor to download the image and share it.
+A Drive share link downloads with
+`https://drive.google.com/uc?export=download&id=<id>`. Credit "Foto: <brand>".
+
 ---
 
 ## 2. In-body images — **differs by funnel**
