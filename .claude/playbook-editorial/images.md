@@ -571,6 +571,17 @@ head first. That URL is the
 the same Scene7 setup; `align` runs from -1 (top/left) to 1 (bottom/right).
 Simulate the zoom on the returned file before publishing.
 
+**When the story is a sponsor leaving, the cover shows the sponsor on the
+shirt** (2026-11-19, Flamengo/Betano). The first pass offered the club's
+photos from this week; the editor asked for Betano on the front of the shirt.
+Photos taken after the sponsor left no longer carry the logo, so go back to
+the club's own match reports from before the change (on flamengo.com.br, the
+2026 Brasileirão wins at the Maracanã from March and April). Lead with the
+shot where the logo reads largest. Those match-report photos are served at
+760 px at most (no `large_` variant), so upscale to 1280x800 with Lanczos and
+a light unsharp mask, add headroom with a blurred fill, and tell the editor
+the result is softer than a full-resolution original.
+
 ---
 
 ## 2. In-body images — **differs by funnel**
