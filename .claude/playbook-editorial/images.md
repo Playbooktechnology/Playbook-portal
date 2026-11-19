@@ -582,6 +582,18 @@ shot where the logo reads largest. Those match-report photos are served at
 a light unsharp mask, add headroom with a blurred fill, and tell the editor
 the result is softer than a full-resolution original.
 
+**When the editor points at another outlet's composite cover, rebuild it from
+the company's own assets** (2026-11-19, Nike Investor Day). The editor asked for
+a cover like Sportico's: the CEO cut out beside the swoosh. Never reuse the
+outlet's image, since its portrait is usually agency. Nike's site has an
+official portrait (`about.nike.com/en/company/people/<name>`) and many more
+in its magazine pieces, and the plan's release carries the logos on black.
+The layout that worked: the portrait on the left 760 px with a 180 px feathered
+right edge, then the logo on a flat panel. Make the logo crisp by upscaling it
+3x, blurring lightly and thresholding it into an alpha mask. Credit "Foto e
+imagen: Nike". When the portrait has the head near the top, pad the
+background upward before cropping.
+
 ---
 
 ## 2. In-body images — **differs by funnel**
