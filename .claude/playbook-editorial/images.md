@@ -191,6 +191,33 @@ limit is short-lived and one patient retry usually clears it. If it does not,
 the API record is enough to publish on, and the run report says the photo was
 verified from its file record rather than on screen.
 
+### For a small club, look for its own photos in local press credits
+
+(2026-11-17, Atlético FC de Guayaquil.) There was nothing on Commons for a club
+founded in 2022. The club's own site did not respond, and the bigger club's site
+(Atlético de Madrid) blocked automated access. What worked: read the photo
+credits on local coverage of its latest milestone (promotion, title).
+Ecuadorian magazine Vistazo had two photos credited "Foto: Atlético FC", which
+are the club's own photography and usable under the rule above. Check each
+outlet's caption or credit line. Skip any photo without a credit, and any
+credited to an agency (API, EFE, AFP). A crest-only composite is the fallback,
+not the first offer.
+
+### For recent events, browse the season category, not keyword search
+
+(2026-11-17, Modelo × NCAA.) Commons MediaSearch for "March Madness 2026",
+"2026 NCAA Final Four" and "college basketball 2025" returned nothing usable.
+The editor asked whether there really was no recent game photo. The category
+page `Category:2025–26 NCAA Division I men's basketball season` had dozens:
+public-domain U.S. Air Force photos of the First Four, and CC BY-SA photos from
+a fan blog (MGoBlog) of the champion's Final Four and Elite Eight. File names
+like `260317-F-QL361-1002` or `MGC Elite08-TenVol 2026 0061` never match a
+keyword query. For any league or season, open the season or event category
+(`Category:<season> <league> season`, `Category:<Team A> vs. <Team B> (<date>)`)
+before deciding nothing exists. A fan blog's Flickr upload is fine when Commons
+shows a passed license review (FlickreviewR). Credit the photographer named on
+the file page.
+
 ### Wikimedia is one option, not the default
 
 (Team directive, 2026-09-17, on `/articulo/la-saudi-pro-league-deja-que-los-creators-vendan-sus-partidos`
@@ -543,6 +570,49 @@ head first. That URL is the
 `imageUrl` directly, with no asset to push to `main`. Any `…/is/image/…` URL is
 the same Scene7 setup; `align` runs from -1 (top/left) to 1 (bottom/right).
 Simulate the zoom on the returned file before publishing.
+
+**When the story is a sponsor leaving, the cover shows the sponsor on the
+shirt** (2026-11-19, Flamengo/Betano). The first pass offered the club's
+photos from this week; the editor asked for Betano on the front of the shirt.
+Photos taken after the sponsor left no longer carry the logo, so go back to
+the club's own match reports from before the change (on flamengo.com.br, the
+2026 Brasileirão wins at the Maracanã from March and April). Lead with the
+shot where the logo reads largest. Those match-report photos are served at
+760 px at most (no `large_` variant), so upscale to 1280x800 with Lanczos and
+a light unsharp mask, add headroom with a blurred fill, and tell the editor
+the result is softer than a full-resolution original.
+
+**When the editor points at another outlet's composite cover, rebuild it from
+the company's own assets** (2026-11-19, Nike Investor Day). The editor asked for
+a cover like Sportico's: the CEO cut out beside the swoosh. Never reuse the
+outlet's image, since its portrait is usually agency. Nike's site has an
+official portrait (`about.nike.com/en/company/people/<name>`) and many more
+in its magazine pieces, and the plan's release carries the logos on black.
+The layout that worked: the portrait on the left 760 px with a 180 px feathered
+right edge, then the logo on a flat panel. Make the logo crisp by upscaling it
+3x, blurring lightly and thresholding it into an alpha mask. Credit "Foto e
+imagen: Nike". When the portrait has the head near the top, pad the
+background upward before cropping.
+
+**Manchester City: the owner group's site has the club's photos in full
+resolution** (2026-11-19, Apollo/CFG piece). `mancity.com` returns 403 to
+automated requests; don't push past it. `cityfootballgroup.com` serves City's
+own match and trophy photos through Wix. Take the `_media/<id>~mv2.jpg` part
+of any image URL and drop the `/v1/fill/...` suffix to get the original
+(4000–8600 px). Credit "City Football Group". Commons has no licensed photo of
+Sheikh Mansour at a City match. When the editor wants the owner tied to the
+club, pair his free portrait with one of those club photos in a diptych, and
+say why you did it that way.
+
+**When the brand's press page is blocked, ask the editor for the file, and
+read Drive links directly** (2026-11-19, F1/WHOOP). whoop.com and
+corp.formula1.com return 403/475 to automated requests. The release image is
+on Business Wire (`mms.businesswire.com/media/<release>/en/<id>/<n>/<file>`),
+but that host fails from this container with HTTP/2 errors and 502s. Its
+syndications (Business Upturn, UNI India) carry only the logo. After one try,
+don't keep retrying: ask the editor to download the image and share it.
+A Drive share link downloads with
+`https://drive.google.com/uc?export=download&id=<id>`. Credit "Foto: <brand>".
 
 ---
 

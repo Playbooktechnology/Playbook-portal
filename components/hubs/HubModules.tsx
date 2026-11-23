@@ -119,8 +119,8 @@ export function HubPlazas({ hub }: { hub: Hub }) {
       <p className="hubx-kicker">El mapa</p>
       <h2 className="hubx-head" id="hubx-plazas">Las plazas</h2>
       <p className="hubx-sub">
-        {hub.plazas.length - announced} plazas establecidas
-        {announced > 0 && <> y {announced} anunciadas</>}, leídas como mercados comerciales.
+        {hub.plazas.length - announced} {hub.plazas.length - announced === 1 ? 'plaza establecida' : 'plazas establecidas'}
+        {announced > 0 && <> y {announced} {announced === 1 ? 'anunciada' : 'anunciadas'}</>}, leídas como mercados comerciales.
       </p>
       <div className={hasMap ? 'hubx-plazas-wrap' : undefined}>
         {/* The map gets a panel of its own rather than floating on the page
