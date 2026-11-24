@@ -88,6 +88,15 @@ Two notes on how these meet what the portal already publishes:
   only add* directive (`voice-and-style.md` §2) settles the rest: 250 is the
   floor at which a Noticia is still a Noticia, and a source carrying more
   reporting keeps it rather than being cut back to a target.
+- **When the editor sends a long brief, aim for the top of B: 430–500 words**
+  (editor, 2026-11-24, Nike/F1 at 311 words and Ohtani/New Balance at 254 were
+  sent back as "muy breves para el tipo de información que te compartí"). The
+  editor's notes usually carry verifiable context that belongs in the piece:
+  rights structure, what each party does and doesn't get, a comparable, and a
+  "lo que falta saber" paragraph. Without a figure the piece still stays B; the
+  extra length comes from that context. When the fuller version depends on a
+  source you couldn't open (GQ, SBJ, Inc.), ask for its text before drafting
+  rather than shipping the short version.
 - **A (Noticia breve) is routable but publish it deliberately.** It maps to
   `readingTime: 1`, no Opinión, no devices; editorially it is the shape
   Industry Shots Tier 2 always was. When the router lands on A, say so in the
